@@ -7,7 +7,6 @@ import {
 import BucketList from './components/BucketList';
 import BucketListForm from './components/BucketListForm';
 
-
 export default class App extends React.Component {
   constructor(props, context) {
     super(props, context);
