@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import BucketListRow from './BucketListRow';
 
-
 class BucketList extends Component {
   constructor(props, context) {
     super(props, context);
