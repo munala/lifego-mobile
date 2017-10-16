@@ -8,9 +8,10 @@ import {
 import RenderAndroid from './RenderRow.android';
 import RenderIos from './RenderRow.ios';
 
-class BucketListRow extends Component {
+class Row extends Component {
   constructor(props, context) {
     super(props, context);
+    this.handleTouch = this.handleTouch.bind(this);
     this.styles = StyleSheet.create({
       container: {
         flexDirection: 'row',
@@ -39,15 +40,28 @@ class BucketListRow extends Component {
         backgroundColor: '#eaeaea',
       },
     });
+    this.content = this.props.bucketlist ? this.props.bucketlist : this.props.item;
+  }
+  componentWillReceiveProps(nextProps) {
+    this.content = nextProps.bucketlist ? nextProps.bucketlist : nextProps.item;
+  }
+  handleTouch(bucketlist) {
+    if (this.props.bucketlist) {
+      this.props.navigation.navigate('items', {
+        bucketlist,
+      });
+    }
   }
   render() {
     const Render = Platform.OS === 'ios' ? RenderIos : RenderAndroid;
-    return Render.bind(this)(this.styles);
+    return Render.bind(this)(this.styles, this.handleTouch);
   }
 }
 
-BucketListRow.propTypes = {
+Row.propTypes = {
   bucketlist: PropTypes.object,
+  item: PropTypes.object,
+  navigation: PropTypes.object,
 };
 
-export default BucketListRow;
+export default Row;

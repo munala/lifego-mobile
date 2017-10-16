@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-export default function render(baseStyles) {
+export default function render(baseStyles, handleTouch) {
   const doneAnimation = new Animated.ValueXY();
   const localStyles = StyleSheet.create({
     doneButton: {
@@ -37,18 +37,24 @@ export default function render(baseStyles) {
     }, 500);
   };
   animatedPress.bind(this);
+  const content = this.props.bucketlist ? this.props.bucketlist : this.props.item;
   return (
     <Animated.View style={[baseStyles.container, localStyles.row]}>
-      <Text style={baseStyles.label}>
-        {this.props.bucketlist.name}
-      </Text>
-      <TouchableHighlight
-        onPress={animatedPress}
-        style={localStyles.doneButton}
-        underlayColor="#ddd"
-      >
-        <Image source={require('../images/done.png')} style={localStyles.doneImage} />
+      <TouchableHighlight onPress={() => handleTouch(content)}>
+        <Text style={baseStyles.label}>
+          {content.name}
+        </Text>
       </TouchableHighlight>
+      {
+        this.props.item &&
+        <TouchableHighlight
+          onPress={animatedPress}
+          style={localStyles.doneButton}
+          underlayColor="#ddd"
+        >
+          <Image source={require('../images/done.png')} style={localStyles.doneImage} />
+        </TouchableHighlight>
+      }
     </Animated.View>
   );
 }

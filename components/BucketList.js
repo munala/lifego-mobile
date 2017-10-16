@@ -7,11 +7,12 @@ import {
   TouchableHighlight,
   Text,
 } from 'react-native';
-import BucketListRow from './BucketListRow';
+import Row from './Row';
 
 class BucketList extends Component {
   constructor(props, context) {
     super(props, context);
+    this.navigate = this.props.navigation.navigate;
     this.styles = StyleSheet.create({
       container: {
         paddingTop: 50,
@@ -39,17 +40,17 @@ class BucketList extends Component {
         alignSelf: 'stretch',
       },
     });
-    const data = new ListView.DataSource({
+    this.data = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
     this.state = {
-      dataSource: data.cloneWithRows(this.props.screenProps.bucketlists),
+      dataSource: this.data.cloneWithRows(this.props.screenProps.bucketlists),
     };
     this.renderRow = this.renderRow.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state.dataSource = this.state.dataSource.cloneWithRows(
+    this.state.dataSource = this.data.cloneWithRows(
       nextProps.screenProps.bucketlists);
     this.setState = {
       dataSource: this.state.dataSource,
@@ -58,18 +59,19 @@ class BucketList extends Component {
 
   renderRow(bucketlist) {
     return (
-      <BucketListRow
+      <Row
         bucketlist={bucketlist}
         onAddStarted={this.props.screenProps.onAddStarted}
         onDone={this.props.screenProps.onDone}
+        onDelete={this.props.screenProps.onDelete}
         style={this.styles.bucketlistRow}
         navigation={this.props.navigation}
       />
+
     );
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <View style={this.styles.container}>
         <ListView
@@ -79,7 +81,12 @@ class BucketList extends Component {
         />
         <TouchableHighlight
           onPress={() =>
-            navigate('bucketlistform')}
+            this.navigate('bucketlistform', {
+              context: {
+                name: 'bucketlist',
+                type: 'Add',
+              },
+            })}
           style={this.styles.button}
         >
           <Text style={this.styles.buttonText}>Add bucketlist</Text>

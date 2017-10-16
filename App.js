@@ -4,31 +4,52 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
+import * as types from './actions/actionTypes';
+import * as bucketlistActions from './actions/bucketlistActions';
 import BucketList from './components/BucketList';
+import Items from './components/Items';
 import BucketListForm from './components/BucketListForm';
+
+const store = bucketlistActions.getStore();
 
 export default class App extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      bucketlists: [
-        {
-          name: '2016',
-        },
-        {
-          name: '2017',
-        },
-      ],
-    };
-    this.onAddStarted = this.onAddStarted.bind(this);
+    this.state = store.getState().data;
+    store.subscribe(() => {
+      this.setState(store.getState().data);
+    });
+    bucketlistActions.loadBucketlists(0, 20, '');
+    this.onSaveStarted = this.onSaveStarted.bind(this);
     this.renderScene = this.renderScene.bind(this);
     this.configureScene = this.configureScene.bind(this);
     this.onCancel = this.onCancel.bind(this);
-    this.onAdd = this.onAdd.bind(this);
-    this.onDone = this.onDone.bind(this);
+    this.onSave = this.onSave.bind(this);
+    this.onSave = this.onSave.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+    this.RootApp = StackNavigator({
+      bucketlist: {
+        screen: BucketList,
+        navigationOptions: () => ({
+          title: 'Bucketlists',
+        }),
+      },
+      items: {
+        screen: Items,
+        navigationOptions: ({ navigation }) => ({
+          title: navigation.state.params.bucketlist.name,
+        }),
+      },
+      bucketlistform: {
+        screen: BucketListForm,
+        navigationOptions: ({ navigation }) => ({
+          title: `${navigation.state.params.context.type} ${navigation.state.params.context.name}`,
+        }),
+      },
+    });
   }
-  onAddStarted() {
+  onSaveStarted() {
     this.nav.push({
       name: 'bucketlistform',
     });
@@ -39,14 +60,31 @@ export default class App extends React.Component {
   onCancel() {
     this.nav.pop();
   }
-  onAdd(name) {
-    this.state.bucketlists.push({ name });
-    this.setState({ bucketlists: this.state.bucketlists });
+  onSave(content, context) {
+    if (context.name === 'bucketlist') {
+      if (context.type === 'Add') {
+        bucketlistActions.saveBucketlist(content);
+      } else {
+        bucketlistActions.updateBucketlist(content);
+      }
+    } else if (context.name === 'item') {
+      if (context.type === 'Add') {
+        bucketlistActions.saveItem(context.bucketlist, content);
+      } else {
+        bucketlistActions.updateItem(context.bucketlist, content);
+      }
+    }
   }
-  onDone(doneBucketlist) {
-    this.state.bucketlists = this.state.bucketlists
-      .filter(bucketlist => bucketlist !== doneBucketlist);
-    this.setState({ bucketlists: this.state.bucketlists });
+  onDelete(bucketlist, item, context) {
+    if (context.name === 'bucketlist') {
+      bucketlistActions.deleteBucketlist(bucketlist);
+    } else if (context.name === 'item') {
+      bucketlistActions.deleteItem(bucketlist, item);
+    }
+  }
+  onDone(bucketlist, item) {
+    const newItem = { ...item, done: !item.done };
+    bucketlistActions.updateItem(bucketlist, newItem);
   }
   renderScene(route) {
     switch (route.name) {
@@ -54,35 +92,31 @@ export default class App extends React.Component {
         return (
           <BucketListForm
             onCancel={this.onCancel}
-            onAdd={this.onAdd}
+            onSave={this.onSave}
           />
         );
       default:
         return (
           <BucketList
-            onAddStarted={this.onAddStarted}
+            onSaveStarted={this.onSaveStarted}
             onDone={this.onDone}
+            onDelete={this.onDelete}
             bucketlists={this.state.bucketlists}
           />
         );
     }
   }
   render() {
-    const RootApp = StackNavigator({
-      bucketlist: { screen: BucketList },
-
-      bucketlistform: { screen: BucketListForm,
-      },
-    });
     return (
-      <RootApp
+      <this.RootApp
         initialRouteName="bucketist"
         screenProps={{
           bucketlists: this.state.bucketlists,
-          onAddStarted: this.onAddStarted,
+          onSaveStarted: this.onSaveStarted,
           onDone: this.onDone,
+          onDelete: this.onDelete,
           onCancel: this.onCancel,
-          onAdd: this.onAdd,
+          onSave: this.onSave,
         }}
       />
     );

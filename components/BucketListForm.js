@@ -12,7 +12,9 @@ class BucketListForm extends Component {
   constructor(props, context) {
     super(props, context);
     this.onChange = this.onChange.bind(this);
-    this.bucketlist = '';
+    this.onSave = this.onSave.bind(this);
+    this.params = this.props.navigation.state.params.context;
+    this.content = this.params.content ? this.params.content : { name: '' };
     this.styles = StyleSheet.create({
       container: {
         flex: 1,
@@ -47,26 +49,31 @@ class BucketListForm extends Component {
     });
   }
   onChange(text) {
-    this.bucketlist = text;
+    this.content.name = text;
   }
+  onSave() {
+    this.props.screenProps.onSave(this.content, this.params);
+    this.props.navigation.goBack();
+  }
+
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <View style={this.styles.container}>
         <TextInput
+          defaultValue={this.content.name}
           style={this.styles.input}
           onChangeText={this.onChange}
         />
         <TouchableHighlight
           style={this.styles.button}
-          onPress={() => this.props.screenProps.onAdd(this.bucketlist)}
+          onPress={this.onSave}
         >
-          <Text style={this.styles.buttonText}>Add</Text>
+          <Text style={this.styles.buttonText}>Save</Text>
         </TouchableHighlight>
         <TouchableHighlight
           style={[this.styles.button, this.styles.cancelButton]}
           onPress={() =>
-            navigate('bucketlist')}
+            this.props.navigation.goBack()}
         >
           <Text style={this.styles.buttonText}>Cancel</Text>
         </TouchableHighlight>
@@ -75,8 +82,9 @@ class BucketListForm extends Component {
   }
 }
 BucketListForm.propTypes = {
-  onAdd: PropTypes.func,
+  onSave: PropTypes.func,
   navigation: PropTypes.object,
+  screenProps: PropTypes.object,
 };
 
 export default BucketListForm;
