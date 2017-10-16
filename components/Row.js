@@ -93,7 +93,7 @@ class Row extends Component {
     ));
   }
   render() {
-    const Render = Platform.OS === 'ios' ? RenderIos : RenderAndroid;
+    const Render = RenderIos;
     return (
       <View>
         <Modal

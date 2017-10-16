@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   ListView,
+  Switch,
   TouchableHighlight,
   Text,
 } from 'react-native';
@@ -12,6 +13,7 @@ import Row from './Row';
 class BucketList extends Component {
   constructor(props, context) {
     super(props, context);
+    this.toggleFilter = this.toggleFilter.bind(this);
     this.bucketlist = this.props.navigation.state.params.bucketlist;
     this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
     this.styles = StyleSheet.create({
@@ -47,12 +49,22 @@ class BucketList extends Component {
         flex: 1,
         alignSelf: 'stretch',
       },
+      toggleRow: {
+        flexDirection: 'row',
+        padding: 10,
+      },
+      toggleText: {
+        fontSize: 20,
+        paddingLeft: 10,
+        paddingTop: 3,
+      },
     });
     this.data = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
     this.state = {
       dataSource: this.data.cloneWithRows(this.bucketlist.items),
+      filter: 'all',
     };
     this.renderRow = this.renderRow.bind(this);
   }
@@ -65,6 +77,12 @@ class BucketList extends Component {
     this.setState = {
       dataSource: this.state.dataSource,
     };
+  }
+
+  toggleFilter(filter) {
+    this.setState({
+      filter,
+      dataSource: this.data.cloneWithRows(this.bucketlist.items.filter(item => (filter === 'all' || (filter === 'pending' && !item.done)))) });
   }
 
   renderRow(item) {
@@ -84,6 +102,18 @@ class BucketList extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={this.styles.container}>
+        <View style={this.styles.toggleRow}>
+          <Switch
+            style={this.styles.switch}
+            value={this.state.filter === 'pending'}
+            onValueChange={() => this.toggleFilter(this.state.filter === 'all' ? 'pending' : 'all')}
+          />
+          <Text
+            style={this.styles.toggleText}
+          >
+                  Showing {this.state.filter} bucketlists ({this.bucketlist.items.filter(item => (this.state.filter === 'all' || (this.state.filter === 'pending' && !item.done))).length})
+          </Text>
+        </View>
         {
           this.props.navigation.state.params.bucketlist.items.length === 0 &&
           <View>

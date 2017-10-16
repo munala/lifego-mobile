@@ -118,7 +118,6 @@ class App extends React.Component {
     }
   }
   render() {
-    console.log({ app: this.RootApp });
     return (
       <this.RootApp
         screenProps={{
