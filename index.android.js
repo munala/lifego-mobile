@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
+import RootApp from './Provider';
 
-AppRegistry.registerComponent('BucketListNative', () => App);
+AppRegistry.registerComponent('BucketListNative', () => RootApp);

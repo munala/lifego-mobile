@@ -7,6 +7,6 @@ export default {
   bucketlist: {
     name: '',
   },
-  currentApiCalls: 0,
-  loggedIn: true,
+  token: '',
+  loggedIn: false,
 };

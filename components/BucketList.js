@@ -12,6 +12,7 @@ import Row from './Row';
 class BucketList extends Component {
   constructor(props, context) {
     super(props, context);
+    this.props.screenProps.actions.loadBucketlists(0, 20, '');
     this.navigate = this.props.navigation.navigate;
     this.styles = StyleSheet.create({
       container: {

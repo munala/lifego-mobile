@@ -1,12 +1,10 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import data from './bucketlistReducer';
-import loggedIn from './authReducer';
-import currentApiCalls from './apiCallReducer';
+import auth from './authReducer';
 
 const rootReducer = combineReducers({
   data,
-  currentApiCalls,
-  loggedIn
+  auth,
 });
 
 export default rootReducer;

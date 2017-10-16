@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
-export default function render(baseStyles, handleTouch) {
+export default function render(baseStyles, handleTouch, setModalVisible) {
   const content = this.props.bucketlist ? this.props.bucketlist : this.props.item;
   const buttons = [
     {
@@ -22,7 +22,7 @@ export default function render(baseStyles, handleTouch) {
       backgroundColor: 'cyan',
       color: '#273539',
       underlayColor: '#273539',
-      onPress: () => this.props.info(content),
+      onPress: () => setModalVisible(true),
     },
     {
       text: 'Edit',
@@ -35,7 +35,8 @@ export default function render(baseStyles, handleTouch) {
             name: this.props.bucketlist ? 'bucketlist' : 'item',
             type: 'Edit',
             content,
-            bucketlist: this.props.navigation.state.params.bucketlist,
+            bucketlist: this.props.bucketlist ? this.props.bucketlist
+              : this.props.navigation.state.params.bucketlist,
           },
         });
       },

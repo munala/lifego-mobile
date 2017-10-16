@@ -1,6 +1,10 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Modal,
+  Text,
+  TouchableHighlight,
+  View,
   Platform,
   StyleSheet,
 } from 'react-native';
@@ -12,6 +16,11 @@ class Row extends Component {
   constructor(props, context) {
     super(props, context);
     this.handleTouch = this.handleTouch.bind(this);
+    this.renderProperties = this.renderProperties.bind(this);
+    this.setModalVisible = this.setModalVisible.bind(this);
+    this.state = {
+      modalVisible: false,
+    };
     this.styles = StyleSheet.create({
       container: {
         flexDirection: 'row',
@@ -38,12 +47,24 @@ class Row extends Component {
         fontWeight: '600',
         borderRadius: 5,
         backgroundColor: '#eaeaea',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      text: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#aaaaaa',
+        height: 50,
+        paddingTop: 10,
       },
     });
     this.content = this.props.bucketlist ? this.props.bucketlist : this.props.item;
   }
   componentWillReceiveProps(nextProps) {
     this.content = nextProps.bucketlist ? nextProps.bucketlist : nextProps.item;
+  }
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
   }
   handleTouch(bucketlist) {
     if (this.props.bucketlist) {
@@ -52,9 +73,54 @@ class Row extends Component {
       });
     }
   }
+  renderProperties() {
+    const properties = [];
+    Object.keys(this.content).forEach((property) => {
+      if (['name', 'createdAt', 'updatedAt'].indexOf(property) >= 0) {
+        if (property === 'createdAt' || property === 'updatedAt') {
+          properties.push({
+            name: property,
+            value: require('moment')(
+              this.content[property],
+            ).format('MMMM Do YYYY, h:mm:ss a'),
+          });
+        }
+        properties.push({ name: property, value: this.content[property] });
+      }
+    });
+    return properties.map(property => (
+      <Text key={property.name} style={this.styles.text}>{property.name}: {property.value}</Text>
+    ));
+  }
   render() {
     const Render = Platform.OS === 'ios' ? RenderIos : RenderAndroid;
-    return Render.bind(this)(this.styles, this.handleTouch);
+    return (
+      <View>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+        >
+          <View style={{ marginTop: 22 }}>
+            <View>
+              {
+                this.renderProperties()
+              }
+
+              <TouchableHighlight
+                style={this.styles.doneButton}
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}
+              >
+                <Text>Back</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+        {Render.bind(this)(this.styles, this.handleTouch, this.setModalVisible)}
+      </View>
+    );
   }
 }
 

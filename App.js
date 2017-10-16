@@ -1,34 +1,37 @@
 import React from 'react';
-import { Text } from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   StackNavigator,
 } from 'react-navigation';
-
-import * as types from './actions/actionTypes';
+import { bindActionCreators } from 'redux';
 import * as bucketlistActions from './actions/bucketlistActions';
+import * as userActions from './actions/authActions';
 import BucketList from './components/BucketList';
 import Items from './components/Items';
 import BucketListForm from './components/BucketListForm';
+import UserForm from './components/UserForm';
 
-const store = bucketlistActions.getStore();
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(props, context) {
     super(props, context);
-
-    this.state = store.getState().data;
-    store.subscribe(() => {
-      this.setState(store.getState().data);
-    });
-    bucketlistActions.loadBucketlists(0, 20, '');
+    this.state = this.props;
+    this.state.initialRouteName = null;
     this.onSaveStarted = this.onSaveStarted.bind(this);
     this.renderScene = this.renderScene.bind(this);
-    this.configureScene = this.configureScene.bind(this);
     this.onCancel = this.onCancel.bind(this);
     this.onSave = this.onSave.bind(this);
-    this.onSave = this.onSave.bind(this);
+    this.onDone = this.onDone.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.RootApp = StackNavigator({
+      user: {
+        screen: UserForm,
+        navigationOptions: () => ({
+          title: 'Login',
+        }),
+      },
       bucketlist: {
         screen: BucketList,
         navigationOptions: () => ({
@@ -47,15 +50,16 @@ export default class App extends React.Component {
           title: `${navigation.state.params.context.type} ${navigation.state.params.context.name}`,
         }),
       },
+    }, {
     });
+  }
+  componentWillReceiveProps(nextProps) {
+    this.state = nextProps;
   }
   onSaveStarted() {
     this.nav.push({
       name: 'bucketlistform',
     });
-  }
-  configureScene() {
-    return Navigator.SceneConfigs.FloatFromBottom;
   }
   onCancel() {
     this.nav.pop();
@@ -63,28 +67,35 @@ export default class App extends React.Component {
   onSave(content, context) {
     if (context.name === 'bucketlist') {
       if (context.type === 'Add') {
-        bucketlistActions.saveBucketlist(content);
+        this.props.actions.saveBucketlist(content);
       } else {
-        bucketlistActions.updateBucketlist(content);
+        this.props.actions.updateBucketlist(content);
       }
     } else if (context.name === 'item') {
       if (context.type === 'Add') {
-        bucketlistActions.saveItem(context.bucketlist, content);
+        this.props.actions.saveItem(context.bucketlist, content);
       } else {
-        bucketlistActions.updateItem(context.bucketlist, content);
+        this.props.actions.updateItem(context.bucketlist, content);
       }
     }
   }
   onDelete(bucketlist, item, context) {
     if (context.name === 'bucketlist') {
-      bucketlistActions.deleteBucketlist(bucketlist);
+      this.props.actions.deleteBucketlist(bucketlist);
     } else if (context.name === 'item') {
-      bucketlistActions.deleteItem(bucketlist, item);
+      this.props.actions.deleteItem(bucketlist, item);
     }
   }
   onDone(bucketlist, item) {
     const newItem = { ...item, done: !item.done };
-    bucketlistActions.updateItem(bucketlist, newItem);
+    this.props.actions.updateItem(bucketlist, newItem);
+  }
+  onSubmit(user, registerMode) {
+    if (registerMode) {
+      this.props.actions.register(user);
+    } else {
+      this.props.actions.login(user);
+    }
   }
   renderScene(route) {
     switch (route.name) {
@@ -107,18 +118,38 @@ export default class App extends React.Component {
     }
   }
   render() {
+    console.log({ app: this.RootApp });
     return (
       <this.RootApp
-        initialRouteName="bucketist"
         screenProps={{
-          bucketlists: this.state.bucketlists,
+          bucketlists: this.state.data.bucketlists,
           onSaveStarted: this.onSaveStarted,
+          loggedIn: this.state.auth.loggedIn,
+          token: this.state.auth.token,
           onDone: this.onDone,
           onDelete: this.onDelete,
           onCancel: this.onCancel,
           onSave: this.onSave,
+          onSubmit: this.onSubmit,
+          actions: this.props.actions,
         }}
       />
     );
   }
 }
+App.propTypes = {
+  actions: PropTypes.object,
+};
+function mapStateToProps(state) {
+  return {
+    data: state.data,
+    auth: state.auth,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ ...bucketlistActions, ...userActions }, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
