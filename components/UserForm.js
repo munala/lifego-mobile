@@ -65,10 +65,7 @@ class UserForm extends Component {
     });
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.screenProps.loggedIn
-        && nextProps.screenProps.loggedIn !== this.props.screenProps.loggedIn
-    ) {
-      AsyncStorage.setItem('token', nextProps.screenProps.token);
+    if (nextProps.screenProps.loggedIn) {
       this.props.navigation.navigate('bucketlist');
     }
   }

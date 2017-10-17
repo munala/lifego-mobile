@@ -111,7 +111,7 @@ class BucketList extends Component {
           <Text
             style={this.styles.toggleText}
           >
-                  Showing {this.state.filter} bucketlists ({this.bucketlist.items.filter(item => (this.state.filter === 'all' || (this.state.filter === 'pending' && !item.done))).length})
+                  Showing {this.state.filter} items ({this.bucketlist.items.filter(item => (this.state.filter === 'all' || (this.state.filter === 'pending' && !item.done))).length})
           </Text>
         </View>
         {
@@ -124,6 +124,7 @@ class BucketList extends Component {
           this.props.navigation.state.params.bucketlist.items &&
           <View>
             <ListView
+              enableEmptySections
               key={this.state.items}
               dataSource={this.state.dataSource}
               renderRow={this.renderRow}

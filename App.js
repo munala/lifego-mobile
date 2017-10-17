@@ -18,51 +18,19 @@ class App extends React.Component {
     super(props, context);
     this.state = this.props;
     this.state.initialRouteName = null;
-    this.onSaveStarted = this.onSaveStarted.bind(this);
-    this.renderScene = this.renderScene.bind(this);
-    this.onCancel = this.onCancel.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onDone = this.onDone.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.setInitialRoute = this.setInitialRoute.bind(this);
     this.onDelete = this.onDelete.bind(this);
-    this.RootApp = StackNavigator({
-      user: {
-        screen: UserForm,
-        navigationOptions: () => ({
-          title: 'Login',
-        }),
-      },
-      bucketlist: {
-        screen: BucketList,
-        navigationOptions: () => ({
-          title: 'Bucketlists',
-        }),
-      },
-      items: {
-        screen: Items,
-        navigationOptions: ({ navigation }) => ({
-          title: navigation.state.params.bucketlist.name,
-        }),
-      },
-      bucketlistform: {
-        screen: BucketListForm,
-        navigationOptions: ({ navigation }) => ({
-          title: `${navigation.state.params.context.type} ${navigation.state.params.context.name}`,
-        }),
-      },
-    }, {
-    });
+    this.props.actions.checkToken();
+    this.setInitialRoute(props.auth.loggedIn);
   }
   componentWillReceiveProps(nextProps) {
-    this.state = nextProps;
-  }
-  onSaveStarted() {
-    this.nav.push({
-      name: 'bucketlistform',
-    });
-  }
-  onCancel() {
-    this.nav.pop();
+    if (this.state.auth.loggedIn !== nextProps.auth.loggedIn) {
+      this.setInitialRoute(nextProps.auth.loggedIn);
+    }
+    this.setState(nextProps);
   }
   onSave(content, context) {
     if (context.name === 'bucketlist') {
@@ -97,37 +65,47 @@ class App extends React.Component {
       this.props.actions.login(user);
     }
   }
-  renderScene(route) {
-    switch (route.name) {
-      case 'bucketlistform':
-        return (
-          <BucketListForm
-            onCancel={this.onCancel}
-            onSave={this.onSave}
-          />
-        );
-      default:
-        return (
-          <BucketList
-            onSaveStarted={this.onSaveStarted}
-            onDone={this.onDone}
-            onDelete={this.onDelete}
-            bucketlists={this.state.bucketlists}
-          />
-        );
+  setInitialRoute(loggedIn) {
+    const stack = {
+      user: {
+        screen: UserForm,
+        navigationOptions: () => ({
+          title: 'Login',
+        }),
+      },
+      bucketlist: {
+        screen: BucketList,
+        navigationOptions: () => ({
+          title: 'Bucketlists',
+        }),
+      },
+      items: {
+        screen: Items,
+        navigationOptions: ({ navigation }) => ({
+          title: navigation.state.params.bucketlist.name,
+        }),
+      },
+      bucketlistform: {
+        screen: BucketListForm,
+        navigationOptions: ({ navigation }) => ({
+          title: `${navigation.state.params.context.type} ${navigation.state.params.context.name}`,
+        }),
+      },
+    };
+    if (loggedIn) {
+      delete stack.user;
     }
+    this.RootApp = StackNavigator(stack, {});
   }
   render() {
     return (
       <this.RootApp
         screenProps={{
           bucketlists: this.state.data.bucketlists,
-          onSaveStarted: this.onSaveStarted,
           loggedIn: this.state.auth.loggedIn,
           token: this.state.auth.token,
           onDone: this.onDone,
           onDelete: this.onDelete,
-          onCancel: this.onCancel,
           onSave: this.onSave,
           onSubmit: this.onSubmit,
           actions: this.props.actions,
@@ -138,6 +116,7 @@ class App extends React.Component {
 }
 App.propTypes = {
   actions: PropTypes.object,
+  auth: PropTypes.object,
 };
 function mapStateToProps(state) {
   return {

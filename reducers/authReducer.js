@@ -9,6 +9,11 @@ export default function authtReducer(state = initialState, action) {
         loggedIn: action.loggedIn,
         token: action.token,
       };
+    case types.CHECK_TOKEN:
+      return {
+        ...state,
+        loggedIn: action.loggedIn,
+      };
 
     default:
       return state;

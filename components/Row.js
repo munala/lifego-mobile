@@ -5,12 +5,10 @@ import {
   Text,
   TouchableHighlight,
   View,
-  Platform,
   StyleSheet,
 } from 'react-native';
 
-import RenderAndroid from './RenderRow.android';
-import RenderIos from './RenderRow.ios';
+import RenderRow from './RenderRow';
 
 class Row extends Component {
   constructor(props, context) {
@@ -42,9 +40,6 @@ class Row extends Component {
       },
       doneButton: {
         padding: 5,
-        color: '#666',
-        fontSize: 16,
-        fontWeight: '600',
         borderRadius: 5,
         backgroundColor: '#eaeaea',
         alignItems: 'center',
@@ -93,7 +88,6 @@ class Row extends Component {
     ));
   }
   render() {
-    const Render = RenderIos;
     return (
       <View>
         <Modal
@@ -118,7 +112,7 @@ class Row extends Component {
             </View>
           </View>
         </Modal>
-        {Render.bind(this)(this.styles, this.handleTouch, this.setModalVisible)}
+        {RenderRow.bind(this)(this.styles, this.handleTouch, this.setModalVisible)}
       </View>
     );
   }

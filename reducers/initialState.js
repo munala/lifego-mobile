@@ -8,5 +8,5 @@ export default {
     name: '',
   },
   token: '',
-  loggedIn: false,
+  loggedIn: true,
 };

@@ -76,6 +76,7 @@ class BucketList extends Component {
     return (
       <View style={this.styles.container}>
         <ListView
+          enableEmptySections
           key={this.state.bucketlists}
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
