@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   StyleSheet,
   View,
+  ScrollView,
   ListView,
   Switch,
   TouchableHighlight,
@@ -14,11 +15,11 @@ class BucketList extends Component {
   constructor(props, context) {
     super(props, context);
     this.toggleFilter = this.toggleFilter.bind(this);
-    this.bucketlist = this.props.navigation.state.params.bucketlist;
+    this.bucketlist = { ...this.props.navigation.state.params.bucketlist };
     this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
     this.styles = StyleSheet.create({
       container: {
-        paddingTop: 50,
+        paddingTop: 10,
         flex: 1,
         backgroundColor: '#f7f7f7',
         justifyContent: 'flex-start',
@@ -70,7 +71,7 @@ class BucketList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.bucketlist = nextProps.navigation.state.params.bucketlist;
+    this.bucketlist = { ...nextProps.navigation.state.params.bucketlist };
     this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
     this.state.dataSource = this.data.cloneWithRows(
       nextProps.navigation.state.params.bucketlist.items);
@@ -122,7 +123,7 @@ class BucketList extends Component {
         }
         {
           this.props.navigation.state.params.bucketlist.items &&
-          <View>
+          <ScrollView>
             <ListView
               enableEmptySections
               key={this.state.items}
@@ -142,7 +143,7 @@ class BucketList extends Component {
             >
               <Text style={this.styles.buttonText}>Add item</Text>
             </TouchableHighlight>
-          </View>
+          </ScrollView>
         }
 
       </View>

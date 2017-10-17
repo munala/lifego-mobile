@@ -2,6 +2,19 @@ import { AsyncStorage } from 'react-native';
 import * as types from './actionTypes';
 import UserService from '../api/authApi';
 
+const handleError = (error, dispatch) => {
+  dispatch({
+    type: types.SHOW_ERROR,
+    value: error,
+  });
+  setTimeout(() => {
+    dispatch({
+      type: types.SHOW_ERROR,
+      value: '',
+    });
+  }, 1);
+};
+
 export function login(user) {
   return function (dispatch) {
     return UserService.loginUser(user).then((token) => {
@@ -12,7 +25,7 @@ export function login(user) {
         loggedIn: true,
       });
     }).catch((error) => {
-      throw (error);
+      handleError(error, dispatch);
     });
   };
 }
@@ -22,7 +35,7 @@ export function register(user) {
     return UserService.registerUser(user).then(() => {
       dispatch(login(user));
     }).catch((error) => {
-      throw (error);
+      handleError(error, dispatch);
     });
   };
 }
@@ -35,7 +48,7 @@ export function checkToken() {
         loggedIn: !!token,
       });
     }).catch((error) => {
-      throw (error);
+      handleError(error, dispatch);
     });
   };
 }
@@ -48,7 +61,7 @@ export function logout() {
         loggedIn: false,
       });
     }).catch((error) => {
-      throw (error);
+      handleError(error, dispatch);
     });
   };
 }

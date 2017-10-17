@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  StackNavigator,
-} from 'react-navigation';
-import { TouchableHighlight, Text } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import { TouchableHighlight, Text, Alert } from 'react-native';
 import { bindActionCreators } from 'redux';
 import * as bucketlistActions from './actions/bucketlistActions';
 import * as userActions from './actions/authActions';
@@ -31,6 +29,9 @@ class App extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.state.auth.loggedIn !== nextProps.auth.loggedIn) {
       this.setInitialRoute(nextProps.auth.loggedIn);
+    }
+    if (nextProps.error.value) {
+      Alert.alert(nextProps.error.value);
     }
     this.setState(nextProps);
   }
@@ -130,12 +131,10 @@ class App extends React.Component {
 App.propTypes = {
   actions: PropTypes.object,
   auth: PropTypes.object,
+  error: PropTypes.object,
 };
 function mapStateToProps(state) {
-  return {
-    data: state.data,
-    auth: state.auth,
-  };
+  return state;
 }
 function mapDispatchToProps(dispatch) {
   return {

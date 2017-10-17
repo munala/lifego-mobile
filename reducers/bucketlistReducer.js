@@ -16,7 +16,14 @@ export default function bucketlistReducer(
       };
 
     case types.UPDATE_BUCKETLIST_SUCCESS:
-      return state;
+      return {
+        ...state,
+        bucketlists: [
+          ...state.bucketlists.map(bucketlist =>
+            ((bucketlist.id === action.bucketlist.id) ? action.bucketlist : bucketlist),
+          ),
+        ],
+      };
 
     case types.DELETE_BUCKETLIST_SUCCESS:
       return {
@@ -53,16 +60,11 @@ export default function bucketlistReducer(
                 ...bucketlist,
                 items: [
                   ...bucketlist.items
-                    .map((item) => {
-                      if (item.id === action.item.id) {
-                        return ({
-                          ...item,
-                          name: action.item.name,
-                          done: action.item.done,
-                        });
-                      }
-                      return item;
-                    }),
+                    .map(item => (
+                      (item.id === action.item.id) ?
+                        action.item :
+                        item),
+                    ),
                 ],
               };
             }

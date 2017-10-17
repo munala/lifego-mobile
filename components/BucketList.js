@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   ListView,
+  ScrollView,
   TouchableHighlight,
   Text,
 } from 'react-native';
@@ -16,7 +17,7 @@ class BucketList extends Component {
     this.navigate = this.props.navigation.navigate;
     this.styles = StyleSheet.create({
       container: {
-        paddingTop: 50,
+        paddingTop: 10,
         flex: 1,
         backgroundColor: '#f7f7f7',
         justifyContent: 'flex-start',
@@ -74,7 +75,7 @@ class BucketList extends Component {
 
   render() {
     return (
-      <View style={this.styles.container}>
+      <ScrollView contentContainerStyle={this.styles.container}>
         <ListView
           enableEmptySections
           key={this.state.bucketlists}
@@ -93,7 +94,7 @@ class BucketList extends Component {
         >
           <Text style={this.styles.buttonText}>Add bucketlist</Text>
         </TouchableHighlight>
-      </View>
+      </ScrollView>
     );
   }
 }

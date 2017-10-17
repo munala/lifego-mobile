@@ -9,3 +9,4 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGGED_IN_SUCCESS = 'LOGGED_IN_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const CHECK_TOKEN = 'CHECK_TOKEN';
+export const SHOW_ERROR = 'SHOW_ERROR';

@@ -7,6 +7,11 @@ export default {
   bucketlist: {
     name: '',
   },
-  token: '',
-  loggedIn: true,
+  auth: {
+    token: '',
+    loggedIn: true,
+  },
+  error: {
+    value: '',
+  },
 };

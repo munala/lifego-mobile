@@ -2,13 +2,23 @@ import * as types from './actionTypes';
 import BucketlistService from '../api/bucketlistApi';
 
 const handleError = (dispatch, error) => {
+  console.log({ error });
   if (error.message && error.message === 'Unauthorised') {
     dispatch({
       type: types.CHECK_TOKEN,
       loggedIn: false,
     });
   } else {
-    throw error.message;
+    dispatch({
+      type: types.SHOW_ERROR,
+      value: error.message,
+    });
+    setTimeout(() => {
+      dispatch({
+        type: types.SHOW_ERROR,
+        value: '',
+      });
+    }, 1);
   }
 };
 
