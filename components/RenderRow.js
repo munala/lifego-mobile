@@ -47,7 +47,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
       color: '#fff',
       underlayColor: '#273539',
       onPress: () => this.props.onDelete(
-        (content.items ? content : this.props.navigation.state.params.bucketlist),
+        (content.userId ? content : this.props.navigation.state.params.bucketlist),
         content,
         {
           name: this.props.bucketlist ? 'bucketlist' : 'item',

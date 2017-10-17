@@ -7,7 +7,6 @@ import {
   Platform,
   StyleSheet,
   TouchableHighlight,
-  AsyncStorage,
 } from 'react-native';
 
 class UserForm extends Component {
@@ -18,6 +17,7 @@ class UserForm extends Component {
     this.onToggle = this.onToggle.bind(this);
     this.state = {
       registerMode: false,
+      disabled: false,
     };
     this.content = {
       username: '',
@@ -71,6 +71,17 @@ class UserForm extends Component {
   }
   onChange(type, text) {
     this.content[type] = text;
+    const content = this.content;
+    let disabled = false;
+    if (!this.state.registerMode) {
+      delete content.email;
+    }
+    Object.keys(content).forEach((key) => {
+      if (this.content[key].length === 0) {
+        disabled = true;
+      }
+    });
+    this.setState({ disabled });
   }
   onToggle() {
     this.setState({
@@ -109,6 +120,7 @@ class UserForm extends Component {
         <TouchableHighlight
           style={this.styles.button}
           onPress={this.onSubmit}
+          disabled={this.state.disabled}
         >
           <Text style={this.styles.buttonText}>{this.state.registerMode ? 'Register' : 'Login'}</Text>
         </TouchableHighlight>

@@ -13,6 +13,9 @@ class BucketListForm extends Component {
     super(props, context);
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.state = {
+      disabled: true,
+    };
     this.params = this.props.navigation.state.params.context;
     this.content = this.params.content ? this.params.content : { name: '' };
     this.styles = StyleSheet.create({
@@ -50,6 +53,7 @@ class BucketListForm extends Component {
   }
   onChange(text) {
     this.content.name = text;
+    this.setState({ disabled: text.length === 0 });
   }
   onSave() {
     this.props.screenProps.onSave(this.content, this.params);
@@ -67,6 +71,7 @@ class BucketListForm extends Component {
         <TouchableHighlight
           style={this.styles.button}
           onPress={this.onSave}
+          disabled={this.state.disabled}
         >
           <Text style={this.styles.buttonText}>Save</Text>
         </TouchableHighlight>

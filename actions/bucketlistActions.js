@@ -1,6 +1,16 @@
 import * as types from './actionTypes';
 import BucketlistService from '../api/bucketlistApi';
 
+const handleError = (dispatch, error) => {
+  if (error.message && error.message === 'Unauthorised') {
+    dispatch({
+      type: types.CHECK_TOKEN,
+      loggedIn: false,
+    });
+  }
+  throw error.message;
+};
+
 export function loadBucketlists(offset, limit, search) {
   return function (dispatch) {
     return BucketlistService.getAllBucketlists(
@@ -11,7 +21,7 @@ export function loadBucketlists(offset, limit, search) {
         bucketlists: response.bucketlists,
       });
     }).catch((error) => {
-      throw error.message;
+      handleError(dispatch, error);
     });
   };
 }
@@ -26,7 +36,7 @@ export function saveBucketlist(bucketlist) {
         bucketlist: savedBucketlist,
       });
     }).catch((error) => {
-      throw error.message;
+      handleError(dispatch, error);
     });
   };
 }
@@ -41,7 +51,7 @@ export function updateBucketlist(bucketlist) {
         bucketlist: savedBucketlist,
       });
     }).catch((error) => {
-      throw error.message;
+      handleError(dispatch, error);
     });
   };
 }
@@ -56,7 +66,7 @@ export function deleteBucketlist(bucketlist) {
         bucketlist,
       });
     }).catch((error) => {
-      throw error.message;
+      handleError(dispatch, error);
     });
   };
 }
@@ -70,7 +80,7 @@ export function saveItem(bucketlist, item) {
         item: savedItem,
       });
     }).catch((error) => {
-      throw error.message;
+      handleError(dispatch, error);
     });
   };
 }
@@ -84,7 +94,7 @@ export function updateItem(bucketlist, item) {
         item: savedItem,
       });
     }).catch((error) => {
-      throw error.message;
+      handleError(dispatch, error);
     });
   };
 }
@@ -98,7 +108,7 @@ export function deleteItem(bucketlist, item) {
         item,
       });
     }).catch((error) => {
-      throw error.message;
+      handleError(dispatch, error);
     });
   };
 }
