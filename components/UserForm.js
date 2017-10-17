@@ -17,7 +17,7 @@ class UserForm extends Component {
     this.onToggle = this.onToggle.bind(this);
     this.state = {
       registerMode: false,
-      disabled: false,
+      disabled: true,
     };
     this.content = {
       username: '',
@@ -86,6 +86,7 @@ class UserForm extends Component {
   onToggle() {
     this.setState({
       registerMode: !this.state.registerMode,
+      disabled: !this.state.registerMode ? true : this.state.disabled,
     });
   }
   onSubmit() {
@@ -139,7 +140,6 @@ UserForm.propTypes = {
   onSubmit: PropTypes.func,
   navigation: PropTypes.object,
   screenProps: PropTypes.object,
-  auth: PropTypes.boolean,
 };
 
 export default UserForm;

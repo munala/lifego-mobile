@@ -7,8 +7,9 @@ const handleError = (dispatch, error) => {
       type: types.CHECK_TOKEN,
       loggedIn: false,
     });
+  } else {
+    throw error.message;
   }
-  throw error.message;
 };
 
 export function loadBucketlists(offset, limit, search) {

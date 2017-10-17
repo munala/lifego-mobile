@@ -39,3 +39,16 @@ export function checkToken() {
     });
   };
 }
+
+export function logout() {
+  return function (dispatch) {
+    return AsyncStorage.removeItem('token').then(() => {
+      dispatch({
+        type: types.CHECK_TOKEN,
+        loggedIn: false,
+      });
+    }).catch((error) => {
+      throw (error);
+    });
+  };
+}

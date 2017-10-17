@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   StackNavigator,
 } from 'react-navigation';
+import { TouchableHighlight, Text } from 'react-native';
 import { bindActionCreators } from 'redux';
 import * as bucketlistActions from './actions/bucketlistActions';
 import * as userActions from './actions/authActions';
@@ -18,6 +19,7 @@ class App extends React.Component {
     super(props, context);
     this.state = this.props;
     this.state.initialRouteName = null;
+    this.getHeader = this.getHeader.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onDone = this.onDone.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -65,6 +67,16 @@ class App extends React.Component {
       this.props.actions.login(user);
     }
   }
+  getHeader() {
+    return (
+      <TouchableHighlight onPress={() => {
+        this.props.actions.logout();
+      }}
+      >
+        <Text>Logout</Text>
+      </TouchableHighlight>
+    );
+  }
   setInitialRoute(loggedIn) {
     const stack = {
       user: {
@@ -77,6 +89,7 @@ class App extends React.Component {
         screen: BucketList,
         navigationOptions: () => ({
           title: 'Bucketlists',
+          headerRight: this.getHeader(),
         }),
       },
       items: {
