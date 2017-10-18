@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   View,
+  Platform,
   StyleSheet,
   TouchableHighlight,
 } from 'react-native';
@@ -13,7 +14,9 @@ class BucketListForm extends Component {
     super(props, context);
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
-    this.content = this.props.navigation.state.params.context.content ? this.props.navigation.state.params.context.content : { name: '' };
+    this.content = this.props.navigation.state.params.context.content ?
+      this.props.navigation.state.params.context.content :
+      { name: '' };
     this.state = {
       disabled: true,
       content: this.content,
@@ -30,6 +33,7 @@ class BucketListForm extends Component {
         marginLeft: 10,
         marginRight: 10,
         padding: 15,
+        borderBottomWidth: Platform.OS === 'ios' ? StyleSheet.hairlineWidth : 0,
       },
       buttonText: {
         fontSize: 18,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   StyleSheet,
   View,
@@ -72,12 +73,12 @@ class Items extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.bucketlist = { ...nextProps.navigation.state.params.bucketlist };
-    this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
-    this.state.dataSource = this.data.cloneWithRows(
-      nextProps.navigation.state.params.bucketlist.items);
+    const bucketlist = nextProps.bucketlists
+      .filter(bucket => bucket.id === this.state.bucketlist.id)[0];
+    bucketlist.items = bucketlist.items ? bucketlist.items : [];
+    this.state.dataSource = this.data.cloneWithRows(bucketlist.items);
     this.setState({
-      bucketlist: this.bucketlist,
+      bucketlist,
       dataSource: this.state.dataSource,
     });
   }
@@ -86,7 +87,7 @@ class Items extends Component {
     const filter = this.state.filter === 'all' ? 'pending' : 'all';
     this.setState({
       filter,
-      dataSource: this.data.cloneWithRows(this.bucketlist.items
+      dataSource: this.data.cloneWithRows(this.state.bucketlist.items
         .filter(item => (filter === 'all' || (filter === 'pending' && !item.done)))),
     });
   }
@@ -94,7 +95,7 @@ class Items extends Component {
   renderRow(item) {
     return (
       <Row
-        bucketlist={this.bucketlist}
+        bucketlist={this.state.bucketlist}
         item={item}
         onDone={this.props.screenProps.onDone}
         onDelete={this.props.screenProps.onDelete}
@@ -171,10 +172,13 @@ class Items extends Component {
 }
 
 Items.propTypes = {
-  items: PropTypes.array,
+  bucketlists: PropTypes.array,
   navigation: PropTypes.object,
-  onAddStarted: PropTypes.func,
   screenProps: PropTypes.object,
 };
 
-export default Items;
+function mapStateToProps(state) {
+  return { bucketlists: state.data.bucketlists };
+}
+
+export default connect(mapStateToProps)(Items);
