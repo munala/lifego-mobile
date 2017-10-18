@@ -13,11 +13,12 @@ class BucketListForm extends Component {
     super(props, context);
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.content = this.props.navigation.state.params.context.content ? this.props.navigation.state.params.context.content : { name: '' };
     this.state = {
       disabled: true,
+      content: this.content,
     };
     this.params = this.props.navigation.state.params.context;
-    this.content = this.params.content ? this.params.content : { name: '' };
     this.styles = StyleSheet.create({
       container: {
         flex: 1,
@@ -52,11 +53,14 @@ class BucketListForm extends Component {
     });
   }
   onChange(text) {
-    this.content.name = text;
-    this.setState({ disabled: text.length === 0 });
+    const content = { ...this.content, name: text };
+    this.setState({
+      disabled: text.length === 0,
+      content,
+    });
   }
   onSave() {
-    this.props.screenProps.onSave(this.content, this.params);
+    this.props.screenProps.onSave(this.state.content, this.props.navigation.state.params.context);
     this.props.navigation.goBack();
   }
 
@@ -64,7 +68,7 @@ class BucketListForm extends Component {
     return (
       <View style={this.styles.container}>
         <TextInput
-          defaultValue={this.content.name}
+          defaultValue={this.state.content.name}
           style={this.styles.input}
           onChangeText={this.onChange}
         />

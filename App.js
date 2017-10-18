@@ -24,11 +24,11 @@ class App extends React.Component {
     this.setInitialRoute = this.setInitialRoute.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.props.actions.checkToken();
-    this.setInitialRoute(props.auth.loggedIn);
+    this.setInitialRoute(props);
   }
   componentWillReceiveProps(nextProps) {
     if (this.state.auth.loggedIn !== nextProps.auth.loggedIn) {
-      this.setInitialRoute(nextProps.auth.loggedIn);
+      this.setInitialRoute(nextProps);
     }
     if (nextProps.error.value) {
       Alert.alert(nextProps.error.value);
@@ -78,7 +78,7 @@ class App extends React.Component {
       </TouchableHighlight>
     );
   }
-  setInitialRoute(loggedIn) {
+  setInitialRoute(props) {
     const stack = {
       user: {
         screen: UserForm,
@@ -106,7 +106,7 @@ class App extends React.Component {
         }),
       },
     };
-    if (loggedIn) {
+    if (props.auth.loggedIn) {
       delete stack.user;
     }
     this.RootApp = StackNavigator(stack, {});

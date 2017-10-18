@@ -8,14 +8,14 @@ import {
 import Swipeout from 'react-native-swipeout';
 
 export default function render(baseStyles, handleTouch, setModalVisible) {
-  const content = this.props.bucketlist ? this.props.bucketlist : this.props.item;
+  const content = this.props.item ? this.props.item : this.props.bucketlist;
   const buttons = [
     {
       text: 'Done',
       backgroundColor: '#eaeaea',
       color: '#273539',
       underlayColor: '#273539',
-      onPress: () => this.props.onDone(this.props.navigation.state.params.bucketlist, content),
+      onPress: () => this.props.onDone(this.props.bucketlist, content),
     },
     {
       text: 'Info',
@@ -32,11 +32,10 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
       onPress: () => {
         this.props.navigation.navigate('bucketlistform', {
           context: {
-            name: this.props.bucketlist ? 'bucketlist' : 'item',
+            name: this.props.item ? 'item' : 'bucketlist',
             type: 'Edit',
             content,
-            bucketlist: this.props.bucketlist ? this.props.bucketlist
-              : this.props.navigation.state.params.bucketlist,
+            bucketlist: this.props.bucketlist,
           },
         });
       },
@@ -47,10 +46,10 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
       color: '#fff',
       underlayColor: '#273539',
       onPress: () => this.props.onDelete(
-        (content.userId ? content : this.props.navigation.state.params.bucketlist),
+        this.props.bucketlist,
         content,
         {
-          name: this.props.bucketlist ? 'bucketlist' : 'item',
+          name: this.props.item ? 'item' : 'bucketlist',
         }),
     },
   ];

@@ -59,7 +59,7 @@ export function updateBucketlist(bucketlist) {
     ).then((savedBucketlist) => {
       dispatch({
         type: types.UPDATE_BUCKETLIST_SUCCESS,
-        bucketlist: savedBucketlist,
+        bucketlist: { ...savedBucketlist, items: bucketlist.items },
       });
     }).catch((error) => {
       handleError(dispatch, error);

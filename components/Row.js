@@ -18,6 +18,7 @@ class Row extends Component {
     this.setModalVisible = this.setModalVisible.bind(this);
     this.state = {
       modalVisible: false,
+      content: this.props.item ? this.props.item : this.props.bucketlist,
     };
     this.styles = StyleSheet.create({
       container: {
@@ -53,16 +54,17 @@ class Row extends Component {
         paddingTop: 10,
       },
     });
-    this.content = this.props.bucketlist ? this.props.bucketlist : this.props.item;
   }
   componentWillReceiveProps(nextProps) {
-    this.content = nextProps.bucketlist ? nextProps.bucketlist : nextProps.item;
+    this.setState({
+      content: nextProps.item ? nextProps.item : nextProps.bucketlist,
+    });
   }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
   handleTouch(bucketlist) {
-    if (this.props.bucketlist) {
+    if (!this.state.content.item) {
       this.props.navigation.navigate('items', {
         bucketlist,
       });
@@ -70,17 +72,17 @@ class Row extends Component {
   }
   renderProperties() {
     const properties = [];
-    Object.keys(this.content).forEach((property) => {
+    Object.keys(this.state.content).forEach((property) => {
       if (['name', 'createdAt', 'updatedAt'].indexOf(property) >= 0) {
         if (property === 'createdAt' || property === 'updatedAt') {
           properties.push({
             name: property,
             value: require('moment')(
-              this.content[property],
+              this.state.content[property],
             ).format('MMMM Do YYYY, h:mm:ss a'),
           });
         }
-        properties.push({ name: property, value: this.content[property] });
+        properties.push({ name: property, value: this.state.content[property] });
       }
     });
     return properties.map(property => (

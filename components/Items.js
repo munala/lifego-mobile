@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Row from './Row';
 
-class BucketList extends Component {
+class Items extends Component {
   constructor(props, context) {
     super(props, context);
     this.toggleFilter = this.toggleFilter.bind(this);
@@ -64,6 +64,7 @@ class BucketList extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
     this.state = {
+      bucketlist: this.bucketlist,
       dataSource: this.data.cloneWithRows(this.bucketlist.items),
       filter: 'all',
     };
@@ -75,20 +76,25 @@ class BucketList extends Component {
     this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
     this.state.dataSource = this.data.cloneWithRows(
       nextProps.navigation.state.params.bucketlist.items);
-    this.setState = {
+    this.setState({
+      bucketlist: this.bucketlist,
       dataSource: this.state.dataSource,
-    };
+    });
   }
 
-  toggleFilter(filter) {
+  toggleFilter() {
+    const filter = this.state.filter === 'all' ? 'pending' : 'all';
     this.setState({
       filter,
-      dataSource: this.data.cloneWithRows(this.bucketlist.items.filter(item => (filter === 'all' || (filter === 'pending' && !item.done)))) });
+      dataSource: this.data.cloneWithRows(this.bucketlist.items
+        .filter(item => (filter === 'all' || (filter === 'pending' && !item.done)))),
+    });
   }
 
   renderRow(item) {
     return (
       <Row
+        bucketlist={this.bucketlist}
         item={item}
         onDone={this.props.screenProps.onDone}
         onDelete={this.props.screenProps.onDelete}
@@ -102,24 +108,37 @@ class BucketList extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={this.styles.container}>
+      <ScrollView contentContainerStyle={this.styles.container}>
         <View style={this.styles.toggleRow}>
           <Switch
             style={this.styles.switch}
             value={this.state.filter === 'pending'}
-            onValueChange={() => this.toggleFilter(this.state.filter === 'all' ? 'pending' : 'all')}
+            onValueChange={this.toggleFilter}
           />
           <Text
             style={this.styles.toggleText}
           >
-                  Showing {this.state.filter} items ({this.bucketlist.items.filter(item => (this.state.filter === 'all' || (this.state.filter === 'pending' && !item.done))).length})
+                  Showing {this.state.filter} items ({
+              this.bucketlist.items
+                .filter(item => (this.state.filter === 'all'
+                          || (this.state.filter === 'pending'
+                          && !item.done))).length
+            })
           </Text>
         </View>
         {
-          this.props.navigation.state.params.bucketlist.items.length === 0 &&
-          <View>
-            <Text style={[this.styles.buttonText, this.styles.empty]}>You have no items</Text>
-          </View>
+          (!this.props.navigation.state.params.bucketlist.items
+                  || (
+                    this.props.navigation.state.params.bucketlist.items
+                      && this.props.navigation.state.params.bucketlist.items.length === 0
+                  )
+          )
+                  &&
+                  <View>
+                    <Text style={[this.styles.buttonText, this.styles.empty]}>
+                      You have no items
+                    </Text>
+                  </View>
         }
         {
           this.props.navigation.state.params.bucketlist.items &&
@@ -130,32 +149,32 @@ class BucketList extends Component {
               dataSource={this.state.dataSource}
               renderRow={this.renderRow}
             />
-            <TouchableHighlight
-              onPress={() =>
-                navigate('bucketlistform', {
-                  context: {
-                    name: 'item',
-                    type: 'Add',
-                    bucketlist: this.props.navigation.state.params.bucketlist,
-                  },
-                })}
-              style={this.styles.button}
-            >
-              <Text style={this.styles.buttonText}>Add item</Text>
-            </TouchableHighlight>
+
           </ScrollView>
         }
-
-      </View>
+        <TouchableHighlight
+          onPress={() =>
+            navigate('bucketlistform', {
+              context: {
+                name: 'item',
+                type: 'Add',
+                bucketlist: this.props.navigation.state.params.bucketlist,
+              },
+            })}
+          style={this.styles.button}
+        >
+          <Text style={this.styles.buttonText}>Add item</Text>
+        </TouchableHighlight>
+      </ScrollView>
     );
   }
 }
 
-BucketList.propTypes = {
+Items.propTypes = {
   items: PropTypes.array,
   navigation: PropTypes.object,
   onAddStarted: PropTypes.func,
   screenProps: PropTypes.object,
 };
 
-export default BucketList;
+export default Items;

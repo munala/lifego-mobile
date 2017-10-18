@@ -14,4 +14,5 @@ export default {
   error: {
     value: '',
   },
+  currentApiCalls: 0,
 };
