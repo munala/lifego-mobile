@@ -3,6 +3,7 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
   TouchableHighlight,
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
@@ -11,7 +12,7 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
   const content = this.props.item ? this.props.item : this.props.bucketlist;
   const buttons = [
     {
-      text: 'Done',
+      text: content.done ? 'Undo' : 'Do',
       backgroundColor: '#eaeaea',
       color: '#273539',
       underlayColor: '#273539',
@@ -77,6 +78,17 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
               {`${content.name}`}
             </Text>
           </TouchableHighlight>
+          {
+            (content.done ||
+                        (content.userId && content.items && content.items.length > 0 &&
+                            content.items.filter(item => item.done).length === content.items.length
+                        )
+            ) &&
+            <Image
+              style={{ width: 50, height: 50 }}
+              source={require('../images/done.png')}
+            />
+          }
         </View>
       </Swipeout>
     </View>

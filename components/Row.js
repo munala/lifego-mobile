@@ -66,7 +66,7 @@ class Row extends Component {
     this.setState({ modalVisible: visible });
   }
   handleTouch() {
-    if (this.state.content.items) {
+    if (this.state.content.userId) {
       this.props.navigation.navigate('items', {
         bucketlist: this.props.bucketlist,
       });

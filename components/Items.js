@@ -118,14 +118,7 @@ class Items extends Component {
           />
           <Text
             style={this.styles.toggleText}
-          >
-                  Showing {this.state.filter} items ({
-              this.bucketlist.items
-                .filter(item => (this.state.filter === 'all'
-                          || (this.state.filter === 'pending'
-                          && !item.done))).length
-            })
-          </Text>
+          >Showing {this.state.filter} items</Text>
         </View>
         {
           (!this.props.navigation.state.params.bucketlist.items
