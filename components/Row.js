@@ -94,7 +94,6 @@ class Row extends Component {
   }
   render() {
     if (this.state.content.item) {
-      console.log({ done: this.state.content.item.done });
     }
     return (
       <View>
@@ -102,13 +101,13 @@ class Row extends Component {
           animationType="slide"
           transparent={false}
           visible={this.state.modalVisible}
+          onRequestClose={() => { this.setModalVisible(!this.state.modalVisible); }}
         >
           <View style={{ marginTop: 22 }}>
             <View>
               {
                 this.renderProperties()
               }
-
               <TouchableHighlight
                 style={this.styles.doneButton}
                 onPress={() => {

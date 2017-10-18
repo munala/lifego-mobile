@@ -10,6 +10,7 @@ export default function bucketlistReducer(
       return action;
 
     case types.CREATE_BUCKETLIST_SUCCESS:
+      action.bucketlist.items = [];
       return {
         ...state,
         bucketlists: [action.bucketlist, ...state.bucketlists],
