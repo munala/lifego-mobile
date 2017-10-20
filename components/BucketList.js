@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   StyleSheet,
-  View,
   ListView,
   ScrollView,
   TouchableHighlight,
   Text,
+  RefreshControl,
 } from 'react-native';
 import Row from './Row';
 
@@ -15,6 +15,7 @@ class BucketList extends Component {
     super(props, context);
     this.props.screenProps.actions.loadBucketlists(0, 20, '');
     this.navigate = this.props.navigation.navigate;
+    this.onRefresh = this.onRefresh.bind(this);
     this.styles = StyleSheet.create({
       container: {
         paddingTop: 10,
@@ -47,6 +48,7 @@ class BucketList extends Component {
     });
     this.state = {
       dataSource: this.data.cloneWithRows(this.props.screenProps.bucketlists),
+      refreshing: true,
     };
     this.renderRow = this.renderRow.bind(this);
   }
@@ -54,9 +56,16 @@ class BucketList extends Component {
   componentWillReceiveProps(nextProps) {
     this.state.dataSource = this.data.cloneWithRows(
       nextProps.screenProps.bucketlists);
-    this.setState = {
+    this.setState({
       dataSource: this.state.dataSource,
-    };
+      refreshing: (nextProps.screenProps.bucketlists.length === 0),
+    });
+  }
+  onRefresh() {
+    this.setState({ refreshing: true });
+    this.props.screenProps.actions.loadBucketlists(0, 20, '').then(() => {
+      this.setState({ refreshing: false });
+    });
   }
 
   renderRow(bucketlist) {
@@ -69,13 +78,20 @@ class BucketList extends Component {
         style={this.styles.bucketlistRow}
         navigation={this.props.navigation}
       />
-
     );
   }
 
   render() {
     return (
-      <ScrollView contentContainerStyle={this.styles.container}>
+      <ScrollView
+        contentContainerStyle={this.styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />
+        }
+      >
         <ListView
           enableEmptySections
           key={this.state.bucketlists}
@@ -103,6 +119,7 @@ BucketList.propTypes = {
   bucketlists: PropTypes.array,
   navigation: PropTypes.object,
   onAddStarted: PropTypes.func,
+  screenProps: PropTypes.object,
 };
 
 export default BucketList;

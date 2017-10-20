@@ -15,6 +15,9 @@ const handleError = (error) => {
   if (error.response && error.response.status === 409) {
     throw new Error(error.response.data.message);
   }
+  if (error.message === 'Network Error') {
+    throw new Error('Failed to connect to the internet. Check your internet settings.');
+  }
   throw Error(error);
 };
 

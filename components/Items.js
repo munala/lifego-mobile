@@ -9,6 +9,7 @@ import {
   Switch,
   TouchableHighlight,
   Text,
+  RefreshControl,
 } from 'react-native';
 import Row from './Row';
 
@@ -18,6 +19,7 @@ class Items extends Component {
     this.toggleFilter = this.toggleFilter.bind(this);
     this.bucketlist = { ...this.props.navigation.state.params.bucketlist };
     this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
+    this.onRefresh = this.onRefresh.bind(this);
     this.styles = StyleSheet.create({
       container: {
         paddingTop: 10,
@@ -68,6 +70,7 @@ class Items extends Component {
       bucketlist: this.bucketlist,
       dataSource: this.data.cloneWithRows(this.bucketlist.items),
       filter: 'all',
+      refreshing: false,
     };
     this.renderRow = this.renderRow.bind(this);
   }
@@ -80,6 +83,13 @@ class Items extends Component {
     this.setState({
       bucketlist,
       dataSource: this.state.dataSource,
+    });
+  }
+
+  onRefresh() {
+    this.setState({ refreshing: true });
+    this.props.screenProps.actions.loadBucketlists(0, 20, '').then(() => {
+      this.setState({ refreshing: false });
     });
   }
 
@@ -109,7 +119,15 @@ class Items extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ScrollView contentContainerStyle={this.styles.container}>
+      <ScrollView
+        contentContainerStyle={this.styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />
+        }
+      >
         <View style={this.styles.toggleRow}>
           <Switch
             style={this.styles.switch}
@@ -122,17 +140,17 @@ class Items extends Component {
         </View>
         {
           (!this.props.navigation.state.params.bucketlist.items
-                  || (
-                    this.props.navigation.state.params.bucketlist.items
-                      && this.props.navigation.state.params.bucketlist.items.length === 0
-                  )
+            || (
+              this.props.navigation.state.params.bucketlist.items
+              && this.props.navigation.state.params.bucketlist.items.length === 0
+            )
           )
-                  &&
-                  <View>
-                    <Text style={[this.styles.buttonText, this.styles.empty]}>
-                      You have no items
-                    </Text>
-                  </View>
+          &&
+          <View>
+            <Text style={[this.styles.buttonText, this.styles.empty]}>
+              You have no items
+            </Text>
+          </View>
         }
         {
           this.props.navigation.state.params.bucketlist.items &&
@@ -168,6 +186,7 @@ Items.propTypes = {
   bucketlists: PropTypes.array,
   navigation: PropTypes.object,
   screenProps: PropTypes.object,
+  actions: PropTypes.object,
 };
 
 function mapStateToProps(state) {

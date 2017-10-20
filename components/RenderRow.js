@@ -73,16 +73,19 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
         right={this.props.item ? buttons : buttons.splice(1, 3)}
       >
         <View style={[baseStyles.container, localStyles.row]}>
-          <TouchableHighlight onPress={() => handleTouch()}>
+          <TouchableHighlight
+            onPress={() => handleTouch()}
+            hitSlop={{ top: 20, left: 20, bottom: 20, right: 250 }}
+          >
             <Text style={baseStyles.label}>
               {`${content.name}`}
             </Text>
           </TouchableHighlight>
           {
             (content.done ||
-                        (content.userId && content.items && content.items.length > 0 &&
-                            content.items.filter(item => item.done).length === content.items.length
-                        )
+              (content.userId && content.items && content.items.length > 0 &&
+                content.items.filter(item => item.done).length === content.items.length
+              )
             ) &&
             <Image
               style={{ width: 50, height: 50 }}
@@ -92,6 +95,5 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
         </View>
       </Swipeout>
     </View>
-
   );
 }

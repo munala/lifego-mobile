@@ -75,6 +75,9 @@ class BucketListForm extends Component {
           defaultValue={this.state.content.name}
           style={this.styles.input}
           onChangeText={this.onChange}
+          selectTextOnFocus={this.props.navigation.state.params.context === 'Edit'}
+          enablesReturnKeyAutomatically
+          returnKeyType="done"
         />
         <TouchableHighlight
           style={this.styles.button}

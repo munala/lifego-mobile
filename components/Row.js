@@ -6,6 +6,9 @@ import {
   TouchableHighlight,
   View,
   StyleSheet,
+  Alert,
+  AlertIOS,
+  Platform,
 } from 'react-native';
 
 import RenderRow from './RenderRow';
@@ -62,8 +65,8 @@ class Row extends Component {
       bucketlist: nextProps.bucketlist,
     });
   }
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
+  setModalVisible() {
+    (Platform.OS === 'ios' ? AlertIOS : Alert).alert(`${this.state.content.name}`, this.renderProperties());
   }
   handleTouch() {
     if (this.state.content.userId) {
@@ -73,28 +76,19 @@ class Row extends Component {
     }
   }
   renderProperties() {
-    const properties = [];
+    let properties = '';
     Object.keys(this.state.content).forEach((property) => {
-      if (['name', 'createdAt', 'updatedAt'].indexOf(property) >= 0) {
-        if (property === 'createdAt' || property === 'updatedAt') {
-          properties.push({
-            name: property,
-            value: require('moment')(
-              this.state.content[property],
-            ).format('MMMM Do YYYY, h:mm:ss a'),
-          });
-        } else {
-          properties.push({ name: property, value: this.state.content[property] });
-        }
+      if (['createdAt', 'updatedAt'].indexOf(property) >= 0) {
+        properties = `${properties} ${property} : ${
+          (property === 'createdAt' || property === 'updatedAt') ? require('moment')(
+            this.state.content[property],
+          ).format('MMMM Do YYYY, h:mm:ss a') : this.state.content[property]
+        }\n`;
       }
     });
-    return properties.map(property => (
-      <Text key={property.name} style={this.styles.text}>{property.name}: {property.value}</Text>
-    ));
+    return properties;
   }
   render() {
-    if (this.state.content.item) {
-    }
     return (
       <View>
         <Modal

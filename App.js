@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StackNavigator } from 'react-navigation';
-import { TouchableHighlight, Text, Alert } from 'react-native';
+import { TouchableHighlight, Text, Alert, AlertIOS, Platform } from 'react-native';
 import { bindActionCreators } from 'redux';
 import * as bucketlistActions from './actions/bucketlistActions';
 import * as userActions from './actions/authActions';
@@ -31,7 +31,7 @@ class App extends React.Component {
       this.setInitialRoute(nextProps);
     }
     if (nextProps.error.value) {
-      Alert.alert(nextProps.error.value);
+      (Platform.OS === 'ios' ? AlertIOS : Alert).alert(nextProps.error.value);
     }
     this.setState(nextProps);
   }
@@ -84,6 +84,7 @@ class App extends React.Component {
         screen: UserForm,
         navigationOptions: () => ({
           title: 'Login',
+          header: null,
         }),
       },
       bucketlist: {
