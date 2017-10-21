@@ -24,24 +24,16 @@ class Row extends Component {
       content: this.props.item ? this.props.item : this.props.bucketlist,
       bucketlist: this.props.bucketlist,
     };
+    this.colors = { 1: '#05A5D1', 2: '#bbb', 3: '#fff' };
     this.styles = StyleSheet.create({
       container: {
+        opacity: 0.8,
         flexDirection: 'row',
         alignSelf: 'stretch',
-        height: 70,
-        marginTop: 10,
-        marginLeft: 10,
-        marginRight: 10,
         padding: 10,
-        backgroundColor: '#05A5D1',
-        alignItems: 'center',
+        backgroundColor: 'transparent',
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
-      },
-      label: {
-        padding: 5,
-        color: '#fafafa',
-        fontSize: 20,
-        fontWeight: '600',
       },
       doneButton: {
         padding: 5,
@@ -54,7 +46,6 @@ class Row extends Component {
         fontSize: 18,
         fontWeight: '600',
         color: '#aaaaaa',
-        height: 50,
         paddingTop: 10,
       },
     });
@@ -125,6 +116,7 @@ Row.propTypes = {
   bucketlist: PropTypes.object,
   item: PropTypes.object,
   navigation: PropTypes.object,
+  rowNumber: PropTypes.number,
 };
 
 export default Row;

@@ -3,31 +3,47 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   TouchableHighlight,
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
+import { Card, Icon, CheckBox } from 'react-native-elements';
 
 export default function render(baseStyles, handleTouch, setModalVisible, bucketlist) {
   const content = this.props.item ? this.props.item : this.props.bucketlist;
+  const colors = {
+    1: 'rgba(5, 165, 209, 0.7)',
+    2: 'rgba(187, 187, 187,0.7)',
+    3: 'rgba(255, 255, 255,0.7)',
+  };
+  const color = this.colors[this.props.rowNumber === 3 ? 1 : 3];
   const buttons = [
     {
-      text: content.done ? 'Undo' : 'Do',
-      backgroundColor: '#eaeaea',
+      component: (
+        <CheckBox
+          checked={content.done}
+          onIconPress={() => this.props.onDone(bucketlist, content)}
+          containerStyle={{
+            backgroundColor: 'transparent',
+            borderWidth: 0,
+          }}
+        />
+      ),
+      backgroundColor: 'transparent',
       color: '#273539',
       underlayColor: '#273539',
-      onPress: () => this.props.onDone(bucketlist, content),
     },
     {
-      text: 'Info',
-      backgroundColor: 'cyan',
+      component: <Icon name="info" color={color} iconStyle={{ marginTop: 15 }} />,
+      backgroundColor: 'transparent',
       color: '#273539',
       underlayColor: '#273539',
+      alignItems: 'center',
+      justifyContent: 'center',
       onPress: () => setModalVisible(true),
     },
     {
-      text: 'Edit',
-      backgroundColor: 'yellow',
+      component: <Icon name="edit" color={color} iconStyle={{ marginTop: 15 }} />,
+      backgroundColor: 'transparent',
       color: '#273539',
       underlayColor: '#273539',
       onPress: () => {
@@ -42,8 +58,8 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
       },
     },
     {
-      text: 'Delete',
-      backgroundColor: 'red',
+      component: <Icon name="delete" color="red" iconStyle={{ marginTop: 15 }} />,
+      backgroundColor: 'transparent',
       color: '#fff',
       underlayColor: '#273539',
       onPress: () => this.props.onDelete(
@@ -62,22 +78,41 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
       marginRight: 0,
     },
     container: {
-      marginBottom: 10,
+      backgroundColor: colors[this.props.rowNumber],
+      borderWidth: 0,
+    },
+    title: {
+      color,
+    },
+    divider: {
+      backgroundColor: color,
+    },
+    label: {
+      padding: 5,
+      color,
+      fontSize: 20,
+      fontWeight: '600',
     },
   });
   return (
-    <View style={localStyles.container}>
+    <Card
+      containerStyle={localStyles.container}
+      title={content.name}
+      titleStyle={localStyles.title}
+      dividerStyle={localStyles.divider}
+    >
       <Swipeout
         autoClose
-        backgroundColor="#fff"
         right={this.props.item ? buttons : buttons.splice(1, 3)}
+        style={{ backgroundColor: 'transparent' }}
       >
         <View style={[baseStyles.container, localStyles.row]}>
           <TouchableHighlight
             onPress={() => handleTouch()}
             hitSlop={{ top: 20, left: 20, bottom: 20, right: 250 }}
+            style={{ backgroundColor: 'transparent' }}
           >
-            <Text style={baseStyles.label}>
+            <Text style={localStyles.label}>
               {`${content.name}`}
             </Text>
           </TouchableHighlight>
@@ -87,13 +122,15 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
                 content.items.filter(item => item.done).length === content.items.length
               )
             ) &&
-            <Image
-              style={{ width: 50, height: 50 }}
-              source={require('../images/done.png')}
+            <Icon
+              name="done"
+              size={40}
+              color={color}
+              style={{ width: 50, height: 50, alignSelf: 'center' }}
             />
           }
         </View>
       </Swipeout>
-    </View>
+    </Card>
   );
 }

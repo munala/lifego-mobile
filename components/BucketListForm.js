@@ -6,8 +6,11 @@ import {
   View,
   Platform,
   StyleSheet,
+  Image,
   TouchableHighlight,
 } from 'react-native';
+import SideMenu from 'react-native-side-menu';
+import MenuComponent from '../components/SideMenu';
 
 class BucketListForm extends Component {
   constructor(props, context) {
@@ -25,34 +28,52 @@ class BucketListForm extends Component {
     this.styles = StyleSheet.create({
       container: {
         flex: 1,
-        justifyContent: 'flex-start',
-        paddingTop: 150,
+        justifyContent: 'center',
         backgroundColor: '#f7f7f7',
       },
       input: {
-        marginLeft: 10,
-        marginRight: 10,
-        padding: 15,
-        borderBottomWidth: Platform.OS === 'ios' ? StyleSheet.hairlineWidth : 0,
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: '600',
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 3,
+        marginTop: 2,
+        padding: Platform.OS === 'ios' ? 15 : 5,
+        borderRadius: 10,
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        borderBottomColor: '#00bcd4',
       },
       buttonText: {
         fontSize: 18,
         fontWeight: '600',
-        color: '#fafafa',
+        color: '#fff',
+        backgroundColor: 'transparent',
       },
       button: {
+        borderRadius: 20,
         flexDirection: 'row',
-        height: 45,
+        height: Platform.OS === 'ios' ? 45 : 40,
         alignSelf: 'stretch',
         marginTop: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        backgroundColor: '#05A5D1',
+        marginLeft: 70,
+        marginRight: 70,
+        backgroundColor: '#00bcd4',
         alignItems: 'center',
         justifyContent: 'center',
       },
       cancelButton: {
         backgroundColor: '#666',
+      },
+      image: {
+        opacity: 0.5,
+        backgroundColor: '#fff',
+        flex: 1,
+        resizeMode: 'cover',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
       },
     });
   }
@@ -70,30 +91,37 @@ class BucketListForm extends Component {
 
   render() {
     return (
-      <View style={this.styles.container}>
-        <TextInput
-          defaultValue={this.state.content.name}
-          style={this.styles.input}
-          onChangeText={this.onChange}
-          selectTextOnFocus={this.props.navigation.state.params.context === 'Edit'}
-          enablesReturnKeyAutomatically
-          returnKeyType="done"
-        />
-        <TouchableHighlight
-          style={this.styles.button}
-          onPress={this.onSave}
-          disabled={this.state.disabled}
-        >
-          <Text style={this.styles.buttonText}>Save</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={[this.styles.button, this.styles.cancelButton]}
-          onPress={() =>
-            this.props.navigation.goBack()}
-        >
-          <Text style={this.styles.buttonText}>Cancel</Text>
-        </TouchableHighlight>
-      </View>
+      <SideMenu menu={MenuComponent(this.props.screenProps.actions.logout)}>
+        <View style={this.styles.container}>
+          <Image
+            style={this.styles.image}
+            source={require('../images/bucketlist_front.jpg')}
+          />
+          <TextInput
+            defaultValue={this.state.content.name}
+            style={this.styles.input}
+            onChangeText={this.onChange}
+            selectTextOnFocus={this.props.navigation.state.params.context === 'Edit'}
+            enablesReturnKeyAutomatically
+            returnKeyType="done"
+            underlineColorAndroid="rgba(0,0,0,0)"
+          />
+          <TouchableHighlight
+            style={this.styles.button}
+            onPress={this.onSave}
+            disabled={this.state.disabled}
+          >
+            <Text style={this.styles.buttonText}>Save</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={[this.styles.button, this.styles.cancelButton]}
+            onPress={() =>
+              this.props.navigation.goBack()}
+          >
+            <Text style={this.styles.buttonText}>Cancel</Text>
+          </TouchableHighlight>
+        </View>
+      </SideMenu>
     );
   }
 }

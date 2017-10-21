@@ -43,7 +43,7 @@ class UserForm extends Component {
         padding: Platform.OS === 'ios' ? 15 : 5,
         borderRadius: 10,
         backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        borderBottomColor: '#00bcd4',
+        borderWidth: 0,
       },
       buttonText: {
         fontSize: 18,
@@ -54,7 +54,7 @@ class UserForm extends Component {
       button: {
         borderRadius: 20,
         flexDirection: 'row',
-        height: Platform.OS ? 45 : 30,
+        height: Platform.OS === 'ios' ? 45 : 30,
         alignSelf: 'stretch',
         marginTop: 10,
         marginLeft: 70,
@@ -146,6 +146,7 @@ class UserForm extends Component {
             ref="Email"
             keyboardType="email-address"
             defaultValue={this.content.email}
+            underlineColorAndroid="rgba(0,0,0,0)"
             style={this.styles.input}
             placeholderTextColor="#eee"
             onChangeText={this.onChange.bind(null, 'email')}
@@ -159,6 +160,7 @@ class UserForm extends Component {
         <TextInput
           ref="Password"
           defaultValue={this.content.password}
+          underlineColorAndroid="rgba(0,0,0,0)"
           style={this.styles.input}
           placeholderTextColor="#eee"
           secureTextEntry

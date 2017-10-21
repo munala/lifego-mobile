@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StackNavigator } from 'react-navigation';
-import { TouchableHighlight, Text, Alert, AlertIOS, Platform } from 'react-native';
+import {
+  TouchableHighlight,
+  Text,
+  Alert,
+  AlertIOS,
+  Platform,
+  View,
+} from 'react-native';
 import { bindActionCreators } from 'redux';
 import * as bucketlistActions from './actions/bucketlistActions';
 import * as userActions from './actions/authActions';
@@ -15,9 +22,8 @@ import UserForm from './components/UserForm';
 class App extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = this.props;
+    this.state = { ...this.props, isOpen: false };
     this.state.initialRouteName = null;
-    this.getHeader = this.getHeader.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onDone = this.onDone.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -68,16 +74,6 @@ class App extends React.Component {
       this.props.actions.login(user);
     }
   }
-  getHeader() {
-    return (
-      <TouchableHighlight onPress={() => {
-        this.props.actions.logout();
-      }}
-      >
-        <Text>Logout</Text>
-      </TouchableHighlight>
-    );
-  }
   setInitialRoute(props) {
     const stack = {
       user: {
@@ -91,26 +87,37 @@ class App extends React.Component {
         screen: BucketList,
         navigationOptions: () => ({
           title: 'Bucketlists',
-          headerRight: this.getHeader(),
         }),
       },
       items: {
         screen: Items,
         navigationOptions: ({ navigation }) => ({
           title: navigation.state.params.bucketlist.name,
+          headerRight: (<View />),
         }),
       },
       bucketlistform: {
         screen: BucketListForm,
         navigationOptions: ({ navigation }) => ({
           title: `${navigation.state.params.context.type} ${navigation.state.params.context.name}`,
+          headerRight: (<View />),
         }),
       },
     };
     if (props.auth.loggedIn) {
       delete stack.user;
     }
-    this.RootApp = StackNavigator(stack, {});
+    this.RootApp = StackNavigator(stack, {
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: 'white',
+        },
+        headerTitleStyle: {
+          alignSelf: 'center',
+          textAlign: 'center',
+        },
+      },
+    });
   }
   render() {
     return (
@@ -124,6 +131,7 @@ class App extends React.Component {
           onSave: this.onSave,
           onSubmit: this.onSubmit,
           actions: this.props.actions,
+          toggleSideMenu: this.toggleSideMenu,
         }}
       />
     );
