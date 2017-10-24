@@ -19,7 +19,7 @@ class BucketListForm extends Component {
     this.onSave = this.onSave.bind(this);
     this.content = this.props.navigation.state.params.context.content ?
       this.props.navigation.state.params.context.content :
-      { name: '' };
+      { name: '', description: '' };
     this.state = {
       disabled: true,
       content: this.content,
@@ -33,7 +33,18 @@ class BucketListForm extends Component {
       },
       input: {
         color: '#fff',
-        textAlign: 'center',
+        fontWeight: '600',
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 3,
+        marginTop: 2,
+        padding: Platform.OS === 'ios' ? 15 : 5,
+        borderRadius: 10,
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        borderBottomColor: '#00bcd4',
+      },
+      description: {
+        color: '#fff',
         fontWeight: '600',
         marginLeft: 20,
         marginRight: 20,
@@ -77,12 +88,17 @@ class BucketListForm extends Component {
       },
     });
   }
-  onChange(text) {
-    const content = { ...this.content, name: text };
-    this.setState({
-      disabled: text.length === 0,
+  onChange(type, text) {
+    const content = { ...this.state.content };
+    content[type] = text;
+    Promise.resolve().then(() => this.setState({
       content,
-    });
+    }))
+      .then(() => {
+        this.setState({
+          disabled: this.state.content.name.length === 0 || this.state.content === this.content,
+        });
+      });
   }
   onSave() {
     this.props.screenProps.onSave(this.state.content, this.props.navigation.state.params.context);
@@ -100,11 +116,22 @@ class BucketListForm extends Component {
           <TextInput
             defaultValue={this.state.content.name}
             style={this.styles.input}
-            onChangeText={this.onChange}
+            onChangeText={this.onChange.bind(null, 'name')}
             selectTextOnFocus={this.props.navigation.state.params.context === 'Edit'}
             enablesReturnKeyAutomatically
-            returnKeyType="done"
+            returnKeyType="next"
             underlineColorAndroid="rgba(0,0,0,0)"
+            placeholderTextColor="#eee"
+            placeholder="name"
+          />
+          <TextInput
+            defaultValue={this.state.content.description}
+            multiline
+            style={this.styles.input}
+            onChangeText={this.onChange.bind(null, 'description')}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            placeholderTextColor="#eee"
+            placeholder="description"
           />
           <TouchableHighlight
             style={this.styles.button}

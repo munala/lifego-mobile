@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StackNavigator } from 'react-navigation';
 import {
-  TouchableHighlight,
-  Text,
   Alert,
   AlertIOS,
   Platform,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import * as bucketlistActions from './actions/bucketlistActions';
@@ -22,24 +21,31 @@ import UserForm from './components/UserForm';
 class App extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { ...this.props, isOpen: false };
-    this.state.initialRouteName = null;
+    this.initialRouteName = null;
     this.onSave = this.onSave.bind(this);
     this.onDone = this.onDone.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.setInitialRoute = this.setInitialRoute.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.props.actions.checkToken();
-    this.setInitialRoute(props);
+    this.setInitialRoute(this.props);
+    this.styles = {
+      activity: {
+        flex: 1,
+        paddingTop: 20,
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
+      },
+    };
   }
   componentWillReceiveProps(nextProps) {
-    if (this.state.auth.loggedIn !== nextProps.auth.loggedIn) {
+    if (this.props.auth.loggedIn !== nextProps.auth.loggedIn) {
       this.setInitialRoute(nextProps);
     }
     if (nextProps.error.value) {
       (Platform.OS === 'ios' ? AlertIOS : Alert).alert(nextProps.error.value);
     }
-    this.setState(nextProps);
   }
   onSave(content, context) {
     if (context.name === 'bucketlist') {
@@ -120,12 +126,19 @@ class App extends React.Component {
     });
   }
   render() {
+    // if (this.props.currentApiCalls > 0) {
+    //   return (
+    //     <View style={this.styles.activity}>
+    //       <ActivityIndicator size="large" />
+    //     </View>
+    //   );
+    // }
     return (
       <this.RootApp
         screenProps={{
-          bucketlists: this.state.data.bucketlists,
-          loggedIn: this.state.auth.loggedIn,
-          token: this.state.auth.token,
+          bucketlists: this.props.data.bucketlists,
+          loggedIn: this.props.auth.loggedIn,
+          token: this.props.auth.token,
           onDone: this.onDone,
           onDelete: this.onDelete,
           onSave: this.onSave,
@@ -141,6 +154,8 @@ App.propTypes = {
   actions: PropTypes.object,
   auth: PropTypes.object,
   error: PropTypes.object,
+  currentApiCalls: PropTypes.number,
+  data: PropTypes.object,
 };
 function mapStateToProps(state) {
   return state;

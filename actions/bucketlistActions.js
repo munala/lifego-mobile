@@ -2,7 +2,10 @@ import * as types from './actionTypes';
 import BucketlistService from '../api/bucketlistApi';
 
 const handleError = (dispatch, error) => {
-  console.log({ error });
+  dispatch({
+    type: types.API_CALL_ERROR,
+    value: '',
+  });
   if (error.message && error.message === 'Unauthorised') {
     dispatch({
       type: types.CHECK_TOKEN,
@@ -24,6 +27,9 @@ const handleError = (dispatch, error) => {
 
 export function loadBucketlists(offset, limit, search) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return BucketlistService.getAllBucketlists(
       offset, limit, search,
     ).then((response) => {
@@ -39,6 +45,9 @@ export function loadBucketlists(offset, limit, search) {
 
 export function saveBucketlist(bucketlist) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return BucketlistService.saveBucketlist(
       bucketlist,
     ).then((savedBucketlist) => {
@@ -54,6 +63,9 @@ export function saveBucketlist(bucketlist) {
 
 export function updateBucketlist(bucketlist) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return BucketlistService.updateBucketlist(
       bucketlist,
     ).then((savedBucketlist) => {
@@ -69,6 +81,9 @@ export function updateBucketlist(bucketlist) {
 
 export function deleteBucketlist(bucketlist) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return BucketlistService.deleteBucketlist(
       bucketlist,
     ).then(() => {
@@ -84,6 +99,9 @@ export function deleteBucketlist(bucketlist) {
 
 export function saveItem(bucketlist, item) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return BucketlistService.addItem(bucketlist, item).then((savedItem) => {
       dispatch({
         type: types.CREATE_ITEM_SUCCESS,
@@ -98,6 +116,9 @@ export function saveItem(bucketlist, item) {
 
 export function updateItem(bucketlist, item) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return BucketlistService.updateItem(bucketlist, item).then((savedItem) => {
       dispatch({
         type: types.UPDATE_ITEM_SUCCESS,
@@ -112,6 +133,9 @@ export function updateItem(bucketlist, item) {
 
 export function deleteItem(bucketlist, item) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return BucketlistService.deleteItem(bucketlist, item).then(() => {
       dispatch({
         type: types.DELETE_ITEM_SUCCESS,

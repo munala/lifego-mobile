@@ -10,3 +10,5 @@ export const LOGGED_IN_SUCCESS = 'LOGGED_IN_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const CHECK_TOKEN = 'CHECK_TOKEN';
 export const SHOW_ERROR = 'SHOW_ERROR';
+export const BEGIN_API_CALL = 'BEGIN_API_CALL';
+export const API_CALL_ERROR = 'API_CALL_ERROR';

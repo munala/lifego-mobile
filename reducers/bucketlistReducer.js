@@ -90,6 +90,12 @@ export default function bucketlistReducer(
         ],
       };
 
+    case types.CHECK_TOKEN:
+      return {
+        ...state,
+        bucketlists: action.loggedIn ? [...state.bucketlists] : [],
+      };
+
 
     default:
       return state;

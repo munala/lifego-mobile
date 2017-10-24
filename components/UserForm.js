@@ -8,6 +8,8 @@ import {
   TouchableHighlight,
   ScrollView,
   Platform,
+  View,
+  ActivityIndicator,
 } from 'react-native';
 
 class UserForm extends Component {
@@ -19,6 +21,7 @@ class UserForm extends Component {
     this.state = {
       registerMode: false,
       disabled: true,
+      isLoading: false,
     };
     this.content = {
       username: '',
@@ -122,6 +125,7 @@ class UserForm extends Component {
           style={this.styles.image}
           source={require('../images/bucketlist_front.jpg')}
         />
+        <ActivityIndicator animating />
         <TextInput
           autoFocus
           autoCapitalize="none"

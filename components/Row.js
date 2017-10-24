@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Modal,
-  Text,
-  TouchableHighlight,
-  View,
   StyleSheet,
   Alert,
   AlertIOS,
@@ -24,15 +20,13 @@ class Row extends Component {
       content: this.props.item ? this.props.item : this.props.bucketlist,
       bucketlist: this.props.bucketlist,
     };
-    this.colors = { 1: '#05A5D1', 2: '#bbb', 3: '#fff' };
+    this.colors = { 1: '#05A5D1', 2: '#fff' };
     this.styles = StyleSheet.create({
       container: {
-        opacity: 0.8,
         flexDirection: 'row',
         alignSelf: 'stretch',
         padding: 10,
         backgroundColor: 'transparent',
-        alignItems: 'flex-start',
         justifyContent: 'space-between',
       },
       doneButton: {
@@ -69,7 +63,7 @@ class Row extends Component {
   renderProperties() {
     let properties = '';
     Object.keys(this.state.content).forEach((property) => {
-      if (['createdAt', 'updatedAt'].indexOf(property) >= 0) {
+      if (['createdAt', 'updatedAt', 'description'].indexOf(property) >= 0) {
         properties = `${properties} ${property} : ${
           (property === 'createdAt' || property === 'updatedAt') ? require('moment')(
             this.state.content[property],
@@ -80,34 +74,8 @@ class Row extends Component {
     return properties;
   }
   render() {
-    return (
-      <View>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => { this.setModalVisible(!this.state.modalVisible); }}
-        >
-          <View style={{ marginTop: 22 }}>
-            <View>
-              {
-                this.renderProperties()
-              }
-              <TouchableHighlight
-                style={this.styles.doneButton}
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}
-              >
-                <Text>Back</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
-        {RenderRow.bind(this)(
-          this.styles, this.handleTouch, this.setModalVisible, this.state.bucketlist,
-        )}
-      </View>
+    return RenderRow.bind(this)(
+      this.styles, this.handleTouch, this.setModalVisible, this.state.bucketlist,
     );
   }
 }

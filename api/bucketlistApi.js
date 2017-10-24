@@ -27,7 +27,7 @@ const BucketlistService = {
       instance.defaults.headers.common.token = token;
       return instance.post(
         bucketlistUrl,
-        { name: bucketlist.name },
+        { name: bucketlist.name, description: bucketlist.description },
       )
         .then((response) => {
           if (response.data.message === `${bucketlist.name} already exists`) {
@@ -44,7 +44,7 @@ const BucketlistService = {
       instance.defaults.headers.common.token = token;
       return instance.post(
         `${bucketlistUrl + bucketlist.id.toString()}/items/`,
-        { name: item.name },
+        { name: item.name, description: item.description },
       )
         .then((response) => {
           if (response.data.message === `${item.name} already exists`) {
@@ -80,7 +80,7 @@ const BucketlistService = {
     return AsyncStorage.getItem('token').then((token) => {
       instance.defaults.headers.common.token = token;
       return instance.put(`${bucketlistUrl + bucketlist.id.toString()}`,
-        { name: bucketlist.name },
+        { name: bucketlist.name, description: bucketlist.description },
       )
         .then((response) => {
           if (response.data.message === `${bucketlist.name} is already in use`) {
@@ -99,6 +99,7 @@ const BucketlistService = {
         `${bucketlistUrl + bucketlist.id}/items/${item.id}`,
         {
           name: item.name,
+          description: item.description,
           done: item.done,
         },
       )

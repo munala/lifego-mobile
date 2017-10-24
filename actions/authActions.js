@@ -12,12 +12,22 @@ const handleError = (error, dispatch) => {
       type: types.SHOW_ERROR,
       value: '',
     });
+    dispatch({
+      type: types.API_CALL_ERROR,
+      value: '',
+    });
   }, 1);
 };
 
 export function login(user) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return UserService.loginUser(user).then((token) => {
+      dispatch({
+        type: types.BEGIN_API_CALL,
+      });
       AsyncStorage.setItem('token', token);
       dispatch({
         type: types.LOGIN_SUCCESS,
@@ -32,6 +42,9 @@ export function login(user) {
 
 export function register(user) {
   return function (dispatch) {
+    dispatch({
+      type: types.BEGIN_API_CALL,
+    });
     return UserService.registerUser(user).then(() => {
       dispatch(login(user));
     }).catch((error) => {

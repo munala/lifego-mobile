@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import SideMenu from 'react-native-side-menu';
 import ActionButton from 'react-native-action-button';
-import { Icon } from 'react-native-elements';
+import { Icon, SearchBar } from 'react-native-elements';
 import Row from './Row';
 import MenuComponent from '../components/SideMenu';
 
@@ -24,6 +24,7 @@ class Items extends Component {
     this.bucketlist = { ...this.props.navigation.state.params.bucketlist };
     this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
     this.onRefresh = this.onRefresh.bind(this);
+    this.search = this.search.bind(this);
     this.styles = StyleSheet.create({
       container: {
         paddingTop: 10,
@@ -39,15 +40,12 @@ class Items extends Component {
         justifyContent: 'center',
         alignItems: 'center',
         color: '#fff',
+        backgroundColor: 'transparent',
       },
       bucketlistRow: {
         flex: 1,
         margin: 20,
         opacity: 0,
-      },
-      listView: {
-        marginLeft: 10,
-        marginRight: 10,
       },
       toggleRow: {
         flexDirection: 'row',
@@ -115,9 +113,18 @@ class Items extends Component {
         .filter(item => (filter === 'all' || (filter === 'pending' && !item.done)))),
     });
   }
+  search(text) {
+    this.state.dataSource = this.data.cloneWithRows(
+      this.state.bucketlist.items
+        .filter(item => item.name.toLowerCase().indexOf(text.toLowerCase()) !== -1));
+    this.setState({
+      dataSource: this.state.dataSource,
+      refreshing: false,
+    });
+  }
 
   renderRow(item) {
-    this.rowNumber = this.rowNumber === 3 ? 1 : this.rowNumber + 1;
+    this.rowNumber = this.rowNumber === 1 ? this.rowNumber + 1 : 1;
     return (
       <Row
         bucketlist={this.state.bucketlist}
@@ -142,7 +149,28 @@ class Items extends Component {
           <Image
             style={this.styles.image}
             source={require('../images/bucketlist_front.jpg')}
-            blurRadius={10}
+            blurRadius={40}
+          />
+          <SearchBar
+            lightTheme
+            round
+            clearIcon={{
+              backgroundColor: 'rgba(127,127,127,0.5)',
+              color: 'rgba(255,255,255,0.5)',
+            }}
+            containerStyle={{
+              backgroundColor: 'transparent',
+              borderBottomColor: 'transparent',
+              borderTopColor: 'transparent',
+            }}
+            inputStyle={{
+              backgroundColor: 'rgba(127,127,127,0.5)',
+              color: 'rgb(255,255,255)',
+            }}
+            placeholderTextColor="rgba(255,255,255,0.5)"
+            placeholder="Search"
+            icon={{ color: 'rgba(255,255,255,0.5)', name: 'search' }}
+            onChangeText={this.search}
           />
           <View style={this.styles.toggleRow}>
             <Switch

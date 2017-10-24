@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import SideMenu from 'react-native-side-menu';
 import ActionButton from 'react-native-action-button';
-import { Icon } from 'react-native-elements';
+import { Icon, SearchBar } from 'react-native-elements';
 import MenuComponent from '../components/SideMenu';
 import Row from './Row';
 
@@ -29,6 +29,7 @@ class BucketList extends Component {
     this.props.screenProps.actions.loadBucketlists(0, 20, '');
     this.navigate = this.props.navigation.navigate;
     this.onRefresh = this.onRefresh.bind(this);
+    this.search = this.search.bind(this);
     this.styles = StyleSheet.create({
       container: {
         flex: 1,
@@ -38,11 +39,6 @@ class BucketList extends Component {
       bucketlistRow: {
         flex: 1,
         margin: 10,
-        opacity: 0,
-      },
-      listView: {
-        marginLeft: 10,
-        marginRight: 10,
       },
       image: {
         opacity: 0.8,
@@ -53,6 +49,7 @@ class BucketList extends Component {
         width: '100%',
         height: '100%',
         justifyContent: 'center',
+        shadowOpacity: 0,
       },
       empty: {
         height: 40,
@@ -67,31 +64,41 @@ class BucketList extends Component {
     this.data = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
-    this.rowNumber = 0;
+    this.rowNumber = 1;
     this.state = {
       dataSource: this.data.cloneWithRows(this.props.screenProps.bucketlists),
-      refreshing: false,
+      refreshing: true,
     };
     this.renderRow = this.renderRow.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.rowNumber = 0;
     this.state.dataSource = this.data.cloneWithRows(
       nextProps.screenProps.bucketlists);
     this.setState({
       dataSource: this.state.dataSource,
+      refreshing: false,
     });
   }
   onRefresh() {
+    this.rowNumber = 1;
     this.setState({ refreshing: true });
     this.props.screenProps.actions.loadBucketlists(0, 20, '').then(() => {
       this.setState({ refreshing: false });
     });
   }
+  search(text) {
+    this.state.dataSource = this.data.cloneWithRows(
+      this.props.screenProps.bucketlists
+        .filter(bucketlist => bucketlist.name.toLowerCase().indexOf(text.toLowerCase()) !== -1));
+    this.setState({
+      dataSource: this.state.dataSource,
+      refreshing: false,
+    });
+  }
 
   renderRow(bucketlist) {
-    this.rowNumber = this.rowNumber === 3 ? 1 : this.rowNumber + 1;
+    this.rowNumber = this.rowNumber === 1 ? this.rowNumber + 1 : 1;
     return (
       <Row
         bucketlist={bucketlist}
@@ -114,7 +121,28 @@ class BucketList extends Component {
           <Image
             style={this.styles.image}
             source={require('../images/bucketlist_front.jpg')}
-            blurRadius={10}
+            blurRadius={40}
+          />
+          <SearchBar
+            lightTheme
+            round
+            clearIcon={{
+              backgroundColor: 'rgba(127,127,127,0.5)',
+              color: 'rgba(255,255,255,0.5)',
+            }}
+            containerStyle={{
+              backgroundColor: 'transparent',
+              borderBottomColor: 'transparent',
+              borderTopColor: 'transparent',
+            }}
+            inputStyle={{
+              backgroundColor: 'rgba(127,127,127,0.5)',
+              color: 'rgb(255,255,255)',
+            }}
+            placeholderTextColor="rgba(255,255,255,0.5)"
+            placeholder="Search"
+            icon={{ color: 'rgba(255,255,255,0.5)', name: 'search' }}
+            onChangeText={this.search}
           />
           {
             this.state.dataSource.rowIdentities[0].length === 0 &&
@@ -134,6 +162,8 @@ class BucketList extends Component {
               <RefreshControl
                 refreshing={this.state.refreshing}
                 onRefresh={this.onRefresh}
+                colors={['#05A5D1']}
+                tintColor="#fff"
               />
             }
           />
