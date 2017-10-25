@@ -104,8 +104,8 @@ class Items extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.rowNumber = 0;
-    const bucketlist = nextProps.bucketlists
-      .filter(bucket => bucket.id === this.state.bucketlist.id)[0];
+    const bucketlist = [...nextProps.bucketlists
+      .filter(bucket => bucket.id === this.state.bucketlist.id)][0];
     bucketlist.items = bucketlist.items ? bucketlist.items : [];
     this.state.dataSource = this.data.cloneWithRows(bucketlist.items);
     this.setState({
@@ -167,7 +167,10 @@ class Items extends Component {
 
   render() {
     return (
-      <SideMenu menu={MenuComponent(this.props.screenProps.actions.logout)}>
+      <SideMenu
+        menu={MenuComponent(this.props.screenProps.actions.logout)}
+        isOpen={this.props.screenProps.isOpen}
+      >
         <ScrollView
           contentContainerStyle={this.styles.container}
         >
@@ -195,27 +198,30 @@ class Items extends Component {
               onSave={this.props.screenProps.onSave}
             />
           </Modal>
-          <SearchBar
-            lightTheme
-            round
-            clearIcon={{
-              backgroundColor: 'rgba(127,127,127,0.5)',
-              color: 'rgba(255,255,255,0.5)',
-            }}
-            containerStyle={{
-              backgroundColor: 'transparent',
-              borderBottomColor: 'transparent',
-              borderTopColor: 'transparent',
-            }}
-            inputStyle={{
-              backgroundColor: 'rgba(127,127,127,0.5)',
-              color: 'rgb(255,255,255)',
-            }}
-            placeholderTextColor="rgba(255,255,255,0.5)"
-            placeholder="Search"
-            icon={{ color: 'rgba(255,255,255,0.5)', name: 'search' }}
-            onChangeText={this.search}
-          />
+          {
+            this.props.screenProps.searchMode &&
+            <SearchBar
+              lightTheme
+              round
+              clearIcon={{
+                backgroundColor: 'rgba(127,127,127,0.5)',
+                color: 'rgba(255,255,255,0.5)',
+              }}
+              containerStyle={{
+                backgroundColor: 'transparent',
+                borderBottomColor: 'transparent',
+                borderTopColor: 'transparent',
+              }}
+              inputStyle={{
+                backgroundColor: 'rgba(127,127,127,0.5)',
+                color: 'rgb(255,255,255)',
+              }}
+              placeholderTextColor="rgba(255,255,255,0.5)"
+              placeholder="Search"
+              icon={{ color: 'rgba(255,255,255,0.5)', name: 'search' }}
+              onChangeText={this.search}
+            />
+          }
           <View style={this.styles.toggleRow}>
             <Switch
               style={this.styles.switch}

@@ -9,6 +9,7 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { bindActionCreators } from 'redux';
 import * as bucketlistActions from './actions/bucketlistActions';
 import * as userActions from './actions/authActions';
@@ -24,12 +25,16 @@ class App extends React.Component {
     this.state = {
       ...this.props,
       isLoading: this.props.currentApiCalls > 0,
+      isOpen: false,
+      searchMode: false,
     };
     this.initialRouteName = null;
     this.onSave = this.onSave.bind(this);
     this.onDone = this.onDone.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.setInitialRoute = this.setInitialRoute.bind(this);
+    this.toggleSideMenu = this.toggleSideMenu.bind(this);
+    this.toggleSearch = this.toggleSearch.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.props.actions.checkToken();
     this.setInitialRoute(this.props);
@@ -100,13 +105,45 @@ class App extends React.Component {
         screen: BucketList,
         navigationOptions: () => ({
           title: 'Bucketlists',
+          headerLeft: (
+            <Icon
+              name="menu"
+              color="#00bcd4"
+              containerStyle={{ marginLeft: 10 }}
+              onPress={this.toggleSideMenu}
+            />
+          ),
+          headerRight: (
+            <Icon
+              name="search"
+              color="#00bcd4"
+              containerStyle={{ marginRight: 10 }}
+              onPress={this.toggleSearch}
+            />
+          ),
         }),
       },
       items: {
         screen: Items,
         navigationOptions: ({ navigation }) => ({
           title: navigation.state.params.bucketlist.name,
-          headerRight: (<View />),
+          headerLeft: (
+            <Icon
+              name="chevron-left"
+              color="#00bcd4"
+              size={40}
+              containerStyle={{ marginLeft: 10 }}
+              onPress={() => { navigation.goBack(); }}
+            />
+          ),
+          headerRight: (
+            <Icon
+              name="search"
+              color="#00bcd4"
+              containerStyle={{ marginRight: 10 }}
+              onPress={this.toggleSearch}
+            />
+          ),
         }),
       },
       bucketlistform: {
@@ -133,6 +170,17 @@ class App extends React.Component {
       },
     });
   }
+  toggleSideMenu() {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+  toggleSearch() {
+    this.setState({
+      searchMode: !this.state.searchMode,
+    });
+  }
+
   render() {
     // if (this.state.isLoading) {
     //   return (
@@ -152,6 +200,8 @@ class App extends React.Component {
           onSave: this.onSave,
           onSubmit: this.onSubmit,
           actions: this.props.actions,
+          isOpen: this.state.isOpen,
+          searchMode: this.state.searchMode,
           toggleSideMenu: this.toggleSideMenu,
         }}
       />
