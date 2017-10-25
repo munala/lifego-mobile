@@ -1,5 +1,5 @@
 {
-	"name": "BucketListNative",
+	"name": "LifeGo",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -24,6 +24,7 @@
 		"react-native-deprecated-custom-components": "^0.1.1",
 		"react-native-elements": "^0.17.0",
 		"react-native-material-design": "^0.3.7",
+		"react-native-modal": "^4.1.0",
 		"react-native-popup-menu": "^0.8.3",
 		"react-native-shadow": "^1.2.1",
 		"react-native-side-menu": "^1.1.3",

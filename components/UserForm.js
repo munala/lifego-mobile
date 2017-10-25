@@ -8,8 +8,6 @@ import {
   TouchableHighlight,
   ScrollView,
   Platform,
-  View,
-  ActivityIndicator,
 } from 'react-native';
 
 class UserForm extends Component {
@@ -45,7 +43,7 @@ class UserForm extends Component {
         marginTop: 2,
         padding: Platform.OS === 'ios' ? 15 : 5,
         borderRadius: 10,
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
         borderWidth: 0,
       },
       buttonText: {
@@ -74,7 +72,7 @@ class UserForm extends Component {
       },
       image: {
         opacity: 0.5,
-        backgroundColor: '#fff',
+        backgroundColor: '#aaa',
         flex: 1,
         resizeMode: 'cover',
         position: 'absolute',
@@ -125,7 +123,6 @@ class UserForm extends Component {
           style={this.styles.image}
           source={require('../images/bucketlist_front.jpg')}
         />
-        <ActivityIndicator animating />
         <TextInput
           autoFocus
           autoCapitalize="none"

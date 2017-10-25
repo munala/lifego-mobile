@@ -14,6 +14,9 @@ import {
 import SideMenu from 'react-native-side-menu';
 import ActionButton from 'react-native-action-button';
 import { Icon, SearchBar } from 'react-native-elements';
+import Modal from 'react-native-modal';
+
+import BucketListForm from './BucketListForm';
 import Row from './Row';
 import MenuComponent from '../components/SideMenu';
 
@@ -25,11 +28,11 @@ class Items extends Component {
     this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
     this.onRefresh = this.onRefresh.bind(this);
     this.search = this.search.bind(this);
+    this.showModal = this.showModal.bind(this);
     this.styles = StyleSheet.create({
       container: {
-        paddingTop: 10,
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: '#fff',
         justifyContent: 'flex-start',
       },
       empty: {
@@ -49,7 +52,7 @@ class Items extends Component {
       },
       toggleRow: {
         flexDirection: 'row',
-        padding: 10,
+        paddingLeft: 10,
         backgroundColor: 'transparent',
       },
       toggleText: {
@@ -61,7 +64,7 @@ class Items extends Component {
       },
       image: {
         opacity: 0.8,
-        backgroundColor: '#fff',
+        backgroundColor: '#aaa',
         flex: 1,
         resizeMode: 'cover',
         position: 'absolute',
@@ -71,6 +74,13 @@ class Items extends Component {
       },
       switch: {
         backgroundColor: 'transparent',
+      },
+      modal: {
+        backgroundColor: 'transparent',
+        marginTop: 100,
+        position: 'absolute',
+        alignSelf: 'center',
+        width: '80%',
       },
     });
     this.data = new ListView.DataSource({
@@ -82,6 +92,12 @@ class Items extends Component {
       dataSource: this.data.cloneWithRows(this.bucketlist.items),
       filter: 'all',
       refreshing: false,
+      visibleModal: false,
+      context: {
+        name: 'item',
+        bucketlist: this.props.navigation.state.params.bucketlist,
+      },
+      content: null,
     };
     this.renderRow = this.renderRow.bind(this);
   }
@@ -102,6 +118,16 @@ class Items extends Component {
     this.setState({ refreshing: true });
     this.props.screenProps.actions.loadBucketlists(0, 20, '').then(() => {
       this.setState({ refreshing: false });
+    });
+  }
+  showModal(type, content) {
+    this.setState({
+      visibleModal: type !== 'hide',
+      context: {
+        ...this.state.context,
+        type,
+      },
+      content,
     });
   }
 
@@ -127,20 +153,19 @@ class Items extends Component {
     this.rowNumber = this.rowNumber === 1 ? this.rowNumber + 1 : 1;
     return (
       <Row
-        bucketlist={this.state.bucketlist}
-        item={item}
         onDone={this.props.screenProps.onDone}
         onDelete={this.props.screenProps.onDelete}
         style={this.styles.bucketlistRow}
         navigation={this.props.navigation}
         content={item}
+        context={this.state.context}
         rowNumber={this.rowNumber}
+        showModal={this.showModal}
       />
     );
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <SideMenu menu={MenuComponent(this.props.screenProps.actions.logout)}>
         <ScrollView
@@ -151,6 +176,25 @@ class Items extends Component {
             source={require('../images/bucketlist_front.jpg')}
             blurRadius={40}
           />
+          <Modal
+            isVisible={this.state.visibleModal}
+            backdropColor={'black'}
+            backdropOpacity={0.5}
+            animationIn={'zoomInDown'}
+            animationOut={'zoomOutUp'}
+            animationInTiming={200}
+            animationOutTiming={200}
+            backdropTransitionInTiming={200}
+            backdropTransitionOutTiming={200}
+            style={this.styles.modal}
+          >
+            <BucketListForm
+              context={this.state.context}
+              content={this.state.content}
+              showModal={this.showModal}
+              onSave={this.props.screenProps.onSave}
+            />
+          </Modal>
           <SearchBar
             lightTheme
             round
@@ -217,14 +261,7 @@ class Items extends Component {
           <ActionButton
             buttonColor="rgba(255,255,255,1)"
             icon={<Icon name="add" color="#00bcd4" />}
-            onPress={() =>
-              navigate('bucketlistform', {
-                context: {
-                  name: 'item',
-                  type: 'Add',
-                  bucketlist: this.props.navigation.state.params.bucketlist,
-                },
-              })}
+            onPress={this.showModal.bind(null, 'Add', null)}
           />
         </ScrollView>
       </SideMenu>
@@ -236,7 +273,6 @@ Items.propTypes = {
   bucketlists: PropTypes.array,
   navigation: PropTypes.object,
   screenProps: PropTypes.object,
-  actions: PropTypes.object,
 };
 
 function mapStateToProps(state) {

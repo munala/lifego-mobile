@@ -15,11 +15,7 @@ class Row extends Component {
     this.handleTouch = this.handleTouch.bind(this);
     this.renderProperties = this.renderProperties.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
-    this.state = {
-      modalVisible: false,
-      content: this.props.item ? this.props.item : this.props.bucketlist,
-      bucketlist: this.props.bucketlist,
-    };
+    this.state = this.props;
     this.colors = { 1: '#05A5D1', 2: '#fff' };
     this.styles = StyleSheet.create({
       container: {
@@ -45,10 +41,7 @@ class Row extends Component {
     });
   }
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      content: nextProps.item ? nextProps.item : nextProps.bucketlist,
-      bucketlist: nextProps.bucketlist,
-    });
+    this.setState({ nextProps });
   }
   setModalVisible() {
     (Platform.OS === 'ios' ? AlertIOS : Alert).alert(`${this.state.content.name}`, this.renderProperties());
@@ -56,7 +49,7 @@ class Row extends Component {
   handleTouch() {
     if (this.state.content.userId) {
       this.props.navigation.navigate('items', {
-        bucketlist: this.props.bucketlist,
+        bucketlist: this.state.content,
       });
     }
   }
@@ -75,7 +68,10 @@ class Row extends Component {
   }
   render() {
     return RenderRow.bind(this)(
-      this.styles, this.handleTouch, this.setModalVisible, this.state.bucketlist,
+      this.styles,
+      this.handleTouch,
+      this.setModalVisible,
+      this.showModal,
     );
   }
 }

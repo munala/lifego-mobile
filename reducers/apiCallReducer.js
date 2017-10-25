@@ -2,7 +2,7 @@ import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
 function actionTypeEndsInSuccess(actionType) {
-  return actionType.substring(actionType.length - 8) === '_SUCCESS';
+  return actionType.indexOf('SUCCESS') !== -1;
 }
 
 export default function apiCallReducer(

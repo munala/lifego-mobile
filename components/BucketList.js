@@ -11,11 +11,13 @@ import {
   RefreshControl,
   AsyncStorage,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import SideMenu from 'react-native-side-menu';
 import ActionButton from 'react-native-action-button';
 import { Icon, SearchBar } from 'react-native-elements';
-import MenuComponent from '../components/SideMenu';
+import MenuComponent from './SideMenu';
 import Row from './Row';
+import BucketListForm from './BucketListForm';
 
 class BucketList extends Component {
   constructor(props, context) {
@@ -30,6 +32,7 @@ class BucketList extends Component {
     this.navigate = this.props.navigation.navigate;
     this.onRefresh = this.onRefresh.bind(this);
     this.search = this.search.bind(this);
+    this.showModal = this.showModal.bind(this);
     this.styles = StyleSheet.create({
       container: {
         flex: 1,
@@ -42,7 +45,7 @@ class BucketList extends Component {
       },
       image: {
         opacity: 0.8,
-        backgroundColor: '#fff',
+        backgroundColor: '#aaa',
         flex: 1,
         resizeMode: 'cover',
         position: 'absolute',
@@ -60,6 +63,13 @@ class BucketList extends Component {
         alignItems: 'center',
         color: '#fff',
       },
+      modal: {
+        backgroundColor: 'transparent',
+        marginTop: 100,
+        position: 'absolute',
+        alignSelf: 'center',
+        width: '80%',
+      },
     });
     this.data = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
@@ -68,6 +78,11 @@ class BucketList extends Component {
     this.state = {
       dataSource: this.data.cloneWithRows(this.props.screenProps.bucketlists),
       refreshing: true,
+      visibleModal: false,
+      context: {
+        name: 'bucketlist',
+      },
+      content: null,
     };
     this.renderRow = this.renderRow.bind(this);
   }
@@ -87,6 +102,16 @@ class BucketList extends Component {
       this.setState({ refreshing: false });
     });
   }
+  showModal(type, content) {
+    this.setState({
+      visibleModal: type !== 'hide',
+      context: {
+        ...this.state.context,
+        type,
+      },
+      content,
+    });
+  }
   search(text) {
     this.state.dataSource = this.data.cloneWithRows(
       this.props.screenProps.bucketlists
@@ -101,13 +126,15 @@ class BucketList extends Component {
     this.rowNumber = this.rowNumber === 1 ? this.rowNumber + 1 : 1;
     return (
       <Row
-        bucketlist={bucketlist}
         onAddStarted={this.props.screenProps.onAddStarted}
         onDone={this.props.screenProps.onDone}
         onDelete={this.props.screenProps.onDelete}
         style={this.styles.bucketlistRow}
         navigation={this.props.navigation}
+        content={bucketlist}
+        context={this.state.context}
         rowNumber={this.rowNumber}
+        showModal={this.showModal}
       />
     );
   }
@@ -123,6 +150,25 @@ class BucketList extends Component {
             source={require('../images/bucketlist_front.jpg')}
             blurRadius={40}
           />
+          <Modal
+            isVisible={this.state.visibleModal}
+            backdropColor={'black'}
+            backdropOpacity={0.5}
+            animationIn={'zoomInDown'}
+            animationOut={'zoomOutUp'}
+            animationInTiming={200}
+            animationOutTiming={200}
+            backdropTransitionInTiming={200}
+            backdropTransitionOutTiming={200}
+            style={this.styles.modal}
+          >
+            <BucketListForm
+              context={this.state.context}
+              content={this.state.content}
+              showModal={this.showModal}
+              onSave={this.props.screenProps.onSave}
+            />
+          </Modal>
           <SearchBar
             lightTheme
             round
@@ -170,13 +216,7 @@ class BucketList extends Component {
           <ActionButton
             buttonColor="rgba(255,255,255,1)"
             icon={<Icon name="add" color="#00bcd4" />}
-            onPress={() =>
-              this.navigate('bucketlistform', {
-                context: {
-                  name: 'bucketlist',
-                  type: 'Add',
-                },
-              })}
+            onPress={this.showModal.bind(null, 'Add', null)}
           />
         </ScrollView>
       </SideMenu>

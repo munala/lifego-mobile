@@ -9,8 +9,8 @@ import {
 import Swipeout from 'react-native-swipeout';
 import { Card, Icon, CheckBox } from 'react-native-elements';
 
-export default function render(baseStyles, handleTouch, setModalVisible, bucketlist) {
-  const content = this.props.item ? this.props.item : this.props.bucketlist;
+export default function render(baseStyles, handleTouch, setModalVisible) {
+  const content = this.props.content;
   const colors = {
     1: 'rgba(5, 165, 209, 0.95)',
     2: 'rgba(255, 255, 255,0.95)',
@@ -21,14 +21,17 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
       component: (
         <CheckBox
           checked={content.done}
-          onIconPress={() => this.props.onDone(bucketlist, content)}
+          onIconPress={() => this.props.onDone(this.props.context.bucketlist, content)}
           containerStyle={{
-            backgroundColor: '#fff',
+            backgroundColor: 'transparent',
             borderWidth: 0,
+            marginRight: 5,
           }}
+          checkedColor={color}
+          uncheckedColor={color}
         />
       ),
-      backgroundColor: color,
+      backgroundColor: 'transparent',
       color: '#273539',
       underlayColor: '#273539',
     },
@@ -46,16 +49,7 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
       backgroundColor: 'transparent',
       color: colors[this.props.rowNumber],
       underlayColor: colors[this.props.rowNumber],
-      onPress: () => {
-        this.props.navigation.navigate('bucketlistform', {
-          context: {
-            name: this.props.item ? 'item' : 'bucketlist',
-            type: 'Edit',
-            content,
-            bucketlist,
-          },
-        });
-      },
+      onPress: () => this.props.showModal('Edit', content),
     },
     {
       component: <Icon name="delete" color="red" iconStyle={{ marginTop: 15 }} />,
@@ -66,14 +60,9 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
         `Delete ${content.name}`,
         'Are you sure?',
         [
-          { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+          { text: 'Cancel', onPress: () => {} },
           { text: 'OK',
-            onPress: () => this.props.onDelete(
-              bucketlist,
-              content,
-              {
-                name: this.props.item ? 'item' : 'bucketlist',
-              }) },
+            onPress: () => this.props.onDelete(content, this.props.context) },
         ],
         { cancelable: true },
       ),
@@ -136,7 +125,7 @@ export default function render(baseStyles, handleTouch, setModalVisible, bucketl
     >
       <Swipeout
         autoClose
-        right={this.props.item ? buttons : buttons.splice(1, 3)}
+        right={content.done ? buttons : buttons.splice(1, 3)}
         style={{ backgroundColor: 'transparent', flexDirection: 'row' }}
       >
         <View style={[baseStyles.container, localStyles.row]}>

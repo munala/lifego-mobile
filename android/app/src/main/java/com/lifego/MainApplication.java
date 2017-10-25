@@ -1,4 +1,4 @@
-package com.bucketlistnative;
+package com.lifego;
 
 import android.app.Application;
 

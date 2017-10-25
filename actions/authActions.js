@@ -25,9 +25,6 @@ export function login(user) {
       type: types.BEGIN_API_CALL,
     });
     return UserService.loginUser(user).then((token) => {
-      dispatch({
-        type: types.BEGIN_API_CALL,
-      });
       AsyncStorage.setItem('token', token);
       dispatch({
         type: types.LOGIN_SUCCESS,
@@ -61,7 +58,10 @@ export function checkToken() {
         loggedIn: !!token,
       });
     }).catch((error) => {
-      handleError(error, dispatch);
+      dispatch({
+        type: types.SHOW_ERROR,
+        value: error,
+      });
     });
   };
 }
