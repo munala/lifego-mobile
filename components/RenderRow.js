@@ -127,7 +127,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
     },
     modal: {
       backgroundColor: 'transparent',
-      marginTop: 100,
+      marginTop: 50,
       position: 'absolute',
       alignSelf: 'center',
       width: '90%',
@@ -144,6 +144,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
     detailRow: {
       flexBasis: '100%',
       flexDirection: 'row',
+      flexWrap: 'wrap',
       justifyContent: 'space-between',
       height: '20%',
       marginTop: 5,
@@ -152,13 +153,14 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
     property: {
       borderRadius: 5,
       flexDirection: 'row',
-      flexBasis: '40%',
+      flexBasis: '80%',
+      fontWeight: '600',
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       padding: 5,
     },
     propertyValue: {
-      flexBasis: '60%',
+      flexBasis: '80%',
     },
     button: {
       marginTop: 5,
@@ -200,7 +202,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
           {
             this.state.properties.map(property => (
               <View style={localStyles.detailRow} key={property.name}>
-                <Text style={localStyles.property}>{property.name}</Text>
+                <Text style={localStyles.property}>{property.name}:</Text>
                 <Text style={localStyles.propertyValue}>{property.text}</Text>
               </View>
             ))
@@ -215,7 +217,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
       </Modal>
       <Swipeout
         autoClose
-        right={content.done ? buttons : buttons.splice(1, 3)}
+        right={!content.userId ? buttons : buttons.splice(1, 3)}
         style={localStyles.swipeout}
       >
         <View style={[baseStyles.container, localStyles.row]}>

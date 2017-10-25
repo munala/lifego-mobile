@@ -27,6 +27,8 @@ const UserService = {
         username: user.username,
         email: user.email,
         password: user.password,
+        confirm: user.confirm,
+        social: user.social,
       },
     )
       .then(response => response.data)

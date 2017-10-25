@@ -7,7 +7,6 @@ import {
   AlertIOS,
   Platform,
   View,
-  ActivityIndicator,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { bindActionCreators } from 'redux';
@@ -182,13 +181,6 @@ class App extends React.Component {
   }
 
   render() {
-    // if (this.state.isLoading) {
-    //   return (
-    //     <View style={this.styles.activity}>
-    //       <ActivityIndicator size="large" />
-    //     </View>
-    //   );
-    // }
     return (
       <this.RootApp
         screenProps={{
@@ -203,6 +195,7 @@ class App extends React.Component {
           isOpen: this.state.isOpen,
           searchMode: this.state.searchMode,
           toggleSideMenu: this.toggleSideMenu,
+          currentApiCalls: this.props.currentApiCalls,
         }}
       />
     );

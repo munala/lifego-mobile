@@ -140,6 +140,7 @@ class BucketList extends Component {
   }
 
   render() {
+    console.log(this.props.screenProps.actions.logout);
     return (
       <SideMenu
         menu={MenuComponent(this.props.screenProps.actions.logout)}
@@ -198,6 +199,7 @@ class BucketList extends Component {
           }
           {
             this.state.dataSource.rowIdentities[0].length === 0 &&
+            this.props.screenProps.currentApiCalls === 0 &&
             <View style={{ backgroundColor: 'transparent' }}>
               <Text style={this.styles.empty}>
                 You have no bucketlists
@@ -212,7 +214,7 @@ class BucketList extends Component {
             style={this.styles.listView}
             refreshControl={
               <RefreshControl
-                refreshing={this.state.refreshing}
+                refreshing={this.props.screenProps.currentApiCalls > 0}
                 onRefresh={this.onRefresh}
                 colors={['#05A5D1']}
                 tintColor="#fff"

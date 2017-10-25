@@ -60,15 +60,16 @@ class Row extends Component {
     }
   }
   renderProperties() {
+    const content = { ...this.props.content };
     const properties = [];
-    Object.keys(this.props.content).forEach((property) => {
+    Object.keys(content).forEach((property) => {
       if (['createdAt', 'updatedAt', 'description'].indexOf(property) >= 0) {
         if (property === 'createdAt' || property === 'updatedAt') {
-          this.props.content[property] = require('moment')(
+          content[property] = require('moment')(
             property.updatedAt,
           ).format('MMMM Do YYYY, h:mm:ss a');
         }
-        properties.push({ name: property, text: this.props.content[property] });
+        properties.push({ name: property, text: content[property] });
       }
     });
     return properties;
@@ -85,6 +86,7 @@ class Row extends Component {
 
 Row.propTypes = {
   bucketlist: PropTypes.object,
+  content: PropTypes.object,
   item: PropTypes.object,
   navigation: PropTypes.object,
   rowNumber: PropTypes.number,

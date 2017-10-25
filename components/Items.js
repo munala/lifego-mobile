@@ -18,7 +18,7 @@ import Modal from 'react-native-modal';
 
 import BucketListForm from './BucketListForm';
 import Row from './Row';
-import MenuComponent from '../components/SideMenu';
+import MenuComponent from './SideMenu';
 
 class Items extends Component {
   constructor(props, context) {
@@ -54,6 +54,7 @@ class Items extends Component {
         flexDirection: 'row',
         paddingLeft: 10,
         backgroundColor: 'transparent',
+        marginTop: 10,
       },
       toggleText: {
         fontSize: 20,
@@ -233,10 +234,10 @@ class Items extends Component {
             >Showing {this.state.filter} items</Text>
           </View>
           {
-            (!this.props.navigation.state.params.bucketlist.items
+            (!this.state.context.bucketlist.items
               || (
-                this.props.navigation.state.params.bucketlist.items
-                && this.props.navigation.state.params.bucketlist.items.length === 0
+                this.state.context.bucketlist.items
+                && this.state.context.bucketlist.items.length === 0
               )
             )
             &&
@@ -247,7 +248,7 @@ class Items extends Component {
             </View>
           }
           {
-            this.props.navigation.state.params.bucketlist.items &&
+            this.state.context.bucketlist.items &&
             <ScrollView>
               <ListView
                 enableEmptySections
@@ -257,8 +258,10 @@ class Items extends Component {
                 style={this.styles.listView}
                 refreshControl={
                   <RefreshControl
-                    refreshing={this.state.refreshing}
+                    refreshing={this.props.screenProps.currentApiCalls > 0}
                     onRefresh={this.onRefresh}
+                    colors={['#05A5D1']}
+                    tintColor="#fff"
                   />
                 }
               />
