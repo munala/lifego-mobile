@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Card, Icon, CheckBox } from 'react-native-elements';
+import Modal from 'react-native-modal';
 
 export default function render(baseStyles, handleTouch, setModalVisible) {
   const content = this.props.content;
@@ -72,16 +73,26 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
   ];
   const localStyles = StyleSheet.create({
     row: {
-      marginTop: 0,
-      marginBottom: 0,
-      marginLeft: 0,
-      marginRight: 0,
+      flex: 1,
+      backgroundColor: 'transparent',
+      flexDirection: 'row',
       justifyContent: 'space-between',
+      alignItems: 'center',
     },
     container: {
       backgroundColor: colors[this.props.rowNumber],
       borderWidth: 0,
       borderRadius: 5,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    swipeout: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
     title: {
       color,
@@ -101,32 +112,111 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
       fontSize: 16,
     },
     drag: {
-      alignSelf: 'flex-end',
       flexBasis: '5%',
-      position: 'absolute',
+      flexDirection: 'row',
       justifyContent: 'center',
-      top: 0,
-      bottom: 0,
-      right: 0,
-      paddingTop: 7,
+      alignItems: 'center',
     },
     text: {
+      alignSelf: 'stretch',
+      flex: 1,
+      flexDirection: 'row',
       lineHeight: 5,
       color,
       fontWeight: '600',
     },
+    modal: {
+      backgroundColor: 'transparent',
+      marginTop: 100,
+      position: 'absolute',
+      alignSelf: 'center',
+      width: '90%',
+    },
+    card: {
+      flex: 1,
+      flexDirection: 'column',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      alignContent: 'center',
+      backgroundColor: '#f7f7f7',
+      borderRadius: 5,
+    },
+    detailRow: {
+      flexBasis: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      height: '20%',
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    property: {
+      borderRadius: 5,
+      flexDirection: 'row',
+      flexBasis: '40%',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      padding: 5,
+    },
+    propertyValue: {
+      flexBasis: '60%',
+    },
+    button: {
+      marginTop: 5,
+      borderRadius: 5,
+      flexDirection: 'row',
+      flexBasis: '45%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 5,
+      backgroundColor: '#666',
+    },
   });
+
   return (
     <Card
       containerStyle={localStyles.container}
-      title={content.name}
+      title={this.props.content.name}
       titleStyle={localStyles.title}
       dividerStyle={localStyles.divider}
     >
+      <Modal
+        isVisible={this.state.visibleModal}
+        backdropColor={'black'}
+        backdropOpacity={0.5}
+        animationIn={'zoomInDown'}
+        animationOut={'zoomOutUp'}
+        animationInTiming={200}
+        animationOutTiming={200}
+        backdropTransitionInTiming={200}
+        backdropTransitionOutTiming={200}
+        style={localStyles.modal}
+      >
+        <Card
+          containerStyle={localStyles.card}
+          title={content.name}
+          titleStyle={{ color: 'rgb(5, 165, 209)' }}
+          dividerStyle={{ backgroundColor: 'rgb(5, 165, 209)' }}
+        >
+          {
+            this.state.properties.map(property => (
+              <View style={localStyles.detailRow} key={property.name}>
+                <Text style={localStyles.property}>{property.name}</Text>
+                <Text style={localStyles.propertyValue}>{property.text}</Text>
+              </View>
+            ))
+          }
+          <TouchableHighlight
+            style={localStyles.button}
+            onPress={() => setModalVisible(false)}
+          >
+            <Text style={{ color: '#fff' }}>Close</Text>
+          </TouchableHighlight>
+        </Card>
+      </Modal>
       <Swipeout
         autoClose
         right={content.done ? buttons : buttons.splice(1, 3)}
-        style={{ backgroundColor: 'transparent', flexDirection: 'row' }}
+        style={localStyles.swipeout}
       >
         <View style={[baseStyles.container, localStyles.row]}>
           <TouchableHighlight

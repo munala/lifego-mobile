@@ -15,7 +15,11 @@ class Row extends Component {
     this.handleTouch = this.handleTouch.bind(this);
     this.renderProperties = this.renderProperties.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
-    this.state = this.props;
+    this.state = {
+      ...this.props,
+      visibleModal: false,
+      properties: this.renderProperties(),
+    };
     this.colors = { 1: '#05A5D1', 2: '#fff' };
     this.styles = StyleSheet.create({
       container: {
@@ -43,8 +47,10 @@ class Row extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({ nextProps });
   }
-  setModalVisible() {
-    (Platform.OS === 'ios' ? AlertIOS : Alert).alert(`${this.state.content.name}`, this.renderProperties());
+  setModalVisible(value) {
+    this.setState({
+      visibleModal: value,
+    });
   }
   handleTouch() {
     if (this.state.content.userId) {
@@ -54,14 +60,15 @@ class Row extends Component {
     }
   }
   renderProperties() {
-    let properties = '';
-    Object.keys(this.state.content).forEach((property) => {
+    const properties = [];
+    Object.keys(this.props.content).forEach((property) => {
       if (['createdAt', 'updatedAt', 'description'].indexOf(property) >= 0) {
-        properties = `${properties} ${property} : ${
-          (property === 'createdAt' || property === 'updatedAt') ? require('moment')(
-            this.state.content[property],
-          ).format('MMMM Do YYYY, h:mm:ss a') : this.state.content[property]
-        }\n`;
+        if (property === 'createdAt' || property === 'updatedAt') {
+          this.props.content[property] = require('moment')(
+            property.updatedAt,
+          ).format('MMMM Do YYYY, h:mm:ss a');
+        }
+        properties.push({ name: property, text: this.props.content[property] });
       }
     });
     return properties;
