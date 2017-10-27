@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   StyleSheet,
-  Alert,
-  AlertIOS,
-  Platform,
 } from 'react-native';
 
 import RenderRow from './RenderRow';

@@ -67,25 +67,26 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
         ],
         { cancelable: true },
       ),
-
-
     },
   ];
+
   const localStyles = StyleSheet.create({
     row: {
       flex: 1,
       backgroundColor: 'transparent',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'stretch',
     },
     container: {
+      flex: 1,
       backgroundColor: colors[this.props.rowNumber],
       borderWidth: 0,
       borderRadius: 5,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      alignSelf: 'center',
     },
     swipeout: {
       flex: 1,
