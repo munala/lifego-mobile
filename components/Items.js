@@ -87,7 +87,7 @@ class Items extends Component {
     this.data = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
-    this.rowNumber = 0;
+    this.rowNumber = 1;
     this.state = {
       bucketlist: this.bucketlist,
       dataSource: this.data.cloneWithRows(this.bucketlist.items),
@@ -104,7 +104,7 @@ class Items extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.rowNumber = 0;
+    this.rowNumber = 1;
     const bucketlist = [...nextProps.bucketlists
       .filter(bucket => bucket.id === this.state.bucketlist.id)][0];
     bucketlist.items = bucketlist.items ? bucketlist.items : [];
@@ -116,12 +116,14 @@ class Items extends Component {
   }
 
   onRefresh() {
+    this.rowNumber = 1;
     this.setState({ refreshing: true });
     this.props.screenProps.actions.loadBucketlists(0, 20, '').then(() => {
       this.setState({ refreshing: false });
     });
   }
   showModal(type, content) {
+    this.rowNumber = 1;
     this.setState({
       visibleModal: type !== 'hide',
       context: {
@@ -133,6 +135,7 @@ class Items extends Component {
   }
 
   toggleFilter() {
+    this.rowNumber = 1;
     const filter = this.state.filter === 'all' ? 'pending' : 'all';
     this.setState({
       filter,
@@ -141,6 +144,7 @@ class Items extends Component {
     });
   }
   search(text) {
+    this.rowNumber = 1;
     this.state.dataSource = this.data.cloneWithRows(
       this.state.bucketlist.items
         .filter(item => item.name.toLowerCase().indexOf(text.toLowerCase()) !== -1));

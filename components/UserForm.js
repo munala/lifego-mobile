@@ -10,6 +10,7 @@ import {
   Platform,
   Linking,
   View,
+  AsyncStorage,
   RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -130,18 +131,25 @@ class UserForm extends Component {
     });
   }
   componentWillMount() {
-    Linking.addEventListener('url', this.handleOpenURL);
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        this.handleOpenURL({ url });
+    AsyncStorage.getItem('first_run').then((firstRun) => {
+      if (!this.props.screenProps.loggedIn && (Platform.OS === 'ios' ? true : JSON.parse(firstRun))) {
+        Linking.addEventListener('url', this.handleOpenURL);
+        Linking.getInitialURL().then((url) => {
+          if (url) {
+            this.handleOpenURL({ url });
+          }
+        });
       }
-    });
+    },
+    );
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.screenProps.loggedIn) {
       this.props.navigation.navigate('bucketlist');
     }
   }
+
   componentWillUnmount() {
     Linking.removeEventListener('url', this.handleOpenURL);
   }
@@ -152,6 +160,10 @@ class UserForm extends Component {
     let disabled = false;
     if (!this.state.registerMode) {
       delete content.email;
+      delete content.confirm;
+      delete content.avatar;
+      delete content.social;
+      delete content.name;
     }
     Object.keys(content).forEach((key) => {
       if (this.content[key].length === 0) {
@@ -167,21 +179,31 @@ class UserForm extends Component {
     });
   }
   onSubmit() {
+    Linking.removeEventListener('url', this.handleOpenURL);
     this.props.screenProps.onSubmit(this.content, this.state.registerMode);
   }
   handleOpenURL({ url }) {
-    const [, user_string] = url.match(/user=([^#]+)/);
-    console.log(decodeURI(url));
-    this.setState({
-      user: {
-        ...JSON.parse(decodeURI(user_string)),
+    const [, userString] = url.match(/user=([^#]+)/);
+    Promise.resolve().then(() => {
+      this.content = {
+        ...JSON.parse(decodeURI(userString)),
+        password: JSON.parse(decodeURI(userString)).username,
+        confirm: JSON.parse(decodeURI(userString)).username,
         social: true,
-      },
-    });
+      };
+      return this.content;
+    })
+      .then(() => {
+        // Promise.resolve().then(() => this.setState({
+        //   registerMode: true,
+        // })).then(() => {
+        this.onSubmit();
+        // });
+      });
   }
   loginWithFacebook = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/facebook');
 
-  loginWithGoogle = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/google');
+  loginWithGoogle = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/google')
 
   openURL = (url) => {
     Linking.openURL(url);
@@ -258,7 +280,7 @@ class UserForm extends Component {
           this.state.registerMode &&
           <TextInput
             ref="Confirm"
-            defaultValue={this.content.password}
+            defaultValue={this.content.confirm}
             underlineColorAndroid="rgba(0,0,0,0)"
             style={this.styles.input}
             placeholderTextColor="#eee"

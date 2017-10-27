@@ -25,11 +25,12 @@ export function login(user) {
       type: types.BEGIN_API_CALL,
     });
     return UserService.loginUser(user).then((token) => {
-      AsyncStorage.setItem('token', token);
-      dispatch({
-        type: types.LOGIN_SUCCESS,
-        token,
-        loggedIn: true,
+      AsyncStorage.setItem('token', token).then(() => {
+        dispatch({
+          type: types.LOGIN_SUCCESS,
+          token,
+          loggedIn: true,
+        });
       });
     }).catch((error) => {
       handleError(error, dispatch);
@@ -44,6 +45,10 @@ export function register(user) {
     });
     return UserService.registerUser(user).then(() => {
       dispatch(login(user));
+      dispatch({
+        type: types.API_CALL_ERROR,
+        value: '',
+      });
     }).catch((error) => {
       handleError(error, dispatch);
     });
@@ -56,6 +61,7 @@ export function checkToken() {
       dispatch({
         type: types.CHECK_TOKEN,
         loggedIn: !!token,
+        token,
       });
     }).catch((error) => {
       dispatch({
@@ -72,6 +78,7 @@ export function logout() {
       dispatch({
         type: types.CHECK_TOKEN,
         loggedIn: false,
+        token: '',
       });
     }).catch((error) => {
       handleError(error, dispatch);

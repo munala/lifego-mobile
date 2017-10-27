@@ -7,6 +7,7 @@ import {
   AlertIOS,
   Platform,
   View,
+  AsyncStorage,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { bindActionCreators } from 'redux';
@@ -46,6 +47,7 @@ class App extends React.Component {
         justifyContent: 'center',
       },
     };
+    AsyncStorage.setItem('first_run', 'true');
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.auth.loggedIn !== nextProps.auth.loggedIn) {

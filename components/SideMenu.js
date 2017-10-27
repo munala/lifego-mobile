@@ -1,8 +1,8 @@
 import React from 'react';
 import { List, ListItem } from 'react-native-elements';
-import { View, Image } from 'react-native';
+import { View, Image, AsyncStorage } from 'react-native';
 
-export default function MenuComponent(logout) {
+export default function MenuComponent(logout, reset) {
   const styles = {
     container: {
       flex: 1,
@@ -35,7 +35,7 @@ export default function MenuComponent(logout) {
       <List containerStyle={{ marginBottom: 20 }}>
         <ListItem
           style={styles.item}
-          onPress={logout}
+          onPress={() => { AsyncStorage.setItem('first_run', 'false').then(() => { logout(); reset(); }); }}
           key={'logout'}
           title="Logout"
         />

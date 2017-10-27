@@ -88,6 +88,7 @@ class BucketList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.rowNumber = 1;
     this.state.dataSource = this.data.cloneWithRows(
       nextProps.screenProps.bucketlists);
     this.setState({
@@ -103,6 +104,7 @@ class BucketList extends Component {
     });
   }
   showModal(type, content) {
+    this.rowNumber = 1;
     this.setState({
       visibleModal: type !== 'hide',
       context: {
@@ -113,6 +115,7 @@ class BucketList extends Component {
     });
   }
   search(text) {
+    this.rowNumber = 1;
     this.state.dataSource = this.data.cloneWithRows(
       this.props.screenProps.bucketlists
         .filter(bucketlist => bucketlist.name.toLowerCase().indexOf(text.toLowerCase()) !== -1));
@@ -140,10 +143,12 @@ class BucketList extends Component {
   }
 
   render() {
-    console.log(this.props.screenProps.actions.logout);
     return (
       <SideMenu
-        menu={MenuComponent(this.props.screenProps.actions.logout)}
+        menu={MenuComponent(
+          this.props.screenProps.actions.logout,
+          this.props.screenProps.toggleSideMenu,
+        )}
         isOpen={this.props.screenProps.isOpen}
       >
         <ScrollView
