@@ -12,11 +12,6 @@ import Modal from 'react-native-modal';
 
 export default function render(baseStyles, handleTouch, setModalVisible) {
   const content = this.props.content;
-  const colors = {
-    1: 'rgba(5, 165, 209, 0.95)',
-    2: 'rgba(255, 255, 255,0.95)',
-  };
-  const color = this.colors[this.props.rowNumber === 2 ? 1 : 2];
   const buttons = [
     {
       component: (
@@ -27,9 +22,10 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
             backgroundColor: 'transparent',
             borderWidth: 0,
             marginRight: 5,
+            marginVertical: 0,
           }}
-          checkedColor={color}
-          uncheckedColor={color}
+          checkedColor="#00bcd4"
+          uncheckedColor="#00bcd4"
         />
       ),
       backgroundColor: 'transparent',
@@ -37,26 +33,26 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
       underlayColor: '#273539',
     },
     {
-      component: <Icon name="info" color={color} iconStyle={{ marginTop: 15 }} />,
+      component: <Icon name="info" color="#00bcd4" iconStyle={{ marginTop: 15 }} />,
       backgroundColor: 'transparent',
-      color: colors[this.props.rowNumber],
-      underlayColor: colors[this.props.rowNumber],
+      color: '#00bcd4',
+      underlayColor: '#00bcd4',
       alignItems: 'center',
       justifyContent: 'center',
       onPress: () => setModalVisible(true),
     },
     {
-      component: <Icon name="edit" color={color} iconStyle={{ marginTop: 15 }} />,
+      component: <Icon name="edit" color="#00bcd4" iconStyle={{ marginTop: 15 }} />,
       backgroundColor: 'transparent',
-      color: colors[this.props.rowNumber],
-      underlayColor: colors[this.props.rowNumber],
+      color: '#00bcd4',
+      underlayColor: '#00bcd4',
       onPress: () => this.props.showModal('Edit', content),
     },
     {
       component: <Icon name="delete" color="red" iconStyle={{ marginTop: 15 }} />,
       backgroundColor: 'transparent',
       color: '#fff',
-      underlayColor: colors[this.props.rowNumber],
+      underlayColor: '#00bcd4',
       onPress: () => Alert.alert(
         `Delete ${content.name}`,
         'Are you sure?',
@@ -80,7 +76,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
     },
     container: {
       flex: 1,
-      backgroundColor: colors[this.props.rowNumber],
+      backgroundColor: 'rgba(255, 255, 255,0.95)',
       borderWidth: 0,
       borderRadius: 5,
       flexDirection: 'row',
@@ -93,37 +89,40 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
       backgroundColor: 'transparent',
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignContent: 'center',
       alignItems: 'center',
     },
     title: {
-      color,
+      color: '#00bcd4',
     },
     divider: {
-      backgroundColor: color,
+      backgroundColor: '#00bcd4',
     },
     label: {
       padding: 5,
-      color,
+      color: '#00bcd4',
       fontSize: 20,
       fontWeight: '600',
     },
     description: {
       padding: 5,
-      color,
+      color: '#00bcd4',
       fontSize: 16,
     },
     drag: {
       flexBasis: '5%',
       flexDirection: 'row',
       justifyContent: 'center',
+      alignContent: 'center',
       alignItems: 'center',
     },
     text: {
+      marginTop: 7,
       alignSelf: 'stretch',
       flex: 1,
       flexDirection: 'row',
       lineHeight: 5,
-      color,
+      color: '#00bcd4',
       fontWeight: '600',
     },
     modal: {
@@ -244,7 +243,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
             <Icon
               name="done"
               size={40}
-              color={color}
+              color="#00bcd4"
               style={{ width: 50, height: 50, flexBasis: '15%' }}
             />
           }

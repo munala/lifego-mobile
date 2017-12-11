@@ -11,7 +11,7 @@ import {
   Linking,
   View,
   AsyncStorage,
-  RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -128,6 +128,16 @@ class UserForm extends Component {
         margin: 20,
         marginBottom: 30,
       },
+      activity: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#00bcd4',
+      },
+      horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+      },
     });
   }
   componentWillMount() {
@@ -211,20 +221,14 @@ class UserForm extends Component {
 
 
   render() {
+    if (this.props.screenProps.currentApiCalls > 0) {
+      return <View style={[this.styles.activity, this.styles.horizontal]}><ActivityIndicator color="#fff" size="large" /></View>;
+    }
     return (
       <ScrollView
         contentContainerStyle={this.styles.container}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="never"
-        refreshControl={
-          <RefreshControl
-            refreshing={this.props.screenProps.currentApiCalls > 0}
-            onRefresh={this.onRefresh}
-            colors={['#05A5D1']}
-            tintColor="#fff"
-            enabled={false}
-          />
-        }
       >
         <Image
           style={this.styles.image}
@@ -330,6 +334,7 @@ UserForm.propTypes = {
   onSubmit: PropTypes.func,
   navigation: PropTypes.object,
   screenProps: PropTypes.object,
+  currentApiCalls: PropTypes.number,
 };
 
 export default UserForm;

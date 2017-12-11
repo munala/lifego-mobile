@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ListView,
   ScrollView,
-  Image,
   Alert,
   Text,
   View,
@@ -36,7 +35,7 @@ class BucketList extends Component {
     this.styles = StyleSheet.create({
       container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#00bcd4',
         justifyContent: 'flex-start',
       },
       bucketlistRow: {
@@ -74,7 +73,6 @@ class BucketList extends Component {
     this.data = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
-    this.rowNumber = 1;
     this.state = {
       dataSource: this.data.cloneWithRows(this.props.screenProps.bucketlists),
       refreshing: true,
@@ -88,7 +86,6 @@ class BucketList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.rowNumber = 1;
     this.state.dataSource = this.data.cloneWithRows(
       nextProps.screenProps.bucketlists);
     this.setState({
@@ -97,14 +94,12 @@ class BucketList extends Component {
     });
   }
   onRefresh() {
-    this.rowNumber = 1;
     this.setState({ refreshing: true });
     this.props.screenProps.actions.loadBucketlists(0, 20, '').then(() => {
       this.setState({ refreshing: false });
     });
   }
   showModal(type, content) {
-    this.rowNumber = 1;
     this.setState({
       visibleModal: type !== 'hide',
       context: {
@@ -115,7 +110,6 @@ class BucketList extends Component {
     });
   }
   search(text) {
-    this.rowNumber = 1;
     this.state.dataSource = this.data.cloneWithRows(
       this.props.screenProps.bucketlists
         .filter(bucketlist => bucketlist.name.toLowerCase().indexOf(text.toLowerCase()) !== -1));
@@ -126,7 +120,6 @@ class BucketList extends Component {
   }
 
   renderRow(bucketlist) {
-    this.rowNumber = this.rowNumber === 1 ? this.rowNumber + 1 : 1;
     return (
       <Row
         onAddStarted={this.props.screenProps.onAddStarted}
@@ -136,7 +129,6 @@ class BucketList extends Component {
         navigation={this.props.navigation}
         content={bucketlist}
         context={this.state.context}
-        rowNumber={this.rowNumber}
         showModal={this.showModal}
       />
     );
@@ -154,11 +146,6 @@ class BucketList extends Component {
         <ScrollView
           contentContainerStyle={this.styles.container}
         >
-          <Image
-            style={this.styles.image}
-            source={require('../images/bucketlist_front.jpg')}
-            blurRadius={40}
-          />
           <Modal
             isVisible={this.state.visibleModal}
             backdropColor={'black'}

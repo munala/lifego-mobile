@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {
   StyleSheet,
   View,
-  Image,
   ScrollView,
   ListView,
   Switch,
@@ -32,7 +31,7 @@ class Items extends Component {
     this.styles = StyleSheet.create({
       container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#00bcd4',
         justifyContent: 'flex-start',
       },
       empty: {
@@ -83,11 +82,20 @@ class Items extends Component {
         alignSelf: 'center',
         width: '80%',
       },
+      activity: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#00bcd4',
+      },
+      horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+      },
     });
     this.data = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
-    this.rowNumber = 1;
     this.state = {
       bucketlist: this.bucketlist,
       dataSource: this.data.cloneWithRows(this.bucketlist.items),
@@ -104,7 +112,6 @@ class Items extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.rowNumber = 1;
     const bucketlist = [...nextProps.bucketlists
       .filter(bucket => bucket.id === this.state.bucketlist.id)][0];
     bucketlist.items = bucketlist.items ? bucketlist.items : [];
@@ -116,14 +123,12 @@ class Items extends Component {
   }
 
   onRefresh() {
-    this.rowNumber = 1;
     this.setState({ refreshing: true });
     this.props.screenProps.actions.loadBucketlists(0, 20, '').then(() => {
       this.setState({ refreshing: false });
     });
   }
   showModal(type, content) {
-    this.rowNumber = 1;
     this.setState({
       visibleModal: type !== 'hide',
       context: {
@@ -135,7 +140,6 @@ class Items extends Component {
   }
 
   toggleFilter() {
-    this.rowNumber = 1;
     const filter = this.state.filter === 'all' ? 'pending' : 'all';
     this.setState({
       filter,
@@ -144,7 +148,6 @@ class Items extends Component {
     });
   }
   search(text) {
-    this.rowNumber = 1;
     this.state.dataSource = this.data.cloneWithRows(
       this.state.bucketlist.items
         .filter(item => item.name.toLowerCase().indexOf(text.toLowerCase()) !== -1));
@@ -155,7 +158,6 @@ class Items extends Component {
   }
 
   renderRow(item) {
-    this.rowNumber = this.rowNumber === 1 ? this.rowNumber + 1 : 1;
     return (
       <Row
         onDone={this.props.screenProps.onDone}
@@ -164,7 +166,6 @@ class Items extends Component {
         navigation={this.props.navigation}
         content={item}
         context={this.state.context}
-        rowNumber={this.rowNumber}
         showModal={this.showModal}
       />
     );
@@ -179,11 +180,6 @@ class Items extends Component {
         <ScrollView
           contentContainerStyle={this.styles.container}
         >
-          <Image
-            style={this.styles.image}
-            source={require('../images/bucketlist_front.jpg')}
-            blurRadius={40}
-          />
           <Modal
             isVisible={this.state.visibleModal}
             backdropColor={'black'}
@@ -286,10 +282,11 @@ Items.propTypes = {
   bucketlists: PropTypes.array,
   navigation: PropTypes.object,
   screenProps: PropTypes.object,
+  currentApiCalls: PropTypes.number,
 };
 
 function mapStateToProps(state) {
-  return { bucketlists: state.data.bucketlists };
+  return { bucketlists: state.data.bucketlists, currentApiCalls: state.currentApiCalls };
 }
 
 export default connect(mapStateToProps)(Items);
