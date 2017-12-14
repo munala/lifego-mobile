@@ -76,7 +76,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
     },
     container: {
       flex: 1,
-      backgroundColor: 'rgba(255, 255, 255,0.95)',
+      backgroundColor: 'rgba(255, 255, 255,1)',
       borderWidth: 0,
       borderRadius: 5,
       flexDirection: 'row',

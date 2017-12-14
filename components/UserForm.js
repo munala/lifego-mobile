@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -14,202 +15,199 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as userActions from '../actions/authActions';
+
+const iconStyles = {
+  borderRadius: 10,
+  paddingLeft: 20,
+  paddingRight: 20,
+  iconStyle: {
+    paddingVertical: 5,
+    flexBasis: '10%',
+  },
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(127,127,127,0.8)',
+    height: '100%',
+  },
+  input: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 3,
+    marginTop: 2,
+    padding: Platform.OS === 'ios' ? 15 : 5,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderWidth: 0,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
+    backgroundColor: 'transparent',
+  },
+  button: {
+    borderRadius: 20,
+    flexDirection: 'row',
+    height: Platform.OS === 'ios' ? 45 : 40,
+    alignSelf: 'stretch',
+    marginTop: 10,
+    marginLeft: 70,
+    marginRight: 70,
+    backgroundColor: '#00bcd4',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cancelButton: {
+    backgroundColor: 'rgba(255,255,255,0)',
+  },
+  cancelButtonText: {
+    color: '#fff',
+  },
+  image: {
+    opacity: 0.5,
+    backgroundColor: '#aaa',
+    flex: 1,
+    resizeMode: 'cover',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: 20,
+  },
+  avatarImage: {
+    borderRadius: 50,
+    height: 100,
+    width: 100,
+  },
+  header: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  text: {
+    textAlign: 'center',
+    color: '#333',
+    marginBottom: 5,
+  },
+  buttons: {
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    margin: 20,
+    marginBottom: 30,
+  },
+  activity: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#00bcd4',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+});
+
 
 class UserForm extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onToggle = this.onToggle.bind(this);
-    this.handleOpenURL = this.handleOpenURL.bind(this);
-    this.state = {
+    static navigationOptions = () => ({
+      title: 'Login',
+      header: null,
+    });
+
+    state = {
       registerMode: false,
       disabled: true,
       isLoading: false,
-      user: undefined,
-    };
-    this.content = {
-      username: '',
-      email: '',
-      password: '',
-      confirm: '',
-      social: false,
-    };
-    this.iconStyles = {
-      borderRadius: 10,
-      paddingLeft: 20,
-      paddingRight: 20,
-      iconStyle: {
-        paddingVertical: 5,
-        flexBasis: '10%',
+      user: {
+        username: '',
+        email: '',
+        password: '',
+        confirm: '',
+        social: false,
       },
     };
-
-    this.styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'rgba(127,127,127,0.8)',
-        height: '100%',
-      },
-      input: {
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: '600',
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 3,
-        marginTop: 2,
-        padding: Platform.OS === 'ios' ? 15 : 5,
-        borderRadius: 10,
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        borderWidth: 0,
-      },
-      buttonText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#fff',
-        backgroundColor: 'transparent',
-      },
-      button: {
-        borderRadius: 20,
-        flexDirection: 'row',
-        height: Platform.OS === 'ios' ? 45 : 30,
-        alignSelf: 'stretch',
-        marginTop: 10,
-        marginLeft: 70,
-        marginRight: 70,
-        backgroundColor: '#00bcd4',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      cancelButton: {
-        backgroundColor: 'rgba(255,255,255,0)',
-      },
-      cancelButtonText: {
-        color: '#fff',
-      },
-      image: {
-        opacity: 0.5,
-        backgroundColor: '#aaa',
-        flex: 1,
-        resizeMode: 'cover',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-      },
-      content: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      avatar: {
-        margin: 20,
-      },
-      avatarImage: {
-        borderRadius: 50,
-        height: 100,
-        width: 100,
-      },
-      header: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-      },
-      text: {
-        textAlign: 'center',
-        color: '#333',
-        marginBottom: 5,
-      },
-      buttons: {
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        margin: 20,
-        marginBottom: 30,
-      },
-      activity: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#00bcd4',
-      },
-      horizontal: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 10,
-      },
-    });
-  }
-  componentWillMount() {
-    AsyncStorage.getItem('first_run').then((firstRun) => {
-      if (!this.props.screenProps.loggedIn && (Platform.OS === 'ios' ? true : JSON.parse(firstRun))) {
-        Linking.addEventListener('url', this.handleOpenURL);
-        Linking.getInitialURL().then((url) => {
-          if (url) {
-            this.handleOpenURL({ url });
-          }
-        });
+  componentWillMount = async () => {
+    const { auth, navigation } = this.props;
+    const firstRun = await AsyncStorage.getItem('first_run');
+    if (auth.loggedIn) {
+      navigation.navigate('bucketlist');
+    }
+    if (!auth.loggedIn && (Platform.OS === 'ios' ? true : JSON.parse(firstRun))) {
+      Linking.addEventListener('url', this.handleOpenURL);
+      const url = await Linking.getInitialURL();
+      if (url) {
+        this.handleOpenURL({ url });
       }
-    },
-    );
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.screenProps.loggedIn) {
-      this.props.navigation.navigate('bucketlist');
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     Linking.removeEventListener('url', this.handleOpenURL);
   }
 
-  onChange(type, text) {
-    this.content[type] = (type === 'password' || type === 'password') ? text : text.trim();
-    const content = this.content;
+  onSubmit = () => {
+    Linking.removeEventListener('url', this.handleOpenURL);
+    if (this.state.registerMode) {
+      this.props.actions.register(this.state.user);
+    } else {
+      this.props.actions.login(this.state.user);
+    }
+  }
+
+  onChange = (type, text) => {
+    const user = { ...this.state.user };
+    user[type] = (type === 'password' || type === 'confirm') ? text : text.trim();
     let disabled = false;
     if (!this.state.registerMode) {
-      delete content.email;
-      delete content.confirm;
-      delete content.avatar;
-      delete content.social;
-      delete content.name;
+      delete user.email;
+      delete user.confirm;
+      delete user.avatar;
+      delete user.social;
+      delete user.name;
     }
-    Object.keys(content).forEach((key) => {
-      if (this.content[key].length === 0) {
+    Object.keys(user).forEach((key) => {
+      if (this.state.user[key].length === 0) {
         disabled = true;
       }
     });
-    this.setState({ disabled });
+    this.setState({ disabled, user });
   }
-  onToggle() {
+
+  onToggle = () => {
     this.setState({
       registerMode: !this.state.registerMode,
       disabled: !this.state.registerMode ? true : this.state.disabled,
     });
   }
-  onSubmit() {
-    Linking.removeEventListener('url', this.handleOpenURL);
-    this.props.screenProps.onSubmit(this.content, this.state.registerMode);
-  }
-  handleOpenURL({ url }) {
+
+  handleOpenURL = async ({ url }) => {
     const [, userString] = url.match(/user=([^#]+)/);
-    Promise.resolve().then(() => {
-      this.content = {
+    await this.setState({
+      user: {
         ...JSON.parse(decodeURI(userString)),
         password: JSON.parse(decodeURI(userString)).username,
         confirm: JSON.parse(decodeURI(userString)).username,
         social: true,
-      };
-      return this.content;
-    })
-      .then(() => {
-        // Promise.resolve().then(() => this.setState({
-        //   registerMode: true,
-        // })).then(() => {
-        this.onSubmit();
-        // });
-      });
+      },
+    });
+    this.onSubmit();
   }
   loginWithFacebook = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/facebook');
 
@@ -219,111 +217,119 @@ class UserForm extends Component {
     Linking.openURL(url);
   };
 
-
   render() {
-    if (this.props.screenProps.currentApiCalls > 0) {
-      return <View style={[this.styles.activity, this.styles.horizontal]}><ActivityIndicator color="#fff" size="large" /></View>;
+    if (this.props.currentApiCalls > 0) {
+      return <View style={[styles.activity, styles.horizontal]}><ActivityIndicator color="#fff" size="large" /></View>;
     }
     return (
       <ScrollView
-        contentContainerStyle={this.styles.container}
+        contentContainerStyle={styles.container}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="never"
       >
         <Image
-          style={this.styles.image}
+          style={styles.image}
           source={require('../images/bucketlist_front.jpg')}
+        />
+        <Image
+          style={{
+            height: 80,
+            width: 80,
+            alignSelf: 'center',
+            marginBottom: 50,
+          }}
+          source={require('../assets/icons/icon.png')}
         />
         <TextInput
           autoFocus
           autoCapitalize="none"
-          defaultValue={this.content.username}
+          defaultValue={this.state.user.username}
           underlineColorAndroid="rgba(0,0,0,0)"
-          style={this.styles.input}
+          style={styles.input}
           placeholderTextColor="#eee"
-          onChangeText={this.onChange.bind(null, 'username')}
+          onChangeText={value => this.onChange('username', value)}
           placeholder="username"
           returnKeyType="next"
-          onSubmitEditing={(event) => {
+          onSubmitEditing={() => {
             if (this.state.registerMode) {
-              this.refs.Email.focus();
+              this.Email.focus();
             } else {
-              this.refs.Password.focus();
+              this.Password.focus();
             }
           }}
         />
         {
           this.state.registerMode &&
           <TextInput
-            ref="Email"
+            ref={(element) => { this.Email = element; }}
             keyboardType="email-address"
-            defaultValue={this.content.email}
+            defaultValue={this.state.user.email}
             underlineColorAndroid="rgba(0,0,0,0)"
-            style={this.styles.input}
+            style={styles.input}
             placeholderTextColor="#eee"
-            onChangeText={this.onChange.bind(null, 'email')}
+            onChangeText={value => this.onChange('email', value)}
             placeholder="example@me.com"
             returnKeyType="next"
-            onSubmitEditing={(event) => {
-              this.refs.Password.focus();
+            onSubmitEditing={() => {
+              this.Password.focus();
             }}
           />}
         <TextInput
-          ref="Password"
-          defaultValue={this.content.password}
+          ref={(element) => { this.Password = element; }}
+          defaultValue={this.state.user.password}
           underlineColorAndroid="rgba(0,0,0,0)"
-          style={this.styles.input}
+          style={styles.input}
           placeholderTextColor="#eee"
           secureTextEntry
-          onChangeText={this.onChange.bind(null, 'password')}
+          onChangeText={value => this.onChange('password', value)}
           placeholder="password"
           returnKeyType={this.state.registerMode ? 'next' : 'done'}
-          onSubmitEditing={event => (this.state.registerMode ? this.refs.Confirm.focus() : null)}
+          onSubmitEditing={() => (this.state.registerMode ? this.Confirm.focus() : null)}
         />
         {
           this.state.registerMode &&
           <TextInput
-            ref="Confirm"
-            defaultValue={this.content.confirm}
+            ref={(element) => { this.Confirm = element; }}
+            defaultValue={this.state.user.confirm}
             underlineColorAndroid="rgba(0,0,0,0)"
-            style={this.styles.input}
+            style={styles.input}
             placeholderTextColor="#eee"
             secureTextEntry
-            onChangeText={this.onChange.bind(null, 'confirm')}
+            onChangeText={value => this.onChange('confirm', value)}
             placeholder="confirm"
             returnKeyType="done"
           />
         }
         <TouchableHighlight
-          style={this.styles.button}
+          style={styles.button}
           onPress={this.onSubmit}
           disabled={this.state.disabled}
         >
-          <Text style={this.styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
+          <Text style={styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
         </TouchableHighlight>
         <TouchableHighlight
-          style={[this.styles.button, this.styles.cancelButton]}
+          style={[styles.button, styles.cancelButton]}
           onPress={this.onToggle}
           underlayColor="#eee"
         >
-          <Text style={[this.styles.buttonText, this.styles.cancelButtonText]}>{this.state.registerMode ? 'Already a member?' : 'Need an account?'}</Text>
+          <Text style={[styles.buttonText, styles.cancelButtonText]}>{this.state.registerMode ? 'Already a member?' : 'Need an account?'}</Text>
         </TouchableHighlight>
-        <View style={this.styles.buttons}>
+        <View style={styles.buttons}>
           <Icon.Button
             name="facebook"
             backgroundColor="#3b5998"
             onPress={this.loginWithFacebook}
-            {...this.iconStyles}
+            {...iconStyles}
           >
-            <Text style={this.styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
+            <Text style={styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
           </Icon.Button>
           <Icon.Button
             name="google"
             backgroundColor="#DD4B39"
             onPress={this.loginWithGoogle}
-            {...this.iconStyles}
+            {...iconStyles}
           >
-            <Text style={this.styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
+            <Text style={styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
           </Icon.Button>
         </View>
       </ScrollView>
@@ -331,10 +337,27 @@ class UserForm extends Component {
   }
 }
 UserForm.propTypes = {
-  onSubmit: PropTypes.func,
-  navigation: PropTypes.object,
-  screenProps: PropTypes.object,
-  currentApiCalls: PropTypes.number,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  currentApiCalls: PropTypes.number.isRequired,
+  auth: PropTypes.shape({
+    loggedIn: PropTypes.bool.isRequired,
+  }).isRequired,
+  actions: PropTypes.shape({
+    register: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-export default UserForm;
+function mapStateToProps(state) {
+  return state;
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ ...userActions }, dispatch),
+  };
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm);

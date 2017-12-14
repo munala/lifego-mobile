@@ -29,13 +29,6 @@ class App extends React.Component {
       searchMode: false,
     };
     this.initialRouteName = null;
-    this.onSave = this.onSave.bind(this);
-    this.onDone = this.onDone.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.setInitialRoute = this.setInitialRoute.bind(this);
-    this.toggleSideMenu = this.toggleSideMenu.bind(this);
-    this.toggleSearch = this.toggleSearch.bind(this);
-    this.onDelete = this.onDelete.bind(this);
     this.props.actions.checkToken();
     this.setInitialRoute(this.props);
     this.styles = {
@@ -49,7 +42,7 @@ class App extends React.Component {
     };
     AsyncStorage.setItem('first_run', 'true');
   }
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = (nextProps) => {
     if (this.props.auth.loggedIn !== nextProps.auth.loggedIn) {
       this.setInitialRoute(nextProps);
     }
@@ -60,7 +53,7 @@ class App extends React.Component {
       isLoading: nextProps.currentApiCalls > 0,
     });
   }
-  onSave(content, context) {
+  onSave = (content, context) => {
     if (context.name === 'bucketlist') {
       if (context.type === 'Add') {
         this.props.actions.saveBucketlist(content);
@@ -75,32 +68,21 @@ class App extends React.Component {
       }
     }
   }
-  onDelete(content, context) {
+  onDelete = (content, context) => {
     if (context.name === 'bucketlist') {
       this.props.actions.deleteBucketlist(content);
     } else if (context.name === 'item') {
       this.props.actions.deleteItem(context.bucketlist, content);
     }
   }
-  onDone(bucketlist, item) {
+  onDone=(bucketlist, item) => {
     const newItem = { ...item, done: !item.done };
     this.props.actions.updateItem(bucketlist, newItem);
   }
-  onSubmit(user, registerMode) {
-    if (registerMode) {
-      this.props.actions.register(user);
-    } else {
-      this.props.actions.login(user);
-    }
-  }
-  setInitialRoute(props) {
+  setInitialRoute=(props) => {
     const stack = {
       user: {
         screen: UserForm,
-        navigationOptions: () => ({
-          title: 'Login',
-          header: null,
-        }),
       },
       bucketlist: {
         screen: BucketList,
@@ -171,12 +153,12 @@ class App extends React.Component {
       },
     });
   }
-  toggleSideMenu() {
+  toggleSideMenu = () => {
     this.setState({
       isOpen: !this.state.isOpen,
     });
   }
-  toggleSearch() {
+  toggleSearch=() => {
     this.setState({
       searchMode: !this.state.searchMode,
     });
@@ -207,7 +189,7 @@ App.propTypes = {
   actions: PropTypes.object,
   auth: PropTypes.object,
   error: PropTypes.object,
-  currentApiCalls: PropTypes.number,
+  currentApiCalls: PropTypes.number.isRequired,
   data: PropTypes.object,
 };
 function mapStateToProps(state) {
