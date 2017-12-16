@@ -17,7 +17,7 @@ export default function render(baseStyles, handleTouch, setModalVisible) {
       component: (
         <CheckBox
           checked={content.done}
-          onIconPress={() => this.props.onDone(this.props.context.bucketlist, content)}
+          onIconPress={() => this.props.onDone(content)}
           containerStyle={{
             backgroundColor: 'transparent',
             borderWidth: 0,

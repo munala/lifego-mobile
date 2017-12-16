@@ -68,6 +68,11 @@ const styles = StyleSheet.create({
 });
 
 class BucketListForm extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state ? `${navigation.state.params.context.type} ${navigation.state.params.context.name}` : '',
+    headerRight: (<View />),
+  });
+
   state = {
     disabled: true,
     content: this.props.content,
@@ -78,13 +83,13 @@ class BucketListForm extends Component {
     content[type] = text;
     this.setState({
       content,
-      disabled: content.name.length === 0 || content === this.props.content,
+      disabled: !content.name || content === this.props.content,
     });
   }
 
   onSave = () => {
     const { onSave, showModal } = this.props;
-    onSave(this.state.content, this.props.context);
+    onSave(this.state.content, this.props.context.type);
     showModal('hide');
   }
 

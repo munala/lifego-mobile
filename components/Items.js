@@ -8,127 +8,174 @@ import {
   ListView,
   Switch,
   Text,
+  Alert,
   RefreshControl,
 } from 'react-native';
 import SideMenu from 'react-native-side-menu';
 import ActionButton from 'react-native-action-button';
 import { Icon, SearchBar } from 'react-native-elements';
 import Modal from 'react-native-modal';
-
+import { bindActionCreators } from 'redux';
+import * as bucketlistActions from '../actions/bucketlistActions';
+import * as userActions from '../actions/authActions';
 import BucketListForm from './BucketListForm';
 import Row from './Row';
 import MenuComponent from './SideMenu';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#00bcd4',
+    justifyContent: 'flex-start',
+  },
+  empty: {
+    height: 40,
+    margin: 20,
+    fontSize: 20,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#fff',
+    backgroundColor: 'transparent',
+  },
+  bucketlistRow: {
+    flex: 1,
+    margin: 20,
+    opacity: 0,
+  },
+  toggleRow: {
+    flexDirection: 'row',
+    paddingLeft: 10,
+    backgroundColor: 'transparent',
+    marginTop: 10,
+  },
+  toggleText: {
+    fontSize: 20,
+    paddingLeft: 10,
+    paddingTop: 3,
+    backgroundColor: 'transparent',
+    color: '#fff',
+  },
+  image: {
+    opacity: 0.8,
+    backgroundColor: '#aaa',
+    flex: 1,
+    resizeMode: 'cover',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  switch: {
+    backgroundColor: 'transparent',
+  },
+  modal: {
+    backgroundColor: 'transparent',
+    marginTop: 100,
+    position: 'absolute',
+    alignSelf: 'center',
+    width: '80%',
+  },
+  activity: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#00bcd4',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+});
+
+const dataSources = new ListView.DataSource({
+  rowHasChanged: (r1, r2) => r1 !== r2,
+});
+
 class Items extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.toggleFilter = this.toggleFilter.bind(this);
-    this.bucketlist = { ...this.props.navigation.state.params.bucketlist };
-    this.bucketlist.items = this.bucketlist.items ? this.bucketlist.items : [];
-    this.onRefresh = this.onRefresh.bind(this);
-    this.search = this.search.bind(this);
-    this.showModal = this.showModal.bind(this);
-    this.styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        backgroundColor: '#00bcd4',
-        justifyContent: 'flex-start',
-      },
-      empty: {
-        height: 40,
-        margin: 20,
-        fontSize: 20,
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#fff',
-        backgroundColor: 'transparent',
-      },
-      bucketlistRow: {
-        flex: 1,
-        margin: 20,
-        opacity: 0,
-      },
-      toggleRow: {
-        flexDirection: 'row',
-        paddingLeft: 10,
-        backgroundColor: 'transparent',
-        marginTop: 10,
-      },
-      toggleText: {
-        fontSize: 20,
-        paddingLeft: 10,
-        paddingTop: 3,
-        backgroundColor: 'transparent',
-        color: '#fff',
-      },
-      image: {
-        opacity: 0.8,
-        backgroundColor: '#aaa',
-        flex: 1,
-        resizeMode: 'cover',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-      },
-      switch: {
-        backgroundColor: 'transparent',
-      },
-      modal: {
-        backgroundColor: 'transparent',
-        marginTop: 100,
-        position: 'absolute',
-        alignSelf: 'center',
-        width: '80%',
-      },
-      activity: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#00bcd4',
-      },
-      horizontal: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 10,
-      },
+  static navigationOptions = ({ navigation }) => {
+    const { state } = navigation;
+    return ({
+      title: state.params ? state.params.bucketlist.name : '',
+      headerLeft: (
+        <Icon
+          name="chevron-left"
+          color="#00bcd4"
+          size={40}
+          containerStyle={{ marginLeft: 10 }}
+          onPress={() => { navigation.goBack(); }}
+        />
+      ),
+      headerRight: (
+        <Icon
+          name="search"
+          color="#00bcd4"
+          containerStyle={{ marginRight: 10 }}
+          onPress={state.params ? state.params.toggleSearch : () => {}}
+        />
+      ),
     });
-    this.data = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
-    });
-    this.state = {
-      bucketlist: this.bucketlist,
-      dataSource: this.data.cloneWithRows(this.bucketlist.items),
+  };
+
+    state = {
+      bucketlist: this.props.navigation.state.params.bucketlist,
+      dataSource: dataSources.cloneWithRows(this.props.navigation.state.params.bucketlist.items),
       filter: 'all',
       refreshing: false,
       visibleModal: false,
       context: {
         name: 'item',
-        bucketlist: this.props.navigation.state.params.bucketlist,
       },
       content: null,
+      searchMode: false,
+      isOpen: false,
     };
-    this.renderRow = this.renderRow.bind(this);
-  }
 
-  componentWillReceiveProps(nextProps) {
-    const bucketlist = [...nextProps.bucketlists
-      .filter(bucket => bucket.id === this.state.bucketlist.id)][0];
-    bucketlist.items = bucketlist.items ? bucketlist.items : [];
-    this.state.dataSource = this.data.cloneWithRows(bucketlist.items);
-    this.setState({
-      bucketlist,
-      dataSource: this.state.dataSource,
-    });
-  }
+    componentWillMount = () => {
+      const { error, navigation } = this.props;
+      if (error.value) {
+        Alert.alert(error.value);
+      }
+      navigation.setParams({
+        toggleSearch: this.toggleSearch,
+      });
+    }
 
-  onRefresh() {
-    this.setState({ refreshing: true });
-    this.props.screenProps.actions.loadBucketlists(0, 20, '').then(() => {
+    componentWillReceiveProps = (nextProps) => {
+      const bucketlist = [...nextProps.data.bucketlists
+        .filter(bucket => bucket.id === this.state.bucketlist.id)][0];
+      this.setState({
+        bucketlist,
+        dataSource: dataSources.cloneWithRows(bucketlist.items),
+      });
+    }
+
+    onRefresh = async () => {
+      this.setState({ refreshing: true });
+      await this.props.actions.loadBucketlists(0, 20, '');
       this.setState({ refreshing: false });
-    });
+    }
+
+    onDelete = (content) => {
+      this.props.actions.deleteItem(this.state.bucketlist, content);
+    }
+
+    onDone = (item) => {
+      const newItem = { ...item, done: !item.done };
+      this.props.actions.updateItem(this.state.bucketlist, newItem);
+    }
+
+  onSave = (content = {}, type) => {
+    const { actions } = this.props;
+    const { bucketlist } = this.state;
+    if (type === 'Add') {
+      actions.saveItem(bucketlist, content);
+    } else {
+      actions.updateItem(bucketlist, content);
+    }
   }
-  showModal(type, content) {
+
+  showModal = (type, content) => {
     this.setState({
       visibleModal: type !== 'hide',
       context: {
@@ -139,49 +186,56 @@ class Items extends Component {
     });
   }
 
-  toggleFilter() {
+  toggleFilter = () => {
     const filter = this.state.filter === 'all' ? 'pending' : 'all';
     this.setState({
       filter,
-      dataSource: this.data.cloneWithRows(this.state.bucketlist.items
+      dataSource: dataSources.cloneWithRows(this.state.bucketlist.items
         .filter(item => (filter === 'all' || (filter === 'pending' && !item.done)))),
     });
   }
-  search(text) {
-    this.state.dataSource = this.data.cloneWithRows(
-      this.state.bucketlist.items
-        .filter(item => item.name.toLowerCase().indexOf(text.toLowerCase()) !== -1));
+
+  toggleSearch=() => {
     this.setState({
-      dataSource: this.state.dataSource,
+      searchMode: !this.state.searchMode,
+    });
+  }
+
+  search = (text) => {
+    this.setState({
+      dataSource: dataSources.cloneWithRows(
+        this.state.bucketlist.items
+          .filter(item => item.name.toLowerCase().indexOf(text.toLowerCase()) !== -1)),
       refreshing: false,
     });
   }
 
-  renderRow(item) {
-    return (
-      <Row
-        onDone={this.props.screenProps.onDone}
-        onDelete={this.props.screenProps.onDelete}
-        style={this.styles.bucketlistRow}
-        navigation={this.props.navigation}
-        content={item}
-        context={this.state.context}
-        showModal={this.showModal}
-      />
-    );
-  }
+  renderRow = item => (
+    <Row
+      onDone={this.onDone}
+      onDelete={this.onDelete}
+      style={styles.bucketlistRow}
+      navigation={this.props.navigation}
+      content={item}
+      context={this.state.context}
+      showModal={this.showModal}
+    />
+  )
 
   render() {
+    const {
+      visibleModal, content, context, filter, searchMode, dataSource, bucketlist,
+    } = this.state;
+    const { currentApiCalls, actions } = this.props;
     return (
       <SideMenu
-        menu={MenuComponent(this.props.screenProps.actions.logout)}
-        isOpen={this.props.screenProps.isOpen}
+        menu={MenuComponent(actions.logout)}
       >
         <ScrollView
-          contentContainerStyle={this.styles.container}
+          contentContainerStyle={styles.container}
         >
           <Modal
-            isVisible={this.state.visibleModal}
+            isVisible={visibleModal}
             backdropColor={'black'}
             backdropOpacity={0.5}
             animationIn={'zoomInDown'}
@@ -190,17 +244,17 @@ class Items extends Component {
             animationOutTiming={200}
             backdropTransitionInTiming={200}
             backdropTransitionOutTiming={200}
-            style={this.styles.modal}
+            style={styles.modal}
           >
             <BucketListForm
-              context={this.state.context}
-              content={this.state.content}
+              context={context}
+              content={content}
               showModal={this.showModal}
-              onSave={this.props.screenProps.onSave}
+              onSave={this.onSave}
             />
           </Modal>
           {
-            this.props.screenProps.searchMode &&
+            searchMode &&
             <SearchBar
               lightTheme
               round
@@ -223,42 +277,37 @@ class Items extends Component {
               onChangeText={this.search}
             />
           }
-          <View style={this.styles.toggleRow}>
+          <View style={styles.toggleRow}>
             <Switch
-              style={this.styles.switch}
-              value={this.state.filter === 'pending'}
+              style={styles.switch}
+              value={filter === 'pending'}
               onValueChange={this.toggleFilter}
             />
             <Text
-              style={this.styles.toggleText}
-            >Showing {this.state.filter} items</Text>
+              style={styles.toggleText}
+            >Showing {filter} items</Text>
           </View>
           {
-            (!this.state.context.bucketlist.items
-              || (
-                this.state.context.bucketlist.items
-                && this.state.context.bucketlist.items.length === 0
-              )
-            )
-            &&
+            bucketlist.items &&
+            bucketlist.items.length === 0 &&
             <View>
-              <Text style={[this.styles.buttonText, this.styles.empty]}>
+              <Text style={[styles.buttonText, styles.empty]}>
                 You have no items
               </Text>
             </View>
           }
           {
-            this.state.context.bucketlist.items &&
+            bucketlist.items &&
             <ScrollView>
               <ListView
                 enableEmptySections
-                key={this.state.items}
-                dataSource={this.state.dataSource}
+                key={bucketlist.items}
+                dataSource={dataSource}
                 renderRow={this.renderRow}
-                style={this.styles.listView}
+                style={styles.listView}
                 refreshControl={
                   <RefreshControl
-                    refreshing={this.props.screenProps.currentApiCalls > 0}
+                    refreshing={currentApiCalls > 0}
                     onRefresh={this.onRefresh}
                     colors={['#05A5D1']}
                     tintColor="#fff"
@@ -270,7 +319,7 @@ class Items extends Component {
           <ActionButton
             buttonColor="rgba(255,255,255,1)"
             icon={<Icon name="add" color="#00bcd4" />}
-            onPress={this.showModal.bind(null, 'Add', null)}
+            onPress={() => this.showModal('Add')}
           />
         </ScrollView>
       </SideMenu>
@@ -279,14 +328,64 @@ class Items extends Component {
 }
 
 Items.propTypes = {
-  bucketlists: PropTypes.array,
-  navigation: PropTypes.object,
-  screenProps: PropTypes.object,
-  currentApiCalls: PropTypes.number,
+  data: PropTypes.shape({
+    bucketlists: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      createdAt: PropTypes.string.isRequired,
+      updatedAt: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      items: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
+        createdAt: PropTypes.string.isRequired,
+        updatedAt: PropTypes.string.isRequired,
+        done: PropTypes.bool.isRequired,
+      })).isRequired,
+    })).isRequired,
+  }).isRequired,
+  actions: PropTypes.shape({
+    loadBucketlists: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
+    saveItem: PropTypes.func.isRequired,
+    updateItem: PropTypes.func.isRequired,
+    deleteItem: PropTypes.func.isRequired,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    setParams: PropTypes.func.isRequired,
+    state: PropTypes.shape({
+      params: PropTypes.shape({
+        bucketlist: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          id: PropTypes.number.isRequired,
+          createdAt: PropTypes.string.isRequired,
+          updatedAt: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          items: PropTypes.arrayOf(PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            id: PropTypes.number.isRequired,
+            createdAt: PropTypes.string.isRequired,
+            updatedAt: PropTypes.string.isRequired,
+            done: PropTypes.bool.isRequired,
+          })).isRequired,
+        }).isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+  error: PropTypes.shape({
+    value: PropTypes.string,
+  }).isRequired,
+  currentApiCalls: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state) {
-  return { bucketlists: state.data.bucketlists, currentApiCalls: state.currentApiCalls };
+  return state;
 }
 
-export default connect(mapStateToProps)(Items);
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ ...bucketlistActions, ...userActions }, dispatch),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Items);

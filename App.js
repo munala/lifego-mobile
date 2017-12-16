@@ -57,33 +57,9 @@ class App extends React.Component {
       },
       items: {
         screen: Items,
-        navigationOptions: ({ navigation }) => ({
-          title: navigation.state.params.bucketlist.name,
-          headerLeft: (
-            <Icon
-              name="chevron-left"
-              color="#00bcd4"
-              size={40}
-              containerStyle={{ marginLeft: 10 }}
-              onPress={() => { navigation.goBack(); }}
-            />
-          ),
-          headerRight: (
-            <Icon
-              name="search"
-              color="#00bcd4"
-              containerStyle={{ marginRight: 10 }}
-              onPress={this.toggleSearch}
-            />
-          ),
-        }),
       },
       bucketlistform: {
         screen: BucketListForm,
-        navigationOptions: ({ navigation }) => ({
-          title: `${navigation.state.params.context.type} ${navigation.state.params.context.name}`,
-          headerRight: (<View />),
-        }),
       },
     };
     if (props.auth.loggedIn) {

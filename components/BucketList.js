@@ -137,26 +137,17 @@ class BucketList extends Component {
     this.setState({ refreshing: false });
   }
 
-  onSave = (content, context) => {
+  onSave = (content, type) => {
     const { actions } = this.props;
-    if (context.type === 'Add') {
+    if (type === 'Add') {
       actions.saveBucketlist(content);
     } else {
       actions.updateBucketlist(content);
     }
   }
 
-  onDelete = (content, context) => {
-    if (context.name === 'bucketlist') {
-      this.props.actions.deleteBucketlist(content);
-    } else if (context.name === 'item') {
-      this.props.actions.deleteItem(context.bucketlist, content);
-    }
-  }
-
-  onDone = (bucketlist, item) => {
-    const newItem = { ...item, done: !item.done };
-    this.props.actions.updateItem(bucketlist, newItem);
+  onDelete = (content) => {
+    this.props.actions.deleteBucketlist(content);
   }
 
   showModal = (type, content = {}) => {
@@ -304,7 +295,7 @@ BucketList.propTypes = {
       id: PropTypes.number.isRequired,
       createdAt: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
+      description: PropTypes.string,
       items: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string.isRequired,
         id: PropTypes.number.isRequired,
@@ -322,9 +313,6 @@ BucketList.propTypes = {
   actions: PropTypes.shape({
     loadBucketlists: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
-    saveItem: PropTypes.func.isRequired,
-    updateItem: PropTypes.func.isRequired,
-    deleteItem: PropTypes.func.isRequired,
     saveBucketlist: PropTypes.func.isRequired,
     updateBucketlist: PropTypes.func.isRequired,
     deleteBucketlist: PropTypes.func.isRequired,
