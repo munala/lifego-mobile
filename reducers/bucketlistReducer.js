@@ -1,6 +1,8 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
+let bucketList;
+
 export default function bucketlistReducer(
   state = initialState.data,
   action,
@@ -13,10 +15,10 @@ export default function bucketlistReducer(
       };
 
     case types.CREATE_BUCKETLIST_SUCCESS:
-      action.bucketlist.items = [];
+      bucketList = { ...action.bucketlist, items: [] };
       return {
         ...state,
-        bucketlists: [action.bucketlist, ...state.bucketlists],
+        bucketlists: [bucketList, ...state.bucketlists],
       };
 
     case types.UPDATE_BUCKETLIST_SUCCESS:

@@ -10,106 +10,99 @@ import {
 } from 'react-native';
 import { Card } from 'react-native-elements';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    backgroundColor: '#f7f7f7',
+    borderRadius: 5,
+  },
+  input: {
+    color: '#fff',
+    fontWeight: '600',
+    marginLeft: 0,
+    marginRight: 0,
+    marginBottom: 3,
+    flexBasis: '100%',
+    marginTop: 2,
+    padding: Platform.OS === 'ios' ? 15 : 5,
+    borderRadius: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderBottomColor: '#00bcd4',
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
+    backgroundColor: 'transparent',
+  },
+  button: {
+    borderRadius: 5,
+    flexDirection: 'row',
+    flexBasis: '45%',
+    backgroundColor: '#00bcd4',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+  },
+  cancelButton: {
+    backgroundColor: '#666',
+  },
+  buttons: {
+    flexBasis: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: '20%',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  title: {
+    color: '#00bcd4',
+  },
+  divider: {
+    backgroundColor: '#00bcd4',
+  },
+});
+
 class BucketListForm extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.onChange = this.onChange.bind(this);
-    this.onSave = this.onSave.bind(this);
-    this.content = this.props.context.type === 'Edit' ?
-      this.props.content :
-      { name: '', description: '' };
-    this.state = {
-      disabled: true,
-      content: this.content,
-    };
-    this.context = this.props.context;
-    this.styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        alignContent: 'center',
-        backgroundColor: '#f7f7f7',
-        borderRadius: 5,
-      },
-      input: {
-        color: '#fff',
-        fontWeight: '600',
-        marginLeft: 0,
-        marginRight: 0,
-        marginBottom: 3,
-        flexBasis: '100%',
-        marginTop: 2,
-        padding: Platform.OS === 'ios' ? 15 : 5,
-        borderRadius: 5,
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        borderBottomColor: '#00bcd4',
-      },
-      buttonText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#fff',
-        backgroundColor: 'transparent',
-      },
-      button: {
-        borderRadius: 5,
-        flexDirection: 'row',
-        flexBasis: '45%',
-        backgroundColor: '#00bcd4',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 5,
-      },
-      cancelButton: {
-        backgroundColor: '#666',
-      },
-      buttons: {
-        flexBasis: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: '20%',
-        marginTop: 5,
-        marginBottom: 5,
-      },
-      title: {
-        color: '#00bcd4',
-      },
-      divider: {
-        backgroundColor: '#00bcd4',
-      },
-    });
-  }
-  onChange(type, text) {
+  state = {
+    disabled: true,
+    content: this.props.content,
+  };
+
+  onChange = (text, type) => {
     const content = { ...this.state.content };
     content[type] = text;
-    Promise.resolve().then(() => this.setState({
+    this.setState({
       content,
-    }))
-      .then(() => {
-        this.setState({
-          disabled: this.state.content.name.length === 0 || this.state.content === this.content,
-        });
-      });
+      disabled: content.name.length === 0 || content === this.props.content,
+    });
   }
-  onSave() {
-    this.props.onSave(this.state.content, this.props.context);
-    this.props.showModal('hide');
+
+  onSave = () => {
+    const { onSave, showModal } = this.props;
+    onSave(this.state.content, this.props.context);
+    showModal('hide');
   }
 
   render() {
+    const { context, showModal } = this.props;
+    const { content } = this.state;
     return (
       <Card
-        containerStyle={this.styles.container}
-        title={`${this.props.context.type} ${this.props.context.name}`}
-        titleStyle={this.styles.title}
-        dividerStyle={this.styles.divider}
+        containerStyle={styles.container}
+        title={`${context.type} ${context.name}`}
+        titleStyle={styles.title}
+        dividerStyle={styles.divider}
       >
         <TextInput
-          defaultValue={this.state.content.name}
-          style={this.styles.input}
-          onChangeText={this.onChange.bind(null, 'name')}
-          selectTextOnFocus={this.props.context === 'Edit'}
+          defaultValue={content.name}
+          style={styles.input}
+          onChangeText={text => this.onChange(text, 'name')}
+          selectTextOnFocus={context.type === 'Edit'}
           enablesReturnKeyAutomatically
           returnKeyType="next"
           underlineColorAndroid="rgba(0,0,0,0)"
@@ -117,28 +110,28 @@ class BucketListForm extends Component {
           placeholder="name"
         />
         <TextInput
-          defaultValue={this.state.content.description}
+          defaultValue={content.description}
           multiline
-          style={this.styles.input}
-          onChangeText={this.onChange.bind(null, 'description')}
+          style={styles.input}
+          onChangeText={text => this.onChange(text, 'description')}
           underlineColorAndroid="rgba(0,0,0,0)"
           placeholderTextColor="#eee"
           placeholder="description"
         />
-        <View style={this.styles.buttons}>
+        <View style={styles.buttons}>
           <TouchableHighlight
-            style={this.styles.button}
+            style={styles.button}
             onPress={this.onSave}
             disabled={this.state.disabled}
           >
-            <Text style={this.styles.buttonText}>Save</Text>
+            <Text style={styles.buttonText}>Save</Text>
           </TouchableHighlight>
           <TouchableHighlight
-            style={[this.styles.button, this.styles.cancelButton]}
+            style={[styles.button, styles.cancelButton]}
             onPress={() =>
-              this.props.showModal('hide', this.state.content)}
+              showModal('hide')}
           >
-            <Text style={this.styles.buttonText}>Cancel</Text>
+            <Text style={styles.buttonText}>Cancel</Text>
           </TouchableHighlight>
         </View>
       </Card>
@@ -146,10 +139,26 @@ class BucketListForm extends Component {
   }
 }
 BucketListForm.propTypes = {
-  onSave: PropTypes.func,
-  context: PropTypes.object,
-  content: PropTypes.object,
-  showModal: PropTypes.func,
+  onSave: PropTypes.func.isRequired,
+  context: PropTypes.shape({
+    type: PropTypes.string,
+    name: PropTypes.string,
+  }),
+  content: PropTypes.shape({
+    description: PropTypes.string,
+    name: PropTypes.string,
+  }),
+  showModal: PropTypes.func.isRequired,
+};
+BucketListForm.defaultProps = {
+  content: {
+    description: '',
+    name: '',
+  },
+  context: {
+    type: 'Add',
+    name: '',
+  },
 };
 
 export default BucketListForm;
