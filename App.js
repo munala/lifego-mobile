@@ -22,12 +22,6 @@ import UserForm from './components/UserForm';
 class App extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      ...this.props,
-      isLoading: this.props.currentApiCalls > 0,
-      isOpen: false,
-      searchMode: false,
-    };
     this.initialRouteName = null;
     this.props.actions.checkToken();
     this.setInitialRoute(this.props);
@@ -53,32 +47,6 @@ class App extends React.Component {
       isLoading: nextProps.currentApiCalls > 0,
     });
   }
-  onSave = (content, context) => {
-    if (context.name === 'bucketlist') {
-      if (context.type === 'Add') {
-        this.props.actions.saveBucketlist(content);
-      } else {
-        this.props.actions.updateBucketlist(content);
-      }
-    } else if (context.name === 'item') {
-      if (context.type === 'Add') {
-        this.props.actions.saveItem(context.bucketlist, content);
-      } else {
-        this.props.actions.updateItem(context.bucketlist, content);
-      }
-    }
-  }
-  onDelete = (content, context) => {
-    if (context.name === 'bucketlist') {
-      this.props.actions.deleteBucketlist(content);
-    } else if (context.name === 'item') {
-      this.props.actions.deleteItem(context.bucketlist, content);
-    }
-  }
-  onDone=(bucketlist, item) => {
-    const newItem = { ...item, done: !item.done };
-    this.props.actions.updateItem(bucketlist, newItem);
-  }
   setInitialRoute=(props) => {
     const stack = {
       user: {
@@ -86,25 +54,6 @@ class App extends React.Component {
       },
       bucketlist: {
         screen: BucketList,
-        navigationOptions: () => ({
-          title: 'Bucketlists',
-          headerLeft: (
-            <Icon
-              name="menu"
-              color="#00bcd4"
-              containerStyle={{ marginLeft: 10 }}
-              onPress={this.toggleSideMenu}
-            />
-          ),
-          headerRight: (
-            <Icon
-              name="search"
-              color="#00bcd4"
-              containerStyle={{ marginRight: 10 }}
-              onPress={this.toggleSearch}
-            />
-          ),
-        }),
       },
       items: {
         screen: Items,
@@ -140,7 +89,7 @@ class App extends React.Component {
     if (props.auth.loggedIn) {
       delete stack.user;
     }
-    this.RootApp = StackNavigator(stack, {
+    this.rootApp = StackNavigator(stack, {
       navigationOptions: {
         headerStyle: {
           backgroundColor: 'white',
@@ -153,35 +102,11 @@ class App extends React.Component {
       },
     });
   }
-  toggleSideMenu = () => {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
-  }
-  toggleSearch=() => {
-    this.setState({
-      searchMode: !this.state.searchMode,
-    });
-  }
 
   render() {
+    const RootApp = this.rootApp;
     return (
-      <this.RootApp
-        screenProps={{
-          bucketlists: this.props.data.bucketlists,
-          loggedIn: this.props.auth.loggedIn,
-          token: this.props.auth.token,
-          onDone: this.onDone,
-          onDelete: this.onDelete,
-          onSave: this.onSave,
-          onSubmit: this.onSubmit,
-          actions: this.props.actions,
-          isOpen: this.state.isOpen,
-          searchMode: this.state.searchMode,
-          toggleSideMenu: this.toggleSideMenu,
-          currentApiCalls: this.props.currentApiCalls,
-        }}
-      />
+      <RootApp />
     );
   }
 }
