@@ -1,13 +1,16 @@
 import { Provider } from 'react-redux';
 import React from 'react';
+import { PersistGate } from 'redux-persist/es/integration/react';
 
 import configureStore from './store/configureStore';
 import App from './App';
 
-const store = configureStore();
+const { store, persistor } = configureStore();
 
 export default () => (
   <Provider store={store}>
-    <App />
+    <PersistGate persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 );
