@@ -46,9 +46,7 @@ export default function bucketlistReducer(
             if (bucketlist.id === action.bucketlist.id) {
               return {
                 ...bucketlist,
-                items: [
-                  action.item, ...bucketlist.items,
-                ],
+                items: [action.item, ...bucketlist.items],
               };
             }
             return bucketlist;

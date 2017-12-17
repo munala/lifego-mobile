@@ -25,125 +25,118 @@ const handleError = (dispatch, error) => {
   }
 };
 
-export function loadBucketlists(offset, limit, search) {
-  return function (dispatch) {
-    dispatch({
-      type: types.BEGIN_API_CALL,
-    });
-    return BucketlistService.getAllBucketlists(
+export const loadBucketlists = (offset, limit, search) => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    const response = await BucketlistService.getAllBucketlists(
       offset, limit, search,
-    ).then((response) => {
-      dispatch({
-        type: types.LOAD_BUCKETLISTS_SUCCESS,
-        bucketlists: response.bucketlists,
-      });
-    }).catch((error) => {
-      handleError(dispatch, error);
-    });
-  };
-}
-
-export function saveBucketlist(bucketlist) {
-  return function (dispatch) {
+    );
     dispatch({
-      type: types.BEGIN_API_CALL,
+      type: types.LOAD_BUCKETLISTS_SUCCESS,
+      bucketlists: response.bucketlists,
     });
-    return BucketlistService.saveBucketlist(
+  } catch (error) {
+    handleError(dispatch, error);
+  }
+};
+
+export const saveBucketlist = bucketlist => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    const savedBucketlist = await BucketlistService.saveBucketlist(
       bucketlist,
-    ).then((savedBucketlist) => {
-      dispatch({
-        type: types.CREATE_BUCKETLIST_SUCCESS,
-        bucketlist: savedBucketlist,
-      });
-    }).catch((error) => {
-      handleError(dispatch, error);
-    });
-  };
-}
-
-export function updateBucketlist(bucketlist) {
-  return function (dispatch) {
+    );
     dispatch({
-      type: types.BEGIN_API_CALL,
+      type: types.CREATE_BUCKETLIST_SUCCESS,
+      bucketlist: savedBucketlist,
     });
-    return BucketlistService.updateBucketlist(
+  } catch (error) {
+    handleError(dispatch, error);
+  }
+};
+
+export const updateBucketlist = bucketlist => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    const savedBucketlist = await BucketlistService.updateBucketlist(
       bucketlist,
-    ).then((savedBucketlist) => {
-      dispatch({
-        type: types.UPDATE_BUCKETLIST_SUCCESS,
-        bucketlist: { ...savedBucketlist, items: bucketlist.items },
-      });
-    }).catch((error) => {
-      handleError(dispatch, error);
-    });
-  };
-}
-
-export function deleteBucketlist(bucketlist) {
-  return function (dispatch) {
+    );
     dispatch({
-      type: types.BEGIN_API_CALL,
+      type: types.UPDATE_BUCKETLIST_SUCCESS,
+      bucketlist: { ...savedBucketlist, items: bucketlist.items },
     });
-    return BucketlistService.deleteBucketlist(
+  } catch (error) {
+    handleError(dispatch, error);
+  }
+};
+
+export const deleteBucketlist = bucketlist => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    await BucketlistService.deleteBucketlist(
       bucketlist,
-    ).then(() => {
-      dispatch({
-        type: types.DELETE_BUCKETLIST_SUCCESS,
-        bucketlist,
-      });
-    }).catch((error) => {
-      handleError(dispatch, error);
-    });
-  };
-}
-
-export function saveItem(bucketlist, item) {
-  return function (dispatch) {
+    );
     dispatch({
-      type: types.BEGIN_API_CALL,
+      type: types.DELETE_BUCKETLIST_SUCCESS,
+      bucketlist,
     });
-    return BucketlistService.addItem(bucketlist, item).then((savedItem) => {
-      dispatch({
-        type: types.CREATE_ITEM_SUCCESS,
-        bucketlist,
-        item: savedItem,
-      });
-    }).catch((error) => {
-      handleError(dispatch, error);
-    });
-  };
-}
+  } catch (error) {
+    handleError(dispatch, error);
+  }
+};
 
-export function updateItem(bucketlist, item) {
-  return function (dispatch) {
+export const saveItem = (bucketlist, item) => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    const savedItem = await BucketlistService.addItem(bucketlist, item);
     dispatch({
-      type: types.BEGIN_API_CALL,
+      type: types.CREATE_ITEM_SUCCESS,
+      bucketlist,
+      item: savedItem,
     });
-    return BucketlistService.updateItem(bucketlist, item).then((savedItem) => {
-      dispatch({
-        type: types.UPDATE_ITEM_SUCCESS,
-        bucketlist,
-        item: savedItem,
-      });
-    }).catch((error) => {
-      handleError(dispatch, error);
-    });
-  };
-}
+  } catch (error) {
+    handleError(dispatch, error);
+  }
+};
 
-export function deleteItem(bucketlist, item) {
-  return function (dispatch) {
+export const updateItem = (bucketlist, item) => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    const savedItem = await BucketlistService.updateItem(bucketlist, item);
     dispatch({
-      type: types.BEGIN_API_CALL,
+      type: types.UPDATE_ITEM_SUCCESS,
+      bucketlist,
+      item: savedItem,
     });
-    return BucketlistService.deleteItem(bucketlist, item).then(() => {
-      dispatch({
-        type: types.DELETE_ITEM_SUCCESS,
-        bucketlist,
-        item,
-      });
-    }).catch((error) => {
-      handleError(dispatch, error);
+  } catch (error) {
+    handleError(dispatch, error);
+  }
+};
+
+export const deleteItem = (bucketlist, item) => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    await BucketlistService.deleteItem(bucketlist, item);
+    dispatch({
+      type: types.DELETE_ITEM_SUCCESS,
+      bucketlist,
+      item,
     });
-  };
-}
+  } catch (error) {
+    handleError(dispatch, error);
+  }
+};

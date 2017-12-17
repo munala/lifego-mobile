@@ -19,69 +19,64 @@ const handleError = (error, dispatch) => {
   }, 1);
 };
 
-export function login(user) {
-  return function (dispatch) {
+export const login = user => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    const token = await UserService.loginUser(user);
+    await AsyncStorage.setItem('token', token);
     dispatch({
-      type: types.BEGIN_API_CALL,
+      type: types.LOGIN_SUCCESS,
+      token,
+      loggedIn: true,
     });
-    return UserService.loginUser(user).then((token) => {
-      AsyncStorage.setItem('token', token).then(() => {
-        dispatch({
-          type: types.LOGIN_SUCCESS,
-          token,
-          loggedIn: true,
-        });
-      });
-    }).catch((error) => {
-      handleError(error, dispatch);
-    });
-  };
-}
+  } catch (error) {
+    handleError(error, dispatch);
+  }
+};
 
-export function register(user) {
-  return function (dispatch) {
+export const register = user => async (dispatch) => {
+  dispatch({
+    type: types.BEGIN_API_CALL,
+  });
+  try {
+    await UserService.registerUser(user);
+    dispatch(login(user));
     dispatch({
-      type: types.BEGIN_API_CALL,
+      type: types.API_CALL_ERROR,
+      value: '',
     });
-    return UserService.registerUser(user).then(() => {
-      dispatch(login(user));
-      dispatch({
-        type: types.API_CALL_ERROR,
-        value: '',
-      });
-    }).catch((error) => {
-      handleError(error, dispatch);
-    });
-  };
-}
+  } catch (error) {
+    handleError(error, dispatch);
+  }
+};
 
-export function checkToken() {
-  return function (dispatch) {
-    return AsyncStorage.getItem('token').then((token) => {
-      dispatch({
-        type: types.CHECK_TOKEN,
-        loggedIn: !!token,
-        token,
-      });
-    }).catch((error) => {
-      dispatch({
-        type: types.SHOW_ERROR,
-        value: error,
-      });
+export const checkToken = () => async (dispatch) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    dispatch({
+      type: types.CHECK_TOKEN,
+      loggedIn: !!token,
+      token,
     });
-  };
-}
+  } catch (error) {
+    dispatch({
+      type: types.SHOW_ERROR,
+      value: error,
+    });
+  }
+};
 
-export function logout() {
-  return function (dispatch) {
-    return AsyncStorage.removeItem('token').then(() => {
-      dispatch({
-        type: types.CHECK_TOKEN,
-        loggedIn: false,
-        token: '',
-      });
-    }).catch((error) => {
-      handleError(error, dispatch);
+export const logout = () => async (dispatch) => {
+  try {
+    await AsyncStorage.removeItem('token');
+    dispatch({
+      type: types.CHECK_TOKEN,
+      loggedIn: false,
+      token: null,
     });
-  };
-}
+  } catch (error) {
+    handleError(error, dispatch);
+  }
+};

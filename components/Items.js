@@ -114,64 +114,72 @@ class Items extends Component {
           onPress={state.params ? state.params.toggleSearch : () => {}}
         />
       ),
+      headerStyle: {
+        backgroundColor: 'white',
+      },
+      headerTitleStyle: {
+        alignSelf: 'center',
+        textAlign: 'center',
+        color: '#00bcd4',
+      },
     });
   };
 
-    state = {
-      bucketlist: this.props.navigation.state.params.bucketlist,
-      dataSource: dataSources.cloneWithRows(this.props.navigation.state.params.bucketlist.items),
-      filter: 'all',
-      refreshing: false,
-      visibleModal: false,
-      context: {
-        name: 'item',
-      },
-      content: null,
-      searchMode: false,
-      isOpen: false,
-    };
+  state = {
+    bucketlist: this.props.navigation.state.params.bucketlist,
+    dataSource: dataSources.cloneWithRows(this.props.navigation.state.params.bucketlist.items),
+    filter: 'all',
+    refreshing: false,
+    visibleModal: false,
+    context: {
+      name: 'item',
+    },
+    content: null,
+    searchMode: false,
+    isOpen: false,
+  };
 
-    componentWillMount = () => {
-      const { error, navigation } = this.props;
-      if (error.value) {
-        Alert.alert(error.value);
-      }
-      navigation.setParams({
-        toggleSearch: this.toggleSearch,
-      });
+  componentWillMount = () => {
+    const { error, navigation } = this.props;
+    if (error.value) {
+      Alert.alert(error.value);
     }
+    navigation.setParams({
+      toggleSearch: this.toggleSearch,
+    });
+  }
 
-    componentWillReceiveProps = (nextProps) => {
-      const bucketlist = [...nextProps.data.bucketlists
-        .filter(bucket => bucket.id === this.state.bucketlist.id)][0];
-      this.setState({
-        bucketlist,
-        dataSource: dataSources.cloneWithRows(bucketlist.items),
-      });
-    }
+  componentWillReceiveProps = (nextProps) => {
+    const bucketlist = [...nextProps.data.bucketlists
+      .filter(bucket => bucket.id === this.state.bucketlist.id)][0];
+    this.setState({
+      bucketlist,
+      dataSource: dataSources.cloneWithRows(bucketlist.items),
+    });
+  }
 
-    onRefresh = async () => {
-      this.setState({ refreshing: true });
-      await this.props.actions.loadBucketlists(0, 20, '');
-      this.setState({ refreshing: false });
-    }
+  onRefresh = async () => {
+    this.setState({ refreshing: true });
+    await this.props.actions.loadBucketlists(0, 20, '');
+    this.setState({ refreshing: false });
+  }
 
-    onDelete = (content) => {
-      this.props.actions.deleteItem(this.state.bucketlist, content);
-    }
+  onDelete = (content) => {
+    this.props.actions.deleteItem(this.state.bucketlist, content);
+  }
 
-    onDone = (item) => {
-      const newItem = { ...item, done: !item.done };
-      this.props.actions.updateItem(this.state.bucketlist, newItem);
-    }
+  onDone = (item) => {
+    const newItem = { ...item, done: !item.done };
+    this.props.actions.updateItem(this.state.bucketlist, newItem);
+  }
 
-  onSave = (content = {}, type) => {
+  onSave = (item = {}, type) => {
     const { actions } = this.props;
     const { bucketlist } = this.state;
     if (type === 'Add') {
-      actions.saveItem(bucketlist, content);
+      actions.saveItem(bucketlist, item);
     } else {
-      actions.updateItem(bucketlist, content);
+      actions.updateItem(bucketlist, { ...item });
     }
   }
 

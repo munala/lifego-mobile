@@ -86,11 +86,18 @@ class BucketList extends Component {
           onPress={state.params ? state.params.toggleSearch : () => {}}
         />
       ),
+      headerStyle: {
+        backgroundColor: 'white',
+      },
+      headerTitleStyle: {
+        alignSelf: 'center',
+        textAlign: 'center',
+        color: '#00bcd4',
+      },
     });
   }
 
   state = {
-    dataSource: dataSources.cloneWithRows(this.props.data.bucketlists),
     refreshing: true,
     visibleModal: false,
     context: {
@@ -99,6 +106,7 @@ class BucketList extends Component {
     content: {},
     isOpen: false,
     searchMode: false,
+    searchText: '',
   };
 
   componentWillMount = async () => {
@@ -125,24 +133,18 @@ class BucketList extends Component {
     }
   }
 
-  componentWillReceiveProps = ({ data }) => {
-    this.setState({
-      dataSource: dataSources.cloneWithRows(data.bucketlists),
-    });
-  }
-
   onRefresh = async () => {
     this.setState({ refreshing: true });
     await this.props.actions.loadBucketlists(0, 20, '');
     this.setState({ refreshing: false });
   }
 
-  onSave = (content, type) => {
+  onSave = (bucketlist, type) => {
     const { actions } = this.props;
     if (type === 'Add') {
-      actions.saveBucketlist(content);
+      actions.saveBucketlist(bucketlist);
     } else {
-      actions.updateBucketlist(content);
+      actions.updateBucketlist({ ...bucketlist });
     }
   }
 
@@ -167,6 +169,7 @@ class BucketList extends Component {
         this.props.data.bucketlists
           .filter(bucketlist => bucketlist.name.toLowerCase().indexOf(text.toLowerCase()) !== -1)),
       refreshing: false,
+      searchText: text,
     });
   }
 
@@ -184,7 +187,6 @@ class BucketList extends Component {
 
   renderRow = bucketlist => (
     <Row
-      onDone={this.onDone}
       onDelete={this.onDelete}
       style={styles.bucketlistRow}
       navigation={this.props.navigation}
@@ -195,16 +197,21 @@ class BucketList extends Component {
   )
 
   render() {
-    const { currentApiCalls, data, error, actions } = this.props;
+    const { currentApiCalls, error, data, actions, navigation } = this.props;
     const {
-      isOpen, visibleModal, content, context, searchMode, dataSource, bucketlists,
+      isOpen, visibleModal, content, context, searchMode, searchText,
     } = this.state;
+    const bucketlists = data.bucketlists
+      .filter(bucketlist => bucketlist.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
     return (
       <SideMenu
-        menu={MenuComponent(
-          actions.logout,
-          this.toggleSideMenu,
-        )}
+        menu={
+          <MenuComponent
+            logout={actions.logout}
+            reset={this.toggleSideMenu}
+            navigate={navigation.navigate}
+          />
+        }
         isOpen={isOpen}
       >
         <ScrollView
@@ -263,8 +270,8 @@ class BucketList extends Component {
               :
               <ListView
                 enableEmptySections
-                key={bucketlists}
-                dataSource={dataSource}
+                key={data.bucketlists}
+                dataSource={dataSources.cloneWithRows(bucketlists)}
                 renderRow={this.renderRow}
                 style={styles.listView}
                 refreshControl={

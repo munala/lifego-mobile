@@ -13,6 +13,7 @@ import {
   View,
   AsyncStorage,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
   },
 });
 
+let token;
 
 class UserForm extends Component {
     static navigationOptions = () => ({
@@ -144,16 +146,26 @@ class UserForm extends Component {
       },
     };
   componentWillMount = async () => {
-    const { auth, navigation } = this.props;
-    const firstRun = await AsyncStorage.getItem('first_run');
-    if (auth.loggedIn) {
+    const { navigation, error } = this.props;
+    token = await AsyncStorage.getItem('token');
+    if (token) {
       navigation.navigate('bucketlist');
     }
-    if (!auth.loggedIn && (Platform.OS === 'ios' ? true : JSON.parse(firstRun))) {
-      Linking.addEventListener('url', this.handleOpenURL);
-      const url = await Linking.getInitialURL();
-      if (url) {
-        this.handleOpenURL({ url });
+    Linking.addEventListener('url', this.handleOpenURL);
+    const url = await Linking.getInitialURL();
+    if (url) {
+      this.handleOpenURL({ url });
+    }
+    if (error.value) {
+      Alert.alert(error.value);
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    const { auth, navigation } = nextProps;
+    if (nextProps.auth.loggedIn !== this.props.auth.loggedIn) {
+      if (auth.loggedIn) {
+        navigation.navigate('bucketlist');
       }
     }
   }
@@ -347,6 +359,9 @@ UserForm.propTypes = {
   actions: PropTypes.shape({
     register: PropTypes.func.isRequired,
     login: PropTypes.func.isRequired,
+  }).isRequired,
+  error: PropTypes.shape({
+    value: PropTypes.string,
   }).isRequired,
 };
 
