@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet,
   ListView,
   ScrollView,
   Alert,
@@ -16,50 +15,12 @@ import ActionButton from 'react-native-action-button';
 import { Icon, SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as bucketlistActions from '../actions/bucketlistActions';
-import * as userActions from '../actions/authActions';
-import MenuComponent from './SideMenu';
-import Row from './Row';
-import BucketListForm from './BucketListForm';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#00bcd4',
-    justifyContent: 'flex-start',
-  },
-  bucketlistRow: {
-    flex: 1,
-    margin: 10,
-  },
-  image: {
-    opacity: 0.8,
-    backgroundColor: '#aaa',
-    flex: 1,
-    resizeMode: 'cover',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    shadowOpacity: 0,
-  },
-  empty: {
-    height: 40,
-    margin: 20,
-    fontSize: 20,
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: '#fff',
-  },
-  modal: {
-    backgroundColor: 'transparent',
-    marginTop: 100,
-    position: 'absolute',
-    alignSelf: 'center',
-    width: '80%',
-  },
-});
+import * as bucketlistActions from '../../actions/bucketlistActions';
+import * as userActions from '../../actions/authActions';
+import MenuComponent from '../SideMenu';
+import Row from '../Row';
+import BucketListForm from '../BucketListForm';
+import styles from './styles';
 
 const dataSources = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2,

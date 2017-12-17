@@ -3,11 +3,11 @@ import { StackNavigator } from 'react-navigation';
 import BucketList from './components/BucketList';
 import Items from './components/Items';
 import BucketListForm from './components/BucketListForm';
-import UserForm from './components/UserForm';
+import User from './components/User';
 
 const screens = {
   user: {
-    screen: UserForm,
+    screen: User,
   },
   bucketlist: {
     screen: BucketList,
