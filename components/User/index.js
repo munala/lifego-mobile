@@ -67,10 +67,8 @@ class User extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const { auth, navigation } = nextProps;
-    if (nextProps.auth.loggedIn !== this.props.auth.loggedIn) {
-      if (auth.loggedIn) {
-        navigation.navigate('bucketlist');
-      }
+    if (auth.loggedIn && auth.loggedIn !== this.props.auth.loggedIn) {
+      navigation.navigate('bucketlist');
     }
   }
 

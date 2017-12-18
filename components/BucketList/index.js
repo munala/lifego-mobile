@@ -71,7 +71,10 @@ class BucketList extends Component {
   };
 
   componentWillMount = async () => {
-    const { actions, navigation, error } = this.props;
+    const { actions, navigation, error, auth } = this.props;
+    if (!auth.loggedIn) {
+      navigation.navigate('user');
+    }
     if (error.value) {
       Alert.alert(
         error.value,
@@ -287,6 +290,9 @@ BucketList.propTypes = {
   }).isRequired,
   error: PropTypes.shape({
     value: PropTypes.string,
+  }).isRequired,
+  auth: PropTypes.shape({
+    loggedIn: PropTypes.bool.isRequired,
   }).isRequired,
 };
 

@@ -9,7 +9,7 @@ export default {
   },
   auth: {
     token: '',
-    loggedIn: true,
+    loggedIn: false,
   },
   error: {
     value: '',

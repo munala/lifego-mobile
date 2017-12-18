@@ -74,7 +74,10 @@ class Items extends Component {
   };
 
   componentWillMount = () => {
-    const { error, navigation } = this.props;
+    const { error, navigation, auth } = this.props;
+    if (!auth.loggedIn) {
+      navigation.navigate('user');
+    }
     if (error.value) {
       Alert.alert(error.value);
     }
@@ -317,6 +320,9 @@ Items.propTypes = {
   }).isRequired,
   error: PropTypes.shape({
     value: PropTypes.string,
+  }).isRequired,
+  auth: PropTypes.shape({
+    loggedIn: PropTypes.bool.isRequired,
   }).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
 };
