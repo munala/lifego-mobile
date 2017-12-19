@@ -37,15 +37,16 @@ class Row extends Component {
   }
   renderProperties = () => {
     const { content } = this.props;
+    const obj = { ...content };
     const properties = [];
-    Object.keys(content).forEach((property) => {
+    Object.keys(obj).forEach((property) => {
       if (['createdAt', 'updatedAt', 'description'].indexOf(property) >= 0) {
         if (property === 'createdAt' || property === 'updatedAt') {
-          content[property] = Moment(
-            property.updatedAt,
+          obj[property] = Moment(
+            obj[property],
           ).format('MMMM Do YYYY, h:mm:ss a');
         }
-        properties.push({ name: property, text: content[property] });
+        properties.push({ name: property, text: obj[property] });
       }
     });
     return properties;
