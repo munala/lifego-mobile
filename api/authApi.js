@@ -6,9 +6,9 @@ const instance = axios.create();
 instance.defaults.headers.common['Content-Type'] = 'application/json';
 instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
-const handleError = (error) => {
-  throw error.response.data.message;
-};
+const handleError = error => ({
+  error: error.response ? error.response.data.message : error.message,
+});
 
 const UserService = {
   loginUser(user) {

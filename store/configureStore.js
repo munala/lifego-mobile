@@ -10,6 +10,7 @@ const configureStore = (initialState) => {
   const config = {
     key: 'app',
     storage: AsyncStorage,
+    blacklist: ['currentApiCalls', 'error', 'data', 'bucketlists', 'auth'],
   };
   const store = createStore(
     persistReducer(config, rootReducer),

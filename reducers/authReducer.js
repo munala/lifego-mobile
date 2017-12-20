@@ -14,6 +14,7 @@ export default function authtReducer(state = initialState.auth, action) {
         ...state,
         loggedIn: action.loggedIn,
         token: action.token,
+        bucketlists: action.loggedIn ? [...state.bucketlists] : [],
       };
 
     default:

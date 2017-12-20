@@ -29,45 +29,39 @@ const iconStyles = {
   },
 };
 
-let token;
-
 class User extends Component {
-    static navigationOptions = () => ({
-      title: 'Login',
-      header: null,
-    });
+  static navigationOptions = () => ({
+    title: 'Login',
+    header: null,
+  });
 
-    state = {
-      registerMode: false,
-      disabled: true,
-      isLoading: false,
-      user: {
-        username: '',
-        email: '',
-        password: '',
-        confirm: '',
-        social: false,
-      },
-    };
-  componentWillMount = async () => {
-    const { navigation, error } = this.props;
-    token = await AsyncStorage.getItem('token');
-    if (token) {
-      navigation.navigate('bucketlist');
-    }
+  state = {
+    registerMode: false,
+    disabled: true,
+    isLoading: false,
+    user: {
+      username: '',
+      email: '',
+      password: '',
+      confirm: '',
+      social: false,
+    },
+  };
+
+  componentDidMount = async () => {
     Linking.addEventListener('url', this.handleOpenURL);
     const url = await Linking.getInitialURL();
     if (url) {
       this.handleOpenURL({ url });
     }
-    if (error.value) {
-      Alert.alert(error.value);
-    }
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const { auth, navigation } = nextProps;
-    if (auth.loggedIn && auth.loggedIn !== this.props.auth.loggedIn) {
+    const { auth, navigation, error } = nextProps;
+    if (error.value) {
+      Alert.alert(error.value);
+    }
+    if (auth.token && auth.loggedIn && auth.loggedIn !== this.props.auth.loggedIn) {
       navigation.navigate('bucketlist');
     }
   }
@@ -77,7 +71,6 @@ class User extends Component {
   }
 
   onSubmit = () => {
-    Linking.removeEventListener('url', this.handleOpenURL);
     if (this.state.registerMode) {
       this.props.actions.register(this.state.user);
     } else {
@@ -112,22 +105,26 @@ class User extends Component {
   }
 
   handleOpenURL = async ({ url }) => {
-    const [, userString] = url.match(/user=([^#]+)/);
-    await this.setState({
-      user: {
-        ...JSON.parse(decodeURI(userString)),
-        password: JSON.parse(decodeURI(userString)).username,
-        confirm: JSON.parse(decodeURI(userString)).username,
-        social: true,
-      },
-    });
-    this.onSubmit();
+    const canLogin = JSON.parse(await AsyncStorage.getItem('can_login'));
+    if (canLogin) {
+      const [, userString] = url.match(/user=([^#]+)/);
+      await this.setState({
+        user: {
+          ...JSON.parse(decodeURI(userString)),
+          password: JSON.parse(decodeURI(userString)).username,
+          confirm: JSON.parse(decodeURI(userString)).username,
+          social: true,
+        },
+      });
+      this.onSubmit();
+    }
   }
   loginWithFacebook = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/facebook');
 
   loginWithGoogle = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/google')
 
-  openURL = (url) => {
+  openURL = async (url) => {
+    await AsyncStorage.setItem('can_login', 'true');
     Linking.openURL(url);
   };
 

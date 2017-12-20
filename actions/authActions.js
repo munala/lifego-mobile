@@ -2,37 +2,34 @@ import { AsyncStorage } from 'react-native';
 import * as types from './actionTypes';
 import UserService from '../api/authApi';
 
-const handleError = (error, dispatch) => {
-  dispatch({
+const handleError = async (error, dispatch) => {
+  await dispatch({
     type: types.SHOW_ERROR,
     value: error,
   });
-  setTimeout(() => {
-    dispatch({
-      type: types.SHOW_ERROR,
-      value: '',
-    });
-    dispatch({
-      type: types.API_CALL_ERROR,
-      value: '',
-    });
-  }, 1);
+  dispatch({
+    type: types.SHOW_ERROR,
+    value: '',
+  });
+  dispatch({
+    type: types.API_CALL_ERROR,
+  });
 };
 
 export const login = user => async (dispatch) => {
   dispatch({
     type: types.BEGIN_API_CALL,
   });
-  try {
-    const token = await UserService.loginUser(user);
+  const token = await UserService.loginUser(user);
+  if (token.error) {
+    handleError(token.error, dispatch);
+  } else {
     await AsyncStorage.setItem('token', token);
     dispatch({
       type: types.LOGIN_SUCCESS,
       token,
       loggedIn: true,
     });
-  } catch (error) {
-    handleError(error, dispatch);
   }
 };
 
@@ -40,15 +37,15 @@ export const register = user => async (dispatch) => {
   dispatch({
     type: types.BEGIN_API_CALL,
   });
-  try {
-    await UserService.registerUser(user);
+  const response = await UserService.registerUser(user);
+  if (response.error) {
+    handleError(response.error, dispatch);
+  } else {
     dispatch(login(user));
     dispatch({
       type: types.API_CALL_ERROR,
       value: '',
     });
-  } catch (error) {
-    handleError(error, dispatch);
   }
 };
 
@@ -70,7 +67,7 @@ export const checkToken = () => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    await AsyncStorage.removeItem('token');
+    AsyncStorage.setItem('can_login', 'false');
     dispatch({
       type: types.CHECK_TOKEN,
       loggedIn: false,

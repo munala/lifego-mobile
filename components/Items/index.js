@@ -262,8 +262,8 @@ class Items extends Component {
             </ScrollView>
           }
           <ActionButton
-            buttonColor="rgba(255,255,255,1)"
-            icon={<Icon name="add" color="#00bcd4" />}
+            buttonColor="green"
+            icon={<Icon name="add" color="#fff" />}
             onPress={() => this.showModal('Add')}
           />
         </ScrollView>

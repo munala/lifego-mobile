@@ -59,7 +59,6 @@ class BucketList extends Component {
   }
 
   state = {
-    refreshing: true,
     visibleModal: false,
     context: {
       name: 'bucketlist',
@@ -89,18 +88,16 @@ class BucketList extends Component {
       toggleSearch: this.toggleSearch,
       toggleSideMenu: this.toggleSideMenu,
     });
-    actions.loadBucketlists(0, 20, '');
     const status = await AsyncStorage.getItem('new');
     if (!status) {
       Alert.alert('Instructions', 'To access options swipe screen from left to right. \nTo access bucketlist/item options swipe its description from right to left. \nTo view bucketlist items tap on the bucketlist\'s description. \nTo add a bucketlist/item tap on the \'+\' sign at the bottom. Thank you!!');
       AsyncStorage.setItem('new', 'no');
     }
+    actions.loadBucketlists(0, 20, '');
   }
 
-  onRefresh = async () => {
-    this.setState({ refreshing: true });
-    await this.props.actions.loadBucketlists(0, 20, '');
-    this.setState({ refreshing: false });
+  onRefresh = () => {
+    this.props.actions.loadBucketlists(0, 20, '');
   }
 
   onSave = (bucketlist, type) => {
@@ -132,7 +129,6 @@ class BucketList extends Component {
       dataSource: dataSources.cloneWithRows(
         this.props.data.bucketlists
           .filter(bucketlist => bucketlist.name.toLowerCase().indexOf(text.toLowerCase()) !== -1)),
-      refreshing: false,
       searchText: text,
     });
   }
@@ -225,7 +221,7 @@ class BucketList extends Component {
             />
           }
           {
-            (currentApiCalls === 0 && data.bucketlists.length === 0 && !error.value) ?
+            (data.bucketlists.length === 0 && !error.value) ?
               <View style={{ backgroundColor: 'transparent' }}>
                 <Text style={styles.empty}>
                   You have no bucketlists
@@ -249,8 +245,8 @@ class BucketList extends Component {
               />
           }
           <ActionButton
-            buttonColor="rgba(255,255,255,1)"
-            icon={<Icon name="add" color="#00bcd4" />}
+            buttonColor="green"
+            icon={<Icon name="add" color="#fff" />}
             onPress={() => this.showModal('Add')}
           />
         </ScrollView>
