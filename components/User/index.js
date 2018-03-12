@@ -16,16 +16,20 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as userActions from '../../actions/authActions';
+import * as userActions from '../../actions/userActions';
 import styles from './styles';
 
 const iconStyles = {
-  borderRadius: 10,
+  borderRadius: 20,
   paddingLeft: 20,
   paddingRight: 20,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: 40,
   iconStyle: {
-    paddingVertical: 5,
-    flexBasis: '10%',
+    display: 'flex',
+    alignItems: 'center',
   },
 };
 
@@ -39,30 +43,37 @@ class User extends Component {
     registerMode: false,
     disabled: true,
     isLoading: false,
-    user: {
-      username: '',
+    loginUser: {
       email: '',
       password: '',
-      confirm: '',
-      social: false,
+    },
+    registerUser: {
+      displayName: '',
+      email: '',
+      password: '',
     },
   };
 
   componentDidMount = async () => {
     Linking.addEventListener('url', this.handleOpenURL);
     const url = await Linking.getInitialURL();
+    const start = await AsyncStorage.getItem('start');
     if (url) {
       this.handleOpenURL({ url });
+    }
+    if (this.props.loggedIn && start === 'true') {
+      this.props.navigation.navigate('home');
     }
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const { auth, navigation, error } = nextProps;
-    if (error.value) {
-      Alert.alert(error.value);
-    }
-    if (auth.token && auth.loggedIn && auth.loggedIn !== this.props.auth.loggedIn) {
-      navigation.navigate('bucketlist');
+    const { loggedIn, navigation, error } = nextProps;
+    if (loggedIn === true && loggedIn !== this.props.loggedIn) {
+      navigation.navigate('home');
+    } else if (error) {
+      if (error !== 'Unauthorised' || error !== 'Invalid token') {
+        Alert.alert(error);
+      }
     }
   }
 
@@ -72,29 +83,23 @@ class User extends Component {
 
   onSubmit = () => {
     if (this.state.registerMode) {
-      this.props.actions.register(this.state.user);
+      this.props.actions.register(this.state.registerUser);
     } else {
-      this.props.actions.login(this.state.user);
+      this.props.actions.login(this.state.loginUser);
     }
   }
 
   onChange = (type, text) => {
-    const user = { ...this.state.user };
+    const { registerMode, registerUser, loginUser } = this.state;
+    const user = registerMode ? registerUser : loginUser;
     user[type] = (type === 'password' || type === 'confirm') ? text : text.trim();
     let disabled = false;
-    if (!this.state.registerMode) {
-      delete user.email;
-      delete user.confirm;
-      delete user.avatar;
-      delete user.social;
-      delete user.name;
-    }
     Object.keys(user).forEach((key) => {
-      if (this.state.user[key].length === 0) {
+      if (user[key].length === 0) {
         disabled = true;
       }
     });
-    this.setState({ disabled, user });
+    this.setState({ disabled, loginUser, registerUser });
   }
 
   onToggle = () => {
@@ -108,17 +113,25 @@ class User extends Component {
     const canLogin = JSON.parse(await AsyncStorage.getItem('can_login'));
     if (canLogin) {
       const [, userString] = url.match(/user=([^#]+)/);
-      await this.setState({
-        user: {
-          ...JSON.parse(decodeURI(userString)),
-          password: JSON.parse(decodeURI(userString)).username,
-          confirm: JSON.parse(decodeURI(userString)).username,
-          social: true,
-        },
-      });
-      this.onSubmit();
+      const {
+        email,
+        name: displayName,
+        username: confirm,
+        username: password,
+        avatar: pictureUrl,
+      } = JSON.parse(decodeURI(userString));
+      const user = {
+        email,
+        password,
+        confirm,
+        displayName,
+        pictureUrl,
+        social: true,
+      };
+      this.props.actions.socialLogin(user);
     }
   }
+
   loginWithFacebook = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/facebook');
 
   loginWithGoogle = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/google')
@@ -129,9 +142,8 @@ class User extends Component {
   };
 
   render() {
-    if (this.props.currentApiCalls > 0) {
-      return <View style={[styles.activity, styles.horizontal]}><ActivityIndicator color="#fff" size="large" /></View>;
-    }
+    const { registerMode, registerUser, loginUser, disabled } = this.state;
+    const user = registerMode ? registerUser : loginUser;
     return (
       <ScrollView
         contentContainerStyle={styles.container}
@@ -151,79 +163,66 @@ class User extends Component {
           }}
           source={require('../../assets/icons/icon.png')}
         />
-        <TextInput
-          autoFocus
-          autoCapitalize="none"
-          defaultValue={this.state.user.username}
-          underlineColorAndroid="rgba(0,0,0,0)"
-          style={styles.input}
-          placeholderTextColor="#eee"
-          onChangeText={value => this.onChange('username', value)}
-          placeholder="username"
-          returnKeyType="next"
-          onSubmitEditing={() => {
-            if (this.state.registerMode) {
-              this.Email.focus();
-            } else {
-              this.Password.focus();
-            }
-          }}
-        />
         {
-          this.state.registerMode &&
+          registerMode &&
           <TextInput
-            ref={(element) => { this.Email = element; }}
-            keyboardType="email-address"
-            defaultValue={this.state.user.email}
+            ref={(element) => { this.DisplayName = element; }}
+            defaultValue={user.displayName}
             underlineColorAndroid="rgba(0,0,0,0)"
             style={styles.input}
             placeholderTextColor="#eee"
-            onChangeText={value => this.onChange('email', value)}
-            placeholder="example@me.com"
+            onChangeText={value => this.onChange('displayName', value)}
+            placeholder="full name"
             returnKeyType="next"
             onSubmitEditing={() => {
-              this.Password.focus();
+              this.Email.focus();
             }}
           />}
         <TextInput
+          ref={(element) => { this.Email = element; }}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          defaultValue={user.email}
+          underlineColorAndroid="rgba(0,0,0,0)"
+          style={styles.input}
+          placeholderTextColor="#eee"
+          onChangeText={value => this.onChange('email', value)}
+          placeholder="example@me.com"
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            this.Password.focus();
+          }}
+        />
+        <TextInput
           ref={(element) => { this.Password = element; }}
-          defaultValue={this.state.user.password}
+          defaultValue={user.password}
           underlineColorAndroid="rgba(0,0,0,0)"
           style={styles.input}
           placeholderTextColor="#eee"
           secureTextEntry
           onChangeText={value => this.onChange('password', value)}
           placeholder="password"
-          returnKeyType={this.state.registerMode ? 'next' : 'done'}
-          onSubmitEditing={() => (this.state.registerMode ? this.Confirm.focus() : null)}
+          returnKeyType={registerMode ? 'next' : 'done'}
+          onSubmitEditing={() => (registerMode ? this.Confirm.focus() : null)}
         />
-        {
-          this.state.registerMode &&
-          <TextInput
-            ref={(element) => { this.Confirm = element; }}
-            defaultValue={this.state.user.confirm}
-            underlineColorAndroid="rgba(0,0,0,0)"
-            style={styles.input}
-            placeholderTextColor="#eee"
-            secureTextEntry
-            onChangeText={value => this.onChange('confirm', value)}
-            placeholder="confirm"
-            returnKeyType="done"
-          />
-        }
         <TouchableHighlight
           style={styles.button}
           onPress={this.onSubmit}
-          disabled={this.state.disabled}
+          disabled={disabled}
+          underlayColor="#00bcd4"
         >
-          <Text style={styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
+          {
+            this.props.currentApiCalls > 0 ?
+              <ActivityIndicator color="#fff" size="large" /> :
+              <Text style={styles.buttonText}>Sign {registerMode ? 'up' : 'in'}</Text>
+          }
         </TouchableHighlight>
         <TouchableHighlight
           style={[styles.button, styles.cancelButton]}
           onPress={this.onToggle}
-          underlayColor="#eee"
+          underlayColor="transparent"
         >
-          <Text style={[styles.buttonText, styles.cancelButtonText]}>{this.state.registerMode ? 'Already a member?' : 'Need an account?'}</Text>
+          <Text style={[styles.buttonText, styles.cancelButtonText]}>{registerMode ? 'Already a member?' : 'Need an account?'}</Text>
         </TouchableHighlight>
         <View style={styles.buttons}>
           <Icon.Button
@@ -232,7 +231,7 @@ class User extends Component {
             onPress={this.loginWithFacebook}
             {...iconStyles}
           >
-            <Text style={styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
+            <Text style={styles.buttonText}>Continue with Facebook</Text>
           </Icon.Button>
           <Icon.Button
             name="google"
@@ -240,38 +239,36 @@ class User extends Component {
             onPress={this.loginWithGoogle}
             {...iconStyles}
           >
-            <Text style={styles.buttonText}>Sign {this.state.registerMode ? 'up' : 'in'}</Text>
+            <Text style={styles.buttonText}>Continue with Google</Text>
           </Icon.Button>
         </View>
       </ScrollView>
     );
   }
 }
+
 User.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
-  auth: PropTypes.shape({
-    loggedIn: PropTypes.bool.isRequired,
-  }).isRequired,
+  loggedIn: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     register: PropTypes.func.isRequired,
     login: PropTypes.func.isRequired,
+    socialLogin: PropTypes.func.isRequired,
   }).isRequired,
-  error: PropTypes.shape({
-    value: PropTypes.string,
-  }).isRequired,
+  error: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
   return state;
 }
+
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({ ...userActions }, dispatch),
   };
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

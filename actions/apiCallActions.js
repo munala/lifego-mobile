@@ -6,8 +6,9 @@ export function beginApiCall() {
   };
 }
 
-export function apiCallError() {
+export function apiCallError(error) {
   return {
     type: types.API_CALL_ERROR,
+    error,
   };
 }

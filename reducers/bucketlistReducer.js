@@ -10,15 +10,15 @@ export default function bucketlistReducer(
   switch (action.type) {
     case types.LOAD_BUCKETLISTS_SUCCESS:
       return {
-        ...state,
-        bucketlists: action.bucketlists,
+        ...action.data,
       };
 
     case types.CREATE_BUCKETLIST_SUCCESS:
-      bucketList = { ...action.bucketlist, items: [] };
+      bucketList = {
+        ...action.bucketlist, items: [], comments: [], likes: [],
+      };
       return {
-        ...state,
-        bucketlists: [bucketList, ...state.bucketlists],
+        ...state, bucketlists: [bucketList, ...state.bucketlists],
       };
 
     case types.UPDATE_BUCKETLIST_SUCCESS:
@@ -26,8 +26,14 @@ export default function bucketlistReducer(
         ...state,
         bucketlists: [
           ...state.bucketlists.map(bucketlist =>
-            ((bucketlist.id === action.bucketlist.id) ? action.bucketlist : bucketlist),
-          ),
+            ((bucketlist.id === action.bucketlist.id) ?
+              action.bucketlist :
+              {
+                ...bucketlist,
+                items: bucketlist.items || [],
+                comments: bucketlist.comments || [],
+                likes: bucketlist.likes || [],
+              })),
         ],
       };
 
@@ -35,7 +41,7 @@ export default function bucketlistReducer(
       return {
         ...state,
         bucketlists: [...state.bucketlists
-          .filter(bucketlist => bucketlist !== action.bucketlist)],
+          .filter(bucketlist => bucketlist.id !== action.bucketlist.id)],
       };
 
     case types.CREATE_ITEM_SUCCESS:
@@ -67,8 +73,7 @@ export default function bucketlistReducer(
                     .map(item => (
                       (item.id === action.item.id) ?
                         action.item :
-                        item),
-                    ),
+                        item)),
                 ],
               };
             }
@@ -86,6 +91,94 @@ export default function bucketlistReducer(
               return {
                 ...bucketlist,
                 items: [...bucketlist.items.filter(item => item.id !== action.item.id)],
+              };
+            }
+            return bucketlist;
+          }),
+        ],
+      };
+
+    case types.ADD_COMMENT:
+      return {
+        ...state,
+        bucketlists: [
+          ...state.bucketlists.map((bucketlist) => {
+            if (bucketlist.id === action.bucketlist.id) {
+              return {
+                ...bucketlist,
+                comments: [action.comment, ...bucketlist.comments],
+              };
+            }
+            return bucketlist;
+          }),
+        ],
+      };
+
+    case types.EDIT_COMMENT:
+      return {
+        ...state,
+        bucketlists: [
+          ...state.bucketlists.map((bucketlist) => {
+            if (bucketlist.id === action.bucketlist.id) {
+              return {
+                ...bucketlist,
+                comments: [
+                  ...bucketlist.comments
+                    .map(comment => (
+                      (comment.id === action.comment.id) ?
+                        action.comment :
+                        comment)),
+                ],
+              };
+            }
+            return bucketlist;
+          }),
+        ],
+      };
+
+    case types.DELETE_COMMENT:
+      return {
+        ...state,
+        bucketlists: [
+          ...state.bucketlists.map((bucketlist) => {
+            if (bucketlist.id === action.bucketlist.id) {
+              return {
+                ...bucketlist,
+                comments: [...bucketlist.comments
+                  .filter(comment => comment.id !== action.comment.id)],
+              };
+            }
+            return bucketlist;
+          }),
+        ],
+      };
+
+    case types.LIKE:
+      return {
+        ...state,
+        bucketlists: [
+          ...state.bucketlists.map((bucketlist) => {
+            if (bucketlist.id === action.like.bucketlistId) {
+              return {
+                ...bucketlist,
+                likes: [action.like, ...bucketlist.likes],
+              };
+            }
+            return bucketlist;
+          }),
+        ],
+      };
+
+    case types.UNLIKE:
+      return {
+        ...state,
+        bucketlists: [
+          ...state.bucketlists.map((bucketlist) => {
+            if (bucketlist.id === action.like.bucketlistId) {
+              return {
+                ...bucketlist,
+                likes: [...bucketlist.likes
+                  .filter(like => like.id !== action.like.id)],
               };
             }
             return bucketlist;

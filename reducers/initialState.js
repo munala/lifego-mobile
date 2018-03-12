@@ -4,15 +4,31 @@ export default {
     nextUrl: '',
     previousUrl: '',
   },
+  allData: {
+    bucketlists: [],
+    nextUrl: '',
+    previousUrl: '',
+    newBucketlists: [],
+    count: 0,
+  },
   bucketlist: {
     name: '',
   },
-  auth: {
-    token: '',
-    loggedIn: false,
-  },
-  error: {
-    value: '',
-  },
   currentApiCalls: 0,
+  loggedIn: false,
+  error: '',
+  message: '',
+  searchText: '',
+  profile: {
+    searchUsers: [],
+    friends: [],
+    followers: [],
+  },
+  conversations: [],
+  notifications: [],
+  alerts: [],
+  tags: [],
+  components: {
+    showHeader: true,
+  },
 };
