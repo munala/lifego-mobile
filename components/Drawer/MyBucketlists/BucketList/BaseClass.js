@@ -1,0 +1,66 @@
+import { Component } from 'react';
+import propTypes from './propTypes';
+
+class BaseClass extends Component {
+  onRefresh = () => {
+    this.props.actions.loadBucketlists(0, 20, '');
+  }
+
+  onSave = (bucketlist, type) => {
+    const { actions } = this.props;
+    if (type === 'Add') {
+      actions.saveBucketlist(bucketlist);
+    } else {
+      actions.updateBucketlist({ ...bucketlist });
+    }
+  }
+
+  onDelete = (content) => {
+    this.props.actions.deleteBucketlist(content);
+  }
+
+  handleResults=(text) => {
+    this.setState({
+      searchMode: !!text,
+    });
+  }
+
+  showModal = (type, content = {}) => {
+    this.props.navigation.navigate('bucketlistForm', {
+      context: {
+        ...this.state.context,
+        type,
+      },
+      content,
+      onSave: this.onSave,
+    });
+  }
+
+  search = (text) => {
+    if (text) {
+      this.props.actions.search(text);
+      this.setState({
+        searchMode: true,
+      });
+    } else {
+      this.clearSearch();
+    }
+  }
+
+  clearSearch = () => {
+    this.setState({
+      searchMode: false,
+    });
+    this.props.actions.clearSearch();
+  }
+
+  logout = () => {
+    const { actions, nav: navigate } = this.props;
+    actions.logout();
+    navigate('user');
+  }
+}
+
+BaseClass.propTypes = propTypes;
+
+export default BaseClass;

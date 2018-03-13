@@ -29,7 +29,6 @@ export default StyleSheet.create({
   hr: {
     borderBottomColor: Platform.OS === 'android' ? 'grey' : '#00bcd4',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 20,
   },
   input: {
     display: 'flex',
@@ -104,7 +103,7 @@ export default StyleSheet.create({
     display: 'flex',
     color: Platform.OS === 'ios' ? 'grey' : '#00bcd4',
     fontSize: 16,
-    paddingHorizontal: Platform.OS === 'ios' ? 0 : 5,
+    paddingHorizontal: 5,
     marginTop: 10,
   },
 });

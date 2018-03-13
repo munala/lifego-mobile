@@ -53,10 +53,6 @@ class Header extends Component {
     navigate('user');
   }
 
-  hide = () => {
-    Animated.event([{ nativeEvent: { contentOffset: { y: this.animatedValue } } }]);
-  }
-
   render() {
     const { leftIcon, onPressLeft, mode, title } = this.props;
     const searchProps = this.state.searchText ? { clearIcon: { color: '#eee', name: 'close' } } : {};

@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import {
   View,
@@ -19,12 +18,10 @@ import * as bucketlistActions from '../../../../actions/bucketlistActions';
 import * as userActions from '../../../../actions/userActions';
 import Row from '../Row';
 import styles from './styles';
+import propTypes from './propTypes';
+import BaseClass, { dataSources } from './BaseClass';
 
-const dataSources = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2,
-});
-
-class Items extends Component {
+class Items extends BaseClass {
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
     return ({
@@ -77,51 +74,6 @@ class Items extends Component {
     this.setState({
       bucketlist,
       dataSource: dataSources.cloneWithRows(bucketlist.items),
-    });
-  }
-
-  onRefresh = async () => {
-    this.setState({ refreshing: true });
-    await this.props.actions.loadBucketlists(0, 20, '');
-    this.setState({ refreshing: false });
-  }
-
-  onDelete = (content) => {
-    this.props.actions.deleteItem(this.state.bucketlist, content);
-  }
-
-  onDone = (item) => {
-    const newItem = { ...item, done: !item.done };
-    this.props.actions.updateItem(this.state.bucketlist, newItem);
-  }
-
-  onSave = (item = {}, type) => {
-    const { actions } = this.props;
-    const { bucketlist } = this.state;
-    if (type === 'Add') {
-      actions.saveItem(bucketlist, item);
-    } else {
-      actions.updateItem(bucketlist, { ...item });
-    }
-  }
-
-  showModal = (type, content = {}) => {
-    this.props.navigation.navigate('bucketlistForm', {
-      context: {
-        ...this.state.context,
-        type,
-      },
-      content,
-      onSave: this.onSave,
-    });
-  }
-
-  toggleFilter = () => {
-    const filter = this.state.filter === 'all' ? 'pending' : 'all';
-    this.setState({
-      filter,
-      dataSource: dataSources.cloneWithRows(this.state.bucketlist.items
-        .filter(item => (filter === 'all' || (filter === 'pending' && !item.done)))),
     });
   }
 
@@ -212,54 +164,7 @@ class Items extends Component {
   }
 }
 
-Items.propTypes = {
-  data: PropTypes.shape({
-    bucketlists: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
-      createdAt: PropTypes.string.isRequired,
-      updatedAt: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      items: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        createdAt: PropTypes.string.isRequired,
-        updatedAt: PropTypes.string.isRequired,
-        done: PropTypes.bool.isRequired,
-      })).isRequired,
-    })).isRequired,
-  }).isRequired,
-  actions: PropTypes.shape({
-    loadBucketlists: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired,
-    saveItem: PropTypes.func.isRequired,
-    updateItem: PropTypes.func.isRequired,
-    deleteItem: PropTypes.func.isRequired,
-  }).isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
-    state: PropTypes.shape({
-      params: PropTypes.shape({
-        bucketlist: PropTypes.shape({
-          name: PropTypes.string.isRequired,
-          id: PropTypes.number.isRequired,
-          createdAt: PropTypes.string.isRequired,
-          updatedAt: PropTypes.string.isRequired,
-          description: PropTypes.string.isRequired,
-          items: PropTypes.arrayOf(PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            id: PropTypes.number.isRequired,
-            createdAt: PropTypes.string.isRequired,
-            updatedAt: PropTypes.string.isRequired,
-            done: PropTypes.bool.isRequired,
-          })).isRequired,
-        }).isRequired,
-      }).isRequired,
-    }).isRequired,
-  }).isRequired,
-  currentApiCalls: PropTypes.number.isRequired,
-};
+Items.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return state;

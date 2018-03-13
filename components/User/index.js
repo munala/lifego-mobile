@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {
   Text,
   TextInput,
@@ -18,6 +17,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../../actions/userActions';
 import styles from './styles';
+import propTypes from './propTypes';
+import BaseClass from './BaseClass';
 
 const iconStyles = {
   borderRadius: 20,
@@ -33,7 +34,7 @@ const iconStyles = {
   },
 };
 
-class User extends Component {
+class User extends BaseClass {
   static navigationOptions = () => ({
     title: 'Login',
     header: null,
@@ -68,9 +69,9 @@ class User extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const { loggedIn, navigation, error } = nextProps;
-    if (loggedIn === true && loggedIn !== this.props.loggedIn) {
+    if (this.props.loggedIn === false && loggedIn === true && loggedIn !== this.props.loggedIn) {
       navigation.navigate('home');
-    } else if (error) {
+    } else if (error && error !== this.props.error) {
       if (error !== 'Unauthorised' || error !== 'Invalid token') {
         Alert.alert(error);
       }
@@ -80,66 +81,6 @@ class User extends Component {
   componentWillUnmount = () => {
     Linking.removeEventListener('url', this.handleOpenURL);
   }
-
-  onSubmit = () => {
-    if (this.state.registerMode) {
-      this.props.actions.register(this.state.registerUser);
-    } else {
-      this.props.actions.login(this.state.loginUser);
-    }
-  }
-
-  onChange = (type, text) => {
-    const { registerMode, registerUser, loginUser } = this.state;
-    const user = registerMode ? registerUser : loginUser;
-    user[type] = (type === 'password' || type === 'confirm') ? text : text.trim();
-    let disabled = false;
-    Object.keys(user).forEach((key) => {
-      if (user[key].length === 0) {
-        disabled = true;
-      }
-    });
-    this.setState({ disabled, loginUser, registerUser });
-  }
-
-  onToggle = () => {
-    this.setState({
-      registerMode: !this.state.registerMode,
-      disabled: !this.state.registerMode ? true : this.state.disabled,
-    });
-  }
-
-  handleOpenURL = async ({ url }) => {
-    const canLogin = JSON.parse(await AsyncStorage.getItem('can_login'));
-    if (canLogin) {
-      const [, userString] = url.match(/user=([^#]+)/);
-      const {
-        email,
-        name: displayName,
-        username: confirm,
-        username: password,
-        avatar: pictureUrl,
-      } = JSON.parse(decodeURI(userString));
-      const user = {
-        email,
-        password,
-        confirm,
-        displayName,
-        pictureUrl,
-        social: true,
-      };
-      this.props.actions.socialLogin(user);
-    }
-  }
-
-  loginWithFacebook = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/facebook');
-
-  loginWithGoogle = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/google')
-
-  openURL = async (url) => {
-    await AsyncStorage.setItem('can_login', 'true');
-    Linking.openURL(url);
-  };
 
   render() {
     const { registerMode, registerUser, loginUser, disabled } = this.state;
@@ -247,19 +188,7 @@ class User extends Component {
   }
 }
 
-User.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-  currentApiCalls: PropTypes.number.isRequired,
-  loggedIn: PropTypes.bool.isRequired,
-  actions: PropTypes.shape({
-    register: PropTypes.func.isRequired,
-    login: PropTypes.func.isRequired,
-    socialLogin: PropTypes.func.isRequired,
-  }).isRequired,
-  error: PropTypes.string.isRequired,
-};
+User.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return state;

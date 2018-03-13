@@ -1,0 +1,45 @@
+import { PropTypes } from 'prop-types';
+
+export default {
+  bucketlist: PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.number,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+    description: PropTypes.string,
+    items: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+      id: PropTypes.number,
+      createdAt: PropTypes.string,
+      updatedAt: PropTypes.string,
+      done: PropTypes.bool,
+    })),
+    comments: PropTypes.arrayOf(PropTypes.shape({
+      content: PropTypes.string,
+      id: PropTypes.number,
+      createdAt: PropTypes.string,
+      updatedAt: PropTypes.string,
+    })),
+  }).isRequired,
+  createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  time: PropTypes.string.isRequired,
+  showComments: PropTypes.bool.isRequired,
+  bucketList: PropTypes.shape({}),
+  toggleComments: PropTypes.func.isRequired,
+  profile: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+    displayName: PropTypes.string,
+    email: PropTypes.string,
+    pictureUrl: PropTypes.string,
+    friends: PropTypes.arrayOf(PropTypes.shape({})),
+    searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
+  }).isRequired,
+  comm: PropTypes.shape({}).isRequired,
+  imageHeights: PropTypes.shape({}).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  setLikeColor: PropTypes.func.isRequired,
+  like: PropTypes.func.isRequired,
+  selectBucketlist: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+};

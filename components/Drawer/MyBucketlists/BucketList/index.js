@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {
   ListView,
   Alert,
@@ -19,12 +18,14 @@ import * as userActions from '../../../../actions/userActions';
 import * as searchActions from '../../../../actions/searchActions';
 import Row from '../Row';
 import styles from './styles';
+import BaseClass from './BaseClass';
+import propTypes from './propTypes';
 
 const dataSources = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2,
 });
 
-class BucketList extends Component {
+class BucketList extends BaseClass {
   static navigationOptions = {
     drawerLabel: 'My bucketlists',
     drawerIcon: (
@@ -71,64 +72,6 @@ class BucketList extends Component {
         this.logout();
       }
     }
-  }
-
-  onRefresh = () => {
-    this.props.actions.loadBucketlists(0, 20, '');
-  }
-
-  onSave = (bucketlist, type) => {
-    const { actions } = this.props;
-    if (type === 'Add') {
-      actions.saveBucketlist(bucketlist);
-    } else {
-      actions.updateBucketlist({ ...bucketlist });
-    }
-  }
-
-  onDelete = (content) => {
-    this.props.actions.deleteBucketlist(content);
-  }
-
-  handleResults=(text) => {
-    this.setState({
-      searchMode: !!text,
-    });
-  }
-
-  showModal = (type, content = {}) => {
-    this.props.navigation.navigate('bucketlistForm', {
-      context: {
-        ...this.state.context,
-        type,
-      },
-      content,
-      onSave: this.onSave,
-    });
-  }
-
-  search = (text) => {
-    if (text) {
-      this.props.actions.search(text);
-      this.setState({
-        searchMode: true,
-      });
-    } else {
-      this.clearSearch();
-    }
-  }
-
-  clearSearch = () => {
-    this.setState({
-      searchMode: false,
-    });
-    this.props.actions.clearSearch();
-  }
-
-  logout = () => {
-    const { actions, nav: navigate } = this.props;
-    actions.logout();
-    navigate('user');
   }
 
   renderRow = bucketlist => (
@@ -212,43 +155,7 @@ class BucketList extends Component {
   }
 }
 
-BucketList.propTypes = {
-  data: PropTypes.shape({
-    bucketlists: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
-      createdAt: PropTypes.string.isRequired,
-      updatedAt: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      items: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        createdAt: PropTypes.string.isRequired,
-        updatedAt: PropTypes.string.isRequired,
-        done: PropTypes.bool.isRequired,
-      })).isRequired,
-    })).isRequired,
-  }).isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
-  }).isRequired,
-  currentApiCalls: PropTypes.number.isRequired,
-  actions: PropTypes.shape({
-    loadBucketlists: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired,
-    saveBucketlist: PropTypes.func.isRequired,
-    updateBucketlist: PropTypes.func.isRequired,
-    deleteBucketlist: PropTypes.func.isRequired,
-    search: PropTypes.func.isRequired,
-    clearSearch: PropTypes.func.isRequired,
-  }).isRequired,
-  error: PropTypes.string.isRequired,
-  nav: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-  navi: PropTypes.func.isRequired,
-};
+BucketList.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return state;

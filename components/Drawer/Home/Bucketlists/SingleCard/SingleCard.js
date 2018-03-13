@@ -1,11 +1,11 @@
 /* eslint-disable global-require */
 import React from 'react';
 import { View, TouchableHighlight, Image, TextInput } from 'react-native';
-import { PropTypes } from 'prop-types';
 import { Button, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import styles from '../../styles/';
+import propTypes from './propTypes';
 
 const getTags = (bucketlist) => {
   if (bucketlist.tags) {
@@ -183,49 +183,7 @@ const SingleCard = ({
   </View>
 );
 
-SingleCard.propTypes = {
-  bucketlist: PropTypes.shape({
-    name: PropTypes.string,
-    id: PropTypes.number,
-    createdAt: PropTypes.string,
-    updatedAt: PropTypes.string,
-    description: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-      id: PropTypes.number,
-      createdAt: PropTypes.string,
-      updatedAt: PropTypes.string,
-      done: PropTypes.bool,
-    })),
-    comments: PropTypes.arrayOf(PropTypes.shape({
-      content: PropTypes.string,
-      id: PropTypes.number,
-      createdAt: PropTypes.string,
-      updatedAt: PropTypes.string,
-    })),
-  }).isRequired,
-  createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  time: PropTypes.string.isRequired,
-  showComments: PropTypes.bool.isRequired,
-  bucketList: PropTypes.shape({}),
-  toggleComments: PropTypes.func.isRequired,
-  profile: PropTypes.shape({
-    id: PropTypes.number,
-    username: PropTypes.string,
-    displayName: PropTypes.string,
-    email: PropTypes.string,
-    pictureUrl: PropTypes.string,
-    friends: PropTypes.arrayOf(PropTypes.shape({})),
-    searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
-  }).isRequired,
-  comm: PropTypes.shape({}).isRequired,
-  imageHeights: PropTypes.shape({}).isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  setLikeColor: PropTypes.func.isRequired,
-  like: PropTypes.func.isRequired,
-  selectBucketlist: PropTypes.func,
-  onChange: PropTypes.func.isRequired,
-};
+SingleCard.propTypes = propTypes;
 
 SingleCard.defaultProps = {
   bucketList: {
