@@ -10,7 +10,7 @@ const PopupMenu = ({ items, icon }) => (
   <ModalDropdown
     options={items.map(item => item.label)}
     dropdownStyle={[styles.dropdownStyle, {
-      height: (34 + (StyleSheet.hairlineWidth * 2)) * items.length,
+      height: (40 + (StyleSheet.hairlineWidth * 2)) * items.length,
     }]}
     showsVerticalScrollIndicator={false}
     dropdownTextStyle={styles.dropdownTextStyle}

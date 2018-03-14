@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   dropdownTextStyle: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     color: 'grey',
     fontWeight: 'bold',
     flexDirection: 'row',
@@ -23,7 +23,7 @@ export default StyleSheet.create({
     backgroundColor: '#f7f7f7',
     width: 100,
     paddingLeft: 10,
-    height: 34,
+    height: 40,
   },
   button: {
     display: 'flex',
@@ -32,6 +32,6 @@ export default StyleSheet.create({
     backgroundColor: '#f7f7f7',
     width: 100,
     paddingLeft: 10,
-    height: 34,
+    height: 40,
   },
 });

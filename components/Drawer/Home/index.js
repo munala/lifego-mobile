@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
+  Platform,
 } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
@@ -60,6 +61,8 @@ class Home extends Component {
         style: {
           backgroundColor: 'white',
           marginTop: 0,
+          borderTopWidth: Platform.OS === 'ios' ? 5 : 0,
+          borderTopColor: '#00bcd4',
         },
         indicatorStyle: {
           backgroundColor: '#00bcd4',

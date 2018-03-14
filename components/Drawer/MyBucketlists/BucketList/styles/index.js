@@ -5,7 +5,7 @@ const { height } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#00bcd4',
     justifyContent: 'flex-start',
     height: '100%',
     paddingBottom: height === 812 && Platform.OS === 'ios' ? 20 : 0,

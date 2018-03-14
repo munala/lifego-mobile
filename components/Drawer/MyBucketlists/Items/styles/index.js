@@ -7,7 +7,7 @@ const { height } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(235,235,235,1)',
+    backgroundColor: '#00bcd4',
     justifyContent: 'flex-start',
   },
   iPhoneX: {
@@ -20,7 +20,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    color: 'grey',
+    color: '#f7f7f7',
     backgroundColor: 'transparent',
   },
   bucketlistRow: {
@@ -42,7 +42,7 @@ export default StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 3,
     backgroundColor: 'transparent',
-    color: 'grey',
+    color: '#f7f7f7',
   },
   image: {
     opacity: 0.8,

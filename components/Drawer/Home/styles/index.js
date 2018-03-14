@@ -5,11 +5,12 @@ const { height } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#00bcd4',
     justifyContent: 'flex-start',
   },
   iPhoneX: {
     paddingBottom: height === 812 && Platform.OS === 'ios' ? 20 : 0,
+    backgroundColor: '#fff',
   },
   bucketlistRow: {
     flex: 1,
@@ -30,7 +31,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    color: 'grey',
+    color: '#f7f7f7',
   },
   modal: {
     backgroundColor: '#f7f7f7',
@@ -182,11 +183,11 @@ export default StyleSheet.create({
   },
   commentUser: {
     display: 'flex',
-    fontSize: 11,
+    fontSize: 13,
     color: '#00bcd4',
   },
   commentContent: {
-    fontSize: 10,
+    fontSize: 12,
     display: 'flex',
     color: 'grey',
     marginLeft: 5,
@@ -319,7 +320,7 @@ export default StyleSheet.create({
   },
   rightHeaderContent: {
     color: 'grey',
-    fontSize: 12,
+    fontSize: 10,
     height: 12,
   },
   titleIcon: {

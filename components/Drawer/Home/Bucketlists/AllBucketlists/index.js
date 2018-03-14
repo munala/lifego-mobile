@@ -55,7 +55,7 @@ class AllBucketlists extends BaseClass {
   };
 
   componentWillMount = async () => {
-    this.props.actions.loadAllBucketlists();
+    this.props.actions.loadAllBucketlists(0, 100);
     const { error } = this.props;
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {

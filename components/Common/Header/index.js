@@ -21,14 +21,14 @@ class Header extends Component {
 
   componentWillReceiveProps = ({ showHeader }) => {
     if (showHeader !== this.props.showHeader) {
-      Animated.spring(this.animatedValue, {
+      Animated.spring(this.marginTop, {
         toValue: showHeader ? 0 : -range,
         duration: 200,
       }).start();
     }
   }
 
-  animatedValue = new Animated.Value(this.props.showHeader ? 0 : -range)
+  marginTop = new Animated.Value(this.props.showHeader ? 0 : -range)
 
   search = (searchText) => {
     this.setState({ searchText });
@@ -64,7 +64,7 @@ class Header extends Component {
     ];
     return (
       <Animated.View style={[styles.headerStyle, {
-        marginTop: Platform.OS === 'ios' ? 0 : this.animatedValue.interpolate({
+        marginTop: Platform.OS === 'ios' ? 0 : this.marginTop.interpolate({
           inputRange: [0, range],
           outputRange: [0, range],
         }),
@@ -95,7 +95,7 @@ class Header extends Component {
             </Text>
         }
         {
-          (mode === 'bucketlists' || mode === 'my_bucketlists') &&
+          mode !== 'items' &&
           <PopupMenu
             icon="more-vert"
             style={styles.iconRightStyle}

@@ -25,6 +25,7 @@
 		"react-native-context-menu-strip": "0.0.2",
 		"react-native-deprecated-custom-components": "^0.1.1",
 		"react-native-elements": "^1.0.0-beta2",
+		"react-native-linear-gradient": "^2.4.0",
 		"react-native-material-design": "^0.3.7",
 		"react-native-modal": "^4.1.0",
 		"react-native-modal-dropdown": "^0.6.2",

@@ -163,7 +163,9 @@ class User extends BaseClass {
           onPress={this.onToggle}
           underlayColor="transparent"
         >
-          <Text style={[styles.buttonText, styles.cancelButtonText]}>{registerMode ? 'Already a member?' : 'Need an account?'}</Text>
+          <Text style={[styles.buttonText, styles.cancelButtonText]}>
+            {registerMode ? 'Already a member?' : 'Need an account? Sign up'}
+          </Text>
         </TouchableHighlight>
         <View style={styles.buttons}>
           <Icon.Button

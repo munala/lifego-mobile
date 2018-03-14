@@ -46,18 +46,18 @@ const SingleCard = ({
           {
             bucketlist.location ?
               <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 30 }}>
-                <View style={{ display: 'flex', flexDirection: 'row', height: 12, alignItems: 'center' }}>
+                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                   <Icon style={styles.titleIcon} name="place" />
                   <Text style={styles.rightHeaderContent}>{`${bucketlist.location || ''}\n`}</Text>
                 </View>
                 {!!bucketlist.category &&
-                  <View style={{ display: 'flex', flexDirection: 'row', height: 12, alignItems: 'center' }}>
+                  <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <Icon style={styles.titleIcon} name="event-note" />
                     <Text style={styles.rightHeaderContent}>{bucketlist.category || ''}</Text>
                   </View>
                 }
               </View> :
-              <View style={{ display: 'flex', flexDirection: 'row', height: 12, alignItems: 'center' }}>
+              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 {!!bucketlist.category && <Icon style={styles.titleIcon} name="event-note" />}
                 <Text style={styles.rightHeaderContent}>{`${bucketlist.category || ''}\n`}</Text>
               </View>
@@ -101,9 +101,9 @@ const SingleCard = ({
             style={styles.iconStyle}
             onPress={() => like(bucketlist)}
             underlayColor="#fff"
-            hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
+            hitSlop={{ top: 30, left: 30, bottom: 30, right: 30 }}
           >
-            <Icon name="star" color={setLikeColor(bucketlist)} />
+            <Icon name="star" size={20} color={setLikeColor(bucketlist)} />
           </TouchableHighlight>
           {
             bucketlist.likes && bucketlist.likes.length > 0 &&

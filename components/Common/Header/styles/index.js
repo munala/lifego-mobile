@@ -11,6 +11,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     height: Platform.OS === 'ios' ? (height === 812 ? 98 : 64) : 48,
     paddingTop: Platform.OS === 'ios' ? (height === 812 ? 50 : 20) : 0,
+    zIndex: 10,
   },
   iconLeftStyle: {
     display: 'flex',
@@ -38,7 +39,7 @@ export default StyleSheet.create({
     flexBasis: '75%',
     color: '#fff',
     fontSize: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     textAlign: Platform.OS === 'android' ? 'left' : 'center',
   },
 });

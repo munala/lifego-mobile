@@ -3,6 +3,5 @@
   "plugins": [
       "transform-decorators-legacy",
       "transform-object-rest-spread",
-      "transform-remove-console"
     ]
 }

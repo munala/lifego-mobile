@@ -7,6 +7,7 @@ import { Icon } from 'react-native-elements';
 import MyBucketlists from './MyBucketlists';
 import Home from './Home';
 import Profile from './Profile';
+import Settings from './Settings';
 
 const { height } = Dimensions.get('window');
 
@@ -44,6 +45,7 @@ const Drawer = ({ navigation: { navigate } }) => {
   const HomeComponent = passNavigate(navigate, 'Home', 'home', Home);
   const MyBucketlistsComponent = passNavigate(navigate, 'My Bucketlists', 'list', MyBucketlists);
   const ProfileComponent = passNavigate(navigate, 'Profile', 'person', Profile);
+  const SettingsComponent = passNavigate(navigate, 'Settings', 'settings', Settings);
   const screens = {
     Home: {
       screen: HomeComponent,
@@ -53,6 +55,9 @@ const Drawer = ({ navigation: { navigate } }) => {
     },
     Profile: {
       screen: ProfileComponent,
+    },
+    Settings: {
+      screen: SettingsComponent,
     },
   };
   const DrawerNav = DrawerNavigator(
