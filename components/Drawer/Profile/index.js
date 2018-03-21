@@ -1,12 +1,20 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { View, Text, Image, TouchableHighlight, ScrollView, Animated } from 'react-native';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  Animated,
+  ActivityIndicator,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import BaseClass from './BaseClass';
+import ProfileBody from './ProfileBody';
 import * as userActions from '../../../actions/userActions';
 import Header from '../../Common/Header';
+import Text from '../../Common/SuperText';
 import propTypes from './propTypes';
 import styles from './styles';
 
@@ -14,17 +22,27 @@ class Profile extends BaseClass {
   state = {
     activeType: 'Followers',
     scrollY: new Animated.Value(0),
+    uploadingImage: false,
+    scrollEnabled: true,
+    editMode: false,
+    image: null,
+    uploading: false,
+    profile: { ...this.props.profile },
   }
 
   componentWillMount = () => {
     this.props.actions.getProfile();
   };
 
-  componentWillReceiveProps = async ({ error }) => {
+  componentWillReceiveProps = async ({ error, profile }) => {
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
         this.logout();
       }
+    } else if (this.props.profile !== profile) {
+      this.setState({
+        profile,
+      });
     }
   }
 
@@ -32,8 +50,8 @@ class Profile extends BaseClass {
     const { activeType } = this.state;
     const { profile } = this.props;
     return ['Followers', 'Friends'].map(type => (
-      <TouchableHighlight
-        underlayColor="transparent"
+      <TouchableOpacity
+        key={type}
         style={[styles.stat, activeType === type && styles.statActive]}
         onPress={() => this.toggleType(type)}
       >
@@ -49,7 +67,7 @@ class Profile extends BaseClass {
             {type}
           </Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     ));
   }
 
@@ -58,18 +76,18 @@ class Profile extends BaseClass {
     const { actions: { addFriend, removeFriend }, profile } = this.props;
     return profile ?
       profile[activeType.toLowerCase()].map((person, index) => (
-        <View style={[styles.person, this.isLastPerson(index) && styles.lastPerson]}>
+        <View
+          key={person.id}
+          style={[styles.person, this.isLastPerson(index) && styles.lastPerson]}
+        >
           <Image
             style={styles.personPic}
-            source={
-              person.pictureUrl ?
-                { uri: person.pictureUrl.replace('http://', 'https://') } :
-                require('../../../assets/images/user.png')
-            }
+            source={person.pictureUrl ?
+              { uri: person.pictureUrl.replace('http://', 'https://') } :
+              require('../../../assets/images/user.png')}
           />
           <Text style={styles.personName}>{person.displayName || 'no name'}</Text>
-          <TouchableHighlight
-            underlayColor="transparent"
+          <TouchableOpacity
             style={[styles.personAction, this.isFriend(person) && styles.removeAction]}
             onPress={() => (this.isFriend(person) ? removeFriend(person) : addFriend(person))}
           >
@@ -78,7 +96,7 @@ class Profile extends BaseClass {
             >
               {this.isFriend(person) ? 'Remove' : 'Add'}
             </Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       )) :
       <View />
@@ -86,18 +104,65 @@ class Profile extends BaseClass {
   }
 
   render() {
-    const { activeType } = this.state;
-    const { actions: { logout }, profile, navigation: { navigate }, nav } = this.props;
+    const { activeType, scrollEnabled, editMode, uploading, scrollY } = this.state;
+    const {
+      actions: { logout }, profile, navigation: { navigate }, nav, currentApiCalls,
+    } = this.props;
+    const avatar = this.state.profile.pictureUrl;
     const height = this.state.scrollY.interpolate({
       inputRange: [0, 5],
-      outputRange: [100, 0],
+      outputRange: [editMode ? 75 : 100, 0],
       extrapolate: 'clamp',
+      useNativeDriver: true,
     });
     const marginTop = this.state.scrollY.interpolate({
       inputRange: [0, 50],
-      outputRange: [0, -150],
+      outputRange: [0, -160],
       extrapolate: 'clamp',
     });
+    const formHeight = this.animationFactor.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 300],
+    });
+    const opacity = this.animationFactor.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 0],
+    });
+
+    const listHeight = 60 * profile[activeType.toLowerCase()].length;
+    const [firstName, lastName] = (this.state.profile.displayName || '').split(' ');
+    const displayName = {};
+    displayName['first name'] = firstName;
+    displayName['last name'] = lastName;
+
+    const editProfileProps = {
+      uploading,
+      formHeight,
+      changePhoto: this.changePhoto,
+      displayName,
+      onChange: this.onChange,
+      cancel: this.cancel,
+      profile,
+      avatar,
+      onSave: this.onSave,
+    };
+
+    const profileBodyProps = {
+      marginTop,
+      height,
+      opacity,
+      profile,
+      editProfileProps,
+      openEditProfileMode: this.openEditProfileMode,
+      renderStats: this.renderStats,
+      renderPeople: this.renderPeople,
+      activeType,
+      scrollEnabled,
+      listHeight,
+      scrollY,
+      avatar,
+    };
+
     return (
       <View style={styles.container}>
         <Header
@@ -111,53 +176,12 @@ class Profile extends BaseClass {
           navigate={nav}
           handleResults={this.handleResults}
         />
-        <Animated.View style={[
-          styles.profileWrapper,
-          {
-            marginTop,
-          },
-        ]}
-        >
-          <Animated.View
-            style={[
-              styles.profilePicWrapper,
-              {
-                height,
-                width: height,
-                borderRadius: 50,
-              },
-            ]}
-          >
-            <Image
-              style={styles.profilePic}
-              source={
-                profile.pictureUrl ?
-                  { uri: profile.pictureUrl.replace('http://', 'https://') } :
-                  require('../../../assets/images/user.png')}
-            />
-          </Animated.View>
-          <Text style={styles.profileName}>Oliver Munala</Text>
-          <Text style={styles.profileEmail}>oliver.munala@andela.com</Text>
-          <TouchableHighlight style={styles.profileAction} >
-            <Text style={styles.profileActionText}>Edit Profile</Text>
-          </TouchableHighlight>
-          <View style={styles.profileStats} >
-            {this.renderStats()}
+        {currentApiCalls > 0 && !this.state.uploading &&
+          <View style={styles.activity}>
+            <ActivityIndicator color="#fff" size="large" />
           </View>
-        </Animated.View>
-        <View style={styles.profileBody} >
-          <ScrollView
-            contentContainerStyle={{ height: 60 * profile[activeType.toLowerCase()].length }}
-            scrollEventThrottle={16}
-            onScroll={Animated.event([{
-              nativeEvent: { contentOffset: { y: this.state.scrollY } },
-            }])}
-          >
-            <View>
-              {this.renderPeople()}
-            </View>
-          </ScrollView>
-        </View>
+        }
+        <ProfileBody {...profileBodyProps} />
       </View>
     );
   }
@@ -165,7 +189,7 @@ class Profile extends BaseClass {
 
 Profile.propTypes = propTypes;
 
-const mapStateToProps = ({ profile }) => ({ profile });
+const mapStateToProps = ({ profile, currentApiCalls }) => ({ profile, currentApiCalls });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ ...userActions }, dispatch),

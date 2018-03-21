@@ -5,6 +5,9 @@ import {
   Platform,
   Picker,
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'react-native-fetch-blob';
+
 import Form from './Form';
 import categories from '../../miscellaneous/categories';
 
@@ -23,6 +26,8 @@ class BucketListForm extends Component {
       this.props.context,
     datePickerMode: false,
     categoryPickerMode: false,
+    uploading: false,
+    image: {},
   };
 
   onChange = (text, type) => {
@@ -35,9 +40,17 @@ class BucketListForm extends Component {
     });
   }
 
-  onSave = () => {
+  onSave = async () => {
+    this.setState({ uploading: true });
     const { onSave } = this.props.navigation.state.params;
-    onSave(this.state.content, this.state.context.type);
+    const content = { ...this.state.content };
+    if (this.state.image.origURL || this.state.image.uri) {
+      let response = await this.uploadFile(this.state.image);
+      this.setState({ uploading: false });
+      response = await response.json();
+      content.pictureUrl = response.url;
+    }
+    await onSave(content, this.state.context.type);
     this.props.navigation.goBack();
   }
 
@@ -54,7 +67,7 @@ class BucketListForm extends Component {
     const { content } = { ...this.state };
     if (Platform.OS === 'ios') {
       this.setState({
-        showDatePicker: true,
+        datePickerMode: true,
       });
     } else {
       const { year, month, day, action } = await DatePickerAndroid.open({
@@ -68,7 +81,42 @@ class BucketListForm extends Component {
 
   showCategoryPicker = () => {
     this.setState({
-      showCategoryPicker: true,
+      categoryPickerMode: true,
+    });
+  }
+
+  uploadFile = (file) => {
+    const uri = Platform.OS === 'ios' ? file.origURL : file.uri;
+    return RNFetchBlob.fetch('POST', 'https://api.cloudinary.com/v1_1/lifego/image/upload?upload_preset=dl5sqcqz', {
+      'Content-Type': 'multipart/form-data',
+    }, [
+      { name: 'file', filename: file.fileName, data: RNFetchBlob.wrap(uri) },
+    ]);
+  }
+
+  changePhoto = async () => {
+    const options = {
+      title: 'Select Photo',
+      allowsEditing: true,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      customButtons: (this.state.image.origURL || this.state.image.uri) ? [{
+        name: 'removePicture',
+        title: 'Remove Photo',
+      }] : [],
+    };
+
+    ImagePicker.showImagePicker(options, async (response) => {
+      const { error, didCancel, customButton } = response;
+      if (customButton) {
+        this.setState({ image: {} });
+      } else if (!error && !didCancel) {
+        this.setState({
+          image: response,
+        });
+      }
     });
   }
 
@@ -82,7 +130,9 @@ class BucketListForm extends Component {
 
   render() {
     const { navigation: { goBack } } = this.props;
-    const { content, context, datePickerMode, categoryPickerMode, disabled } = this.state;
+    const {
+      content, context, datePickerMode, categoryPickerMode, disabled, uploading, image,
+    } = this.state;
     const formProps = {
       content,
       context,
@@ -90,12 +140,15 @@ class BucketListForm extends Component {
       categoryPickerMode,
       goBack,
       disabled,
-      showDatePicker: this.showCategoryPicker,
+      uploading,
+      image,
+      showDatePicker: this.showDatePicker,
       showCategoryPicker: this.showCategoryPicker,
       onChange: this.onChange,
       onDateChange: this.onDateChange,
       renderCategories: this.renderCategories,
       onSave: this.onSave,
+      changePhoto: this.changePhoto,
     };
     return (<Form {...formProps} />);
   }

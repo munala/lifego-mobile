@@ -1,12 +1,5 @@
 import { Component } from 'react';
-import {
-  ListView,
-} from 'react-native';
 import propTypes from './propTypes';
-
-export const dataSources = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2,
-});
 
 class BaseClass extends Component {
   onRefresh = async () => {
@@ -49,8 +42,8 @@ class BaseClass extends Component {
     const filter = this.state.filter === 'all' ? 'pending' : 'all';
     this.setState({
       filter,
-      dataSource: dataSources.cloneWithRows(this.state.bucketlist.items
-        .filter(item => (filter === 'all' || (filter === 'pending' && !item.done)))),
+      data: this.state.bucketlist.items
+        .filter(item => (filter === 'all' || (filter === 'pending' && !item.done))),
     });
   }
 }

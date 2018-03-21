@@ -8,8 +8,9 @@ import moment from 'moment';
 import propTypes from './propTypes';
 
 class BaseClass extends Component {
-  onRefresh = () => {
-    this.props.actions.loadAllBucketlists();
+  onRefresh = async () => {
+    await this.props.actions.loadAllBucketlists(0, 100);
+    this.getImageHeights(this.props.allData.bucketlists);
   }
 
   onChange = (text) => {
@@ -115,18 +116,23 @@ class BaseClass extends Component {
     // this.props.actions.loadAllBucketlists(page);
   }
 
-  like = (bucketlist) => {
+  like = async (bucketlist) => {
     let liked = false;
-    if (bucketlist.likes) {
-      bucketlist.likes.forEach((like) => {
-        if (like.likerId === this.props.profile.id) {
-          liked = true;
-          this.props.actions.unlike(like);
-        }
-      });
-    }
-    if (!liked) {
-      this.props.actions.like(bucketlist);
+    if (!this.state.liking) {
+      this.setState({ liking: true });
+      if (bucketlist.likes) {
+        bucketlist.likes.forEach(async (like) => {
+          if (like.likerId === this.props.profile.id) {
+            liked = true;
+            await this.props.actions.unlike(like);
+            this.setState({ liking: false });
+          }
+        });
+      }
+      if (!liked) {
+        await this.props.actions.like(bucketlist);
+        this.setState({ liking: false });
+      }
     }
   }
 
@@ -175,15 +181,6 @@ class BaseClass extends Component {
         location,
       },
     });
-  }
-
-  handleHeader = (event) => {
-    const currentOffset = event.nativeEvent.contentOffset.y;
-    const direction = currentOffset > this.offset ? 'down' : 'up';
-    const showHeader = direction === 'up';
-    if (showHeader !== this.props.components.showHeader) {
-      this.props.actions.handleHeader(showHeader);
-    }
   }
 
   logout = () => {

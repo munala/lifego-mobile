@@ -56,7 +56,6 @@ export default StyleSheet.create({
   },
   switch: {
     backgroundColor: 'transparent',
-    height: 20,
     transform: [{ scaleX }, { scaleY }],
   },
   modal: {

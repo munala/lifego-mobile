@@ -1,14 +1,15 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  Text,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
   Alert,
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import Modal from 'react-native-modal';
+
+import Text from '../../../Common/SuperText';
 import styles from './styles';
 
 const { baseStyles, localStyles } = styles;
@@ -105,12 +106,12 @@ const RenderRow = ({
               </View>
             ))
           }
-          <TouchableHighlight
+          <TouchableOpacity
             style={localStyles.button}
             onPress={() => setModalVisible(false)}
           >
             <Text style={{ color: '#fff' }}>Close</Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </Card>
       </Modal>
       <Swipeout
@@ -119,11 +120,10 @@ const RenderRow = ({
         style={localStyles.swipeout}
       >
         <View style={[baseStyles.container, localStyles.row]}>
-          <TouchableHighlight
+          <TouchableOpacity
             onPress={() => handleTouch()}
             hitSlop={{ top: 20, left: 20, bottom: 20, right: 250 }}
             style={localStyles.handleTouch}
-            underlayColor="transparent"
           >
             <Text
               style={localStyles.description}
@@ -132,7 +132,7 @@ const RenderRow = ({
             >
               {`${content.description || 'No description'}`}
             </Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <View style={localStyles.drag}>
             <Text style={localStyles.text}>..{'\n'}..{'\n'}..{'\n'}..</Text>
           </View>

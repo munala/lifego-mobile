@@ -19,9 +19,9 @@ class BaseClass extends Component {
     this.props.actions.deleteBucketlist(content);
   }
 
-  handleResults=(text) => {
+  onFocus = () => {
     this.setState({
-      searchMode: !!text,
+      searchMode: true,
     });
   }
 
@@ -51,7 +51,6 @@ class BaseClass extends Component {
     this.setState({
       searchMode: false,
     });
-    this.props.actions.clearSearch();
   }
 
   logout = () => {

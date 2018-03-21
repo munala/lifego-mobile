@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import {
   View,
   ScrollView,
-  ListView,
+  FlatList,
   Switch,
-  Text,
   RefreshControl,
   Platform,
 } from 'react-native';
@@ -13,13 +12,14 @@ import ActionButton from 'react-native-action-button';
 import { Icon } from 'react-native-elements';
 import { bindActionCreators } from 'redux';
 
+import Text from '../../../Common/SuperText';
 import Header from '../../../Common/Header';
 import * as bucketlistActions from '../../../../actions/bucketlistActions';
 import * as userActions from '../../../../actions/userActions';
 import Row from '../Row';
 import styles from './styles';
 import propTypes from './propTypes';
-import BaseClass, { dataSources } from './BaseClass';
+import BaseClass from './BaseClass';
 
 class Items extends BaseClass {
   static navigationOptions = ({ navigation }) => {
@@ -56,7 +56,7 @@ class Items extends BaseClass {
 
   state = {
     bucketlist: this.props.navigation.state.params.bucketlist,
-    dataSource: dataSources.cloneWithRows(this.props.navigation.state.params.bucketlist.items),
+    data: this.props.navigation.state.params.bucketlist.items,
     filter: 'all',
     refreshing: false,
     visibleModal: false,
@@ -73,11 +73,11 @@ class Items extends BaseClass {
       .filter(bucket => bucket.id === this.state.bucketlist.id)];
     this.setState({
       bucketlist,
-      dataSource: dataSources.cloneWithRows(bucketlist.items),
+      data: bucketlist.items,
     });
   }
 
-  renderRow = item => (
+  renderItem = ({ item }) => (
     <Row
       onDone={this.onDone}
       onDelete={this.onDelete}
@@ -91,7 +91,7 @@ class Items extends BaseClass {
 
   render() {
     const {
-      filter, dataSource, bucketlist,
+      filter, data, bucketlist,
     } = this.state;
     const { currentApiCalls, navigation: { goBack } } = this.props;
     return (
@@ -134,11 +134,10 @@ class Items extends BaseClass {
           {
             bucketlist.items &&
             <ScrollView>
-              <ListView
-                enableEmptySections
-                key={bucketlist.items}
-                dataSource={dataSource}
-                renderRow={this.renderRow}
+              <FlatList
+                keyExtractor={({ id }) => id.toString()}
+                data={data}
+                renderItem={this.renderItem}
                 style={styles.listView}
                 refreshControl={
                   <RefreshControl

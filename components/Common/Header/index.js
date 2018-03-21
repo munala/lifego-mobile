@@ -1,34 +1,28 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { Animated, View, Text, Platform } from 'react-native';
+import { View } from 'react-native';
 import { Icon, SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Text from '../SuperText';
 import { loadAllBucketlists, loadBucketlists } from '../../../actions/bucketlistActions';
-import { logout } from '../../../actions/userActions';
+import { logout, searchUsers } from '../../../actions/userActions';
 import * as searchActions from '../../../actions/searchActions';
 import PopupMenu from '../PopupMenu';
 import styles from './styles';
-
-const range = 48;
 
 class Header extends Component {
   state = {
     open: false,
     searchText: '',
+    focused: false,
   }
 
-  componentWillReceiveProps = ({ showHeader }) => {
-    if (showHeader !== this.props.showHeader) {
-      Animated.spring(this.marginTop, {
-        toValue: showHeader ? 0 : -range,
-        duration: 200,
-      }).start();
-    }
+  onFocus = () => {
+    this.setState({ focused: true, searchText: '' });
+    this.props.onFocus();
   }
-
-  marginTop = new Animated.Value(this.props.showHeader ? 0 : -range)
 
   search = (searchText) => {
     this.setState({ searchText });
@@ -38,12 +32,16 @@ class Header extends Component {
       action(null, null, searchText);
       this.props.actions.search(searchText);
     } else {
-      this.clearSearch();
+      this.props.actions.clearSearch();
       action();
     }
+    this.props.actions.searchUsers(searchText);
   }
 
   clearSearch = () => {
+    this.setState({ focused: false, searchText: '' });
+    this.el.blur();
+    this.props.clearSearch();
     this.props.actions.clearSearch();
   }
 
@@ -55,7 +53,7 @@ class Header extends Component {
 
   render() {
     const { leftIcon, onPressLeft, mode, title } = this.props;
-    const searchProps = this.state.searchText ? { clearIcon: { color: '#eee', name: 'close' } } : {};
+    const searchProps = this.state.focused ? { clearIcon: { color: '#eee', name: 'close' } } : {};
     const menuItems = [
       {
         label: 'Logout',
@@ -63,13 +61,7 @@ class Header extends Component {
       },
     ];
     return (
-      <Animated.View style={[styles.headerStyle, {
-        marginTop: Platform.OS === 'ios' ? 0 : this.marginTop.interpolate({
-          inputRange: [0, range],
-          outputRange: [0, range],
-        }),
-      }]}
-      >
+      <View style={styles.headerStyle}>
         <Icon
           name={leftIcon}
           color="#fff"
@@ -80,15 +72,18 @@ class Header extends Component {
         {
           (mode === 'bucketlists' || mode === 'my_bucketlists') ?
             <SearchBar
+              textInputRef={(el) => { this.el = el; }}
               lightTheme
               containerStyle={styles.search}
               inputStyle={styles.searchInput}
               placeholderTextColor="#eee"
               placeholder="Search"
+              onFocus={this.onFocus}
               onChangeText={this.search}
               icon={{ color: '#eee', name: 'search' }}
               {...searchProps}
               onClearText={this.clearSearch}
+              value={this.state.searchText}
             /> :
             <Text style={styles.titleText}>
               {title}
@@ -106,7 +101,7 @@ class Header extends Component {
           mode === 'items' &&
           <View style={styles.iconRightStyle} />
         }
-      </Animated.View>
+      </View>
     );
   }
 }
@@ -116,12 +111,15 @@ Header.propTypes = {
     loadBucketlists: PropTypes.func.isRequired,
     loadAllBucketlists: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
+    searchUsers: PropTypes.func.isRequired,
     clearSearch: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
   }).isRequired,
   leftIcon: PropTypes.string.isRequired,
   onPressLeft: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  clearSearch: PropTypes.func.isRequired,
   mode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   showHeader: PropTypes.bool.isRequired,
@@ -143,6 +141,7 @@ const mapDispatchToProps = dispatch => ({
     loadAllBucketlists,
     loadBucketlists,
     logout,
+    searchUsers,
     ...searchActions,
   }, dispatch),
 });

@@ -17,7 +17,7 @@ export default function errorReducer(
         searchUsers: state.searchUsers,
       };
 
-    case types.ADD_FRIEND_SUCCESS:
+    case types.ADD_FRIEND:
       return {
         ...state,
         friends: [action.friend, ...state.friends],
@@ -29,7 +29,7 @@ export default function errorReducer(
         followers: [action.follower, ...state.followers],
       };
 
-    case types.REMOVE_FRIEND_SUCCESS:
+    case types.REMOVE_FRIEND:
       return {
         ...state,
         friends: [...state.friends].filter(friend => friend.id !== action.friend.id),

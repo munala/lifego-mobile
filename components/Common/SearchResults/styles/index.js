@@ -19,9 +19,60 @@ export default StyleSheet.create({
   },
   title: {
     color: '#00bcd4',
+    fontSize: 14,
+  },
+  personTitle: {
+    color: 'grey',
+    fontSize: 14,
   },
   subtitle: {
     color: 'grey',
+    fontSize: 12,
   },
-
+  options: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: 40,
+    paddingHorizontal: 20,
+    width: '100%',
+  },
+  option: {
+    display: 'flex',
+    padding: 5,
+    borderRadius: 5,
+    marginRight: 10,
+  },
+  optionText: {
+    display: 'flex',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  personAction: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    width: 70,
+    height: 20,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#00bcd4',
+    marginRight: 10,
+  },
+  removeAction: {
+    backgroundColor: '#00bcd4',
+  },
+  actionText: {
+    display: 'flex',
+    textAlign: 'center',
+    fontSize: 12,
+    color: '#00bcd4',
+    fontWeight: 'bold',
+  },
+  removeActionText: {
+    color: '#fff',
+  },
 });

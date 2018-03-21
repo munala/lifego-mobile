@@ -1,10 +1,9 @@
 /* eslint-disable global-require */
 import React from 'react';
 import {
-  Text,
   TextInput,
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
   ScrollView,
   Linking,
   View,
@@ -15,6 +14,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import Text from '../Common/SuperText';
 import * as userActions from '../../actions/userActions';
 import styles from './styles';
 import propTypes from './propTypes';
@@ -72,7 +73,7 @@ class User extends BaseClass {
     if (this.props.loggedIn === false && loggedIn === true && loggedIn !== this.props.loggedIn) {
       navigation.navigate('home');
     } else if (error && error !== this.props.error) {
-      if (error !== 'Unauthorised' || error !== 'Invalid token') {
+      if (error !== 'Unauthorised' && error !== 'Invalid token') {
         Alert.alert(error);
       }
     }
@@ -146,27 +147,25 @@ class User extends BaseClass {
           returnKeyType={registerMode ? 'next' : 'done'}
           onSubmitEditing={() => (registerMode ? this.Confirm.focus() : null)}
         />
-        <TouchableHighlight
+        <TouchableOpacity
           style={styles.button}
           onPress={this.onSubmit}
           disabled={disabled}
-          underlayColor="#00bcd4"
         >
           {
             this.props.currentApiCalls > 0 ?
               <ActivityIndicator color="#fff" size="large" /> :
               <Text style={styles.buttonText}>Sign {registerMode ? 'up' : 'in'}</Text>
           }
-        </TouchableHighlight>
-        <TouchableHighlight
+        </TouchableOpacity>
+        <TouchableOpacity
           style={[styles.button, styles.cancelButton]}
           onPress={this.onToggle}
-          underlayColor="transparent"
         >
           <Text style={[styles.buttonText, styles.cancelButtonText]}>
             {registerMode ? 'Already a member?' : 'Need an account? Sign up'}
           </Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
         <View style={styles.buttons}>
           <Icon.Button
             name="facebook"

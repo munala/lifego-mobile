@@ -53,13 +53,13 @@ export const updateProfileSuccess = ({ profile, message }) => ({
 });
 
 export const addFriendSuccess = ({ message, friend }) => ({
-  type: types.ADD_FRIEND_SUCCESS,
+  type: types.ADD_FRIEND,
   message,
   friend,
 });
 
 export const removeFriendSuccess = ({ message }, friend) => ({
-  type: types.REMOVE_FRIEND_SUCCESS,
+  type: types.REMOVE_FRIEND,
   message,
   friend,
 });
@@ -213,10 +213,8 @@ export const updateProfile = profile => async (dispatch) => {
 };
 
 export const addFriend = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
   const response = await userService.addFriend(user);
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
     await timeout(4000);
     resetError(dispatch);
   } else {
@@ -227,10 +225,8 @@ export const addFriend = user => async (dispatch) => {
 };
 
 export const removeFriend = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
   const response = await userService.removeFriend(user);
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
     await timeout(4000);
     resetError(dispatch);
   } else {

@@ -32,7 +32,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    color: 'grey',
+    color: '#f7f7f7',
   },
   modal: {
     backgroundColor: 'transparent',

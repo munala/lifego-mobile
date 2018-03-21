@@ -21,4 +21,5 @@ export default {
     setParams: PropTypes.func.isRequired,
   }).isRequired,
   nav: PropTypes.func.isRequired,
+  currentApiCalls: PropTypes.number.isRequired,
 };

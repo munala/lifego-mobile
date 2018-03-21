@@ -20,9 +20,15 @@ class Home extends Component {
     searchMode: false,
   }
 
-  handleResults=(text) => {
+  onFocus = () => {
     this.setState({
-      searchMode: !!text,
+      searchMode: true,
+    });
+  }
+
+  clearSearch = () => {
+    this.setState({
+      searchMode: false,
     });
   }
 
@@ -53,6 +59,7 @@ class Home extends Component {
       },
     },
     {
+      tabBarPosition: 'bottom',
       tabBarOptions: {
         activeTintColor: '#00bcd4',
         inactiveTintColor: 'gray',
@@ -61,6 +68,7 @@ class Home extends Component {
         style: {
           backgroundColor: 'white',
           marginTop: 0,
+          elevation: 10,
           borderTopWidth: Platform.OS === 'ios' ? 5 : 0,
           borderTopColor: '#00bcd4',
         },
@@ -88,10 +96,11 @@ class Home extends Component {
           title="Home"
           leftIcon="menu"
           onPressLeft={() => navigation.navigate('DrawerOpen')}
+          onFocus={this.onFocus}
+          clearSearch={this.clearSearch}
           mode="bucketlists"
           navigation={navigation}
           navigate={navigate}
-          handleResults={this.handleResults}
         />
         {
           this.state.searchMode ?

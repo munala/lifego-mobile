@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  ListView,
-  Text,
+  FlatList,
   View,
   RefreshControl,
 } from 'react-native';
@@ -10,6 +9,7 @@ import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Text from '../../../../Common/SuperText';
 import * as bucketlistActions from '../../../../../actions/bucketlistActions';
 import * as userActions from '../../../../../actions/userActions';
 import * as commentActions from '../../../../../actions/commentActions';
@@ -20,10 +20,6 @@ import SingleCard from '../SingleCard/SingleCard';
 import styles from '../../styles';
 import propTypes from './propTypes';
 import BaseClass from './BaseClass';
-
-const dataSources = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2,
-});
 
 class AllBucketlists extends BaseClass {
   state = {
@@ -56,6 +52,7 @@ class AllBucketlists extends BaseClass {
 
   componentWillMount = async () => {
     this.props.actions.loadAllBucketlists(0, 100);
+    this.props.actions.getProfile();
     const { error } = this.props;
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
@@ -101,10 +98,10 @@ class AllBucketlists extends BaseClass {
 
   offset = 0
 
-  renderRow = (bucketlist) => {
-    const { createdAt, time } = this.setTime(bucketlist);
+  renderItem = ({ item }) => {
+    const { createdAt, time } = this.setTime(item);
     const bucketlistProps = {
-      bucketlist,
+      bucketlist: item,
       createdAt,
       time,
       openModal: this.openModal,
@@ -146,13 +143,12 @@ class AllBucketlists extends BaseClass {
                 No bucketlists to display
               </Text>
             </View> :
-            <ListView
+            <FlatList
               enableEmptySections
-              key={allData.bucketlists}
-              dataSource={dataSources.cloneWithRows(bucketlists)}
-              renderRow={this.renderRow}
+              keyExtractor={({ id }) => id.toString()}
+              data={bucketlists}
+              renderItem={this.renderItem}
               style={styles.listView}
-              onScroll={this.handleHeader}
               refreshControl={
                 <RefreshControl
                   refreshing={currentApiCalls > 0}

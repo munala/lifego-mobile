@@ -1,8 +1,7 @@
 import React from 'react';
 import {
-  ListView,
+  FlatList,
   Alert,
-  Text,
   View,
   RefreshControl,
 } from 'react-native';
@@ -11,6 +10,7 @@ import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Text from '../../../Common/SuperText';
 import Header from '../../../Common/Header';
 import SearchResults from '../../../Common/SearchResults';
 import * as bucketlistActions from '../../../../actions/bucketlistActions';
@@ -20,10 +20,6 @@ import Row from '../Row';
 import styles from './styles';
 import BaseClass from './BaseClass';
 import propTypes from './propTypes';
-
-const dataSources = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2,
-});
 
 class BucketList extends BaseClass {
   static navigationOptions = {
@@ -74,12 +70,12 @@ class BucketList extends BaseClass {
     }
   }
 
-  renderRow = bucketlist => (
+  renderItem = ({ item }) => (
     <Row
       onDelete={this.onDelete}
       style={styles.bucketlistRow}
       navigation={this.props.navigation}
-      content={bucketlist}
+      content={item}
       context={this.state.context}
       showModal={this.showModal}
     />
@@ -106,7 +102,7 @@ class BucketList extends BaseClass {
           clearSearch={this.clearSearch}
           logout={actions.logout}
           navigate={navi}
-          handleResults={this.handleResults}
+          onFocus={this.onFocus}
         />
         {
           this.state.searchMode &&
@@ -127,11 +123,10 @@ class BucketList extends BaseClass {
         }
         {
           !this.state.searchMode && bucketlists.length > 0 && !error &&
-          <ListView
-            enableEmptySections
-            key={bucketlists}
-            dataSource={dataSources.cloneWithRows(bucketlists)}
-            renderRow={this.renderRow}
+          <FlatList
+            keyExtractor={({ id }) => id.toString()}
+            data={bucketlists}
+            renderItem={this.renderItem}
             style={styles.listView}
             refreshControl={
               <RefreshControl

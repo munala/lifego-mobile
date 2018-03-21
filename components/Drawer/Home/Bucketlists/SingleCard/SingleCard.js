@@ -1,9 +1,10 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { View, TouchableHighlight, Image, TextInput } from 'react-native';
-import { Button, Text } from 'react-native-elements';
+import { View, TouchableOpacity, Image, TextInput } from 'react-native';
+import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import Text from '../../../../Common/SuperText';
 import styles from '../../styles/';
 import propTypes from './propTypes';
 
@@ -33,32 +34,37 @@ const SingleCard = ({
         style={styles.avatar}
         source={
           bucketlist.userPictureUrl ?
-            { uri: bucketlist.userPictureUrl.replace('http://', 'https://') } :
+            { uri: (
+              bucketlist.userPictureUrl.replace(
+                (bucketlist.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                'https://',
+              )
+            ) } :
             require('../../../../../assets/images/user.png')
         }
       />
       <View style={styles.nameTime}>
         <View style={styles.headDetails}>
           <Text style={styles.leftHeaderContent}>{`${bucketlist.userDisplayName}\n`}</Text>
-          <Text style={{ fontSize: 10, fontWeight: 'normal', color: 'grey' }}>{createdAt}{time}</Text>
+          <Text style={styles.time}>{createdAt}{time}</Text>
         </View>
         <View style={styles.headDetails}>
           {
             bucketlist.location ?
-              <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 30 }}>
-                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                  <Icon style={styles.titleIcon} name="place" />
+              <View style={styles.locationCategory}>
+                <View style={styles.location}>
+                  <Icon style={styles.titleIcon} size={10} name="place" />
                   <Text style={styles.rightHeaderContent}>{`${bucketlist.location || ''}\n`}</Text>
                 </View>
                 {!!bucketlist.category &&
-                  <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    <Icon style={styles.titleIcon} name="event-note" />
+                  <View style={styles.location}>
+                    <Icon style={styles.titleIcon} size={10} name="event-note" />
                     <Text style={styles.rightHeaderContent}>{bucketlist.category || ''}</Text>
                   </View>
                 }
               </View> :
-              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                {!!bucketlist.category && <Icon style={styles.titleIcon} name="event-note" />}
+              <View style={styles.location}>
+                {!!bucketlist.category && <Icon style={styles.titleIcon} size={10} name="event-note" />}
                 <Text style={styles.rightHeaderContent}>{`${bucketlist.category || ''}\n`}</Text>
               </View>
           }
@@ -67,7 +73,7 @@ const SingleCard = ({
     </View>
     <View style={styles.bucketlistBody}>
       <View style={styles.description}>
-        <TouchableHighlight style={styles.link} href={`bucketlists/${bucketlist.id}`}>
+        <TouchableOpacity style={styles.link} href={`bucketlists/${bucketlist.id}`}>
           <View>
             <Text style={styles.blue}>{bucketlist.name}</Text>
             {
@@ -75,11 +81,16 @@ const SingleCard = ({
               <Text style={styles.grey}>{bucketlist.description}</Text>
             }
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
       {!!bucketlist.pictureUrl &&
         <Image
-          source={{ uri: bucketlist.pictureUrl.replace('http://', 'https://') }}
+          source={{ uri: (
+            bucketlist.pictureUrl.replace(
+              (bucketlist.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+              'https://',
+            )
+          ) }}
           style={[styles.image, imageHeights[bucketlist.name]]}
         />
       }
@@ -97,14 +108,13 @@ const SingleCard = ({
       </View>
       <View style={styles.likesComments}>
         <View style={[styles.likesComments, { width: 40 }]}>
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.iconStyle}
             onPress={() => like(bucketlist)}
-            underlayColor="#fff"
             hitSlop={{ top: 30, left: 30, bottom: 30, right: 30 }}
           >
             <Icon name="star" size={20} color={setLikeColor(bucketlist)} />
-          </TouchableHighlight>
+          </TouchableOpacity>
           {
             bucketlist.likes && bucketlist.likes.length > 0 &&
             <Text style={styles.span}>
@@ -115,13 +125,7 @@ const SingleCard = ({
         <Button
           onPress={() => toggleComments(bucketlist)}
           textStyle={styles.commentButton}
-          buttonStyle={{
-            backgroundColor: '#f7f7f7',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingRight: 5,
-          }}
+          buttonStyle={styles.buttonStyle}
           text={`${bucketlist.comments.length} comment${bucketlist.comments.length !== 1 ? 's' : ''}`}
         />
       </View>
@@ -145,7 +149,7 @@ const SingleCard = ({
           <View style={styles.newComment}>
             <Image
               style={styles.currentAvatar}
-              source={profile.pictureUrl ? { uri: profile.pictureUrl.replace('http', 'https') } : require('../../../../../assets/images/user.png')}
+              source={profile.pictureUrl ? { uri: profile.pictureUrl } : require('../../../../../assets/images/user.png')}
             />
             <TextInput
               type="text"
@@ -165,16 +169,15 @@ const SingleCard = ({
             {
               comm.content.length > 0 &&
               bucketList.id === bucketlist.id &&
-              <TouchableHighlight
+              <TouchableOpacity
                 text="POST"
                 style={styles.value}
-                underlayColor="#f7f7f7"
                 onPress={event => onSubmit(event)}
               >
                 <View>
                   <Text style={styles.label}>POST</Text>
                 </View>
-              </TouchableHighlight>
+              </TouchableOpacity>
             }
           </View>
         </View>

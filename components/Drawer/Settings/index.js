@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+
+import Text from '../../Common/SuperText';
 
 export default class Settings extends Component {
   render() {
