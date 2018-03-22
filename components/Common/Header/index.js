@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 
 import Text from '../SuperText';
 import { loadAllBucketlists, loadBucketlists } from '../../../actions/bucketlistActions';
-import { logout, searchUsers } from '../../../actions/userActions';
+import { logout, searchUsers, getProfile } from '../../../actions/userActions';
 import * as searchActions from '../../../actions/searchActions';
 import PopupMenu from '../PopupMenu';
 import styles from './styles';
@@ -17,6 +17,11 @@ class Header extends Component {
     open: false,
     searchText: '',
     focused: false,
+  }
+
+  componentWillMount = () => {
+    this.props.actions.loadAllBucketlists(0, 100);
+    this.props.actions.getProfile();
   }
 
   onFocus = () => {
@@ -113,6 +118,7 @@ Header.propTypes = {
     search: PropTypes.func.isRequired,
     searchUsers: PropTypes.func.isRequired,
     clearSearch: PropTypes.func.isRequired,
+    getProfile: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
   }).isRequired,
   leftIcon: PropTypes.string.isRequired,
@@ -142,6 +148,7 @@ const mapDispatchToProps = dispatch => ({
     loadBucketlists,
     logout,
     searchUsers,
+    getProfile,
     ...searchActions,
   }, dispatch),
 });

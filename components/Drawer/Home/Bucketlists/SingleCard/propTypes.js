@@ -41,5 +41,6 @@ export default {
   setLikeColor: PropTypes.func.isRequired,
   like: PropTypes.func.isRequired,
   selectBucketlist: PropTypes.func,
+  goToBucketlist: PropTypes.func,
   onChange: PropTypes.func.isRequired,
 };

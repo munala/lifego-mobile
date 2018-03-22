@@ -51,13 +51,13 @@ class AllBucketlists extends BaseClass {
   };
 
   componentWillMount = async () => {
-    this.props.actions.loadAllBucketlists(0, 100);
-    this.props.actions.getProfile();
-    const { error } = this.props;
+    const { error, allData: { bucketlists } } = this.props;
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
         this.logout();
       }
+    } else {
+      this.getImageHeights(bucketlists);
     }
   }
 
@@ -98,7 +98,7 @@ class AllBucketlists extends BaseClass {
 
   offset = 0
 
-  renderItem = ({ item }) => {
+  renderItem = ({ item }) => { // eslint-disable-line react/prop-types
     const { createdAt, time } = this.setTime(item);
     const bucketlistProps = {
       bucketlist: item,
@@ -121,6 +121,9 @@ class AllBucketlists extends BaseClass {
       push: this.props.navigation.navigate,
       imageHeights: this.state.imageHeights,
     };
+    bucketlistProps.goToBucketlist = () => this.props.navigation.navigate('bucketlist', {
+      ...bucketlistProps,
+    });
     return (
       <SingleCard {...bucketlistProps} />
     );

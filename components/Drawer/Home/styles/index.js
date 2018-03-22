@@ -389,4 +389,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingRight: 5,
   },
+  backButton: {
+    display: 'flex',
+    color: '#fff',
+    marginHorizontal: 20,
+    marginVertical: 5,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
 });

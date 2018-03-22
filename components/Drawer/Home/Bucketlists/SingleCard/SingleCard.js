@@ -22,7 +22,7 @@ const getTags = (bucketlist) => {
 };
 
 const SingleCard = ({
-  bucketlist, createdAt, time, showComments, setLikeColor, like, imageHeights,
+  bucketlist, createdAt, time, showComments, setLikeColor, like, imageHeights, goToBucketlist,
   bucketList, toggleComments, profile, comm, onSubmit, selectBucketlist, onChange,
 }) => (
   <View
@@ -73,7 +73,7 @@ const SingleCard = ({
     </View>
     <View style={styles.bucketlistBody}>
       <View style={styles.description}>
-        <TouchableOpacity style={styles.link} href={`bucketlists/${bucketlist.id}`}>
+        <TouchableOpacity style={styles.link} onPress={goToBucketlist}>
           <View>
             <Text style={styles.blue}>{bucketlist.name}</Text>
             {
@@ -111,7 +111,7 @@ const SingleCard = ({
           <TouchableOpacity
             style={styles.iconStyle}
             onPress={() => like(bucketlist)}
-            hitSlop={{ top: 30, left: 30, bottom: 30, right: 30 }}
+            hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
           >
             <Icon name="star" size={20} color={setLikeColor(bucketlist)} />
           </TouchableOpacity>
@@ -157,7 +157,6 @@ const SingleCard = ({
               style={[
                 styles.inputText, {
                   flexBasis: (
-                    comm.content.length > 0 &&
                     bucketList.id === bucketlist.id
                   ) ? '70%' : '85%',
                 },
@@ -167,7 +166,6 @@ const SingleCard = ({
               onChangeText={onChange}
             />
             {
-              comm.content.length > 0 &&
               bucketList.id === bucketlist.id &&
               <TouchableOpacity
                 text="POST"
@@ -195,6 +193,7 @@ SingleCard.defaultProps = {
     items: [],
   },
   selectBucketlist: () => {},
+  goToBucketlist: () => {},
 };
 
 export default SingleCard;

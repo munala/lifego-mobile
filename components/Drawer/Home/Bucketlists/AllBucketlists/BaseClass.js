@@ -38,10 +38,12 @@ class BaseClass extends Component {
   }
 
   onSearchChange = (search) => {
-    this.props.actions.loadAllBucketlists(null, null, search);
-    this.setState({
-      search,
-    });
+    if (search) {
+      this.props.actions.loadAllBucketlists(null, null, search);
+      this.setState({
+        search,
+      });
+    }
   }
 
   onSubmit = () => {
