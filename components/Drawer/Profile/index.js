@@ -166,12 +166,15 @@ class Profile extends BaseClass {
     return (
       <View style={styles.container}>
         <Header
-          title="Profile"
+          title="PROFILE"
           leftIcon="menu"
           onPressLeft={() => navigate('DrawerOpen')}
+          search={this.search}
           mode="profile"
+          clearSearch={this.clearSearch}
           logout={logout}
           navigate={nav}
+          handleResults={this.handleResults}
         />
         {currentApiCalls > 0 && !this.state.uploading &&
           <View style={styles.activity}>

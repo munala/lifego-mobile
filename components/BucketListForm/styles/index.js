@@ -167,11 +167,4 @@ export default StyleSheet.create({
     width: 80,
     height: 80,
   },
-  saveButtonText: {
-    display: 'flex',
-    fontSize: 12,
-    fontWeight: '600',
-    color: Platform.OS === 'ios' ? '#fff' : '#00bcd4',
-    backgroundColor: 'transparent',
-  },
 });
