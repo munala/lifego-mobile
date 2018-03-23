@@ -47,8 +47,7 @@ class BucketList extends BaseClass {
     actions.loadBucketlists(0, 20, '');
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
-        this.props.actions.logout();
-        this.props.navigation.navigate('user');
+        this.logout();
       } else {
         Alert.alert(
           error,
@@ -70,7 +69,7 @@ class BucketList extends BaseClass {
     }
   }
 
-  renderItem = ({ item }) => (
+  renderItem = ({ item }) => ( // eslint-disable-line react/prop-types
     <Row
       onDelete={this.onDelete}
       style={styles.bucketlistRow}
@@ -87,8 +86,8 @@ class BucketList extends BaseClass {
       error,
       data: { bucketlists },
       navigation: { navigate },
-      nav,
-      navi,
+      drawerNavigation,
+      navigateTopStack,
       actions,
     } = this.props;
     return (
@@ -96,12 +95,12 @@ class BucketList extends BaseClass {
         <Header
           title="My Bucketlists"
           leftIcon="menu"
-          onPressLeft={() => nav.navigate('DrawerOpen')}
+          onPressLeft={() => drawerNavigation.navigate('DrawerOpen')}
           search={this.search}
           mode="my_bucketlists"
           clearSearch={this.clearSearch}
           logout={actions.logout}
-          navigate={navi}
+          navigateTopStack={navigateTopStack}
           onFocus={this.onFocus}
         />
         {

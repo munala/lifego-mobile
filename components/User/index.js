@@ -60,17 +60,21 @@ class User extends BaseClass {
     Linking.addEventListener('url', this.handleOpenURL);
     const url = await Linking.getInitialURL();
     const start = await AsyncStorage.getItem('start');
+    const token = await AsyncStorage.getItem('token');
     if (url) {
       this.handleOpenURL({ url });
     }
-    if (this.props.loggedIn && start === 'true') {
+    if (this.props.loggedIn === true && start === 'true' && token) {
       this.props.navigation.navigate('home');
     }
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps = async (nextProps) => {
     const { loggedIn, navigation, error } = nextProps;
-    if (this.props.loggedIn === false && loggedIn === true && loggedIn !== this.props.loggedIn) {
+    if (
+      this.props.loggedIn === false &&
+      loggedIn === true && loggedIn !== this.props.loggedIn
+    ) {
       navigation.navigate('home');
     } else if (error && error !== this.props.error) {
       if (error !== 'Unauthorised' && error !== 'Invalid token') {

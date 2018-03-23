@@ -54,8 +54,8 @@ export default {
     navigate: PropTypes.func.isRequired,
     setParams: PropTypes.func.isRequired,
   }).isRequired,
-  naviGate: PropTypes.func.isRequired,
-  nav: PropTypes.shape({}).isRequired,
+  navigateTopStack: PropTypes.func.isRequired,
+  drawerNavigation: PropTypes.shape({}).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
   components: PropTypes.shape({
     showHeader: PropTypes.bool.isRequired,

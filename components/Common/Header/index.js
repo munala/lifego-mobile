@@ -51,9 +51,9 @@ class Header extends Component {
   }
 
   logout = () => {
-    const { actions, navigate } = this.props;
+    const { actions, navigateTopStack } = this.props;
     actions.logout();
-    navigate('user');
+    navigateTopStack('user');
   }
 
   render() {
@@ -124,7 +124,7 @@ Header.propTypes = {
   }).isRequired,
   leftIcon: PropTypes.string.isRequired,
   onPressLeft: PropTypes.func.isRequired,
-  navigate: PropTypes.func.isRequired,
+  navigateTopStack: PropTypes.func.isRequired,
   clearSearch: PropTypes.func,
   mode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

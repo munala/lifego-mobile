@@ -106,7 +106,7 @@ class Profile extends BaseClass {
   render() {
     const { activeType, scrollEnabled, editMode, uploading, scrollY } = this.state;
     const {
-      actions: { logout }, profile, navigation: { navigate }, nav, currentApiCalls,
+      actions: { logout }, profile, navigation: { navigate }, navigateTopStack, currentApiCalls,
     } = this.props;
     const avatar = this.state.profile.pictureUrl;
     const height = this.state.scrollY.interpolate({
@@ -171,7 +171,7 @@ class Profile extends BaseClass {
           onPressLeft={() => navigate('DrawerOpen')}
           mode="profile"
           logout={logout}
-          navigate={nav}
+          navigateTopStack={navigateTopStack}
         />
         {currentApiCalls > 0 && !this.state.uploading &&
           <View style={styles.activity}>

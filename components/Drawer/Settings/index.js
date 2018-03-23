@@ -82,7 +82,7 @@ class Settings extends BaseClass {
 
   render() {
     const {
-      actions: { logout }, profile, navigation: { navigate }, nav,
+      actions: { logout }, profile, navigation: { navigate }, navigateTopStack,
     } = this.props;
     return (
       <View style={styles.container}>
@@ -92,7 +92,7 @@ class Settings extends BaseClass {
           onPressLeft={() => navigate('DrawerOpen')}
           mode="profile"
           logout={logout}
-          navigate={nav}
+          navigateTopStack={navigateTopStack}
         />
         <View style={styles.body}>
           <View style={styles.switchRow}>

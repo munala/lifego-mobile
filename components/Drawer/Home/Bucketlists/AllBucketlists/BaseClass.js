@@ -186,9 +186,9 @@ class BaseClass extends Component {
   }
 
   logout = () => {
-    const { actions, naviGate } = this.props;
+    const { actions, navigateTopStack } = this.props;
     actions.logout();
-    naviGate('user');
+    navigateTopStack('user');
   }
 }
 

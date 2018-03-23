@@ -77,7 +77,7 @@ class Items extends BaseClass {
     });
   }
 
-  renderItem = ({ item }) => (
+  renderItem = ({ item }) => ( // eslint-disable-line react/prop-types
     <Row
       onDone={this.onDone}
       onDelete={this.onDelete}

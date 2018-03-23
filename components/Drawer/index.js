@@ -35,7 +35,7 @@ const passNavigate = (navigate, drawerLabel, icon, Comp) => (
     render() {
       const { navigation } = this.props;
       return (
-        <Comp nav={navigate} navigation={navigation} />
+        <Comp navigateTopStack={navigate} navigation={navigation} />
       );
     }
   }

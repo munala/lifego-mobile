@@ -18,6 +18,6 @@ export default {
     navigate: PropTypes.func.isRequired,
     setParams: PropTypes.func.isRequired,
   }).isRequired,
-  nav: PropTypes.func.isRequired,
+  navigateTopStack: PropTypes.func.isRequired,
   currentApiCalls: PropTypes.number.isRequired,
 };

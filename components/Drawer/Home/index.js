@@ -35,16 +35,16 @@ class Home extends Component {
   render() {
     const {
       navigation,
-      nav: navigate,
+      navigateTopStack,
     } = this.props;
     const Tabs = TabNavigator({
       Home: {
         screen: (() => (
           <HomeScreen
-            navigation={navigation}
+            drawerNavigation={navigation}
             imageHeights={this.state.imageHeights}
             handleHeader={this.handleHeader}
-            nav={navigate}
+            navigateTopStack={navigateTopStack}
           />
         )),
       },
@@ -100,7 +100,7 @@ class Home extends Component {
           clearSearch={this.clearSearch}
           mode="bucketlists"
           navigation={navigation}
-          navigate={navigate}
+          navigateTopStack={navigateTopStack}
         />
         {
           this.state.searchMode ?
@@ -172,7 +172,7 @@ Home.propTypes = {
     setParams: PropTypes.func.isRequired,
     state: PropTypes.shape({}).isRequired,
   }).isRequired,
-  nav: PropTypes.func.isRequired,
+  navigateTopStack: PropTypes.func.isRequired,
 };
 
 export default Home;

@@ -15,16 +15,16 @@ class HomeView extends Component {
 
   render() {
     const {
-      navigation: nav,
-      nav: naviGate,
+      drawerNavigation,
+      navigateTopStack,
     } = this.props;
     const screens = {
       bucketlists: {
         screen: (({ navigation }) => (
           <AllBucketlists
-            nav={nav}
+            drawerNavigation={drawerNavigation}
             navigation={navigation}
-            naviGate={naviGate}
+            navigateTopStack={navigateTopStack}
           />
         )),
       },
@@ -47,10 +47,10 @@ class HomeView extends Component {
 }
 
 HomeView.propTypes = {
-  navigation: PropTypes.shape({
+  drawerNavigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
-  nav: PropTypes.func.isRequired,
+  navigateTopStack: PropTypes.func.isRequired,
 };
 
 export default HomeView;
