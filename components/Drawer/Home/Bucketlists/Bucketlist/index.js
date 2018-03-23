@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import Text from '../../../../Common/SuperText';
@@ -47,14 +47,14 @@ class Bucketlist extends Component {
       comm: this.state.comm,
     };
     return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-      >
+      <View style={styles.container}>
         <TouchableOpacity onPress={() => navigate('bucketlists')}>
           <Text style={styles.backButton}>Back</Text>
         </TouchableOpacity>
-        <SingleCard {...bucketlistProps} />
-      </ScrollView>
+        <ScrollView >
+          <SingleCard {...bucketlistProps} />
+        </ScrollView>
+      </View>
     );
   }
 }

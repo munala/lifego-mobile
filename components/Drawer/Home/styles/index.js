@@ -394,7 +394,10 @@ export default StyleSheet.create({
     color: '#fff',
     marginHorizontal: 20,
     marginVertical: 5,
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: 'bold',
+  },
+  flexOne: {
+    flex: 1,
   },
 });
