@@ -32,8 +32,8 @@ export default {
     clearSearch: PropTypes.func.isRequired,
   }).isRequired,
   error: PropTypes.string.isRequired,
-  nav: PropTypes.shape({
+  drawerNavigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
-  navi: PropTypes.func.isRequired,
+  navigateTopStack: PropTypes.func.isRequired,
 };

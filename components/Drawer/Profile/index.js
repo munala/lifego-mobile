@@ -106,7 +106,7 @@ class Profile extends BaseClass {
   render() {
     const { activeType, scrollEnabled, editMode, uploading, scrollY } = this.state;
     const {
-      actions: { logout }, profile, navigation: { navigate }, nav, currentApiCalls,
+      actions: { logout }, profile, navigation: { navigate }, navigateTopStack, currentApiCalls,
     } = this.props;
     const avatar = this.state.profile.pictureUrl;
     const height = this.state.scrollY.interpolate({
@@ -166,15 +166,12 @@ class Profile extends BaseClass {
     return (
       <View style={styles.container}>
         <Header
-          title="PROFILE"
+          title="Profile"
           leftIcon="menu"
           onPressLeft={() => navigate('DrawerOpen')}
-          search={this.search}
           mode="profile"
-          clearSearch={this.clearSearch}
           logout={logout}
-          navigate={nav}
-          handleResults={this.handleResults}
+          navigateTopStack={navigateTopStack}
         />
         {currentApiCalls > 0 && !this.state.uploading &&
           <View style={styles.activity}>

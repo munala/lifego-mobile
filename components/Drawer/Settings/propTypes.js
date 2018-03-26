@@ -11,8 +11,6 @@ export default {
   }).isRequired,
   actions: PropTypes.shape({
     getProfile: PropTypes.func.isRequired,
-    addFriend: PropTypes.func.isRequired,
-    removeFriend: PropTypes.func.isRequired,
     updateProfile: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
   }).isRequired,

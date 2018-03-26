@@ -15,29 +15,44 @@ class HomeView extends Component {
 
   render() {
     const {
-      navigation: nav,
-      nav: naviGate,
+      drawerNavigation,
+      drawerNavigation: { state: { params }, state },
+      navigateTopStack,
+      tabNavigation,
     } = this.props;
     const screens = {
       bucketlists: {
         screen: (({ navigation }) => (
           <AllBucketlists
-            nav={nav}
+            drawerNavigation={drawerNavigation}
             navigation={navigation}
-            naviGate={naviGate}
+            navigateTopStack={navigateTopStack}
+            tabNavigation={tabNavigation}
           />
         )),
       },
       bucketlist: {
-        screen: Bucketlist,
+        screen: (({ navigation }) => (
+          <Bucketlist
+            navigation={navigation}
+            drawerNavigation={drawerNavigation}
+            tabNavigation={tabNavigation}
+            screenProps={{ tabNavigation }}
+          />
+        )),
       },
       bucketlistForm: {
         screen: BucketListForm,
       },
     };
-    const Stack = StackNavigator(screens, { navigationOptions: {
-      header: null,
-    } });
+    const navigationOptions = {
+      navigationOptions: { header: null },
+      initialRouteName: state && params && params.id ? 'bucketlist' : 'bucketlists',
+      initialRouteParams: state && params && params.id ?
+        { id: params.id, from: params.from } :
+        null,
+    };
+    const Stack = StackNavigator(screens, navigationOptions);
     return (
       <View style={styles.container}>
         <Stack />
@@ -47,10 +62,13 @@ class HomeView extends Component {
 }
 
 HomeView.propTypes = {
-  navigation: PropTypes.shape({
+  drawerNavigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
-  nav: PropTypes.func.isRequired,
+  tabNavigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  navigateTopStack: PropTypes.func.isRequired,
 };
 
 export default HomeView;

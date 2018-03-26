@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Icon, SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -51,9 +51,9 @@ class Header extends Component {
   }
 
   logout = () => {
-    const { actions, navigate } = this.props;
+    const { actions, navigateTopStack } = this.props;
     actions.logout();
-    navigate('user');
+    navigateTopStack('user');
   }
 
   render() {
@@ -79,6 +79,7 @@ class Header extends Component {
             <SearchBar
               textInputRef={(el) => { this.el = el; }}
               lightTheme
+              round={Platform.OS === 'ios'}
               containerStyle={styles.search}
               inputStyle={styles.searchInput}
               placeholderTextColor="#eee"
@@ -115,25 +116,27 @@ Header.propTypes = {
   actions: PropTypes.shape({
     loadBucketlists: PropTypes.func.isRequired,
     loadAllBucketlists: PropTypes.func.isRequired,
-    search: PropTypes.func.isRequired,
-    searchUsers: PropTypes.func.isRequired,
-    clearSearch: PropTypes.func.isRequired,
-    getProfile: PropTypes.func.isRequired,
+    search: PropTypes.func,
+    searchUsers: PropTypes.func,
+    clearSearch: PropTypes.func,
+    getProfile: PropTypes.func,
     logout: PropTypes.func.isRequired,
   }).isRequired,
   leftIcon: PropTypes.string.isRequired,
   onPressLeft: PropTypes.func.isRequired,
-  navigate: PropTypes.func.isRequired,
-  onFocus: PropTypes.func.isRequired,
-  clearSearch: PropTypes.func.isRequired,
+  navigateTopStack: PropTypes.func.isRequired,
+  clearSearch: PropTypes.func,
   mode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   showHeader: PropTypes.bool.isRequired,
   handleResults: PropTypes.func,
+  onFocus: PropTypes.func,
 };
 
 Header.defaultProps = {
   handleResults: (() => {}),
+  onFocus: (() => {}),
+  clearSearch: (() => {}),
 };
 
 const mapStateToProps = ({ searchText, components: { showHeader } }, ownProps) => ({
