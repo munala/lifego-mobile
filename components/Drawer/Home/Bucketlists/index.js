@@ -16,7 +16,9 @@ class HomeView extends Component {
   render() {
     const {
       drawerNavigation,
+      drawerNavigation: { state: { params }, state },
       navigateTopStack,
+      tabNavigation,
     } = this.props;
     const screens = {
       bucketlists: {
@@ -25,19 +27,32 @@ class HomeView extends Component {
             drawerNavigation={drawerNavigation}
             navigation={navigation}
             navigateTopStack={navigateTopStack}
+            tabNavigation={tabNavigation}
           />
         )),
       },
       bucketlist: {
-        screen: Bucketlist,
+        screen: (({ navigation }) => (
+          <Bucketlist
+            navigation={navigation}
+            drawerNavigation={drawerNavigation}
+            tabNavigation={tabNavigation}
+            screenProps={{ tabNavigation }}
+          />
+        )),
       },
       bucketlistForm: {
         screen: BucketListForm,
       },
     };
-    const Stack = StackNavigator(screens, { navigationOptions: {
-      header: null,
-    } });
+    const navigationOptions = {
+      navigationOptions: { header: null },
+      initialRouteName: state && params && params.id ? 'bucketlist' : 'bucketlists',
+      initialRouteParams: state && params && params.id ?
+        { id: params.id, from: params.from } :
+        null,
+    };
+    const Stack = StackNavigator(screens, navigationOptions);
     return (
       <View style={styles.container}>
         <Stack />
@@ -48,6 +63,9 @@ class HomeView extends Component {
 
 HomeView.propTypes = {
   drawerNavigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  tabNavigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   navigateTopStack: PropTypes.func.isRequired,

@@ -122,7 +122,7 @@ class AllBucketlists extends BaseClass {
       imageHeights: this.state.imageHeights,
     };
     bucketlistProps.goToBucketlist = () => this.props.navigation.navigate('bucketlist', {
-      ...bucketlistProps,
+      id: item.id,
     });
     return (
       <SingleCard {...bucketlistProps} />
@@ -176,20 +176,16 @@ class AllBucketlists extends BaseClass {
 
 AllBucketlists.propTypes = propTypes;
 
-function mapStateToProps(state) {
-  return state;
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({
-      ...bucketlistActions,
-      ...userActions,
-      ...commentActions,
-      ...likeActions,
-      ...tagActions,
-      handleHeader,
-    }, dispatch),
-  };
-}
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    ...bucketlistActions,
+    ...userActions,
+    ...commentActions,
+    ...likeActions,
+    ...tagActions,
+    handleHeader,
+  }, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllBucketlists);

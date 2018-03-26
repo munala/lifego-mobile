@@ -39,12 +39,13 @@ class Home extends Component {
     } = this.props;
     const Tabs = TabNavigator({
       Home: {
-        screen: (() => (
+        screen: (({ navigation: tabNavigation }) => (
           <HomeScreen
             drawerNavigation={navigation}
             imageHeights={this.state.imageHeights}
             handleHeader={this.handleHeader}
             navigateTopStack={navigateTopStack}
+            tabNavigation={tabNavigation}
           />
         )),
       },
@@ -55,7 +56,12 @@ class Home extends Component {
         screen: UserAlerts,
       },
       Notifications: {
-        screen: Notifications,
+        screen: (({ navigation: tabNavigation }) => (
+          <Notifications
+            drawerNavigation={navigation}
+            tabNavigation={tabNavigation}
+          />
+        )),
       },
     },
     {
@@ -76,9 +82,9 @@ class Home extends Component {
           backgroundColor: '#00bcd4',
         },
       },
-      navigationOptions: ({ navigation: nav }) => ({
+      navigationOptions: ({ navigation: { state } }) => ({
         tabBarIcon: ({ focused, tintColor }) => {
-          const { routeName } = nav.state;
+          const { routeName } = state;
           const names = {
             Home: 'home',
             Messages: 'message',
