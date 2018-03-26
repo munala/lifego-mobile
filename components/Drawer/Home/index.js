@@ -53,7 +53,12 @@ class Home extends Component {
         screen: Messages,
       },
       UserAlerts: {
-        screen: UserAlerts,
+        screen: (({ navigation: tabNavigation }) => (
+          <UserAlerts
+            drawerNavigation={navigation}
+            tabNavigation={tabNavigation}
+          />
+        )),
       },
       Notifications: {
         screen: (({ navigation: tabNavigation }) => (
