@@ -79,7 +79,7 @@ class AlertComponent extends Component {
     return result;
   }
 
-  stripHtml = text => text.replace('<b>', '').replace('<b>', '')
+  stripHtml = text => text.replace(/<b>/g, '');
 
   renderItem = ({ item: alert }) => (
     <TouchableOpacity

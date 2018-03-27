@@ -53,12 +53,7 @@ class Home extends Component {
         screen: Messages,
       },
       UserAlerts: {
-        screen: (({ navigation: tabNavigation }) => (
-          <UserAlerts
-            drawerNavigation={navigation}
-            tabNavigation={tabNavigation}
-          />
-        )),
+        screen: UserAlerts,
       },
       Notifications: {
         screen: (({ navigation: tabNavigation }) => (
@@ -126,58 +121,6 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  // conversations: PropTypes.arrayOf(PropTypes.shape({
-  //   username: PropTypes.string,
-  //   displayName: PropTypes.string,
-  //   email: PropTypes.string,
-  //   pictureUrl: PropTypes.string,
-  // })).isRequired,
-  // notifications: PropTypes.arrayOf(PropTypes.shape({
-  //   type: PropTypes.string,
-  //   bucketlistId: PropTypes.number,
-  //   text: PropTypes.string,
-  // })).isRequired,
-  // alerts: PropTypes.arrayOf(PropTypes.shape({
-  //   type: PropTypes.string,
-  //   userId: PropTypes.number,
-  //   friendId: PropTypes.number,
-  //   text: PropTypes.string,
-  // })).isRequired,
-  // profile: PropTypes.shape({
-  //   id: PropTypes.number,
-  //   username: PropTypes.string,
-  //   displayName: PropTypes.string,
-  //   email: PropTypes.string,
-  //   pictureUrl: PropTypes.string,
-  //   friends: PropTypes.arrayOf(PropTypes.shape({})),
-  //   searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
-  // }).isRequired,
-  // bucketlists: PropTypes.arrayOf(PropTypes.shape({
-  //   name: PropTypes.string,
-  //   id: PropTypes.number,
-  //   createdAt: PropTypes.string,
-  //   updatedAt: PropTypes.string,
-  //   description: PropTypes.string,
-  //   items: PropTypes.arrayOf(PropTypes.shape({
-  //     name: PropTypes.string,
-  //     id: PropTypes.number,
-  //     createdAt: PropTypes.string,
-  //     updatedAt: PropTypes.string,
-  //     done: PropTypes.bool,
-  //   })),
-  //   comments: PropTypes.arrayOf(PropTypes.shape({
-  //     content: PropTypes.string,
-  //     id: PropTypes.number,
-  //     createdAt: PropTypes.string,
-  //     updatedAt: PropTypes.string,
-  //   })),
-  // })).isRequired,
-  // actions: PropTypes.shape({
-  //   loadAllBucketlists: PropTypes.func.isRequired,
-  //   logout: PropTypes.func.isRequired,
-  //   search: PropTypes.func.isRequired,
-  //   clearSearch: PropTypes.func.isRequired,
-  // }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     setParams: PropTypes.func.isRequired,
