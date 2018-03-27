@@ -98,14 +98,21 @@ class MessageList extends BaseClass {
     return (
       <View style={styles.container}>
         {this.state.searching &&
-          <TextInput value={this.state.searchText} onTextChange={this.onChange} />
+          <TextInput
+            style={styles.searchInput}
+            value={this.state.searchText}
+            onChangeText={this.onChange}
+            underlineColorAndroid="#f7f7f7"
+            placeholderTextColor="#f7f7f7"
+            placeholder="Search friends"
+          />
         }
         {this.state.searching && this.renderResults()}
         <TouchableOpacity
           style={[styles.read, styles.compose]}
           onPress={() => this.toggleNew()}
         >
-          <Text style={styles.notificationActionText}>{this.state.searching ? 'cancel' : 'compose'}</Text>
+          <Text style={styles.notificationActionText}>{this.state.searching ? 'Cancel' : 'Compose'}</Text>
         </TouchableOpacity>
         {!this.state.searching && conversations.length > 0 &&
           <FlatList

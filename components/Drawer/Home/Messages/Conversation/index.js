@@ -43,7 +43,7 @@ class Conversation extends BaseClass {
         <View style={styles.top}>
           <Icon
             style={styles.backButton}
-            onPress={() => this.props.navigation.goBack()}
+            onPress={this.goBack}
             name="chevron-left"
             color="#00bcd4"
             size={30}

@@ -519,12 +519,12 @@ export default StyleSheet.create({
   },
   renderResults: {
     display: 'flex',
-    maxHeight: Platform.OS === 'ios' ? '90%' : '85%',
+    maxHeight: '84%',
     borderRadius: 5,
     zIndex: 3,
     overflow: 'hidden',
     backgroundColor: '#fff',
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     paddingVertical: 10,
   },
   body: {
@@ -568,6 +568,17 @@ export default StyleSheet.create({
     fontSize: 16,
     width: '90%',
     color: 'grey',
+  },
+  searchInput: {
+    display: 'flex',
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 5,
+    marginVertical: 10,
+    marginHorizontal: Platform.OS === 'ios' ? 10 : 5,
+    backgroundColor: Platform.OS === 'ios' ? 'rgba(0,0,0,0.1)' : 'transparent',
+    borderRadius: 13,
+    fontSize: 16,
+    color: '#fff',
+    paddingVertical: 5,
   },
   newMessage: {
     minWidth: '90%',

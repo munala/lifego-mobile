@@ -9,7 +9,7 @@ import styles from './styles';
 
 class StackNav extends Component {
   render() {
-    const { navigateTopStack, drawerNavigation } = this.props;
+    const { navigateTopStack, navigation: drawerNavigation } = this.props;
     const Navigator = ({ navigation }) => (
       <BucketList
         navigateTopStack={navigateTopStack}
@@ -49,7 +49,7 @@ class StackNav extends Component {
 
 StackNav.propTypes = {
   navigateTopStack: PropTypes.func.isRequired,
-  drawerNavigation: PropTypes.shape({}).isRequired,
+  navigation: PropTypes.shape({}).isRequired,
 };
 
 export default StackNav;

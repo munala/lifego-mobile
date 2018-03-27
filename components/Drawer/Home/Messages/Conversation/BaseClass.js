@@ -55,9 +55,14 @@ class BaseClass extends Component {
     this.setState({ contentHeight });
   }
 
+  goBack = () => {
+    this.props.navigation.goBack();
+    this.props.navigation.setParams({ id: undefined });
+  }
+
   deleteConversation = async (conversation) => {
     await this.props.actions.deleteConversation(conversation);
-    this.props.navigation.goBack();
+    this.goBack();
   }
 }
 
