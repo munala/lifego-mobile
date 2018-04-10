@@ -92,12 +92,7 @@ class User extends BaseClass {
           source={require('../../images/bucketlist_front.jpg')}
         />
         <Image
-          style={{
-            height: 80,
-            width: 80,
-            alignSelf: 'center',
-            marginBottom: 50,
-          }}
+          style={styles.logo}
           source={require('../../assets/icons/icon.png')}
         />
         {

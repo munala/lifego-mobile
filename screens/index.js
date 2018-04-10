@@ -2,11 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
+
 import User from '../components/User';
 import Drawer from '../components/Drawer';
-
+import Splash from '../components/Splash';
 
 const screens = {
+  splash: {
+    screen: Splash,
+  },
   user: {
     screen: User,
   },

@@ -34,7 +34,7 @@ export default {
   navigationData: {
     auth: {
       previousRoute: '',
-      route: 'user',
+      route: 'splash',
       params: {},
     },
     drawer: {
