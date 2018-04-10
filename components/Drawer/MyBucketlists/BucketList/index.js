@@ -16,6 +16,7 @@ import SearchResults from '../../../Common/SearchResults';
 import * as bucketlistActions from '../../../../actions/bucketlistActions';
 import * as userActions from '../../../../actions/userActions';
 import * as searchActions from '../../../../actions/searchActions';
+import * as navigationActions from '../../../../actions/navigationActions';
 import Row from '../Row';
 import styles from './styles';
 import BaseClass from './BaseClass';
@@ -73,7 +74,8 @@ class BucketList extends BaseClass {
     <Row
       onDelete={this.onDelete}
       style={styles.bucketlistRow}
-      navigation={this.props.navigation}
+      navigate={this.props.actions.navigate}
+      setParams={this.props.actions.setParams}
       content={item}
       context={this.state.context}
       showModal={this.showModal}
@@ -85,31 +87,23 @@ class BucketList extends BaseClass {
       currentApiCalls,
       error,
       data: { bucketlists },
-      navigation: { navigate },
-      drawerNavigation,
-      navigateTopStack,
-      actions,
     } = this.props;
     return (
       <View style={styles.container}>
         <Header
           title="My Bucketlists"
           leftIcon="menu"
-          onPressLeft={() => drawerNavigation.navigate('DrawerOpen')}
+          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
           search={this.search}
           mode="my_bucketlists"
           clearSearch={this.clearSearch}
-          logout={actions.logout}
-          navigateTopStack={navigateTopStack}
           onFocus={this.onFocus}
         />
         {
           this.state.searchMode &&
           <SearchResults
             bucketlists={bucketlists}
-            onItemPress={bucketlist => navigate('items', {
-              bucketlist,
-            })}
+            onItemPress={bucketlist => this.goToBucketlistForm(bucketlist)}
           />
         }
         {
@@ -160,6 +154,7 @@ function mapDispatchToProps(dispatch) {
       ...bucketlistActions,
       ...userActions,
       ...searchActions,
+      ...navigationActions,
     }, dispatch),
   };
 }

@@ -65,7 +65,7 @@ export default (store) => {
       const users = [...storeData.profile.friends, ...storeData.profile.followers];
       const [user] = users.filter(use => use.id === data.message.senderId);
       sendNotification({
-        bigText: user.displayName,
+        bigText: data.message.content,
         subText: 'Tap to view message',
         icon: 'message',
         title: `New message from ${user.displayName}`,

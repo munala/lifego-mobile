@@ -19,9 +19,8 @@ export default {
     sendMessage: PropTypes.func.isRequired,
     markAsRead: PropTypes.func.isRequired,
     deleteConversation: PropTypes.func.isRequired,
-  }).isRequired,
-  navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequire,
   }).isRequired,
+  params: PropTypes.shape({}).isRequired,
+  previousRoute: PropTypes.string.isRequired,
 };

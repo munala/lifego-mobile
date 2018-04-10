@@ -23,11 +23,12 @@ export default {
     saveItem: PropTypes.func.isRequired,
     updateItem: PropTypes.func.isRequired,
     deleteItem: PropTypes.func.isRequired,
-  }).isRequired,
-  navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     setParams: PropTypes.func.isRequired,
-    state: PropTypes.shape({
+  }).isRequired,
+  navigation: PropTypes.shape({
+    myBucketlists: PropTypes.shape({
+      previousRoute: PropTypes.string.isRequired,
       params: PropTypes.shape({
         bucketlist: PropTypes.shape({
           name: PropTypes.string.isRequired,
@@ -44,7 +45,7 @@ export default {
           })).isRequired,
         }).isRequired,
       }).isRequired,
-    }).isRequired,
+    }),
   }).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
 };

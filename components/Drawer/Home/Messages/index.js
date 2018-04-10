@@ -1,11 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+
 import Conversation from './Conversation';
 import MessageList from './MessageList';
 import styles from '../styles';
 
-export default () => {
+const Messages = ({ route }) => {
   const screens = {
     MessageList: {
       screen: MessageList,
@@ -15,6 +18,7 @@ export default () => {
     },
   };
   const navigationOptions = {
+    initialRouteName: route,
     navigationOptions: { header: null },
   };
   const Stack = StackNavigator(screens, navigationOptions);
@@ -24,3 +28,9 @@ export default () => {
     </View>
   );
 };
+
+Messages.propTypes = {
+  route: PropTypes.string.isRequired,
+};
+
+export default connect(({ navigationData: { conversations: { route } } }) => ({ route }))(Messages);

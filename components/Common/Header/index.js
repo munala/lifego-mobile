@@ -14,7 +14,6 @@ import styles from './styles';
 
 class Header extends Component {
   state = {
-    open: false,
     searchText: '',
     focused: false,
   }
@@ -51,13 +50,13 @@ class Header extends Component {
   }
 
   logout = () => {
-    const { actions, navigateTopStack } = this.props;
-    actions.logout();
-    navigateTopStack('user');
+    this.props.actions.logout();
   }
 
   render() {
-    const { leftIcon, onPressLeft, mode, title } = this.props;
+    const {
+      leftIcon, onPressLeft, mode, title,
+    } = this.props;
     const searchProps = this.state.focused ? { clearIcon: { color: '#eee', name: 'close' } } : {};
     const menuItems = [
       {
@@ -124,7 +123,6 @@ Header.propTypes = {
   }).isRequired,
   leftIcon: PropTypes.string.isRequired,
   onPressLeft: PropTypes.func.isRequired,
-  navigateTopStack: PropTypes.func.isRequired,
   clearSearch: PropTypes.func,
   mode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

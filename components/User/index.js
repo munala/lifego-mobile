@@ -7,7 +7,6 @@ import {
   ScrollView,
   Linking,
   View,
-  AsyncStorage,
   ActivityIndicator,
   Alert,
 } from 'react-native';
@@ -17,6 +16,7 @@ import { bindActionCreators } from 'redux';
 
 import Text from '../Common/SuperText';
 import * as userActions from '../../actions/userActions';
+import * as navigationActions from '../../actions/navigationActions';
 import styles from './styles';
 import propTypes from './propTypes';
 import BaseClass from './BaseClass';
@@ -59,24 +59,13 @@ class User extends BaseClass {
   componentDidMount = async () => {
     Linking.addEventListener('url', this.handleOpenURL);
     const url = await Linking.getInitialURL();
-    const start = await AsyncStorage.getItem('start');
-    const token = await AsyncStorage.getItem('token');
     if (url) {
       this.handleOpenURL({ url });
     }
-    if (this.props.loggedIn === true && start === 'true' && token) {
-      this.props.navigation.navigate('home');
-    }
   }
 
-  componentWillReceiveProps = async (nextProps) => {
-    const { loggedIn, navigation, error } = nextProps;
-    if (
-      this.props.loggedIn === false &&
-      loggedIn === true && loggedIn !== this.props.loggedIn
-    ) {
-      navigation.navigate('home');
-    } else if (error && error !== this.props.error) {
+  componentWillReceiveProps = async ({ error }) => {
+    if (error && error !== this.props.error) {
       if (error !== 'Unauthorised' && error !== 'Invalid token') {
         Alert.alert(error);
       }
@@ -88,7 +77,9 @@ class User extends BaseClass {
   }
 
   render() {
-    const { registerMode, registerUser, loginUser, disabled } = this.state;
+    const {
+      registerMode, registerUser, loginUser, disabled,
+    } = this.state;
     const user = registerMode ? registerUser : loginUser;
     return (
       <ScrollView
@@ -195,14 +186,10 @@ class User extends BaseClass {
 
 User.propTypes = propTypes;
 
-function mapStateToProps(state) {
-  return state;
-}
+const mapStateToProps = state => state;
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({ ...userActions }, dispatch),
-  };
-}
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

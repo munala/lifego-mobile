@@ -11,10 +11,10 @@ export default {
     deleteComment: PropTypes.func.isRequired,
     saveBucketlist: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
-    addTag: PropTypes.func.isRequired,
-    getTags: PropTypes.func.isRequired,
     getProfile: PropTypes.func.isRequired,
     handleHeader: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+    setParams: PropTypes.func.isRequired,
   }).isRequired,
   allData: PropTypes.shape({
     bucketlists: PropTypes.arrayOf(PropTypes.shape({
@@ -50,12 +50,6 @@ export default {
     friends: PropTypes.arrayOf(PropTypes.shape({})),
     searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
-  }).isRequired,
-  navigateTopStack: PropTypes.func.isRequired,
-  drawerNavigation: PropTypes.shape({}).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
   components: PropTypes.shape({
     showHeader: PropTypes.bool.isRequired,

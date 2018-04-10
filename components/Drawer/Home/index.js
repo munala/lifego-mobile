@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { getConversations } from '../../../actions/messageActions';
 import { getNotifications } from '../../../actions/notificationActions';
 import { getAlerts } from '../../../actions/userAlertActions';
+import * as navigationActions from '../../../actions/navigationActions';
 import TabIcon from './TabIcon';
 import Header from '../../Common/Header';
 import SearchResults from '../../Common/SearchResults';
@@ -23,13 +24,26 @@ class Home extends Component {
   }
 
   componentWillMount = () => {
-    Object.keys(this.props.actions).forEach(key => this.props.actions[key]());
+    this.props.actions.getConversations();
+    this.props.actions.getNotifications();
+    this.props.actions.getAlerts();
   }
 
   onFocus = () => {
     this.setState({
       searchMode: true,
     });
+  }
+
+  onItemPress = async (bucketlist) => {
+    await this.setState({
+      searchMode: false,
+    });
+    this.props.actions.setParams({
+      params: { id: bucketlist.id, from: 'bucketlists' },
+      navigator: 'allBucketlists',
+    });
+    this.props.actions.navigate({ route: 'bucketlist', navigator: 'allBucketlists' });
   }
 
   clearSearch = () => {
@@ -40,19 +54,16 @@ class Home extends Component {
 
   render() {
     const {
-      navigation,
-      navigateTopStack,
+      route,
+      actions: { navigate },
     } = this.props;
     const Tabs = TabNavigator(
       {
         Home: {
-          screen: (({ navigation: tabNavigation }) => (
+          screen: (() => (
             <HomeScreen
-              drawerNavigation={navigation}
               imageHeights={this.state.imageHeights}
               handleHeader={this.handleHeader}
-              navigateTopStack={navigateTopStack}
-              tabNavigation={tabNavigation}
             />
           )),
         },
@@ -63,15 +74,11 @@ class Home extends Component {
           screen: UserAlerts,
         },
         Notifications: {
-          screen: (({ navigation: tabNavigation }) => (
-            <Notifications
-              drawerNavigation={navigation}
-              tabNavigation={tabNavigation}
-            />
-          )),
+          screen: Notifications,
         },
       },
       {
+        initialRouteName: route,
         tabBarPosition: 'bottom',
         tabBarOptions: {
           activeTintColor: '#00bcd4',
@@ -113,19 +120,24 @@ class Home extends Component {
         <Header
           title="Home"
           leftIcon="menu"
-          onPressLeft={() => navigation.navigate('DrawerOpen')}
+          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
           onFocus={this.onFocus}
           clearSearch={this.clearSearch}
           mode="bucketlists"
-          navigation={navigation}
-          navigateTopStack={navigateTopStack}
         />
         {
           this.state.searchMode ?
             <SearchResults
-              onItemPress={() => {}}
+              onItemPress={this.onItemPress}
             /> :
-            <Tabs />
+            <Tabs
+              onNavigationStateChange={() => {
+                navigate({
+                  route: 'bucketlists',
+                  navigator: 'allBucketlists',
+                });
+              }}
+            />
         }
       </View>
     );
@@ -133,21 +145,35 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  navigation: PropTypes.shape({
+  route: PropTypes.string.isRequired,
+  actions: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     setParams: PropTypes.func.isRequired,
-    state: PropTypes.shape({}).isRequired,
+    getConversations: PropTypes.func.isRequired,
+    getNotifications: PropTypes.func.isRequired,
+    getAlerts: PropTypes.func.isRequired,
   }).isRequired,
-  navigateTopStack: PropTypes.func.isRequired,
-  actions: PropTypes.shape({}).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
+
+const mapStateToProps = ({
+  navigationData: { home: { route, params, previousRoute } },
+}, ownProps) => ({
+  ...ownProps,
+  route,
+  params,
+  previousRoute,
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
+    ...navigationActions,
     getConversations,
     getNotifications,
     getAlerts,
   }, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

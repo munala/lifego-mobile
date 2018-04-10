@@ -34,12 +34,14 @@ const SingleCard = ({
         style={styles.avatar}
         source={
           bucketlist.userPictureUrl ?
-            { uri: (
-              bucketlist.userPictureUrl.replace(
-                (bucketlist.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
-                'https://',
-              )
-            ) } :
+            {
+              uri: (
+                bucketlist.userPictureUrl.replace(
+                  (bucketlist.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                  'https://',
+                )
+              ),
+            } :
             require('../../../../../assets/images/user.png')
         }
       />
@@ -85,12 +87,14 @@ const SingleCard = ({
       </View>
       {!!bucketlist.pictureUrl &&
         <Image
-          source={{ uri: (
-            bucketlist.pictureUrl.replace(
-              (bucketlist.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
-              'https://',
-            )
-          ) }}
+          source={{
+            uri: (
+              bucketlist.pictureUrl.replace(
+                (bucketlist.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                'https://',
+              )
+            ),
+          }}
           style={[styles.image, imageHeights[bucketlist.name]]}
         />
       }
@@ -111,7 +115,9 @@ const SingleCard = ({
           <TouchableOpacity
             style={styles.iconStyle}
             onPress={() => like(bucketlist)}
-            hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
+            hitSlop={{
+              top: 10, left: 10, bottom: 10, right: 10,
+            }}
           >
             <Icon name="star" size={20} color={setLikeColor(bucketlist)} />
           </TouchableOpacity>

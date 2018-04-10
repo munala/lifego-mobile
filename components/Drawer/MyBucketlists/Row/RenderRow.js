@@ -66,8 +66,10 @@ const RenderRow = ({
         'Are you sure?',
         [
           { text: 'Cancel', onPress: () => {} },
-          { text: 'OK',
-            onPress: () => onDelete(content, context) },
+          {
+            text: 'OK',
+            onPress: () => onDelete(content, context),
+          },
         ],
         { cancelable: true },
       ),
@@ -83,10 +85,10 @@ const RenderRow = ({
     >
       <Modal
         isVisible={visibleModal}
-        backdropColor={'black'}
+        backdropColor="black"
         backdropOpacity={0.5}
-        animationIn={'zoomInDown'}
-        animationOut={'zoomOutUp'}
+        animationIn="zoomInDown"
+        animationOut="zoomOutUp"
         animationInTiming={200}
         animationOutTiming={200}
         backdropTransitionInTiming={200}
@@ -122,7 +124,9 @@ const RenderRow = ({
         <View style={[baseStyles.container, localStyles.row]}>
           <TouchableOpacity
             onPress={() => handleTouch()}
-            hitSlop={{ top: 20, left: 20, bottom: 20, right: 250 }}
+            hitSlop={{
+ top: 20, left: 20, bottom: 20, right: 250,
+}}
             style={localStyles.handleTouch}
           >
             <Text

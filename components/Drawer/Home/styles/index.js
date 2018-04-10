@@ -622,7 +622,7 @@ export default StyleSheet.create({
     display: 'flex',
     color: '#fff',
     fontSize: 16,
-    height: 30,
+    minHeight: 30,
     marginLeft: 10,
     marginRight: 10,
     marginVertical: 5,

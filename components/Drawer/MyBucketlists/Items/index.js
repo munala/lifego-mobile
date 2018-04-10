@@ -16,47 +16,16 @@ import Text from '../../../Common/SuperText';
 import Header from '../../../Common/Header';
 import * as bucketlistActions from '../../../../actions/bucketlistActions';
 import * as userActions from '../../../../actions/userActions';
+import * as navigationActions from '../../../../actions/navigationActions';
 import Row from '../Row';
 import styles from './styles';
 import propTypes from './propTypes';
 import BaseClass from './BaseClass';
 
 class Items extends BaseClass {
-  static navigationOptions = ({ navigation }) => {
-    const { state } = navigation;
-    return ({
-      title: state.params ? state.params.bucketlist.name : '',
-      headerLeft: (
-        <Icon
-          name="chevron-left"
-          color="#00bcd4"
-          size={40}
-          containerStyle={{ marginLeft: 10 }}
-          onPress={() => { navigation.goBack(); }}
-        />
-      ),
-      headerRight: (
-        <Icon
-          name="search"
-          color="#00bcd4"
-          containerStyle={{ marginRight: 10 }}
-          onPress={state.params ? state.params.toggleSearch : () => {}}
-        />
-      ),
-      headerStyle: {
-        backgroundColor: 'white',
-      },
-      headerTitleStyle: {
-        alignSelf: 'center',
-        textAlign: 'center',
-        color: '#00bcd4',
-      },
-    });
-  };
-
   state = {
-    bucketlist: this.props.navigation.state.params.bucketlist,
-    data: this.props.navigation.state.params.bucketlist.items,
+    bucketlist: this.props.navigationData.myBucketlists.params.bucketlist,
+    data: this.props.navigationData.myBucketlists.params.bucketlist.items,
     filter: 'all',
     refreshing: false,
     visibleModal: false,
@@ -82,7 +51,6 @@ class Items extends BaseClass {
       onDone={this.onDone}
       onDelete={this.onDelete}
       style={styles.bucketlistRow}
-      navigation={this.props.navigation}
       content={item}
       context={this.state.context}
       showModal={this.showModal}
@@ -93,18 +61,20 @@ class Items extends BaseClass {
     const {
       filter, data, bucketlist,
     } = this.state;
-    const { currentApiCalls, navigation: { goBack } } = this.props;
+    const {
+      currentApiCalls,
+      navigationData: { myBucketlists: { previousRoute } },
+      actions: { navigate },
+    } = this.props;
     return (
       <View style={[styles.container, styles.iPhoneX]}>
         <Header
           title={bucketlist.name}
           leftIcon={Platform.OS === 'ios' ? 'chevron-left' : 'arrow-back'}
-          onPressLeft={() => goBack()}
+          onPressLeft={() => navigate({ route: previousRoute, navigator: 'myBucketlists' })}
           search={() => {}}
           mode="items"
           clearSearch={() => {}}
-          logout={() => {}}
-          navigate={() => {}}
         />
         <ScrollView
           contentContainerStyle={styles.container}
@@ -119,7 +89,9 @@ class Items extends BaseClass {
               />
               <Text
                 style={styles.toggleText}
-              >Showing {filter} items</Text>
+              >
+                Showing {filter} items
+              </Text>
             </View>
           }
           {
@@ -171,7 +143,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...bucketlistActions, ...userActions }, dispatch),
+    actions: bindActionCreators({
+      ...bucketlistActions,
+      ...userActions,
+      ...navigationActions,
+    }, dispatch),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Items);

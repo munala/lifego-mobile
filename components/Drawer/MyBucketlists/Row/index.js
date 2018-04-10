@@ -18,7 +18,7 @@ class Row extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    this.setState({ nextProps });
+    this.setState({ ...nextProps });
   }
 
   setModalVisible = (value) => {
@@ -26,13 +26,17 @@ class Row extends Component {
       visibleModal: value,
     });
   }
-  handleTouch = () => {
+  handleTouch = async () => {
     const { content } = this.state;
-    const { navigation } = this.props;
+    const { navigate, setParams } = this.props;
     if (content.userId) {
-      navigation.navigate('items', {
-        bucketlist: content,
+      await setParams({
+        params: {
+          bucketlist: content,
+        },
+        navigator: 'myBucketlists',
       });
+      navigate({ route: 'items', navigator: 'myBucketlists' });
     }
   }
   renderProperties = () => {
@@ -42,9 +46,7 @@ class Row extends Component {
     Object.keys(obj).forEach((property) => {
       if (['createdAt', 'updatedAt', 'description'].indexOf(property) >= 0) {
         if (property === 'createdAt' || property === 'updatedAt') {
-          obj[property] = Moment(
-            obj[property],
-          ).format('MMMM Do YYYY, h:mm:ss a');
+          obj[property] = Moment(obj[property]).format('MMMM Do YYYY, h:mm:ss a');
         }
         properties.push({ name: property, text: obj[property] });
       }
@@ -96,9 +98,8 @@ Row.propTypes = {
   ]).isRequired,
   showModal: PropTypes.func.isRequired,
   onDone: PropTypes.func,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
+  navigate: PropTypes.func,
+  setParams: PropTypes.func,
 };
 Row.defaultProps = {
   context: {
@@ -106,5 +107,7 @@ Row.defaultProps = {
     name: '',
   },
   onDone: () => {},
+  navigate: () => {},
+  setParams: () => {},
 };
 export default Row;

@@ -56,7 +56,7 @@ const Form = ({
         defaultValue={content.description}
         multiline
         numberOfLines={4}
-        textAlignVertical={'top'}
+        textAlignVertical="top"
         style={[styles.input, { height: 80 }]}
         onChangeText={text => onChange(text, 'description')}
         underlineColorAndroid="#00bcd4"
@@ -115,7 +115,7 @@ const Form = ({
               >
                 <Picker.Item
                   value={null}
-                  label={'Select Category'}
+                  label="Select Category"
                 />
                 {renderCategories()}
               </Picker>

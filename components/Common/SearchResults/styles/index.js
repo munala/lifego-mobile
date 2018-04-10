@@ -37,6 +37,7 @@ export default StyleSheet.create({
     height: 40,
     paddingHorizontal: 20,
     width: '100%',
+    backgroundColor: '#fff',
   },
   option: {
     display: 'flex',

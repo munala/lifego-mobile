@@ -18,11 +18,14 @@ class BaseClass extends Component {
   onSubmit = async () => {
     let conversation;
     const { message } = this.state;
-    const { navigation, conversation: currentConversation } = this.props;
+    const { params, conversation: currentConversation } = this.props;
     if (!currentConversation) {
       conversation = await this.props.actions
-        .startConversation(navigation.state.params.newConversation);
-      this.props.navigation.setParams({ id: conversation.id });
+        .startConversation(params.newConversation);
+      await this.props.actions.setParams({
+        params: { id: conversation.id },
+        navigator: 'conversations',
+      });
     } else {
       conversation = currentConversation;
     }
@@ -64,9 +67,8 @@ class BaseClass extends Component {
     this.setState({ contentHeight });
   }
 
-  goBack = () => {
-    this.props.navigation.goBack();
-    this.props.navigation.setParams({ id: undefined });
+  goBack = async () => {
+    this.props.actions.navigate({ route: 'MessageList', navigator: 'conversations' });
   }
 
   deleteConversation = async (conversation) => {

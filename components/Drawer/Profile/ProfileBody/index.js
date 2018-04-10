@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   ScrollView,
+  Platform,
 } from 'react-native';
 
 import EditProfileForm from '../EditProfileForm';
@@ -86,11 +87,13 @@ const ProfileBody = ({
               height: listHeight + 20,
             }]}
             scrollEventThrottle={16}
-            onScroll={Animated.event(
-              [{
-                nativeEvent: { contentOffset: { y: scrollY } },
-              }],
-            )}
+            onScroll={
+              Platform.OS === 'ios' ?
+                Animated.event([{
+                  nativeEvent: { contentOffset: { y: scrollY } },
+                }]) :
+                () => {}
+            }
           >
             {renderPeople()}
           </ScrollView>

@@ -12,6 +12,7 @@ import alerts from './userAlertReducer';
 import tags from './tagReducer';
 import searchText from './searchReducer';
 import components from './componentReducer';
+import navigationData from './navigationReducer';
 
 const rootReducer = combineReducers({
   data,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   tags,
   searchText,
   components,
+  navigationData,
 });
 
 export default rootReducer;

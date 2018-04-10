@@ -16,6 +16,7 @@ import { bindActionCreators } from 'redux';
 import BaseClass from './BaseClass';
 import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
+import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
 import styles from '../../styles';
 import propTypes from './propTypes';
@@ -166,7 +167,11 @@ const mapStateToProps = ({ profile, conversations, currentApiCalls }, ownProps) 
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...messageActions, ...userActions }, dispatch),
+  actions: bindActionCreators({
+    ...messageActions,
+    ...userActions,
+    ...navigationActions,
+  }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageList);

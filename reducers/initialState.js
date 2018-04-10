@@ -31,4 +31,36 @@ export default {
   components: {
     showHeader: true,
   },
+  navigationData: {
+    auth: {
+      previousRoute: '',
+      route: 'user',
+      params: {},
+    },
+    drawer: {
+      previousRoute: '',
+      route: 'Home',
+      params: {},
+    },
+    home: {
+      previousRoute: '',
+      route: 'Home',
+      params: {},
+    },
+    allBucketlists: {
+      previousRoute: '',
+      route: 'bucketlists',
+      params: {},
+    },
+    myBucketlists: {
+      previousRoute: '',
+      route: 'bucketlist',
+      params: {},
+    },
+    conversations: {
+      previousRoute: '',
+      route: 'MessageList',
+      params: {},
+    },
+  },
 };

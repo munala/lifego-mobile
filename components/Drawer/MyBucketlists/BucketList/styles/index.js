@@ -9,6 +9,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     height: '100%',
     paddingBottom: height === 812 && Platform.OS === 'ios' ? 20 : 0,
+    display: 'flex',
   },
   bucketlistRow: {
     flex: 1,

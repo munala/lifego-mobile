@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import BaseClass from './BaseClass';
 import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
+import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
 import styles from '../../styles';
 import propTypes from './propTypes';
@@ -28,14 +29,14 @@ class Conversation extends BaseClass {
 
   componentWillReceiveProps = ({ conversation }) => {
     if (!conversation) {
-      this.props.navigation.goBack();
+      this.props.actions.navigate({ route: this.props.previousRoute, navigator: 'conversations' });
     }
   }
 
   render() {
     const {
       conversation,
-      navigation: { state: { params: { newConversation, id } } },
+      params: { newConversation, id },
       profile,
       actions: { deleteConversation },
     } = this.props;
@@ -116,10 +117,15 @@ class Conversation extends BaseClass {
 
 Conversation.propTypes = propTypes;
 
-const mapStateToProps = ({ profile, conversations }, ownProps) => {
-  const { state: { params: { id } } } = ownProps.navigation;
+const mapStateToProps = ({
+  profile,
+  conversations,
+  navigationData: { conversations: { previousRoute, params, params: { id } } },
+}, ownProps) => {
   const [conversation] = conversations.filter(chat => chat.id === id);
   return ({
+    previousRoute,
+    params,
     profile,
     conversation,
     ...ownProps,
@@ -127,7 +133,11 @@ const mapStateToProps = ({ profile, conversations }, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...messageActions, ...userActions }, dispatch),
+  actions: bindActionCreators({
+    ...messageActions,
+    ...userActions,
+    ...navigationActions,
+  }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Conversation);

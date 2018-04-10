@@ -25,9 +25,7 @@ export default {
     deleteConversation: PropTypes.func.isRequired,
     startConversation: PropTypes.func.isRequired,
     getConversations: PropTypes.func.isRequired,
-  }).isRequired,
-  currentApiCalls: PropTypes.number.isRequired,
-  navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
+  currentApiCalls: PropTypes.number.isRequired,
 };

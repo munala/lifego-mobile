@@ -14,7 +14,7 @@ import * as bucketlistActions from '../../../../../actions/bucketlistActions';
 import * as userActions from '../../../../../actions/userActions';
 import * as commentActions from '../../../../../actions/commentActions';
 import * as likeActions from '../../../../../actions/likeActions';
-import * as tagActions from '../../../../../actions/tagActions';
+import * as navigationActions from '../../../../../actions/navigationActions';
 import { handleHeader } from '../../../../../actions/componentActions';
 import SingleCard from '../SingleCard/SingleCard';
 import styles from '../../styles';
@@ -85,15 +85,31 @@ class AllBucketlists extends BaseClass {
     }
   }
 
-  showModal = async (type, content = {}) => {
-    this.props.navigation.navigate('bucketlistForm', {
-      context: {
-        ...this.state.context,
-        type,
+  goToBucketlist = item => async () => {
+    await this.props.actions.setParams({
+      params: {
+        id: item.id,
+        from: 'bucketlists',
       },
-      content,
-      onSave: this.onSave,
+      navigator: 'allBucketlists',
     });
+    this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlist' });
+  }
+
+  showModal = async (type, content = {}) => {
+    await this.props.actions.setParams({
+      params: {
+        context: {
+          ...this.state.context,
+          type,
+        },
+        content,
+        onSave: this.onSave,
+        goBack: () => this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlists' }),
+      },
+      navigator: 'allBucketlists',
+    });
+    this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlistForm' });
   }
 
   offset = 0
@@ -118,12 +134,9 @@ class AllBucketlists extends BaseClass {
       onChange: this.onChange,
       like: this.like,
       profile: this.props.profile,
-      push: this.props.navigation.navigate,
       imageHeights: this.state.imageHeights,
+      goToBucketlist: this.goToBucketlist(item),
     };
-    bucketlistProps.goToBucketlist = () => this.props.navigation.navigate('bucketlist', {
-      id: item.id,
-    });
     return (
       <SingleCard {...bucketlistProps} />
     );
@@ -183,7 +196,7 @@ const mapDispatchToProps = dispatch => ({
     ...userActions,
     ...commentActions,
     ...likeActions,
-    ...tagActions,
+    ...navigationActions,
     handleHeader,
   }, dispatch),
 });

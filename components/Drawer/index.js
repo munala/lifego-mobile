@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { Platform, Dimensions } from 'react-native';
 import { DrawerNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 import MyBucketlists from './MyBucketlists';
 import Home from './Home';
@@ -11,7 +12,7 @@ import Settings from './Settings';
 
 const { height } = Dimensions.get('window');
 
-const passNavigate = (navigate, drawerLabel, icon, Comp) => (
+const navigationOptionsWrapper = (drawerLabel, icon, Comp) => (
   class DrawerComponent extends Component {
     static navigationOptions = {
       drawerLabel,
@@ -27,25 +28,22 @@ const passNavigate = (navigate, drawerLabel, icon, Comp) => (
     static propTypes = {
       navigation: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
-        setParams: PropTypes.func.isRequired,
-        state: PropTypes.shape({}).isRequired,
       }).isRequired,
     }
 
     render() {
-      const { navigation } = this.props;
       return (
-        <Comp navigateTopStack={navigate} navigation={navigation} />
+        <Comp navigation={this.props.navigation} />
       );
     }
   }
 );
 
-const Drawer = ({ navigation: { navigate } }) => {
-  const HomeComponent = passNavigate(navigate, 'Home', 'home', Home);
-  const MyBucketlistsComponent = passNavigate(navigate, 'My Bucketlists', 'list', MyBucketlists);
-  const ProfileComponent = passNavigate(navigate, 'Profile', 'person', Profile);
-  const SettingsComponent = passNavigate(navigate, 'Settings', 'settings', Settings);
+const Drawer = ({ route }) => {
+  const HomeComponent = navigationOptionsWrapper('Home', 'home', Home);
+  const MyBucketlistsComponent = navigationOptionsWrapper('My Bucketlists', 'list', MyBucketlists);
+  const ProfileComponent = navigationOptionsWrapper('Profile', 'person', Profile);
+  const SettingsComponent = navigationOptionsWrapper('Settings', 'settings', Settings);
   const screens = {
     Home: {
       screen: HomeComponent,
@@ -63,6 +61,7 @@ const Drawer = ({ navigation: { navigate } }) => {
   const DrawerNav = DrawerNavigator(
     screens,
     {
+      initialRouteName: route,
       navigationOptions: {
         header: false,
       },
@@ -73,18 +72,21 @@ const Drawer = ({ navigation: { navigate } }) => {
           paddingTop: height === 812 && Platform.OS === 'ios' ? 28 : 0,
         },
       },
-    });
+    },
+  );
   return (
     <DrawerNav />
   );
 };
 
 Drawer.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
-    state: PropTypes.shape({}).isRequired,
-  }).isRequired,
+  route: PropTypes.string.isRequired,
 };
 
-export default Drawer;
+const mapStateToProps = ({ navigationData: { drawer: { route, params } } }, ownProps) => ({
+  ...ownProps,
+  route,
+  params,
+});
+
+export default connect(mapStateToProps)(Drawer);
