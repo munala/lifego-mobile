@@ -14,7 +14,7 @@ export default {
     email: PropTypes.string,
     pictureUrl: PropTypes.string,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
-  }).isRequired,
+  }),
   actions: PropTypes.shape({
     sendMessage: PropTypes.func.isRequired,
     markAsRead: PropTypes.func.isRequired,

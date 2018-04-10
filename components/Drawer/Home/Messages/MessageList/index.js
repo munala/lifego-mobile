@@ -21,10 +21,6 @@ import styles from '../../styles';
 import propTypes from './propTypes';
 
 class MessageList extends BaseClass {
-  componentWillMount =() => {
-    this.props.actions.getConversations();
-  }
-
   renderItem = ({ item: conversation }) => { // eslint-disable-line react/prop-types
     const unread = this.getUnreadCount(conversation);
     const pictureUrl = this.setPictureUrl(conversation);
@@ -39,12 +35,14 @@ class MessageList extends BaseClass {
             style={styles.avatar}
             source={
               pictureUrl ?
-                { uri: (
-                  pictureUrl.replace(
-                    (pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
-                    'https://',
-                  )
-                ) } :
+                {
+                  uri: (
+                    pictureUrl.replace(
+                      (pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                      'https://',
+                    )
+                  ),
+                } :
                 require('../../../../../assets/images/user.png')
             }
           />
@@ -52,7 +50,9 @@ class MessageList extends BaseClass {
             <Text style={[styles.notificationText, {
               color: conversation.read ? 'grey' : '#009baf',
             }]}
-            >{ this.getName(conversation) }</Text>
+            >
+              { this.getName(conversation) }
+            </Text>
             {
               conversation.messages.length > 0 &&
               <Text style={[styles.wordWrap, unread > 0 && { fontWeight: 'bold' }]}>
@@ -71,22 +71,21 @@ class MessageList extends BaseClass {
         <List containerStyle={styles.results}>
           {this.props.profile.friends
             .filter(friend => (friend.username || friend.displayName).toLowerCase()
-              .indexOf(this.state.searchText.toLowerCase()) !== -1,
-            ).map(person => (
-              <ListItem
-                key={person.id}
-                avatar={person.pictureUrl ?
-                  { uri: person.pictureUrl.replace('http://', 'https://') } :
-                  require('../../../../../assets/images/user.png')}
-                roundAvatar
-                title={person.displayName}
-                containerStyle={styles.resultContainerStyle}
-                wrapperStyle={styles.resultWrapperStyle}
-                titleStyle={styles.personTitle}
-                onPress={() => this.startChat(person)}
-                hideChevron
-              />
-            ))
+              .indexOf(this.state.searchText.toLowerCase()) !== -1).map(person => (
+                <ListItem
+                  key={person.id}
+                  avatar={person.pictureUrl ?
+                    { uri: person.pictureUrl.replace('http://', 'https://') } :
+                    require('../../../../../assets/images/user.png')}
+                  roundAvatar
+                  title={person.displayName}
+                  containerStyle={styles.resultContainerStyle}
+                  wrapperStyle={styles.resultWrapperStyle}
+                  titleStyle={styles.personTitle}
+                  onPress={() => this.startChat(person)}
+                  hideChevron
+                />
+              ))
           }
         </List>
       </ScrollView>
@@ -98,14 +97,21 @@ class MessageList extends BaseClass {
     return (
       <View style={styles.container}>
         {this.state.searching &&
-          <TextInput value={this.state.searchText} onTextChange={this.onChange} />
+          <TextInput
+            style={styles.searchInput}
+            value={this.state.searchText}
+            onChangeText={this.onChange}
+            underlineColorAndroid="#f7f7f7"
+            placeholderTextColor="#f7f7f7"
+            placeholder="Search friends"
+          />
         }
         {this.state.searching && this.renderResults()}
         <TouchableOpacity
           style={[styles.read, styles.compose]}
           onPress={() => this.toggleNew()}
         >
-          <Text style={styles.notificationActionText}>{this.state.searching ? 'cancel' : 'compose'}</Text>
+          <Text style={styles.notificationActionText}>{this.state.searching ? 'Cancel' : 'Compose'}</Text>
         </TouchableOpacity>
         {!this.state.searching && conversations.length > 0 &&
           <FlatList

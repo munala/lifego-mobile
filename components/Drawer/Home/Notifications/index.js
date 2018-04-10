@@ -10,7 +10,7 @@ import * as notificationActions from '../../../../actions/notificationActions';
 import styles from '../styles';
 
 class Notifications extends Component {
-  componentWillMount =() => {
+  onRefresh = () => {
     this.props.actions.getNotifications();
   }
 
@@ -92,7 +92,8 @@ class Notifications extends Component {
           <Text style={[styles.notificationText, {
             color: notification.read ? 'grey' : '#009baf',
           }]}
-          >{this.stripHtml(notification.text)}</Text>
+          >{this.stripHtml(notification.text)}
+          </Text>
         </View>
       </TouchableOpacity>
     );

@@ -13,13 +13,17 @@ import propTypes from './propTypes';
 
 class Conversation extends BaseClass {
   componentWillMount = () => {
-    this.props.conversation.messages
-      .filter(chatMessage => chatMessage.receiverId === this.props.profile.id)
-      .forEach(message => this.props.actions.markAsRead(message));
+    if (this.props.conversation) {
+      this.props.conversation.messages
+        .filter(chatMessage => chatMessage.receiverId === this.props.profile.id)
+        .forEach(message => this.props.actions.markAsRead(message));
+    }
   }
 
   componentDidMount = () => {
-    this.scrollView.scrollToEnd({ animated: true });
+    if (this.scrollView) {
+      this.scrollView.scrollToEnd({ animated: true });
+    }
   }
 
   componentWillReceiveProps = ({ conversation }) => {
@@ -29,13 +33,18 @@ class Conversation extends BaseClass {
   }
 
   render() {
-    const { conversation, profile, actions: { deleteConversation } } = this.props;
+    const {
+      conversation,
+      navigation: { state: { params: { newConversation, id } } },
+      profile,
+      actions: { deleteConversation },
+    } = this.props;
     const { message } = this.state;
     let name;
-    if (conversation) {
-      name = this.getName(conversation);
+    if (conversation || newConversation) {
+      name = this.getName(conversation || newConversation);
     }
-    if (!conversation) {
+    if (!conversation && !newConversation) {
       return (<View />);
     }
     return (
@@ -43,19 +52,23 @@ class Conversation extends BaseClass {
         <View style={styles.top}>
           <Icon
             style={styles.backButton}
-            onPress={() => this.props.navigation.goBack()}
+            onPress={this.goBack}
             name="chevron-left"
             color="#00bcd4"
             size={30}
           />
           <Text style={styles.name}>{name}</Text>
-          <Icon
-            style={styles.deleteButton}
-            onPress={() => deleteConversation(conversation)}
-            name="delete"
-            color="red"
-            size={24}
-          />
+          {
+            conversation ?
+              <Icon
+                style={styles.deleteButton}
+                onPress={() => deleteConversation({ id })}
+                name="delete"
+                color="red"
+                size={24}
+              /> :
+              <View />
+          }
         </View>
         <View style={styles.bodyWrapper}>
           <ScrollView
@@ -64,7 +77,7 @@ class Conversation extends BaseClass {
             onContentSizeChange={() => this.scrollView.scrollToEnd()}
           >
             {
-              conversation.messages.map(chatMessage => (
+              conversation && conversation.messages.map(chatMessage => (
                 <Text
                   key={chatMessage.id}
                   style={[this.setStyle(chatMessage, profile), styles.message]}

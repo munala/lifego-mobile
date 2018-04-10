@@ -7,6 +7,10 @@ class BaseClass extends Component {
     searchText: '',
   }
 
+  onRefresh =() => {
+    this.props.actions.getConversations();
+  }
+
   onChange = (searchText) => {
     this.setState({ searchText });
   }
@@ -48,18 +52,17 @@ class BaseClass extends Component {
   }
 
   startChat = async (receiver) => {
-    await this.props.actions.startConversation({
+    const newConversation = {
       senderId: this.props.profile.id,
-      senderDisplayName: this.props.profile.id,
+      senderDisplayName: this.props.profile.displayName,
       senderUsername: this.props.profile.username,
       senderPictureUrl: this.props.profile.pictureUrl,
       receiverId: receiver.id,
       receiverPictureUrl: receiver.pictureUrl,
       receiverUsername: receiver.username,
       receiverDisplayName: receiver.displayName,
-    });
-    const conversation = this.props.conversations[this.props.conversations.length - 1];
-    this.props.navigation.navigate('Conversation', { id: conversation.id });
+    };
+    this.props.navigation.navigate('Conversation', { id: null, newConversation });
   }
 
   toggleNew = () => {

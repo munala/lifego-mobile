@@ -15,9 +15,18 @@ class BaseClass extends Component {
     });
   }
 
-  onSubmit = () => {
+  onSubmit = async () => {
+    let conversation;
     const { message } = this.state;
-    const { conversation } = this.props;
+    const { navigation, conversation: currentConversation } = this.props;
+    if (!currentConversation) {
+      conversation = await this.props.actions
+        .startConversation(navigation.state.params.newConversation);
+      this.props.navigation.setParams({ id: conversation.id });
+    } else {
+      conversation = currentConversation;
+    }
+
     if (message.content) {
       this.props.actions.sendMessage({
         ...message,
@@ -55,9 +64,14 @@ class BaseClass extends Component {
     this.setState({ contentHeight });
   }
 
+  goBack = () => {
+    this.props.navigation.goBack();
+    this.props.navigation.setParams({ id: undefined });
+  }
+
   deleteConversation = async (conversation) => {
     await this.props.actions.deleteConversation(conversation);
-    this.props.navigation.goBack();
+    this.goBack();
   }
 }
 

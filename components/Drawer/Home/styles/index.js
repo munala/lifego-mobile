@@ -519,7 +519,7 @@ export default StyleSheet.create({
   },
   renderResults: {
     display: 'flex',
-    maxHeight: Platform.OS === 'ios' ? '90%' : '85%',
+    maxHeight: Platform.OS === 'ios' ? '85%' : '80%',
     borderRadius: 5,
     zIndex: 3,
     overflow: 'hidden',
@@ -591,5 +591,44 @@ export default StyleSheet.create({
     marginHorizontal: 5,
     backgroundColor: 'rgba(235,235,235,0.5)',
     marginVertical: 5,
+  },
+  tabIcon: {
+    marginTop: 5,
+    marginRight: 5,
+  },
+  badgeElement: {
+    color: '#FFFFFF',
+    fontSize: 10,
+  },
+  iconBadge: {
+    backgroundColor: '#00bcd4',
+    right: 0,
+    top: 0,
+    minWidth: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  tabBarOptions: {
+    backgroundColor: 'white',
+    marginTop: 0,
+    elevation: 10,
+    borderTopWidth: Platform.OS === 'ios' ? 5 : 0,
+    borderTopColor: '#00bcd4',
+  },
+  indicatorStyle: {
+    backgroundColor: '#00bcd4',
+  },
+  searchInput: {
+    display: 'flex',
+    color: '#fff',
+    fontSize: 16,
+    height: 30,
+    marginLeft: 10,
+    marginRight: 10,
+    marginVertical: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: Platform.OS === 'ios' ? 15 : 0,
+    backgroundColor: Platform.OS === 'ios' ? 'rgba(235,235,235,0.5)' : 'transparent',
   },
 });

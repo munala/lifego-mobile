@@ -11,7 +11,7 @@ import Text from '../../../Common/SuperText';
 import styles from '../styles';
 
 class AlertComponent extends Component {
-  componentWillMount =() => {
+  onRefresh = () => {
     this.props.actions.getAlerts();
   }
 
@@ -91,7 +91,8 @@ class AlertComponent extends Component {
         <Text style={[styles.notificationText, {
           color: alert.read ? 'grey' : '#009baf',
         }]}
-        >{this.stripHtml(alert.text)}</Text>
+        >{this.stripHtml(alert.text)}
+        </Text>
         {!this.checkFriend(alert) &&
           <Icon
             style={styles.raisedButton}

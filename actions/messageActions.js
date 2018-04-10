@@ -52,9 +52,10 @@ export const startConversation = conversation => async (dispatch) => {
     dispatch(apiCallActions.apiCallError(response.error));
     await timeout(4000);
     resetError(dispatch);
-  } else {
-    dispatch(startConversationSuccess(response));
+    return null;
   }
+  dispatch(startConversationSuccess(response));
+  return response;
 };
 
 export const updateMessage = message => async (dispatch) => {

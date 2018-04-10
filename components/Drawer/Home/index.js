@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Platform,
-} from 'react-native';
+import { View } from 'react-native';
 import { TabNavigator } from 'react-navigation';
-import { Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { getConversations } from '../../../actions/messageActions';
+import { getNotifications } from '../../../actions/notificationActions';
+import { getAlerts } from '../../../actions/userAlertActions';
+import TabIcon from './TabIcon';
 import Header from '../../Common/Header';
 import SearchResults from '../../Common/SearchResults';
 import HomeScreen from './Bucketlists';
@@ -18,6 +20,10 @@ import styles from './styles';
 class Home extends Component {
   state = {
     searchMode: false,
+  }
+
+  componentWillMount = () => {
+    Object.keys(this.props.actions).forEach(key => this.props.actions[key]());
   }
 
   onFocus = () => {
@@ -37,64 +43,70 @@ class Home extends Component {
       navigation,
       navigateTopStack,
     } = this.props;
-    const Tabs = TabNavigator({
-      Home: {
-        screen: (({ navigation: tabNavigation }) => (
-          <HomeScreen
-            drawerNavigation={navigation}
-            imageHeights={this.state.imageHeights}
-            handleHeader={this.handleHeader}
-            navigateTopStack={navigateTopStack}
-            tabNavigation={tabNavigation}
-          />
-        )),
-      },
-      Messages: {
-        screen: Messages,
-      },
-      UserAlerts: {
-        screen: UserAlerts,
-      },
-      Notifications: {
-        screen: (({ navigation: tabNavigation }) => (
-          <Notifications
-            drawerNavigation={navigation}
-            tabNavigation={tabNavigation}
-          />
-        )),
-      },
-    },
-    {
-      tabBarPosition: 'bottom',
-      tabBarOptions: {
-        activeTintColor: '#00bcd4',
-        inactiveTintColor: 'gray',
-        showIcon: true,
-        showLabel: false,
-        style: {
-          backgroundColor: 'white',
-          marginTop: 0,
-          elevation: 10,
-          borderTopWidth: Platform.OS === 'ios' ? 5 : 0,
-          borderTopColor: '#00bcd4',
+    const Tabs = TabNavigator(
+      {
+        Home: {
+          screen: (({ navigation: tabNavigation }) => (
+            <HomeScreen
+              drawerNavigation={navigation}
+              imageHeights={this.state.imageHeights}
+              handleHeader={this.handleHeader}
+              navigateTopStack={navigateTopStack}
+              tabNavigation={tabNavigation}
+            />
+          )),
         },
-        indicatorStyle: {
-          backgroundColor: '#00bcd4',
+        Messages: {
+          screen: Messages,
+        },
+        UserAlerts: {
+          screen: UserAlerts,
+        },
+        Notifications: {
+          screen: (({ navigation: tabNavigation }) => (
+            <Notifications
+              drawerNavigation={navigation}
+              tabNavigation={tabNavigation}
+            />
+          )),
         },
       },
-      navigationOptions: ({ navigation: { state } }) => ({
-        tabBarIcon: ({ focused, tintColor }) => {
-          const { routeName } = state;
-          const names = {
-            Home: 'home',
-            Messages: 'message',
-            UserAlerts: 'person-add',
-            Notifications: 'notifications',
-          };
-          return <Icon name={names[routeName]} size={focused ? 25 : 20} color={tintColor} />;
+      {
+        tabBarPosition: 'bottom',
+        tabBarOptions: {
+          activeTintColor: '#00bcd4',
+          inactiveTintColor: 'gray',
+          showIcon: true,
+          showLabel: false,
+          style: styles.tabBarOptions,
+          indicatorStyle: styles.indicatorStyle,
         },
-      }),
-    },
+        navigationOptions: ({ navigation: { state } }) => ({
+          tabBarIcon: ({ tintColor }) => {
+            const { routeName } = state;
+            const names = {
+              Home: 'home',
+              Messages: 'message',
+              UserAlerts: 'person-add',
+              Notifications: 'notifications',
+            };
+            const types = {
+              Home: 'allData',
+              Messages: 'conversations',
+              UserAlerts: 'alerts',
+              Notifications: 'notifications',
+            };
+            const name = names[routeName];
+            const type = types[routeName];
+            const iconProps = {
+              name,
+              tintColor,
+              type,
+            };
+            return (<TabIcon {...iconProps} />);
+          },
+        }),
+      },
     );
     return (
       <View style={[styles.container, styles.iPhoneX]}>
@@ -127,6 +139,15 @@ Home.propTypes = {
     state: PropTypes.shape({}).isRequired,
   }).isRequired,
   navigateTopStack: PropTypes.func.isRequired,
+  actions: PropTypes.shape({}).isRequired,
 };
 
-export default Home;
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    getConversations,
+    getNotifications,
+    getAlerts,
+  }, dispatch),
+});
+
+export default connect(null, mapDispatchToProps)(Home);
