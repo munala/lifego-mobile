@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as userActions from '../../../actions/userActions';
+import * as navigationActions from '../../../actions/navigationActions';
 import Header from '../../Common/Header';
 import BaseClass from './BaseClass';
 import Text from '../../Common/SuperText';
@@ -24,7 +25,7 @@ class Settings extends BaseClass {
   componentWillReceiveProps = async ({ error, profile }) => {
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
-        this.logout();
+        this.props.actions.logout();
       }
     } else if (this.props.profile !== profile) {
       this.setState({
@@ -82,17 +83,15 @@ class Settings extends BaseClass {
 
   render() {
     const {
-      actions: { logout }, profile, navigation: { navigate }, navigateTopStack,
+      profile,
     } = this.props;
     return (
       <View style={styles.container}>
         <Header
           title="Settings"
           leftIcon="menu"
-          onPressLeft={() => navigate('DrawerOpen')}
+          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
           mode="profile"
-          logout={logout}
-          navigateTopStack={navigateTopStack}
         />
         <View style={styles.body}>
           <View style={styles.switchRow}>
@@ -146,7 +145,7 @@ Settings.propTypes = propTypes;
 const mapStateToProps = ({ profile, currentApiCalls }) => ({ profile, currentApiCalls });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...userActions }, dispatch),
+  actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

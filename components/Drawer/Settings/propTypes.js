@@ -13,11 +13,10 @@ export default {
     getProfile: PropTypes.func.isRequired,
     updateProfile: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
   }).isRequired,
-  navigateTopStack: PropTypes.func.isRequired,
   currentApiCalls: PropTypes.number.isRequired,
 };

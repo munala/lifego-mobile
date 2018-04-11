@@ -56,3 +56,5 @@ export const ADD_TAG = 'ADD_TAG';
 export const SEARCH = 'SEARCH';
 export const CLEAR_SEARCH = 'CLEAR_SEARCH';
 export const HANDLE_HEADER = 'HANDLE_HEADER';
+export const NAVIGATE = 'NAVIGATE';
+export const SET_PARAMS = 'SET_PARAMS';

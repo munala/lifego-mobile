@@ -99,4 +99,10 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     padding: 10,
   },
+  logo: {
+    height: 80,
+    width: 80,
+    alignSelf: 'center',
+    marginBottom: 50,
+  },
 });

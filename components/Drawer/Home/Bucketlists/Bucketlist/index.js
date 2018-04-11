@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as bucketlistActions from '../../../../../actions/bucketlistActions';
 import * as commentActions from '../../../../../actions/commentActions';
 import * as likeActions from '../../../../../actions/likeActions';
-import * as tagActions from '../../../../../actions/tagActions';
+import * as navigationActions from '../../../../../actions/navigationActions';
 import { handleHeader } from '../../../../../actions/componentActions';
 import Text from '../../../../Common/SuperText';
 import SingleCard from '../SingleCard/SingleCard';
@@ -26,7 +26,7 @@ class Bucketlist extends BaseClass {
     const { imageHeights } = this.state;
     const { bucketlist } = this.props;
     if (!bucketlist) {
-      this.props.navigation.navigate('bucketlists', {});
+      this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlists' });
     } else if (bucketlist.pictureUrl) {
       Image.getSize(bucketlist.pictureUrl.replace('http', 'https'), (width, height) => {
         const { width: windowWidth } = Dimensions.get('window');
@@ -39,7 +39,7 @@ class Bucketlist extends BaseClass {
 
   componentWillReceiveProps = ({ bucketlist, bucketlist: { comments } }) => {
     if (!bucketlist) {
-      this.props.navigation.navigate('bucketlists', {});
+      this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlists' });
     } else if (comments.length !== this.props.bucketlist.comments.length) {
       this.setState({ submitted: true });
     }
@@ -47,12 +47,10 @@ class Bucketlist extends BaseClass {
 
   render() {
     const {
-      bucketlist, profile, screenProps: {
-        tabNavigation: { navigate },
-      }, navigation: { state, navigate: navigateStack },
+      bucketlist, profile, actions: { navigate },
+      params,
     } = this.props;
-    const from = state && state.params && state.params.from ? state.params.from : 'bucketlists';
-    const nav = from === 'bucketlists' ? navigateStack : navigate;
+    const navigator = params.from === 'bucketlists' ? 'allBucketlists' : 'home';
     const { createdAt, time } = this.setTime(bucketlist);
     const bucketlistProps = {
       bucketlist,
@@ -73,16 +71,9 @@ class Bucketlist extends BaseClass {
     return (
       <View style={styles.container}>
         <View style={styles.navButtons}>
-          <TouchableOpacity onPress={() => nav(from)}>
+          <TouchableOpacity onPress={() => navigate({ navigator, route: params.from })}>
             <Text style={styles.backButton}>Back</Text>
           </TouchableOpacity>
-          {from !== 'bucketlists' && <Text style={styles.separator}>|</Text>}
-          {
-            from !== 'bucketlists' &&
-            <TouchableOpacity onPress={() => navigateStack('bucketlists', { id: undefined })}>
-              <Text style={styles.backButton}>Home</Text>
-            </TouchableOpacity>
-          }
         </View>
         <ScrollView >
           <SingleCard {...bucketlistProps} />
@@ -94,18 +85,15 @@ class Bucketlist extends BaseClass {
 Bucketlist.propTypes = propTypes;
 
 const mapStateToProps = ({
+  navigationData: { allBucketlists: { params } },
   allData: { bucketlists },
   profile,
-}, {
-  navigation: { state: { params: { id, from } } },
-  navigation,
 }) => {
-  const [bucketlist] = bucketlists.filter(buck => buck.id === parseInt(id, 10));
+  const [bucketlist] = bucketlists.filter(buck => buck.id === parseInt(params.id, 10));
   return ({
     bucketlist,
-    navigation,
     profile,
-    from,
+    params,
   });
 };
 
@@ -114,7 +102,7 @@ const mapDispatchToProps = dispatch => ({
     ...bucketlistActions,
     ...commentActions,
     ...likeActions,
-    ...tagActions,
+    ...navigationActions,
     handleHeader,
   }, dispatch),
 });

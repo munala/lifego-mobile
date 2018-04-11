@@ -78,6 +78,12 @@ export const logoutUser = () => ({
   type: types.LOGOUT,
 });
 
+const navigate = route => ({
+  type: types.NAVIGATE,
+  navigator: 'auth',
+  route,
+});
+
 export const login = user => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall());
   const token = await userService.loginUser(user);
@@ -89,6 +95,7 @@ export const login = user => async (dispatch) => {
     await AsyncStorage.setItem('token', token);
     await AsyncStorage.setItem('start', 'false');
     dispatch(loginSuccess(token));
+    dispatch(navigate('home'));
     resetMessage(dispatch);
   }
 };
@@ -97,6 +104,7 @@ export const logout = () => async (dispatch) => {
   await AsyncStorage.setItem('can_login', 'false');
   await AsyncStorage.removeItem('token');
   dispatch(logoutUser());
+  dispatch(navigate('user'));
 };
 
 export const socialLogin = user => async (dispatch) => {
@@ -109,6 +117,7 @@ export const socialLogin = user => async (dispatch) => {
   } else {
     AsyncStorage.setItem('token', token);
     dispatch(loginSuccess(token));
+    dispatch(navigate('home'));
     resetMessage(dispatch);
   }
 };

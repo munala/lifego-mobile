@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Platform,
-} from 'react-native';
+import { View } from 'react-native';
 import { TabNavigator } from 'react-navigation';
-import { Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { getConversations } from '../../../actions/messageActions';
+import { getNotifications } from '../../../actions/notificationActions';
+import { getAlerts } from '../../../actions/userAlertActions';
+import * as navigationActions from '../../../actions/navigationActions';
+import TabIcon from './TabIcon';
 import Header from '../../Common/Header';
 import SearchResults from '../../Common/SearchResults';
 import HomeScreen from './Bucketlists';
@@ -20,10 +23,27 @@ class Home extends Component {
     searchMode: false,
   }
 
+  componentWillMount = () => {
+    this.props.actions.getConversations();
+    this.props.actions.getNotifications();
+    this.props.actions.getAlerts();
+  }
+
   onFocus = () => {
     this.setState({
       searchMode: true,
     });
+  }
+
+  onItemPress = async (bucketlist) => {
+    await this.setState({
+      searchMode: false,
+    });
+    this.props.actions.setParams({
+      params: { id: bucketlist.id, from: 'bucketlists' },
+      navigator: 'allBucketlists',
+    });
+    this.props.actions.navigate({ route: 'bucketlist', navigator: 'allBucketlists' });
   }
 
   clearSearch = () => {
@@ -34,86 +54,94 @@ class Home extends Component {
 
   render() {
     const {
-      navigation,
-      navigateTopStack,
+      route,
+      actions: { navigate },
     } = this.props;
-    const Tabs = TabNavigator({
-      Home: {
-        screen: (({ navigation: tabNavigation }) => (
-          <HomeScreen
-            drawerNavigation={navigation}
-            imageHeights={this.state.imageHeights}
-            handleHeader={this.handleHeader}
-            navigateTopStack={navigateTopStack}
-            tabNavigation={tabNavigation}
-          />
-        )),
-      },
-      Messages: {
-        screen: Messages,
-      },
-      UserAlerts: {
-        screen: UserAlerts,
-      },
-      Notifications: {
-        screen: (({ navigation: tabNavigation }) => (
-          <Notifications
-            drawerNavigation={navigation}
-            tabNavigation={tabNavigation}
-          />
-        )),
-      },
-    },
-    {
-      tabBarPosition: 'bottom',
-      tabBarOptions: {
-        activeTintColor: '#00bcd4',
-        inactiveTintColor: 'gray',
-        showIcon: true,
-        showLabel: false,
-        style: {
-          backgroundColor: 'white',
-          marginTop: 0,
-          elevation: 10,
-          borderTopWidth: Platform.OS === 'ios' ? 5 : 0,
-          borderTopColor: '#00bcd4',
+    const Tabs = TabNavigator(
+      {
+        Home: {
+          screen: (() => (
+            <HomeScreen
+              imageHeights={this.state.imageHeights}
+              handleHeader={this.handleHeader}
+            />
+          )),
         },
-        indicatorStyle: {
-          backgroundColor: '#00bcd4',
+        Messages: {
+          screen: Messages,
+        },
+        UserAlerts: {
+          screen: UserAlerts,
+        },
+        Notifications: {
+          screen: Notifications,
         },
       },
-      navigationOptions: ({ navigation: { state } }) => ({
-        tabBarIcon: ({ focused, tintColor }) => {
-          const { routeName } = state;
-          const names = {
-            Home: 'home',
-            Messages: 'message',
-            UserAlerts: 'person-add',
-            Notifications: 'notifications',
-          };
-          return <Icon name={names[routeName]} size={focused ? 25 : 20} color={tintColor} />;
+      {
+        initialRouteName: route,
+        tabBarPosition: 'bottom',
+        tabBarOptions: {
+          activeTintColor: '#00bcd4',
+          inactiveTintColor: 'gray',
+          showIcon: true,
+          showLabel: false,
+          style: styles.tabBarOptions,
+          indicatorStyle: styles.indicatorStyle,
         },
-      }),
-    },
+        navigationOptions: ({ navigation: { state } }) => ({
+          tabBarIcon: ({ tintColor }) => {
+            const { routeName } = state;
+            const names = {
+              Home: 'home',
+              Messages: 'message',
+              UserAlerts: 'person-add',
+              Notifications: 'notifications',
+            };
+            const types = {
+              Home: 'allData',
+              Messages: 'conversations',
+              UserAlerts: 'alerts',
+              Notifications: 'notifications',
+            };
+            const name = names[routeName];
+            const type = types[routeName];
+            const iconProps = {
+              name,
+              tintColor,
+              type,
+            };
+            return (<TabIcon {...iconProps} />);
+          },
+        }),
+      },
     );
     return (
       <View style={[styles.container, styles.iPhoneX]}>
         <Header
           title="Home"
           leftIcon="menu"
-          onPressLeft={() => navigation.navigate('DrawerOpen')}
+          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
           onFocus={this.onFocus}
           clearSearch={this.clearSearch}
           mode="bucketlists"
-          navigation={navigation}
-          navigateTopStack={navigateTopStack}
         />
         {
           this.state.searchMode ?
             <SearchResults
-              onItemPress={() => {}}
+              onItemPress={this.onItemPress}
             /> :
-            <Tabs />
+            <Tabs
+              onNavigationStateChange={() => {
+                navigate({
+                  route: 'bucketlists',
+                  navigator: 'allBucketlists',
+                });
+                navigate({
+                  route: 'MessageList',
+                  navigator: 'conversations',
+                });
+              }}
+            />
         }
       </View>
     );
@@ -121,64 +149,35 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  // conversations: PropTypes.arrayOf(PropTypes.shape({
-  //   username: PropTypes.string,
-  //   displayName: PropTypes.string,
-  //   email: PropTypes.string,
-  //   pictureUrl: PropTypes.string,
-  // })).isRequired,
-  // notifications: PropTypes.arrayOf(PropTypes.shape({
-  //   type: PropTypes.string,
-  //   bucketlistId: PropTypes.number,
-  //   text: PropTypes.string,
-  // })).isRequired,
-  // alerts: PropTypes.arrayOf(PropTypes.shape({
-  //   type: PropTypes.string,
-  //   userId: PropTypes.number,
-  //   friendId: PropTypes.number,
-  //   text: PropTypes.string,
-  // })).isRequired,
-  // profile: PropTypes.shape({
-  //   id: PropTypes.number,
-  //   username: PropTypes.string,
-  //   displayName: PropTypes.string,
-  //   email: PropTypes.string,
-  //   pictureUrl: PropTypes.string,
-  //   friends: PropTypes.arrayOf(PropTypes.shape({})),
-  //   searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
-  // }).isRequired,
-  // bucketlists: PropTypes.arrayOf(PropTypes.shape({
-  //   name: PropTypes.string,
-  //   id: PropTypes.number,
-  //   createdAt: PropTypes.string,
-  //   updatedAt: PropTypes.string,
-  //   description: PropTypes.string,
-  //   items: PropTypes.arrayOf(PropTypes.shape({
-  //     name: PropTypes.string,
-  //     id: PropTypes.number,
-  //     createdAt: PropTypes.string,
-  //     updatedAt: PropTypes.string,
-  //     done: PropTypes.bool,
-  //   })),
-  //   comments: PropTypes.arrayOf(PropTypes.shape({
-  //     content: PropTypes.string,
-  //     id: PropTypes.number,
-  //     createdAt: PropTypes.string,
-  //     updatedAt: PropTypes.string,
-  //   })),
-  // })).isRequired,
-  // actions: PropTypes.shape({
-  //   loadAllBucketlists: PropTypes.func.isRequired,
-  //   logout: PropTypes.func.isRequired,
-  //   search: PropTypes.func.isRequired,
-  //   clearSearch: PropTypes.func.isRequired,
-  // }).isRequired,
-  navigation: PropTypes.shape({
+  route: PropTypes.string.isRequired,
+  actions: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     setParams: PropTypes.func.isRequired,
-    state: PropTypes.shape({}).isRequired,
+    getConversations: PropTypes.func.isRequired,
+    getNotifications: PropTypes.func.isRequired,
+    getAlerts: PropTypes.func.isRequired,
   }).isRequired,
-  navigateTopStack: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-export default Home;
+const mapStateToProps = ({
+  navigationData: { home: { route, params, previousRoute } },
+}, ownProps) => ({
+  ...ownProps,
+  route,
+  params,
+  previousRoute,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    ...navigationActions,
+    getConversations,
+    getNotifications,
+    getAlerts,
+  }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

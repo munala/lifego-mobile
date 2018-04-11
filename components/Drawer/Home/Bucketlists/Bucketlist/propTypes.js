@@ -1,13 +1,9 @@
 import { PropTypes } from 'prop-types';
 
 export default {
-  navigation: PropTypes.shape({
-    state: PropTypes.shape({
-      params: PropTypes.shape({
-        onChange: PropTypes.func,
-        onSubmit: PropTypes.func,
-      }),
-    }),
+  params: PropTypes.shape({
+    onChange: PropTypes.func,
+    onSubmit: PropTypes.func,
   }).isRequired,
   bucketlist: PropTypes.shape({
     comments: PropTypes.arrayOf(PropTypes.shape({})),

@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 import BaseClass from './BaseClass';
 import ProfileBody from './ProfileBody';
 import * as userActions from '../../../actions/userActions';
+import * as navigationActions from '../../../actions/navigationActions';
 import Header from '../../Common/Header';
 import Text from '../../Common/SuperText';
 import propTypes from './propTypes';
@@ -99,14 +100,15 @@ class Profile extends BaseClass {
           </TouchableOpacity>
         </View>
       )) :
-      <View />
-    ;
+      <View />;
   }
 
   render() {
-    const { activeType, scrollEnabled, editMode, uploading, scrollY } = this.state;
     const {
-      actions: { logout }, profile, navigation: { navigate }, navigateTopStack, currentApiCalls,
+      activeType, scrollEnabled, editMode, uploading, scrollY,
+    } = this.state;
+    const {
+      profile, currentApiCalls,
     } = this.props;
     const avatar = this.state.profile.pictureUrl;
     const height = this.state.scrollY.interpolate({
@@ -168,10 +170,8 @@ class Profile extends BaseClass {
         <Header
           title="Profile"
           leftIcon="menu"
-          onPressLeft={() => navigate('DrawerOpen')}
+          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
           mode="profile"
-          logout={logout}
-          navigateTopStack={navigateTopStack}
         />
         {currentApiCalls > 0 && !this.state.uploading &&
           <View style={styles.activity}>
@@ -189,7 +189,7 @@ Profile.propTypes = propTypes;
 const mapStateToProps = ({ profile, currentApiCalls }) => ({ profile, currentApiCalls });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...userActions }, dispatch),
+  actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

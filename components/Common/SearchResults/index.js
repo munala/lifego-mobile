@@ -47,9 +47,40 @@ class SearchResults extends Component {
     </TouchableOpacity>
   )
 
+  renderBucketlists = (bucketlists, onItemPress) => bucketlists.map(result => (
+    <ListItem
+      key={result.id}
+      title={result.name}
+      subtitle={result.description || 'no description'}
+      containerStyle={styles.resultContainerStyle}
+      wrapperStyle={styles.resultWrapperStyle}
+      titleStyle={styles.title}
+      subtitleStyle={styles.subtitle}
+      onPress={() => onItemPress(result)}
+      hideChevron
+    />
+  ))
+
+  renderUsers = searchUsers => searchUsers.map(person => (
+    <ListItem
+      key={person.id}
+      avatar={person.pictureUrl ?
+          { uri: person.pictureUrl.replace('http://', 'https://') } :
+          require('../../../assets/images/user.png')}
+      roundAvatar
+      title={person.displayName}
+      containerStyle={styles.resultContainerStyle}
+      wrapperStyle={styles.resultWrapperStyle}
+      titleStyle={styles.personTitle}
+      rightIcon={this.renderOptions(person)}
+    />
+  ))
+
   render() {
     const { bucketlistMode } = this.state;
-    const { bucketlists, onItemPress, profile: { searchUsers }, searchText } = this.props;
+    const {
+      bucketlists, onItemPress, profile: { searchUsers }, searchText,
+    } = this.props;
     return (
       <ScrollView>
         <View style={styles.options}>
@@ -71,33 +102,8 @@ class SearchResults extends Component {
           <List containerStyle={styles.results}>
             {
               bucketlistMode ?
-                bucketlists.map(result => (
-                  <ListItem
-                    key={result.id}
-                    title={result.name}
-                    subtitle={result.description || 'no description'}
-                    containerStyle={styles.resultContainerStyle}
-                    wrapperStyle={styles.resultWrapperStyle}
-                    titleStyle={styles.title}
-                    subtitleStyle={styles.subtitle}
-                    onPress={() => onItemPress(result)}
-                    hideChevron
-                  />
-                )) :
-                searchUsers.map(person => (
-                  <ListItem
-                    key={person.id}
-                    avatar={person.pictureUrl ?
-                      { uri: person.pictureUrl.replace('http://', 'https://') } :
-                      require('../../../assets/images/user.png')}
-                    roundAvatar
-                    title={person.displayName}
-                    containerStyle={styles.resultContainerStyle}
-                    wrapperStyle={styles.resultWrapperStyle}
-                    titleStyle={styles.personTitle}
-                    rightIcon={this.renderOptions(person)}
-                  />
-                ))
+                this.renderBucketlists(bucketlists, onItemPress) :
+                this.renderUsers(searchUsers)
             }
           </List>
         }

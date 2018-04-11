@@ -27,15 +27,19 @@ class BaseClass extends Component {
     }
   }
 
-  showModal = (type, content = {}) => {
-    this.props.navigation.navigate('bucketlistForm', {
-      context: {
-        ...this.state.context,
-        type,
+  showModal = async (type, content = {}) => {
+    await this.props.actions.setParams({
+      params: {
+        context: {
+          ...this.state.context,
+          type,
+        },
+        content,
+        onSave: this.onSave,
       },
-      content,
-      onSave: this.onSave,
+      navigator: 'myBucketlists',
     });
+    this.props.actions.navigate({ route: 'bucketlistForm', navigator: 'myBucketlists' });
   }
 
   toggleFilter = () => {

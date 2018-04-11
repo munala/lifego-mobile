@@ -3,6 +3,8 @@ import { PropTypes } from 'prop-types';
 import { Icon } from 'react-native-elements';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+
 import AllBucketlists from './AllBucketlists';
 import Bucketlist from './Bucketlist';
 import styles from '../styles';
@@ -15,31 +17,14 @@ class HomeView extends Component {
 
   render() {
     const {
-      drawerNavigation,
-      drawerNavigation: { state: { params }, state },
-      navigateTopStack,
-      tabNavigation,
+      route,
     } = this.props;
     const screens = {
       bucketlists: {
-        screen: (({ navigation }) => (
-          <AllBucketlists
-            drawerNavigation={drawerNavigation}
-            navigation={navigation}
-            navigateTopStack={navigateTopStack}
-            tabNavigation={tabNavigation}
-          />
-        )),
+        screen: AllBucketlists,
       },
       bucketlist: {
-        screen: (({ navigation }) => (
-          <Bucketlist
-            navigation={navigation}
-            drawerNavigation={drawerNavigation}
-            tabNavigation={tabNavigation}
-            screenProps={{ tabNavigation }}
-          />
-        )),
+        screen: Bucketlist,
       },
       bucketlistForm: {
         screen: BucketListForm,
@@ -47,10 +32,7 @@ class HomeView extends Component {
     };
     const navigationOptions = {
       navigationOptions: { header: null },
-      initialRouteName: state && params && params.id ? 'bucketlist' : 'bucketlists',
-      initialRouteParams: state && params && params.id ?
-        { id: params.id, from: params.from } :
-        null,
+      initialRouteName: route,
     };
     const Stack = StackNavigator(screens, navigationOptions);
     return (
@@ -62,13 +44,15 @@ class HomeView extends Component {
 }
 
 HomeView.propTypes = {
-  drawerNavigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-  tabNavigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-  navigateTopStack: PropTypes.func.isRequired,
+  route: PropTypes.string.isRequired,
 };
 
-export default HomeView;
+export default connect((({
+  navigationData: {
+    allBucketlists: {
+      route,
+    },
+  },
+}) => ({
+  route,
+})))(HomeView);

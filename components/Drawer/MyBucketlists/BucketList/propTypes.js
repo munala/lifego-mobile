@@ -17,10 +17,6 @@ export default {
       })).isRequired,
     })).isRequired,
   }).isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
-  }).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
   actions: PropTypes.shape({
     loadBucketlists: PropTypes.func.isRequired,
@@ -30,10 +26,11 @@ export default {
     deleteBucketlist: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
     clearSearch: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+    setParams: PropTypes.func.isRequired,
   }).isRequired,
   error: PropTypes.string.isRequired,
-  drawerNavigation: PropTypes.shape({
+  navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
-  navigateTopStack: PropTypes.func.isRequired,
 };

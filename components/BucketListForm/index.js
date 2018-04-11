@@ -5,6 +5,7 @@ import {
   Platform,
   Picker,
 } from 'react-native';
+import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 
@@ -12,17 +13,13 @@ import Form from './Form';
 import categories from '../../miscellaneous/categories';
 
 class BucketListForm extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params ? `${navigation.state.params.context.type} ${navigation.state.params.context.name}` : '',
-  });
-
   state = {
     disabled: true,
-    content: this.props.navigation.state.params ?
-      this.props.navigation.state.params.content :
+    content: this.props.params ?
+      this.props.params.content :
       this.props.content,
-    context: this.props.navigation.state.params ?
-      this.props.navigation.state.params.context :
+    context: this.props.params ?
+      this.props.params.context :
       this.props.context,
     datePickerMode: false,
     categoryPickerMode: false,
@@ -42,7 +39,7 @@ class BucketListForm extends Component {
 
   onSave = async () => {
     this.setState({ uploading: true });
-    const { onSave } = this.props.navigation.state.params;
+    const { onSave } = this.props.params;
     const content = { ...this.state.content };
     if (this.state.image.origURL || this.state.image.uri) {
       let response = await this.uploadFile(this.state.image);
@@ -51,7 +48,7 @@ class BucketListForm extends Component {
       content.pictureUrl = response.url;
     }
     await onSave(content, this.state.context.type);
-    this.props.navigation.goBack();
+    this.props.params.goBack();
   }
 
   onDateChange = (date) => {
@@ -70,7 +67,9 @@ class BucketListForm extends Component {
         datePickerMode: true,
       });
     } else {
-      const { year, month, day, action } = await DatePickerAndroid.open({
+      const {
+        year, month, day, action,
+      } = await DatePickerAndroid.open({
         date: content.dueDate ? new Date(content.dueDate) : new Date(),
       });
       if (action !== DatePickerAndroid.dismissedAction) {
@@ -129,7 +128,7 @@ class BucketListForm extends Component {
   ))
 
   render() {
-    const { navigation: { goBack } } = this.props;
+    const { params: { goBack } } = this.props;
     const {
       content, context, datePickerMode, categoryPickerMode, disabled, uploading, image,
     } = this.state;
@@ -154,18 +153,14 @@ class BucketListForm extends Component {
   }
 }
 BucketListForm.propTypes = {
-  navigation: PropTypes.shape({
+  params: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
-    state: PropTypes.shape({
-      params: PropTypes.shape({
-        onSave: PropTypes.func,
-        content: PropTypes.shape({
-          name: PropTypes.string,
-          type: PropTypes.string,
-        }),
-        context: PropTypes.shape({}),
-      }),
+    onSave: PropTypes.func,
+    content: PropTypes.shape({
+      name: PropTypes.string,
+      type: PropTypes.string,
     }),
+    context: PropTypes.shape({}),
   }).isRequired,
   context: PropTypes.shape({
     type: PropTypes.string,
@@ -176,6 +171,7 @@ BucketListForm.propTypes = {
     name: PropTypes.string,
   }),
 };
+
 BucketListForm.defaultProps = {
   content: {
     description: '',
@@ -187,4 +183,8 @@ BucketListForm.defaultProps = {
   },
 };
 
-export default BucketListForm;
+export default connect(({
+  navigationData: { allBucketlists: { params: allParams }, myBucketlists: { params: myParams } },
+}) => ({
+  params: allParams.context ? allParams : myParams,
+}))(BucketListForm);

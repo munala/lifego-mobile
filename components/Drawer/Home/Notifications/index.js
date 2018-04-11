@@ -7,16 +7,17 @@ import { bindActionCreators } from 'redux';
 
 import Text from '../../../Common/SuperText';
 import * as notificationActions from '../../../../actions/notificationActions';
+import * as navigationActions from '../../../../actions/navigationActions';
 import styles from '../styles';
 
 class Notifications extends Component {
-  componentWillMount =() => {
+  onRefresh = () => {
     this.props.actions.getNotifications();
   }
 
   getName = (notification) => {
     if (this.props.profile.id === notification.senderId) {
-      return notification.receiverDislayName || notification.receiverUsername;
+      return notification.receiverDisplayName || notification.receiverUsername;
     }
     return notification.senderDislayName || notification.senderUsername;
   }
@@ -63,6 +64,20 @@ class Notifications extends Component {
     return read;
   }
 
+  goToBucketlist = (notification) => {
+    this.markAsRead(notification);
+    this.props.actions.setParams({
+      params: { id: notification.bucketlistId, from: 'Notifications' },
+      navigator: 'home',
+    });
+    this.props.actions.navigate({ route: 'Home', navigator: 'home' });
+    this.props.actions.setParams({
+      params: { id: notification.bucketlistId, from: 'Notifications' },
+      navigator: 'allBucketlists',
+    });
+    this.props.actions.navigate({ route: 'bucketlist', navigator: 'allBucketlists' });
+  }
+
   stripHtml = text => text.replace('<b>', '').replace('</b>', '').replace('<br/>', ' ')
 
   renderItem = ({ item: notification }) => {
@@ -75,10 +90,7 @@ class Notifications extends Component {
       <TouchableOpacity
         style={styles.notificationView}
         key={notification.id}
-        onPress={() => {
-          this.markAsRead(notification);
-          this.props.drawerNavigation.navigate('Home', { id: notification.bucketlistId, from: 'Notifications' });
-        }}
+        onPress={() => this.goToBucketlist(notification)}
       >
         <View style={styles.notification}>
           <Icon
@@ -92,7 +104,8 @@ class Notifications extends Component {
           <Text style={[styles.notificationText, {
             color: notification.read ? 'grey' : '#009baf',
           }]}
-          >{this.stripHtml(notification.text)}</Text>
+          >{this.stripHtml(notification.text)}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -166,9 +179,8 @@ Notifications.propTypes = {
     markNotificationAsRead: PropTypes.func.isRequired,
     deleteNotification: PropTypes.func.isRequired,
     getNotifications: PropTypes.func.isRequired,
-  }).isRequired,
-  drawerNavigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    setParams: PropTypes.func.isRequired,
   }).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
 };
@@ -181,7 +193,7 @@ const mapStateToProps = ({ profile, notifications, currentApiCalls }, ownProps) 
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...notificationActions }, dispatch),
+  actions: bindActionCreators({ ...notificationActions, ...navigationActions }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

@@ -25,15 +25,20 @@ class BaseClass extends Component {
     });
   }
 
-  showModal = (type, content = {}) => {
-    this.props.navigation.navigate('bucketlistForm', {
-      context: {
-        ...this.state.context,
-        type,
+  showModal = async (type, content = {}) => {
+    await this.props.actions.setParams({
+      navigator: 'myBucketlists',
+      params: {
+        context: {
+          ...this.state.context,
+          type,
+        },
+        content,
+        onSave: this.onSave,
+        goBack: () => this.props.actions.navigate({ navigator: 'myBucketlists', route: 'bucketlist' }),
       },
-      content,
-      onSave: this.onSave,
     });
+    this.props.actions.navigate({ route: 'bucketlistForm', navigator: 'myBucketlists' });
   }
 
   search = (text) => {
@@ -54,9 +59,13 @@ class BaseClass extends Component {
   }
 
   logout = () => {
-    const { actions, navigateTopStack } = this.props;
+    const { actions } = this.props;
     actions.logout();
-    navigateTopStack('user');
+  }
+
+  goToBucketlistForm = async (bucketlist) => {
+    await this.props.actions.setParams({ params: { bucketlist }, navigator: 'myBucketlists' });
+    this.props.actions.navigate({ route: 'items', navigator: 'myBucketlists' });
   }
 }
 

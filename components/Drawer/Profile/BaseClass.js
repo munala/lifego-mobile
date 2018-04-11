@@ -17,10 +17,12 @@ class BaseClass extends Component {
     displayName['last name'] = lastName.trim();
     displayName[name] = text.trim();
     const newDisplayName = `${displayName['first name']} ${displayName['last name']}`;
-    this.setState({ profile: {
-      ...profile,
-      displayName: newDisplayName,
-    } });
+    this.setState({
+      profile: {
+        ...profile,
+        displayName: newDisplayName,
+      },
+    });
   }
 
   onSave = async () => {
