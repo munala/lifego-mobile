@@ -9,6 +9,8 @@ import {
   View,
   ActivityIndicator,
   Alert,
+  ToastAndroid,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -66,8 +68,16 @@ class User extends BaseClass {
 
   componentWillReceiveProps = async ({ error }) => {
     if (error && error !== this.props.error) {
-      if (error !== 'Unauthorised' && error !== 'Invalid token') {
+      if (Platform.OS === 'ios') {
         Alert.alert(error);
+      } else {
+        ToastAndroid.showWithGravityAndOffset(
+          error,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          0,
+          50,
+        );
       }
     }
   }
