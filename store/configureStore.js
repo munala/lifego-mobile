@@ -18,6 +18,7 @@ const configureStore = (initialState) => {
       'searchText',
       'components',
       'profile',
+      'navigationData',
     ],
   };
   const store = createStore(

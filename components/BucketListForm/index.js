@@ -98,6 +98,7 @@ class BucketListForm extends Component {
       title: 'Select Photo',
       allowsEditing: true,
       storageOptions: {
+        cameraRoll: true,
         skipBackup: true,
         path: 'images',
       },
