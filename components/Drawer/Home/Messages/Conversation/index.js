@@ -38,7 +38,6 @@ class Conversation extends BaseClass {
       conversation,
       params: { newConversation, id },
       profile,
-      actions: { deleteConversation },
     } = this.props;
     const { message } = this.state;
     let name;
@@ -64,7 +63,7 @@ class Conversation extends BaseClass {
             conversation ?
               <Icon
                 style={styles.deleteButton}
-                onPress={() => deleteConversation({ id })}
+                onPress={() => this.deleteConversation({ id })}
                 name="delete"
                 color="red"
                 size={24}

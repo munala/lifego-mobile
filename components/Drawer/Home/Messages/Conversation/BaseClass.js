@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Alert } from 'react-native';
 
 import propTypes from './propTypes';
 
@@ -72,8 +73,21 @@ class BaseClass extends Component {
   }
 
   deleteConversation = async (conversation) => {
-    await this.props.actions.deleteConversation(conversation);
-    this.goBack();
+    Alert.alert(
+      'Delete conversation',
+      'Are you sure?',
+      [
+        { text: 'Cancel', onPress: () => {} },
+        {
+          text: 'OK',
+          onPress: async () => {
+            await this.props.actions.deleteConversation(conversation);
+            this.goBack();
+          },
+        },
+      ],
+      { cancelable: true },
+    );
   }
 }
 

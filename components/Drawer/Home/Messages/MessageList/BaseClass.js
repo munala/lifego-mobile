@@ -56,7 +56,6 @@ class BaseClass extends Component {
   }
 
   startChat = async (receiver) => {
-    console.log({ receiver });
     const newConversation = {
       senderId: this.props.profile.id,
       senderDisplayName: this.props.profile.displayName,

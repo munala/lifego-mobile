@@ -125,8 +125,8 @@ const RenderRow = ({
           <TouchableOpacity
             onPress={() => handleTouch()}
             hitSlop={{
- top: 20, left: 20, bottom: 20, right: 250,
-}}
+              top: 20, left: 20, bottom: 20, right: 250,
+            }}
             style={localStyles.handleTouch}
           >
             <Text
