@@ -1,7 +1,6 @@
 import * as types from './actionTypes';
 import tagService from '../api/tagApi';
 import * as apiCallActions from './apiCallActions';
-import { resetError, timeout } from './bucketlistActions';
 
 export const getTagsSuccess = ({ tags }) => ({
   type: types.GET_TAGS,
@@ -17,22 +16,24 @@ export const addTagSuccess = tag => ({
 
 export const addTag = name => async (dispatch) => {
   const response = await tagService.addTag(name);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(addTagSuccess(response));
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const getTags = () => async (dispatch) => {
   const response = await tagService.getTags();
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(getTagsSuccess(response));
+    dispatch(apiCallActions.resetMessage());
   }
 };

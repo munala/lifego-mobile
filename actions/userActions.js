@@ -2,12 +2,11 @@ import { AsyncStorage } from 'react-native';
 import * as types from './actionTypes';
 import userService from '../api/userApi';
 import * as apiCallActions from './apiCallActions';
-import { resetError, resetMessage, timeout } from './bucketlistActions';
 
 export const loginSuccess = token => ({
   type: types.LOGIN_SUCCESS,
   token,
-  message: 'Welcome',
+  message: '',
 });
 
 export const registerSuccess = () => ({
@@ -64,16 +63,6 @@ export const removeFriendSuccess = ({ message }, friend) => ({
   friend,
 });
 
-export const addFollower = follower => ({
-  type: types.ADD_FOLLOWER,
-  follower,
-});
-
-export const removeFollower = follower => ({
-  type: types.REMOVE_FOLLOWER,
-  follower,
-});
-
 export const logoutUser = () => ({
   type: types.LOGOUT,
 });
@@ -89,14 +78,13 @@ export const login = user => async (dispatch) => {
   const token = await userService.loginUser(user);
   if (token.error) {
     dispatch(apiCallActions.apiCallError(token.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     await AsyncStorage.setItem('token', token);
     await AsyncStorage.setItem('start', 'false');
     dispatch(loginSuccess(token));
     dispatch(navigate('home'));
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
@@ -112,13 +100,12 @@ export const socialLogin = user => async (dispatch) => {
   const token = await userService.socialLogin(user);
   if (token.error) {
     dispatch(apiCallActions.apiCallError(token.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', token);
     dispatch(loginSuccess(token));
     dispatch(navigate('home'));
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
@@ -127,56 +114,49 @@ export const register = user => async (dispatch) => {
   const response = await userService.registerUser(user);
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(registerSuccess());
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const changeEmail = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
   const response = await userService.changeEmail(user);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
     dispatch(changeEmailSuccess(response.message));
-    await timeout(4000);
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const changePassword = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
   const response = await userService.changePassword(user);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
     dispatch(changePasswordSuccess(response.message));
-    await timeout(4000);
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const changeUsername = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
   const response = await userService.changeUsername(user);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
     dispatch(changeUsernameSuccess(response.message));
-    await timeout(4000);
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
@@ -185,12 +165,10 @@ export const resetPassword = email => async (dispatch) => {
   const response = await userService.resetPassword(email);
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(resetPasswordSuccess(response.message));
-    await timeout(4000);
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
@@ -199,11 +177,10 @@ export const getProfile = () => async (dispatch) => {
   const response = await userService.getProfile();
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(getProfileSuccess(response));
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
@@ -212,36 +189,34 @@ export const updateProfile = profile => async (dispatch) => {
   const response = await userService.updateProfile(profile);
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(updateProfileSuccess(response));
-    await timeout(4000);
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const addFriend = user => async (dispatch) => {
   const response = await userService.addFriend(user);
-  if (response.error) {
-    await timeout(4000);
-    resetError(dispatch);
+  dispatch(apiCallActions.beginApiCall());
+  if (!response.error) {
+    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(addFriendSuccess(response));
-    await timeout(4000);
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const removeFriend = user => async (dispatch) => {
   const response = await userService.removeFriend(user);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(removeFriendSuccess(response, user));
-    await timeout(4000);
-    resetMessage(dispatch);
+    dispatch(apiCallActions.resetMessage());
   }
 };
 

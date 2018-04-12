@@ -20,7 +20,7 @@ export default function allBucketlistReducer(
         ...action.data,
       };
 
-    case types.LOAD_MORE_BUCKETLISTS:
+    case types.LOAD_MORE_ALL_BUCKETLISTS:
       return {
         ...state,
         nextUrl: action.data.nextUrl,

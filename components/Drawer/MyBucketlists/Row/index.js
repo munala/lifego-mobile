@@ -95,6 +95,7 @@ Row.propTypes = {
       updatedAt: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
     }),
+    PropTypes.any,
   ]).isRequired,
   showModal: PropTypes.func.isRequired,
   onDone: PropTypes.func,

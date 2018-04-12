@@ -49,7 +49,7 @@ const SingleCard = ({
       <View style={styles.nameTime}>
         <View style={styles.headDetails}>
           <Text style={styles.leftHeaderContent}>{`${bucketlist.userDisplayName}\n`}</Text>
-          <Text style={styles.time}>{createdAt}{time}</Text>
+          <Text style={styles.time}>{`${createdAt}${time}`}</Text>
         </View>
         <View style={styles.headDetails}>
           {

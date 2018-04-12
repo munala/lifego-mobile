@@ -1,7 +1,6 @@
 import * as types from './actionTypes';
 import likeService from '../api/likeApi';
 import * as apiCallActions from './apiCallActions';
-import { resetError, timeout } from './bucketlistActions';
 
 export const likeSuccess = (bucketlist, like) => ({
   type: types.LIKE,
@@ -18,22 +17,24 @@ export const unlikeSuccess = like => ({
 
 export const like = bucketlist => async (dispatch) => {
   const response = await likeService.like(bucketlist, like);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
+    dispatch(apiCallActions.resetError());
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
   } else {
     dispatch(likeSuccess(bucketlist, response));
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const unlike = likes => async (dispatch) => {
   const response = await likeService.unlike(likes);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(unlikeSuccess(likes));
+    dispatch(apiCallActions.resetMessage());
   }
 };

@@ -9,5 +9,4 @@ export default {
     socialLogin: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
   }).isRequired,
-  error: PropTypes.string.isRequired,
 };

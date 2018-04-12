@@ -4,6 +4,7 @@ import {
   Alert,
   View,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import { Icon } from 'react-native-elements';
@@ -44,22 +45,7 @@ class BucketList extends BaseClass {
   };
 
   componentWillMount = async () => {
-    const { actions, error } = this.props;
-    actions.loadBucketlists(0, 20, '');
-    if (error) {
-      if (error === 'Unauthorised' || error === 'Invalid token') {
-        this.logout();
-      } else {
-        Alert.alert(
-          error,
-          null,
-          [
-            { text: 'OK', onPress: () => {} },
-            { text: 'Retry', onPress: () => actions.loadBucketlists(0, 20, '') },
-          ],
-        );
-      }
-    }
+    this.props.actions.loadBucketlists(0, 10, '');
   }
 
   componentWillReceiveProps = async ({ error }) => {
@@ -86,8 +72,13 @@ class BucketList extends BaseClass {
     const {
       currentApiCalls,
       error,
-      data: { bucketlists },
+      data: { bucketlists, nextUrl },
+      actions: { loadMoreBucketlists, loadBucketlists },
     } = this.props;
+    const { length } = bucketlists;
+    const page = Math.floor(length / 10);
+    const loadMore = nextUrl.length > 0;
+
     return (
       <View style={styles.container}>
         <Header
@@ -107,6 +98,14 @@ class BucketList extends BaseClass {
           />
         }
         {
+          bucketlists.length === 0 && currentApiCalls === 0 && error === 'Network Error' &&
+          <TouchableOpacity style={{ flex: 1 }} onPress={loadBucketlists}>
+            <Text style={styles.empty}>
+              Reload
+            </Text>
+          </TouchableOpacity>
+        }
+        {
           !this.state.searchMode && bucketlists.length === 0 && currentApiCalls === 0 && !error &&
           <View style={{ backgroundColor: 'transparent' }}>
             <Text style={styles.empty}>
@@ -121,6 +120,8 @@ class BucketList extends BaseClass {
             data={bucketlists}
             renderItem={this.renderItem}
             style={styles.listView}
+            onEndReached={() => (loadMore ? loadMoreBucketlists('my', page * 10) : () => {})}
+            onEndReachedThreshold={0.01}
             refreshControl={
               <RefreshControl
                 refreshing={currentApiCalls > 0}

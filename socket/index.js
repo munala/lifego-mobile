@@ -147,18 +147,6 @@ export default (store) => {
 
   socket.on('bucketlists', (data) => {
     const storeData = store.getState();
-    if (data.type === 'new') {
-      storeData.profile.friends.forEach((friend) => {
-        if (friend.id === data.bucketlist.userId) {
-          store.dispatch(bucketlistActions.addNewBucketlist({
-            ...data.bucketlist,
-            comments: [],
-            likes: [],
-            items: [],
-          }));
-        }
-      });
-    }
     if (data.type === 'update') {
       storeData.profile.friends.forEach((friend) => {
         if (friend.id === data.bucketlist.userId) {

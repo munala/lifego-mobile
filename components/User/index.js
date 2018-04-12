@@ -8,9 +8,6 @@ import {
   Linking,
   View,
   ActivityIndicator,
-  Alert,
-  ToastAndroid,
-  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -63,22 +60,6 @@ class User extends BaseClass {
     const url = await Linking.getInitialURL();
     if (url) {
       this.handleOpenURL({ url });
-    }
-  }
-
-  componentWillReceiveProps = async ({ error }) => {
-    if (error && error !== this.props.error) {
-      if (Platform.OS === 'ios') {
-        Alert.alert(error);
-      } else {
-        ToastAndroid.showWithGravityAndOffset(
-          error,
-          ToastAndroid.LONG,
-          ToastAndroid.BOTTOM,
-          0,
-          50,
-        );
-      }
     }
   }
 
@@ -191,7 +172,7 @@ class User extends BaseClass {
 
 User.propTypes = propTypes;
 
-const mapStateToProps = state => state;
+const mapStateToProps = ({ error, message, ...state }) => state;
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),

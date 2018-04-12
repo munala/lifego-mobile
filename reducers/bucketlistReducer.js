@@ -13,6 +13,14 @@ export default function bucketlistReducer(
         ...action.data,
       };
 
+    case types.LOAD_MORE_BUCKETLISTS:
+      return {
+        ...state,
+        nextUrl: action.data.nextUrl,
+        previousUrl: action.data.previousUrl,
+        bucketlists: [...new Set([...new Set(state.bucketlists), ...action.data.bucketlists])],
+      };
+
     case types.CREATE_BUCKETLIST_SUCCESS:
       bucketList = {
         ...action.bucketlist, items: [], comments: [], likes: [],

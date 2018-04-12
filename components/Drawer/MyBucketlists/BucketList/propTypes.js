@@ -20,6 +20,7 @@ export default {
   currentApiCalls: PropTypes.number.isRequired,
   actions: PropTypes.shape({
     loadBucketlists: PropTypes.func.isRequired,
+    loadMoreBucketlists: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     saveBucketlist: PropTypes.func.isRequired,
     updateBucketlist: PropTypes.func.isRequired,

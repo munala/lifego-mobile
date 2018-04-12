@@ -1,34 +1,36 @@
 import * as types from './actionTypes';
 import alertService from '../api/userAlertApi';
 import * as apiCallActions from './apiCallActions';
-import { resetError, timeout } from './bucketlistActions';
 
 export const getAlertsSuccess = ({ alerts }) => ({
   type: types.GET_ALERTS,
   alerts,
+  message: '',
 });
 
 export const newAlert = ({ alert }) => ({
   type: types.NEW_ALERT,
   alert,
+  message: '',
 });
 
 export const markAsReadSuccess = alert => ({
   type: types.EDIT_ALERT,
   alert,
+  message: '',
 });
 
 export const deleteAlertSuccess = alert => ({
   type: types.DELETE_ALERT,
   alert,
+  message: '',
 });
 
 export const getAlerts = () => async (dispatch) => {
   const response = await alertService.getAlerts();
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
   } else {
     dispatch(getAlertsSuccess(response));
   }
@@ -36,10 +38,9 @@ export const getAlerts = () => async (dispatch) => {
 
 export const markAlertAsRead = alert => async (dispatch) => {
   const response = await alertService.markAsRead(alert);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
   } else {
     dispatch(markAsReadSuccess(response));
   }
@@ -47,10 +48,9 @@ export const markAlertAsRead = alert => async (dispatch) => {
 
 export const deleteAlert = alert => async (dispatch) => {
   const response = await alertService.deleteAlert(alert);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
   } else {
     dispatch(deleteAlertSuccess(alert));
   }

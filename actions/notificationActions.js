@@ -1,45 +1,48 @@
 import * as types from './actionTypes';
 import notificationService from '../api/notificationApi';
 import * as apiCallActions from './apiCallActions';
-import { resetError, timeout } from './bucketlistActions';
 
 export const getNotificationsSuccess = ({ notifications }) => ({
   type: types.GET_NOTIFICATIONS,
   notifications,
+  message: '',
 });
 
 export const newNotification = ({ notification }) => ({
   type: types.NEW_NOTIFICATION,
   notification,
+  message: '',
 });
 
 export const markAsReadSuccess = notification => ({
   type: types.EDIT_NOTIFICATION,
   notification,
+  message: '',
 });
 
 export const deleteNotificationSuccess = notification => ({
   type: types.DELETE_NOTIFICATION,
   notification,
+  message: '',
 });
 
 export const getNotifications = () => async (dispatch) => {
   const response = await notificationService.getNotifications();
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(getNotificationsSuccess(response));
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const markNotificationAsRead = notification => async (dispatch) => {
   const response = await notificationService.markAsRead(notification);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
   } else {
     dispatch(markAsReadSuccess(response));
   }
@@ -47,10 +50,9 @@ export const markNotificationAsRead = notification => async (dispatch) => {
 
 export const deleteNotification = notification => async (dispatch) => {
   const response = await notificationService.deleteNotification(notification);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
   } else {
     dispatch(deleteNotificationSuccess(notification));
   }

@@ -18,6 +18,7 @@ const screens = {
     screen: Drawer,
   },
 };
+
 const Stack = ({ route }) => {
   const Navigator = StackNavigator(screens, {
     initialRouteName: route,

@@ -12,19 +12,17 @@ SuperText.propTypes = {
   style: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.shape({}),
-    PropTypes.arrayOf(PropTypes.number),
-    PropTypes.arrayOf(PropTypes.shape({})),
+    PropTypes.arrayOf(PropTypes.any),
   ]),
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-    PropTypes.arrayOf(PropTypes.string),
-    PropTypes.arrayOf(PropTypes.number),
+    PropTypes.arrayOf(PropTypes.any),
   ]),
 };
 
 SuperText.defaultProps = {
-  style: null,
+  style: {},
   children: '',
 };
 

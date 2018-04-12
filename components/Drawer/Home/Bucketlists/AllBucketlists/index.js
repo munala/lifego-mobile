@@ -3,6 +3,7 @@ import {
   FlatList,
   View,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import { Icon } from 'react-native-elements';
@@ -15,7 +16,7 @@ import * as userActions from '../../../../../actions/userActions';
 import * as commentActions from '../../../../../actions/commentActions';
 import * as likeActions from '../../../../../actions/likeActions';
 import * as navigationActions from '../../../../../actions/navigationActions';
-import { handleHeader } from '../../../../../actions/componentActions';
+import handleHeader from '../../../../../actions/componentActions';
 import SingleCard from '../SingleCard/SingleCard';
 import styles from '../../styles';
 import propTypes from './propTypes';
@@ -145,18 +146,26 @@ class AllBucketlists extends BaseClass {
   render() {
     const {
       currentApiCalls,
-      allData,
+      error,
       allData: { bucketlists, nextUrl },
-      actions: { loadMoreBucketlists },
+      actions: { loadMoreBucketlists, loadAllBucketlists },
     } = this.props;
-    const { length } = allData.bucketlists;
+    const { length } = bucketlists;
     const page = Math.floor(length / 10) + 1;
     const loadMore = nextUrl.length > 0;
     return (
       <View style={styles.container}>
         {
-          allData.bucketlists.length === 0 && currentApiCalls === 0 ?
-            <View style={{ backgroundColor: 'transparent', flex: 1 }}>
+          bucketlists.length === 0 && currentApiCalls === 0 && error === 'Network Error' &&
+          <TouchableOpacity style={{ flex: 1 }} onPress={loadAllBucketlists}>
+            <Text style={styles.empty}>
+              Reload
+            </Text>
+          </TouchableOpacity>
+        }
+        {
+          bucketlists.length === 0 && currentApiCalls === 0 && error !== 'Network Error' ?
+            <View style={{ flex: 1 }}>
               <Text style={styles.empty}>
                 No bucketlists to display
               </Text>
@@ -168,7 +177,7 @@ class AllBucketlists extends BaseClass {
               renderItem={this.renderItem}
               style={styles.listView}
               onEndReached={() => (loadMore ? loadMoreBucketlists('all', page * 10) : () => {})}
-              onEndReachedThreshold={1}
+              onEndReachedThreshold={0.01}
               refreshControl={
                 <RefreshControl
                   refreshing={currentApiCalls > 0}

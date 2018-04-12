@@ -1,7 +1,6 @@
 import { HANDLE_HEADER } from './actionTypes';
 
-export const handleHeader = showHeader => (dispatch) => {
-  console.log({ showHeader });
+export default showHeader => (dispatch) => {
   dispatch({
     type: HANDLE_HEADER,
     showHeader,

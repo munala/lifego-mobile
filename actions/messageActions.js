@@ -1,7 +1,6 @@
 import * as types from './actionTypes';
 import messageService from '../api/messageApi';
 import * as apiCallActions from './apiCallActions';
-import { resetError, timeout } from './bucketlistActions';
 
 export const sendMessageSuccess = message => ({
   type: types.SEND_MESSAGE,
@@ -11,6 +10,7 @@ export const sendMessageSuccess = message => ({
 export const startConversationSuccess = conversation => ({
   type: types.START_CONVERSATION,
   conversation,
+  message: '',
 });
 
 export const editMessageSuccess = message => ({
@@ -25,7 +25,7 @@ export const deleteMessageSuccess = message => ({
 
 export const deleteConversationSuccess = ({ message, conversation }) => ({
   type: types.DELETE_CONVERSATION_SUCCESS,
-  message: '',
+  message,
   conversation,
 });
 
@@ -37,69 +37,59 @@ export const getConversationsSuccess = ({ conversations }) => ({
 
 export const sendMessage = message => async (dispatch) => {
   const response = await messageService.sendMessage(message);
-  if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
-  } else {
+  if (!response.error) {
     dispatch(sendMessageSuccess(response));
   }
 };
 
 export const startConversation = conversation => async (dispatch) => {
   const response = await messageService.startConversation(conversation);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
     return null;
   }
   dispatch(startConversationSuccess(response));
+  dispatch(apiCallActions.resetMessage());
   return response;
 };
 
 export const updateMessage = message => async (dispatch) => {
   const response = await messageService.updateMessage(message);
-  if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
-  } else {
+  if (!response.error) {
     dispatch(editMessageSuccess(response));
   }
 };
 
 export const markAsRead = message => async (dispatch) => {
   const response = await messageService.markAsRead(message);
-  if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
-  } else {
+  if (!response.error) {
     dispatch(editMessageSuccess(response));
   }
 };
 
 export const deleteMessage = message => async (dispatch) => {
   const response = await messageService.deleteMessage(message);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(deleteMessageSuccess(message));
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
 export const getConversations = () => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
   const response = await messageService.getConversations();
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(getConversationsSuccess(response));
+    dispatch(apiCallActions.resetMessage());
   }
 };
 
@@ -108,9 +98,9 @@ export const deleteConversation = conversation => async (dispatch) => {
   const response = await messageService.deleteConversation(conversation);
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
-    await timeout(4000);
-    resetError(dispatch);
+    dispatch(apiCallActions.resetError());
   } else {
     dispatch(deleteConversationSuccess({ ...response, conversation }));
+    dispatch(apiCallActions.resetMessage());
   }
 };
