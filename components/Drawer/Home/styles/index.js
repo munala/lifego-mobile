@@ -631,4 +631,11 @@ export default StyleSheet.create({
     borderRadius: Platform.OS === 'ios' ? 15 : 0,
     backgroundColor: Platform.OS === 'ios' ? 'rgba(235,235,235,0.5)' : 'transparent',
   },
+  commentNavigator: {
+    display: 'flex',
+    fontSize: 12,
+    color: 'grey',
+    paddingHorizontal: 10,
+    marginVertical: 5,
+  },
 });

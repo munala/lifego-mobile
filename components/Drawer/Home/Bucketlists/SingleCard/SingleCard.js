@@ -1,9 +1,10 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { View, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import Comments from './Comments';
 import Text from '../../../../Common/SuperText';
 import styles from '../../styles/';
 import propTypes from './propTypes';
@@ -138,53 +139,16 @@ const SingleCard = ({
       {
         showComments &&
         bucketList.id === bucketlist.id &&
-        <View>
-          <View style={styles.commentSection}>
-            {
-              bucketlist.comments.map(comment => (
-                <View
-                  key={comment.id}
-                  style={styles.comment}
-                >
-                  <Text style={styles.commentUser}>{comment.user}</Text>
-                  <Text style={styles.commentContent}>{comment.content}</Text>
-                </View>
-              ))
-            }
-          </View>
-          <View style={styles.newComment}>
-            <Image
-              style={styles.currentAvatar}
-              source={profile.pictureUrl ? { uri: profile.pictureUrl } : require('../../../../../assets/images/user.png')}
-            />
-            <TextInput
-              type="text"
-              placeholder="type comment"
-              style={[
-                styles.inputText, {
-                  flexBasis: (
-                    bucketList.id === bucketlist.id
-                  ) ? '70%' : '85%',
-                },
-              ]}
-              onFocus={() => selectBucketlist(bucketlist)}
-              value={bucketList.id === bucketlist.id ? comm.content : ''}
-              onChangeText={onChange}
-            />
-            {
-              bucketList.id === bucketlist.id &&
-              <TouchableOpacity
-                text="POST"
-                style={styles.value}
-                onPress={event => onSubmit(event)}
-              >
-                <View>
-                  <Text style={styles.label}>POST</Text>
-                </View>
-              </TouchableOpacity>
-            }
-          </View>
-        </View>
+        <Comments
+          bucketlist={bucketlist}
+          bucket={bucketList}
+          comments={bucketlist.comments}
+          profile={profile}
+          comm={comm}
+          onSubmit={onSubmit}
+          selectBucketlist={selectBucketlist}
+          onChange={onChange}
+        />
       }
     </View>
   </View>

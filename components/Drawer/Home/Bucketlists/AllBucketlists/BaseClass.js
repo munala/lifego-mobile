@@ -87,7 +87,10 @@ class BaseClass extends Component {
     const difference = moment.duration(moment(Date.now())
       .diff(moment(bucketlist.createdAt)));
     let createdAt = Math.floor(difference.asMinutes());
-    if (createdAt > 59) {
+    if (createdAt === 0) {
+      createdAt = 'just now';
+      time = '';
+    } else if (createdAt > 59) {
       createdAt = Math.floor(difference.asHours());
       time = 'h';
       if (createdAt > 23) {
