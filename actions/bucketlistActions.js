@@ -68,11 +68,20 @@ export const addNewBucketlist = bucketlist => ({
   bucketlist,
 });
 
-export const loadMore = () => dispatch => dispatch({
+export const loadMore = data => ({
   type: types.LOAD_MORE_BUCKETLISTS,
+  data,
 });
 
-export const loadBucketlists = (offset = 0, limit = 100, search = '') => async (dispatch) => {
+export const loadMoreBucketlists = (type, offset = 0, limit = 10, search = '') => async (dispatch) => {
+  const action = type === 'all' ? BucketlistService.getAllBucketlists : BucketlistService.getBucketlists;
+  const response = await action(offset, limit, search);
+  if (!response.error) {
+    dispatch(loadMore(response));
+  }
+};
+
+export const loadBucketlists = (offset = 0, limit = 10, search = '') => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall());
   const response = await BucketlistService.getBucketlists(offset, limit, search);
   if (response.error) {
@@ -86,7 +95,7 @@ export const loadBucketlists = (offset = 0, limit = 100, search = '') => async (
   }
 };
 
-export const loadAllBucketlists = (offset = 0, limit = 20, search = '') => async (dispatch) => {
+export const loadAllBucketlists = (offset = 0, limit = 10, search = '') => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall());
   const response = await BucketlistService.getAllBucketlists(offset, limit, search);
   if (response.error) {

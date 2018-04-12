@@ -9,7 +9,7 @@ import propTypes from './propTypes';
 
 class BaseClass extends Component {
   onRefresh = async () => {
-    await this.props.actions.loadAllBucketlists(0, 100);
+    await this.props.actions.loadAllBucketlists();
     this.getImageHeights(this.props.allData.bucketlists);
   }
 
@@ -88,7 +88,7 @@ class BaseClass extends Component {
       .diff(moment(bucketlist.createdAt)));
     let createdAt = Math.floor(difference.asMinutes());
     if (createdAt === 0) {
-      createdAt = 'just now';
+      createdAt = 'Just now';
       time = '';
     } else if (createdAt > 59) {
       createdAt = Math.floor(difference.asHours());
@@ -115,10 +115,6 @@ class BaseClass extends Component {
       });
     }
     return liked ? '#00bcd4' : 'grey';
-  }
-
-  loadMore = () => {
-    // this.props.actions.loadAllBucketlists(page);
   }
 
   like = async (bucketlist) => {

@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 export default {
   actions: PropTypes.shape({
     loadAllBucketlists: PropTypes.func.isRequired,
-    loadMore: PropTypes.func.isRequired,
+    loadMoreBucketlists: PropTypes.func.isRequired,
     addComment: PropTypes.func.isRequired,
     like: PropTypes.func.isRequired,
     unlike: PropTypes.func.isRequired,
@@ -37,7 +37,6 @@ export default {
         updatedAt: PropTypes.string,
       })),
     })),
-    count: PropTypes.number.isRequired,
     nextUrl: PropTypes.string,
     previousUrl: PropTypes.string,
   }).isRequired,

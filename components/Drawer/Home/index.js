@@ -5,6 +5,7 @@ import { TabNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { loadAllBucketlists } from '../../../actions/bucketlistActions';
 import { getConversations } from '../../../actions/messageActions';
 import { getNotifications } from '../../../actions/notificationActions';
 import { getAlerts } from '../../../actions/userAlertActions';
@@ -24,6 +25,7 @@ class Home extends Component {
   }
 
   componentWillMount = () => {
+    this.props.actions.loadAllBucketlists();
     this.props.actions.getConversations();
     this.props.actions.getNotifications();
     this.props.actions.getAlerts();
@@ -156,6 +158,7 @@ Home.propTypes = {
     getConversations: PropTypes.func.isRequired,
     getNotifications: PropTypes.func.isRequired,
     getAlerts: PropTypes.func.isRequired,
+    loadAllBucketlists: PropTypes.func.isRequired,
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -177,6 +180,7 @@ const mapDispatchToProps = dispatch => ({
     getConversations,
     getNotifications,
     getAlerts,
+    loadAllBucketlists,
   }, dispatch),
 });
 

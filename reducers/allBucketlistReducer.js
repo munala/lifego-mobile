@@ -15,19 +15,17 @@ export default function allBucketlistReducer(
         count: state.count + 1,
       };
 
-    case types.LOAD_MORE_BUCKETLISTS:
-      return {
-        ...state,
-        bucketlists: [...state.newBucketlists, ...state.bucketlists],
-        newBucketlists: [],
-        count: 0,
-      };
-
     case types.LOAD_ALL_BUCKETLISTS_SUCCESS:
       return {
         ...action.data,
-        newBucketlists: [],
-        count: 0,
+      };
+
+    case types.LOAD_MORE_BUCKETLISTS:
+      return {
+        ...state,
+        nextUrl: action.data.nextUrl,
+        previousUrl: action.data.previousUrl,
+        bucketlists: [...new Set([...state.bucketlists, ...action.data.bucketlists])],
       };
 
     case types.CREATE_BUCKETLIST_SUCCESS:

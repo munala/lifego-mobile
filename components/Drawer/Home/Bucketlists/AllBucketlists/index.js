@@ -146,10 +146,12 @@ class AllBucketlists extends BaseClass {
     const {
       currentApiCalls,
       allData,
+      allData: { bucketlists, nextUrl },
+      actions: { loadMoreBucketlists },
     } = this.props;
-    const { searchText } = this.state;
-    const bucketlists = allData.bucketlists
-      .filter(bucketlist => bucketlist.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
+    const { length } = allData.bucketlists;
+    const page = Math.floor(length / 10) + 1;
+    const loadMore = nextUrl.length > 0;
     return (
       <View style={styles.container}>
         {
@@ -165,6 +167,8 @@ class AllBucketlists extends BaseClass {
               data={bucketlists}
               renderItem={this.renderItem}
               style={styles.listView}
+              onEndReached={() => (loadMore ? loadMoreBucketlists('all', page * 10) : () => {})}
+              onEndReachedThreshold={1}
               refreshControl={
                 <RefreshControl
                   refreshing={currentApiCalls > 0}

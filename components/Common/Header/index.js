@@ -19,7 +19,6 @@ class Header extends Component {
   }
 
   componentWillMount = () => {
-    this.props.actions.loadAllBucketlists(0, 100);
     this.props.actions.getProfile();
   }
 
