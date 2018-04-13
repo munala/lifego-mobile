@@ -19,6 +19,7 @@ import * as navigationActions from '../../actions/navigationActions';
 import styles from './styles';
 import propTypes from './propTypes';
 import BaseClass from './BaseClass';
+import ResetPassword from './ResetPassword';
 
 const iconStyles = {
   borderRadius: 20,
@@ -53,6 +54,7 @@ class User extends BaseClass {
       email: '',
       password: '',
     },
+    resetPassword: false,
   };
 
   componentDidMount = async () => {
@@ -69,7 +71,7 @@ class User extends BaseClass {
 
   render() {
     const {
-      registerMode, registerUser, loginUser, disabled,
+      registerMode, registerUser, loginUser, disabled, resetPassword,
     } = this.state;
     const user = registerMode ? registerUser : loginUser;
     return (
@@ -87,66 +89,83 @@ class User extends BaseClass {
           source={require('../../assets/icons/icon.png')}
         />
         {
-          registerMode &&
-          <TextInput
-            ref={(element) => { this.DisplayName = element; }}
-            defaultValue={user.displayName}
-            underlineColorAndroid="rgba(0,0,0,0)"
-            style={styles.input}
-            placeholderTextColor="#eee"
-            onChangeText={value => this.onChange('displayName', value)}
-            placeholder="full name"
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              this.Email.focus();
-            }}
-          />}
-        <TextInput
-          ref={(element) => { this.Email = element; }}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          defaultValue={user.email}
-          underlineColorAndroid="rgba(0,0,0,0)"
-          style={styles.input}
-          placeholderTextColor="#eee"
-          onChangeText={value => this.onChange('email', value)}
-          placeholder="example@me.com"
-          returnKeyType="next"
-          onSubmitEditing={() => {
-            this.Password.focus();
-          }}
-        />
-        <TextInput
-          ref={(element) => { this.Password = element; }}
-          defaultValue={user.password}
-          underlineColorAndroid="rgba(0,0,0,0)"
-          style={styles.input}
-          placeholderTextColor="#eee"
-          secureTextEntry
-          onChangeText={value => this.onChange('password', value)}
-          placeholder="password"
-          returnKeyType={registerMode ? 'next' : 'done'}
-          onSubmitEditing={() => (registerMode ? this.Confirm.focus() : null)}
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.onSubmit}
-          disabled={disabled}
-        >
-          {
-            this.props.currentApiCalls > 0 ?
-              <ActivityIndicator color="#fff" size="large" /> :
-              <Text style={styles.buttonText}>Sign {registerMode ? 'up' : 'in'}</Text>
-          }
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.cancelButton]}
-          onPress={this.onToggle}
-        >
-          <Text style={[styles.buttonText, styles.cancelButtonText]}>
-            {registerMode ? 'Already a member?' : 'Need an account? Sign up'}
-          </Text>
-        </TouchableOpacity>
+          !resetPassword ?
+            <View>
+              {
+                registerMode &&
+                <TextInput
+                  ref={(element) => { this.DisplayName = element; }}
+                  defaultValue={user.displayName}
+                  underlineColorAndroid="rgba(0,0,0,0)"
+                  style={styles.input}
+                  placeholderTextColor="#eee"
+                  onChangeText={value => this.onChange('displayName', value)}
+                  placeholder="full name"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    this.Email.focus();
+                  }}
+                />}
+              <TextInput
+                ref={(element) => { this.Email = element; }}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                defaultValue={user.email}
+                underlineColorAndroid="rgba(0,0,0,0)"
+                style={styles.input}
+                placeholderTextColor="#eee"
+                onChangeText={value => this.onChange('email', value)}
+                placeholder="example@me.com"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  this.Password.focus();
+                }}
+              />
+              <TextInput
+                ref={(element) => { this.Password = element; }}
+                defaultValue={user.password}
+                underlineColorAndroid="rgba(0,0,0,0)"
+                style={styles.input}
+                placeholderTextColor="#eee"
+                secureTextEntry
+                onChangeText={value => this.onChange('password', value)}
+                placeholder="password"
+                returnKeyType={registerMode ? 'next' : 'done'}
+                onSubmitEditing={() => (registerMode ? this.Confirm.focus() : null)}
+              />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={this.onSubmit}
+                disabled={disabled}
+              >
+                {
+                  this.props.currentApiCalls > 0 ?
+                    <ActivityIndicator color="#fff" size="large" /> :
+                    <Text style={styles.buttonText}>Sign {registerMode ? 'up' : 'in'}</Text>
+                }
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.cancelButton]}
+                onPress={this.onToggle}
+              >
+                <Text style={[styles.buttonText, styles.cancelButtonText]}>
+                  {registerMode ? 'Already a member?' : 'Need an account? Sign up'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.cancelButton]}
+                onPress={() => this.toggleResetMode(true)}
+              >
+                <Text style={[styles.buttonText, styles.cancelButtonText]}>
+                  Forgot password
+                </Text>
+              </TouchableOpacity>
+            </View> :
+            <ResetPassword
+              currentApiCalls={this.props.currentApiCalls}
+              toggleResetMode={this.toggleResetMode}
+            />
+            }
         <View style={styles.buttons}>
           <Icon.Button
             name="facebook"

@@ -16,7 +16,7 @@ store.subscribe(() => {
     if (Platform.OS === 'android') {
       ToastAndroid.showWithGravityAndOffset(
         message,
-        ToastAndroid.SHORT,
+        ToastAndroid.LONG,
         ToastAndroid.BOTTOM,
         0,
         50,

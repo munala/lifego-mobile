@@ -67,6 +67,8 @@ export const logoutUser = () => ({
   type: types.LOGOUT,
 });
 
+const stripHtml = text => text.replace('<b>', '').replace('</b>', '').replace('<br/>', ' ');
+
 const navigate = route => ({
   type: types.NAVIGATE,
   navigator: 'auth',
@@ -167,7 +169,7 @@ export const resetPassword = email => async (dispatch) => {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(resetPasswordSuccess(response.message));
+    dispatch(resetPasswordSuccess(stripHtml(response.message)));
     dispatch(apiCallActions.resetMessage());
   }
 };

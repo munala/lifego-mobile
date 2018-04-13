@@ -152,7 +152,7 @@ class AllBucketlists extends BaseClass {
     } = this.props;
     const { length } = bucketlists;
     const page = Math.floor(length / 10) + 1;
-    const loadMore = nextUrl.length > 0;
+    const loadMore = bucketlists.length === 10 && nextUrl.length > 0;
     return (
       <View style={styles.container}>
         {

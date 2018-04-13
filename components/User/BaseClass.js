@@ -36,6 +36,10 @@ class BaseClass extends Component {
     });
   }
 
+  toggleResetMode = (resetPassword) => {
+    this.setState({ resetPassword });
+  }
+
   handleOpenURL = async ({ url }) => {
     const canLogin = JSON.parse(await AsyncStorage.getItem('can_login'));
     if (canLogin) {
