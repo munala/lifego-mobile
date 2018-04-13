@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Alert } from 'react-native';
+import moment from 'moment';
 
 import propTypes from './propTypes';
 
@@ -68,14 +69,37 @@ class BaseClass extends Component {
     this.setState({ contentHeight });
   }
 
+  setTime = (message) => {
+    let time = 'm ago';
+    const difference = moment.duration(moment(Date.now())
+      .diff(moment(message.createdAt)));
+    let createdAt = Math.floor(difference.asMinutes());
+    if (createdAt === 0) {
+      createdAt = 'Just now';
+      time = '';
+    } else if (createdAt > 59) {
+      createdAt = Math.floor(difference.asHours());
+      time = 'h ago';
+      if (createdAt > 23) {
+        time = '';
+        if (createdAt > 365) {
+          createdAt = moment(message.createdAt).format('MMMM Do YYYY, HH:mm');
+        } else {
+          createdAt = moment(message.createdAt).format('MMMM Do, HH:mm');
+        }
+      }
+    }
+    return `- ${createdAt}${time} -`;
+  }
+
   goBack = async () => {
     this.props.actions.navigate({ route: 'MessageList', navigator: 'conversations' });
   }
 
   deleteConversation = async (conversation) => {
     Alert.alert(
-      'Delete conversation',
-      'Are you sure?',
+      'Delete conversation?',
+      null,
       [
         { text: 'Cancel', onPress: () => {} },
         {
@@ -83,6 +107,22 @@ class BaseClass extends Component {
           onPress: async () => {
             await this.props.actions.deleteConversation(conversation);
             this.goBack();
+          },
+        },
+      ],
+      { cancelable: true },
+    );
+  }
+  deleteMessage = (message) => {
+    Alert.alert(
+      'Delete message?',
+      null,
+      [
+        { text: 'Cancel', onPress: () => {} },
+        {
+          text: 'OK',
+          onPress: async () => {
+            await this.props.actions.deleteMessage(message);
           },
         },
       ],

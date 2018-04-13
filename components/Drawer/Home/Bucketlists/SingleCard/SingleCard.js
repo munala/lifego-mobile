@@ -24,7 +24,8 @@ const getTags = (bucketlist) => {
 
 const SingleCard = ({
   bucketlist, createdAt, time, showComments, setLikeColor, like, imageHeights, goToBucketlist,
-  bucketList, toggleComments, profile, comm, onSubmit, selectBucketlist, onChange,
+  bucketList, toggleComments, profile, comm, onSubmit, selectBucketlist, onChange, setTime,
+  selectedComment, deleteComment, selectComment,
 }) => (
   <View
     key={bucketlist.id}
@@ -148,6 +149,10 @@ const SingleCard = ({
           onSubmit={onSubmit}
           selectBucketlist={selectBucketlist}
           onChange={onChange}
+          setTime={setTime}
+          selectComment={selectComment}
+          selectedComment={selectedComment}
+          deleteComment={deleteComment}
         />
       }
     </View>
@@ -162,8 +167,11 @@ SingleCard.defaultProps = {
     comments: [],
     items: [],
   },
+  selectComment: () => {},
+  selectedComment: {},
   selectBucketlist: () => {},
   goToBucketlist: () => {},
+  deleteComment: () => {},
 };
 
 export default SingleCard;

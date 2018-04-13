@@ -638,4 +638,15 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 5,
   },
+  timeSent: {
+    display: 'flex',
+    color: '#ddd',
+    fontSize: 10,
+    alignSelf: 'center',
+  },
+  commentTime: {
+    alignSelf: 'flex-start',
+    marginLeft: 10,
+    marginVertical: 2,
+  },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, TextInput } from 'react-native';
+import { View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,6 +13,13 @@ import styles from '../../styles';
 import propTypes from './propTypes';
 
 class Conversation extends BaseClass {
+  state = {
+    message: {
+      content: '',
+    },
+    selectedMessage: {},
+  }
+
   componentWillMount = () => {
     if (this.props.conversation) {
       this.props.conversation.messages
@@ -33,13 +40,17 @@ class Conversation extends BaseClass {
     }
   }
 
+  selectMessage = (selectedMessage) => {
+    this.setState({ selectedMessage });
+  }
+
   render() {
     const {
       conversation,
       params: { newConversation, id },
       profile,
     } = this.props;
-    const { message } = this.state;
+    const { message, selectedMessage } = this.state;
     let name;
 
     if (conversation || newConversation) {
@@ -79,12 +90,36 @@ class Conversation extends BaseClass {
           >
             {
               conversation && conversation.messages.map(chatMessage => (
-                <Text
+                <TouchableOpacity
                   key={chatMessage.id}
-                  style={[this.setStyle(chatMessage, profile), styles.message]}
+                  onLongPress={() => (
+                    chatMessage.senderId === profile.id ?
+                      this.selectMessage(chatMessage) :
+                      () => {}
+                  )}
+                  delayLongPress={500}
                 >
-                  {chatMessage.content}
-                </Text>
+                  <Text
+                    style={[this.setStyle(chatMessage, profile), styles.message]}
+                  >
+                    {chatMessage.content}
+                  </Text>
+                  {selectedMessage.senderId === profile.id &&
+                    selectedMessage.id === chatMessage.id &&
+                    <Icon
+                      containerStyle={styles.deleteButton}
+                      onPress={() => this.deleteMessage(chatMessage)}
+                      name="delete"
+                      color="red"
+                      size={16}
+                    />
+                  }
+                  <Text
+                    style={styles.timeSent}
+                  >
+                    {this.setTime(chatMessage)}
+                  </Text>
+                </TouchableOpacity>
               ))
             }
           </ScrollView>

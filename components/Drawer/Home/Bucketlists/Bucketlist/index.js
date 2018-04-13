@@ -20,6 +20,7 @@ class Bucketlist extends BaseClass {
     comm: { content: '' },
     imageHeights: {},
     showComments: true,
+    comment: {},
   }
 
   componentWillMount = () => {
@@ -47,9 +48,10 @@ class Bucketlist extends BaseClass {
 
   render() {
     const {
-      bucketlist, profile, actions: { navigate },
+      bucketlist, profile, actions: { navigate, deleteComment },
       params,
     } = this.props;
+    const { comment: selectedComment } = this.state;
     const navigator = params.from === 'bucketlists' ? 'allBucketlists' : 'home';
     const { createdAt, time } = this.setTime(bucketlist);
     const bucketlistProps = {
@@ -64,9 +66,13 @@ class Bucketlist extends BaseClass {
       onSubmit: this.onSubmit,
       onChange: this.onChange,
       like: this.like,
+      setTime: this.setTime,
       comm: this.state.comm,
       setLikeColor: this.setLikeColor,
       imageHeights: this.state.imageHeights,
+      selectComment: this.selectComment,
+      selectedComment,
+      deleteComment,
     };
     return (
       <View style={styles.container}>

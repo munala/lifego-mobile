@@ -43,4 +43,7 @@ export default {
   selectBucketlist: PropTypes.func,
   goToBucketlist: PropTypes.func,
   onChange: PropTypes.func.isRequired,
+  selectedComment: PropTypes.shape({}),
+  deleteComment: PropTypes.func,
+  selectComment: PropTypes.func,
 };

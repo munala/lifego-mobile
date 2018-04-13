@@ -55,6 +55,10 @@ class BaseClass extends Component {
     return liked ? '#00bcd4' : 'grey';
   }
 
+  selectComment = (comment) => {
+    this.setState({ comment });
+  }
+
   toggleComments = () => {
     this.setState({
       showComments: !this.state.showComments,

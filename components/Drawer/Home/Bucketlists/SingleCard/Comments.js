@@ -1,7 +1,8 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 import Text from '../../../../Common/SuperText';
 import styles from '../../styles';
@@ -17,9 +18,27 @@ class Comments extends Component {
     });
   }
 
+  deleteComment = (comment) => {
+    Alert.alert(
+      'Delete comment?',
+      null,
+      [
+        { text: 'Cancel', onPress: () => {} },
+        {
+          text: 'OK',
+          onPress: async () => {
+            await this.props.deleteComment(this.props.bucketlist, comment);
+          },
+        },
+      ],
+      { cancelable: true },
+    );
+  }
+
   render = () => {
     const {
-      bucketlist, bucket, profile, onChange, selectBucketlist, onSubmit, comm,
+      bucketlist, bucket, profile, onChange, selectBucketlist,
+      onSubmit, comm, setTime, selectComment, selectedComment,
     } = this.props;
     const { page } = this.state;
     const lastPage = Math.floor(this.props.bucketlist.comments.length / 10);
@@ -39,13 +58,36 @@ class Comments extends Component {
           {
             bucketlist.comments.slice(page * 10, (page * 10) + 10)
             .map(comment => (
-              <View
+              <TouchableOpacity
                 key={comment.id}
-                style={styles.comment}
+                onLongPress={() => (
+                  bucketlist.userId === profile.id || (comment.senderId === profile.id) ?
+                    selectComment(comment) :
+                    () => {}
+                )}
+                delayLongPress={500}
               >
-                <Text style={styles.commentUser}>{comment.user}</Text>
-                <Text style={styles.commentContent}>{comment.content}</Text>
-              </View>
+                <View
+                  style={styles.comment}
+                >
+                  <Text style={styles.commentUser}>{comment.user}</Text>
+                  <Text style={styles.commentContent} >{comment.content}</Text>
+                  {selectedComment.id === comment.id &&
+                    <Icon
+                      containerStyle={[styles.deleteButton, { marginLeft: 20 }]}
+                      onPress={() => this.deleteComment(comment)}
+                      name="delete"
+                      color="red"
+                      size={16}
+                    />
+                  }
+                </View>
+                <Text
+                  style={[styles.timeSent, styles.commentTime]}
+                >
+                  {`${setTime(comment).createdAt}${setTime(comment).time}`}
+                </Text>
+              </TouchableOpacity>
             ))
           }
           {
@@ -117,9 +159,13 @@ Comments.propTypes = {
   }).isRequired,
   bucket: PropTypes.shape({}),
   comm: PropTypes.shape({}).isRequired,
+  selectedComment: PropTypes.shape({}),
   selectBucketlist: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  setTime: PropTypes.func.isRequired,
+  selectComment: PropTypes.func,
+  deleteComment: PropTypes.func,
   profile: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,
@@ -137,7 +183,10 @@ Comments.defaultProps = {
     comments: [],
     items: [],
   },
+  selectedComment: {},
+  selectComment: () => {},
   selectBucketlist: () => {},
+  deleteComment: () => {},
 };
 
 export default Comments;

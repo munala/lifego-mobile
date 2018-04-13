@@ -14,7 +14,6 @@ export default {
     unlike: PropTypes.func.isRequired,
     updateComment: PropTypes.func.isRequired,
     deleteComment: PropTypes.func.isRequired,
-    handleHeader: PropTypes.func.isRequired,
   }).isRequired,
   profile: PropTypes.shape({
     id: PropTypes.number,

@@ -113,7 +113,7 @@ export default (store) => {
       store.dispatch(messageActions.deleteMessageSuccess({ message: data.message }));
     }
     if (data.type === 'delete') {
-      store.dispatch(messageActions.deleteMessageSuccess({ message: data.message }));
+      store.dispatch(messageActions.deleteMessageSuccess(data.message));
     }
   });
 
@@ -202,12 +202,11 @@ export default (store) => {
     if (data.type === 'delete') {
       [storeData.data, storeData.allData].forEach((list) => {
         list.bucketlists.forEach((bucketlist) => {
-          if (data.sourceUserId !== storeData.profile.id &&
-          bucketlist.id === data.comment.bucketlistId) {
-            store.dispatch(commentActions.deleteCommentSuccess({
-              id: data.comment.bucketlistId,
-            }, data.comment));
-          }
+          bucketlist.comments.forEach((comm) => {
+            if (comm.id === data.comment.id) {
+              store.dispatch(commentActions.deleteCommentSuccess(bucketlist, data.comment));
+            }
+          });
         });
       });
     }
