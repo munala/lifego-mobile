@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { Platform, Dimensions } from 'react-native';
 import { DrawerNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 
+import CustomDrawer from './Custom';
 import MyBucketlists from './MyBucketlists';
 import Home from './Home';
 import Profile from './Profile';
 import Settings from './Settings';
 
-const { height } = Dimensions.get('window');
 
 const navigationOptionsWrapper = (drawerLabel, icon, Comp) => (
   class DrawerComponent extends Component {
@@ -68,10 +67,8 @@ const Drawer = ({ route }) => {
       contentOptions: {
         inactiveTintColor: 'grey',
         activeTintColor: '#00bcd4',
-        style: {
-          paddingTop: height === 812 && Platform.OS === 'ios' ? 28 : 0,
-        },
       },
+      contentComponent: props => <CustomDrawer {...props} />,
     },
   );
   return (

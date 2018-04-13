@@ -20,6 +20,9 @@ export default {
   message: '',
   searchText: '',
   profile: {
+    pictureUrl: '',
+    displayName: '',
+    email: '',
     searchUsers: [],
     friends: [],
     followers: [],

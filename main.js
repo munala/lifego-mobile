@@ -53,7 +53,9 @@ store.subscribe(() => {
 });
 AsyncStorage.getItem('token').then((token) => {
   if (token && jwtDecode(token).exp >= Date.now() / 1000) {
-    socket(store);
+    try {
+      socket(store);
+    } catch (err) { } // eslint-disable-line no-empty
   }
 });
 
