@@ -331,6 +331,15 @@ export default StyleSheet.create({
     marginRight: 5,
     color: '#00bcd4',
   },
+  locationIcon: {
+    display: 'flex',
+    fontSize: 10,
+    height: 10,
+    lineHeight: 10,
+    marginRight: 5,
+    marginBottom: 5,
+    color: '#00bcd4',
+  },
   lifegoBlue: {
     color: '#00bcd4',
   },

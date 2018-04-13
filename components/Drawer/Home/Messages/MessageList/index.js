@@ -71,7 +71,7 @@ class MessageList extends BaseClass {
       <ScrollView>
         <List containerStyle={styles.results}>
           {this.props.profile.friends
-            .filter(friend => (friend.username || friend.displayName).toLowerCase()
+            .filter(friend => friend.displayName && friend.displayName.toLowerCase()
               .indexOf(this.state.searchText.toLowerCase()) !== -1).map(person => (
                 <ListItem
                   key={person.id}

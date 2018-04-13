@@ -57,7 +57,7 @@ const SingleCard = ({
             bucketlist.location ?
               <View style={styles.locationCategory}>
                 <View style={styles.location}>
-                  <Icon style={styles.titleIcon} size={10} name="place" />
+                  <Icon style={styles.locationIcon} size={10} name="place" />
                   <Text style={styles.rightHeaderContent}>{`${bucketlist.location || ''}\n`}</Text>
                 </View>
                 {!!bucketlist.category &&
