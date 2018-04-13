@@ -5,7 +5,6 @@ import {
   ScrollView,
   FlatList,
   Switch,
-  RefreshControl,
   Platform,
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
@@ -24,8 +23,6 @@ import BaseClass from './BaseClass';
 
 class Items extends BaseClass {
   state = {
-    bucketlist: this.props.navigationData.myBucketlists.params.bucketlist,
-    data: this.props.navigationData.myBucketlists.params.bucketlist.items,
     filter: 'all',
     refreshing: false,
     visibleModal: false,
@@ -36,15 +33,6 @@ class Items extends BaseClass {
     searchMode: false,
     isOpen: false,
   };
-
-  componentWillReceiveProps = (nextProps) => {
-    const [bucketlist] = [...nextProps.data.bucketlists
-      .filter(bucket => bucket.id === this.state.bucketlist.id)];
-    this.setState({
-      bucketlist,
-      data: bucketlist.items,
-    });
-  }
 
   renderItem = ({ item }) => ( // eslint-disable-line react/prop-types
     <Row
@@ -59,13 +47,18 @@ class Items extends BaseClass {
 
   render() {
     const {
-      filter, data, bucketlist,
+      filter,
     } = this.state;
     const {
-      currentApiCalls,
-      navigationData: { myBucketlists: { previousRoute } },
+      bucketlist,
+      previousRoute,
       actions: { navigate },
     } = this.props;
+    if (!bucketlist) {
+      return (<View />);
+    }
+    const data = (bucketlist.items || [])
+      .filter(item => (filter === 'all' || (filter === 'pending' && !item.done)));
     return (
       <View style={[styles.container, styles.iPhoneX]}>
         <Header
@@ -111,14 +104,6 @@ class Items extends BaseClass {
                 data={data}
                 renderItem={this.renderItem}
                 style={styles.listView}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={currentApiCalls > 0}
-                    onRefresh={this.onRefresh}
-                    colors={['#00bcd4']}
-                    tintColor="#eee"
-                  />
-                }
               />
             </ScrollView>
           }
@@ -137,9 +122,13 @@ class Items extends BaseClass {
 
 Items.propTypes = propTypes;
 
-function mapStateToProps(state) {
-  return state;
-}
+const mapStateToProps = ({
+  data: { bucketlists },
+  navigationData: { myBucketlists: { params: { bucketlist: { id: idParam } }, previousRoute } },
+}) => {
+  const [bucketlist] = bucketlists.filter(({ id }) => id === idParam);
+  return ({ bucketlist, previousRoute });
+};
 
 function mapDispatchToProps(dispatch) {
   return {

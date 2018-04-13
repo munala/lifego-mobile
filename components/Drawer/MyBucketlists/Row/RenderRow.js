@@ -98,7 +98,7 @@ const RenderRow = ({
         <Card
           containerStyle={localStyles.card}
           title={content.name}
-          titleStyle={{ color: 'rgb(5, 165, 209)' }}
+          titleStyle={{ color: '#00bcd4' }}
         >
           {
             properties.map(property => (

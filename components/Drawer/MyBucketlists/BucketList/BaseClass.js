@@ -3,10 +3,11 @@ import propTypes from './propTypes';
 
 class BaseClass extends Component {
   onRefresh = () => {
-    this.props.actions.loadBucketlists(0, 20, '');
+    this.props.actions.loadBucketlists(0, 10, '');
   }
 
   onSave = (bucketlist, type) => {
+    console.log({ bucketlist });
     const { actions } = this.props;
     if (type === 'Add') {
       actions.saveBucketlist(bucketlist);
@@ -64,7 +65,13 @@ class BaseClass extends Component {
   }
 
   goToBucketlistForm = async (bucketlist) => {
-    await this.props.actions.setParams({ params: { bucketlist }, navigator: 'myBucketlists' });
+    await this.props.actions.setParams({
+      params: {
+        bucketlist,
+        goBack: () => this.props.actions.navigate({ navigator: 'myBucketlists', route: 'bucketlist' }),
+      },
+      navigator: 'myBucketlists',
+    });
     this.props.actions.navigate({ route: 'items', navigator: 'myBucketlists' });
   }
 }

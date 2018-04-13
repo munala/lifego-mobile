@@ -147,20 +147,21 @@ const Form = ({
               }
             </View>
           }
+          <Text style={styles.grey}>photo</Text>
+          <TouchableOpacity style={styles.imageWrapper} onPress={changePhoto}>
+            {(image.uri) &&
+              <Image
+                source={{ uri: image.uri || content.pictureUrl }}
+                style={styles.image}
+                resizeMode="cover"
+              />}
+            {(image.uri) ?
+              <Text style={styles.paragraph}>change</Text> :
+              <Text style={styles.plusSign}>add</Text>}
+          </TouchableOpacity>
+
         </View>
       }
-      <Text style={styles.grey}>photo</Text>
-      <TouchableOpacity style={styles.imageWrapper} onPress={changePhoto}>
-        {(image.uri) &&
-          <Image
-            source={{ uri: image.uri }}
-            style={styles.image}
-            resizeMode="cover"
-          />}
-        {(image.uri) ?
-          <Text style={styles.paragraph}>change</Text> :
-          <Text style={styles.plusSign}>add</Text>}
-      </TouchableOpacity>
     </ScrollView>
     <View style={styles.buttons}>
       <TouchableOpacity

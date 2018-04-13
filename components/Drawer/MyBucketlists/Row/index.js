@@ -26,6 +26,7 @@ class Row extends Component {
       visibleModal: value,
     });
   }
+
   handleTouch = async () => {
     const { content } = this.state;
     const { navigate, setParams } = this.props;
@@ -39,26 +40,31 @@ class Row extends Component {
       navigate({ route: 'items', navigator: 'myBucketlists' });
     }
   }
+
   renderProperties = () => {
     const { content } = this.props;
-    const obj = { ...content };
+    const {
+      id, items, userId, self, likes, links, userDisplayName,
+      userPictureUrl, pictureUrl, members, tags, ...obj
+    } = { ...content };
     const properties = [];
     Object.keys(obj).forEach((property) => {
-      if (['createdAt', 'updatedAt', 'description'].indexOf(property) >= 0) {
-        if (property === 'createdAt' || property === 'updatedAt') {
-          obj[property] = Moment(obj[property]).format('MMMM Do YYYY, h:mm:ss a');
-        }
+      if (property === 'createdAt' || property === 'updatedAt') {
+        obj[property] = Moment(obj[property]).format('MMMM Do YYYY, h:mm:ss a');
+      }
+      if (obj[property] && typeof (obj[property]) === 'string') {
         properties.push({ name: property, text: obj[property] });
       }
     });
     return properties;
   }
+
   render() {
     return (
       <RenderRow
         handleTouch={this.handleTouch}
         setModalVisible={this.setModalVisible}
-        showModal={this.showModal}
+        showModal={this.props.showModal}
         visibleModal={this.state.visibleModal}
         properties={this.state.properties}
         onDone={this.props.onDone}

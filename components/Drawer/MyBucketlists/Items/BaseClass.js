@@ -4,22 +4,24 @@ import propTypes from './propTypes';
 class BaseClass extends Component {
   onRefresh = async () => {
     this.setState({ refreshing: true });
-    await this.props.actions.loadBucketlists(0, 20, '');
+    await this.props.actions.loadBucketlists(0, 10, '');
     this.setState({ refreshing: false });
   }
 
   onDelete = (content) => {
-    this.props.actions.deleteItem(this.state.bucketlist, content);
+    this.props.actions.deleteItem(this.props.bucketlist, content);
   }
 
   onDone = (item) => {
     const newItem = { ...item, done: !item.done };
-    this.props.actions.updateItem(this.state.bucketlist, newItem);
+    this.props.actions.updateItem(
+      this.props.bucketlist,
+      newItem,
+    );
   }
 
   onSave = (item = {}, type) => {
-    const { actions } = this.props;
-    const { bucketlist } = this.state;
+    const { actions, bucketlist } = this.props;
     if (type === 'Add') {
       actions.saveItem(bucketlist, item);
     } else {
@@ -35,7 +37,18 @@ class BaseClass extends Component {
           type,
         },
         content,
+        bucketlist: this.props.bucketlist,
         onSave: this.onSave,
+        goBack: async () => {
+          await this.props.actions.setParams({
+            params: {
+              bucketlist: this.props.bucketlist,
+              goBack: () => this.props.actions.navigate({ navigator: 'myBucketlists', route: 'bucketlist' }),
+            },
+            navigator: 'myBucketlists',
+          }),
+          this.props.actions.navigate({ navigator: 'myBucketlists', route: 'items' });
+        },
       },
       navigator: 'myBucketlists',
     });
@@ -46,8 +59,6 @@ class BaseClass extends Component {
     const filter = this.state.filter === 'all' ? 'pending' : 'all';
     this.setState({
       filter,
-      data: this.state.bucketlist.items
-        .filter(item => (filter === 'all' || (filter === 'pending' && !item.done))),
     });
   }
 }

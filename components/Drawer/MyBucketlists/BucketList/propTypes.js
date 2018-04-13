@@ -1,22 +1,20 @@
 import { PropTypes } from 'prop-types';
 
 export default {
-  data: PropTypes.shape({
-    bucketlists: PropTypes.arrayOf(PropTypes.shape({
+  bucketlists: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    items: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
       createdAt: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      items: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        createdAt: PropTypes.string.isRequired,
-        updatedAt: PropTypes.string.isRequired,
-        done: PropTypes.bool.isRequired,
-      })).isRequired,
+      done: PropTypes.bool.isRequired,
     })).isRequired,
-  }).isRequired,
+  })).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
   actions: PropTypes.shape({
     loadBucketlists: PropTypes.func.isRequired,
@@ -30,7 +28,7 @@ export default {
     navigate: PropTypes.func.isRequired,
     setParams: PropTypes.func.isRequired,
   }).isRequired,
-  error: PropTypes.string.isRequired,
+  nextUrl: PropTypes.string.isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,

@@ -22,16 +22,16 @@ export const createBucketlistSuccess = bucketlist => ({
   message: '',
 });
 
-export const updateBucketlistSuccess = ({ bucketlist, message }) => ({
+export const updateBucketlistSuccess = bucketlist => ({
   type: types.UPDATE_BUCKETLIST_SUCCESS,
   bucketlist,
-  message,
+  message: '',
 });
 
-export const deleteBucketlistSuccess = ({ bucketlist, message }) => ({
+export const deleteBucketlistSuccess = ({ bucketlist }) => ({
   type: types.DELETE_BUCKETLIST_SUCCESS,
   bucketlist,
-  message,
+  message: '',
 });
 
 export const createItemSuccess = (bucketlist, item) => ({
@@ -41,18 +41,18 @@ export const createItemSuccess = (bucketlist, item) => ({
   message: '',
 });
 
-export const updateItemSuccess = ({ bucketlist, item, message }) => ({
+export const updateItemSuccess = ({ bucketlist, item }) => ({
   type: types.UPDATE_ITEM_SUCCESS,
   bucketlist,
   item,
-  message,
+  message: 'Success',
 });
 
-export const deleteItemSuccess = ({ bucketlist, item, message }) => ({
+export const deleteItemSuccess = ({ bucketlist, item }) => ({
   type: types.DELETE_ITEM_SUCCESS,
   bucketlist,
   item,
-  message,
+  message: 'Success',
 });
 
 export const resetMessage = dispatch => dispatch({

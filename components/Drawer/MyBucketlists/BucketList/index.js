@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   FlatList,
-  Alert,
   View,
   RefreshControl,
   TouchableOpacity,
@@ -44,10 +43,6 @@ class BucketList extends BaseClass {
     searchMode: false,
   };
 
-  componentWillMount = async () => {
-    this.props.actions.loadBucketlists(0, 10, '');
-  }
-
   componentWillReceiveProps = async ({ error }) => {
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
@@ -72,7 +67,8 @@ class BucketList extends BaseClass {
     const {
       currentApiCalls,
       error,
-      data: { bucketlists, nextUrl },
+      bucketlists,
+      nextUrl,
       actions: { loadMoreBucketlists, loadBucketlists },
     } = this.props;
     const { length } = bucketlists;
@@ -146,18 +142,23 @@ class BucketList extends BaseClass {
 
 BucketList.propTypes = propTypes;
 
-function mapStateToProps(state) {
-  return state;
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({
-      ...bucketlistActions,
-      ...userActions,
-      ...searchActions,
-      ...navigationActions,
-    }, dispatch),
-  };
-}
+const mapStateToProps = ({
+  currentApiCalls,
+  error,
+  data: { bucketlists, nextUrl },
+}) => ({
+  currentApiCalls,
+  error,
+  bucketlists,
+  nextUrl,
+});
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    ...bucketlistActions,
+    ...userActions,
+    ...searchActions,
+    ...navigationActions,
+  }, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(BucketList);
