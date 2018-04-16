@@ -73,7 +73,7 @@ class BaseClass extends Component {
     let time = 'm ago';
     const difference = moment.duration(moment(Date.now())
       .diff(moment(message.createdAt)));
-    let createdAt = Math.floor(difference.asMinutes());
+    let createdAt = Math.floor(difference.asMinutes()) + 1;
     if (createdAt === 0) {
       createdAt = 'Just now';
       time = '';

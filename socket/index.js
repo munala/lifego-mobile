@@ -1,6 +1,6 @@
 import SocketIOClient from 'socket.io-client';
 import PushNotification from 'react-native-push-notification';
-import { PushNotificationIOS as Push, DeviceEventEmitter } from 'react-native';
+import { PushNotificationIOS as Push, DeviceEventEmitter, AsyncStorage } from 'react-native';
 
 import * as messageActions from '../actions/messageActions';
 import * as commentActions from '../actions/commentActions';
@@ -22,25 +22,28 @@ export default (store) => {
 
   const stripHtml = text => text.replace('<b>', '').replace('</b>', '').replace('<br/>', ' ');
 
-  const sendNotification = ({
+  const sendNotification = async ({
     bigText, subText, icon, title, message, vibration, actions, data,
   }) => {
-    PushNotification.localNotification({
-      autoCancel: true,
-      largeIcon: icon,
-      smallIcon: icon,
-      bigText,
-      subText,
-      color: '#00bcd4',
-      vibrate: true,
-      vibration,
-      title,
-      message,
-      playSound: true,
-      soundName: 'default',
-      actions,
-      data,
-    });
+    const push = await AsyncStorage.getItem('push');
+    if (!push) {
+      PushNotification.localNotification({
+        autoCancel: true,
+        largeIcon: icon,
+        smallIcon: icon,
+        bigText,
+        subText,
+        color: '#00bcd4',
+        vibrate: true,
+        vibration,
+        title,
+        message,
+        playSound: true,
+        soundName: 'default',
+        actions,
+        data,
+      });
+    }
   };
 
   PushNotification.registerNotificationActions(['Mark as read', 'View', 'Add back']);

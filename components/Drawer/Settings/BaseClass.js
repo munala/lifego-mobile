@@ -2,12 +2,6 @@ import { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import propTypes from './propTypes';
 
-let hideNotifications;
-
-AsyncStorage.getItem('push').then((push) => {
-  hideNotifications = push;
-});
-
 class BaseClass extends Component {
   state={
     emailMode: false,
@@ -18,7 +12,6 @@ class BaseClass extends Component {
       new: '',
       confirm: '',
     },
-    hideNotifications: !!hideNotifications,
     saving: false,
   }
 
@@ -82,7 +75,9 @@ class BaseClass extends Component {
   }
 
   validate = (mode) => {
-    const { email, password, new: newP, confirm } = this.state.settings;
+    const {
+      email, password, new: newP, confirm,
+    } = this.state.settings;
     if (mode === 'emailMode') {
       return (!(email && password));
     }

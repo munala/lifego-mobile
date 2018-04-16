@@ -5,6 +5,7 @@ import {
   Switch,
   TouchableOpacity,
   Platform,
+  AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -18,7 +19,9 @@ import propTypes from './propTypes';
 import styles from './styles';
 
 class Settings extends BaseClass {
-  componentWillMount = () => {
+  componentWillMount = async () => {
+    const hideNotifications = await AsyncStorage.getItem('push');
+    this.setState({ hideNotifications });
     this.props.actions.getProfile();
   };
 
