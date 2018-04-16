@@ -419,7 +419,7 @@ export default StyleSheet.create({
   },
   notificationText: {
     display: 'flex',
-    marginLeft: 10,
+    marginHorizontal: 10,
     fontSize: 16,
   },
   icon: {

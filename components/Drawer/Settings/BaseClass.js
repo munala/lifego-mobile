@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native';
 import propTypes from './propTypes';
 
 class BaseClass extends Component {
-  state={
+  state = {
     emailMode: false,
     passwordMode: false,
     settings: {
