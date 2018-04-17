@@ -23,7 +23,10 @@ class Splash extends Component {
   componentDidMount = async () => {
     let route;
     const token = await AsyncStorage.getItem('token');
-    if (!token || jwtDecode(token).exp < Date.now() / 1000) {
+    const notFirstTime = await AsyncStorage.getItem('notFirstTime');
+    if (!notFirstTime) {
+      route = 'intro';
+    } else if (!token || jwtDecode(token).exp < Date.now() / 1000) {
       route = 'user';
       AsyncStorage.removeItem('token');
     } else {

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import User from '../components/User';
 import Drawer from '../components/Drawer';
 import Splash from '../components/Splash';
+import Intro from '../components/Intro';
 
 const screens = {
   splash: {
@@ -16,6 +17,9 @@ const screens = {
   },
   home: {
     screen: Drawer,
+  },
+  intro: {
+    screen: Intro,
   },
 };
 
