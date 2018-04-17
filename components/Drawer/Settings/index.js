@@ -19,13 +19,13 @@ import propTypes from './propTypes';
 import styles from './styles';
 
 class Settings extends BaseClass {
-  componentWillMount = async () => {
+  componentDidMount = async () => {
     const hideNotifications = await AsyncStorage.getItem('push');
     this.setState({ hideNotifications });
     this.props.actions.getProfile();
   };
 
-  componentWillReceiveProps = async ({ error, profile }) => {
+  componentDidUpdate = ({ error, profile }) => {
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
         this.props.actions.logout();

@@ -5,20 +5,18 @@ import Moment from 'moment';
 import RenderRow from './RenderRow';
 
 class Row extends Component {
+  static getDerivedStateFromProps = nextProps => ({ ...nextProps })
+
   state = {
     ...this.props,
     visibleModal: false,
     properties: [],
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.setState({
       properties: this.renderProperties(),
     });
-  }
-
-  componentWillReceiveProps = (nextProps) => {
-    this.setState({ ...nextProps });
   }
 
   setModalVisible = (value) => {
@@ -108,6 +106,7 @@ Row.propTypes = {
   navigate: PropTypes.func,
   setParams: PropTypes.func,
 };
+
 Row.defaultProps = {
   context: {
     type: 'Add',

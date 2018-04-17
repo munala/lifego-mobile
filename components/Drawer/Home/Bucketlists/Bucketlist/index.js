@@ -23,7 +23,7 @@ class Bucketlist extends BaseClass {
     comment: {},
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     const { imageHeights } = this.state;
     const { bucketlist } = this.props;
     if (!bucketlist) {
@@ -38,10 +38,10 @@ class Bucketlist extends BaseClass {
     }
   }
 
-  componentWillReceiveProps = ({ bucketlist, bucketlist: { comments } }) => {
+  componentDidUpdate = ({ bucketlist, actions: { navigate } }, { submitted }) => {
     if (!bucketlist) {
-      this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlists' });
-    } else if (comments.length !== this.props.bucketlist.comments.length) {
+      navigate({ navigator: 'allBucketlists', route: 'bucketlists' });
+    } else if (!submitted) {
       this.setState({ submitted: true });
     }
   }

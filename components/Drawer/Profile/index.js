@@ -31,11 +31,11 @@ class Profile extends BaseClass {
     profile: { ...this.props.profile },
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.actions.getProfile();
   };
 
-  componentWillReceiveProps = async ({ error, profile }) => {
+  componentDidUpdate = ({ error, profile }) => {
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
         this.logout();

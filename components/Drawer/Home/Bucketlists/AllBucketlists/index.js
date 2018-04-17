@@ -51,7 +51,7 @@ class AllBucketlists extends BaseClass {
     imageHeights: {},
   };
 
-  componentWillMount = async () => {
+  componentDidMount = async () => {
     const { error, allData: { bucketlists } } = this.props;
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {

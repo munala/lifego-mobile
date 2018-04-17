@@ -24,7 +24,7 @@ class Home extends Component {
     searchMode: false,
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.actions.loadAllBucketlists();
     this.props.actions.getConversations();
     this.props.actions.getNotifications();
@@ -38,9 +38,9 @@ class Home extends Component {
   }
 
   onItemPress = async (bucketlist) => {
-    await this.setState({
+    await this.setState(() => ({
       searchMode: false,
-    });
+    }));
     this.props.actions.setParams({
       params: { id: bucketlist.id, from: 'bucketlists' },
       navigator: 'allBucketlists',

@@ -3,9 +3,9 @@ import propTypes from './propTypes';
 
 class BaseClass extends Component {
   onRefresh = async () => {
-    this.setState({ refreshing: true });
+    this.setState(() => ({ refreshing: true }));
     await this.props.actions.loadBucketlists(0, 10, '');
-    this.setState({ refreshing: false });
+    this.setState(() => ({ refreshing: false }));
   }
 
   onDelete = (content) => {
@@ -46,7 +46,7 @@ class BaseClass extends Component {
               goBack: () => this.props.actions.navigate({ navigator: 'myBucketlists', route: 'bucketlist' }),
             },
             navigator: 'myBucketlists',
-          }),
+          });
           this.props.actions.navigate({ navigator: 'myBucketlists', route: 'items' });
         },
       },

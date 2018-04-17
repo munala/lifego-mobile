@@ -68,19 +68,19 @@ class BaseClass extends Component {
   like = async (bucketlist) => {
     let liked = false;
     if (!this.state.liking) {
-      this.setState({ liking: true });
+      this.setState(() => ({ liking: true }));
       if (bucketlist.likes) {
         bucketlist.likes.forEach(async (like) => {
           if (like.likerId === this.props.profile.id) {
             liked = true;
             await this.props.actions.unlike(like);
-            this.setState({ liking: false });
+            this.setState(() => ({ liking: false }));
           }
         });
       }
       if (!liked) {
         await this.props.actions.like(bucketlist);
-        this.setState({ liking: false });
+        this.setState(() => ({ liking: false }));
       }
     }
   }

@@ -1,6 +1,11 @@
 import SocketIOClient from 'socket.io-client';
 import PushNotification from 'react-native-push-notification';
-import { PushNotificationIOS as Push, DeviceEventEmitter, AsyncStorage } from 'react-native';
+import {
+  PushNotificationIOS as Push,
+  DeviceEventEmitter,
+  AsyncStorage,
+  Linking,
+} from 'react-native';
 
 import * as messageActions from '../actions/messageActions';
 import * as commentActions from '../actions/commentActions';
@@ -48,6 +53,7 @@ export default (store) => {
 
   PushNotification.registerNotificationActions(['Mark as read', 'View', 'Add back']);
   DeviceEventEmitter.addListener('notificationActionReceived', async (action) => {
+    Linking.openURL('LifeGo://');
     const info = JSON.parse(action.dataJSON);
     if (info.action === 'Mark as read') {
       store.dispatch(messageActions.markAsRead({ id: info.data.id }));

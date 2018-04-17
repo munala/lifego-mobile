@@ -12,17 +12,17 @@ export default {
   }).isRequired,
   bucketlist: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+    description: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
       createdAt: PropTypes.string.isRequired,
       updatedAt: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
-    })).isRequired,
+    })),
   }).isRequired,
   previousRoute: PropTypes.string.isRequired,
 };

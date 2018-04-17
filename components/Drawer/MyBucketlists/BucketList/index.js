@@ -43,7 +43,7 @@ class BucketList extends BaseClass {
     searchMode: false,
   };
 
-  componentWillReceiveProps = async ({ error }) => {
+  componentDidUpdate = ({ error }) => {
     if (error) {
       if (error === 'Unauthorised' || error === 'Invalid token') {
         this.logout();
@@ -152,6 +152,7 @@ const mapStateToProps = ({
   bucketlists,
   nextUrl,
 });
+
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     ...bucketlistActions,

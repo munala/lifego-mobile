@@ -93,7 +93,10 @@ class BaseClass extends Component {
         title: 'Remove Photo',
       }],
     };
+    this.openImagePicker(options);
+  }
 
+  openImagePicker = (options) => {
     ImagePicker.showImagePicker(options, async (response) => {
       const { error, didCancel, customButton } = response;
       if (error || didCancel) {
@@ -128,12 +131,12 @@ class BaseClass extends Component {
       toValue: 0,
       duration: 200,
     }).start();
-    await this.setState({
+    await this.setState(() => ({
       scrollEnabled: true,
       editMode: false,
       image: null,
       uploading: false,
-    });
+    }));
     this.setPhoto(this.props.profile.pictureUrl);
   }
 

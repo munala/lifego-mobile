@@ -2,7 +2,7 @@ import { Component } from 'react';
 import propTypes from './propTypes';
 
 class BaseClass extends Component {
-  state={
+  state = {
     searching: false,
     searchText: '',
   }

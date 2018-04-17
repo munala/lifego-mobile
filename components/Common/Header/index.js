@@ -18,7 +18,7 @@ class Header extends Component {
     focused: false,
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.actions.getProfile();
   }
 

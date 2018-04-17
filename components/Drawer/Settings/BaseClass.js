@@ -48,7 +48,7 @@ class BaseClass extends Component {
   }
 
   changeEmail = async () => {
-    this.setState({ saving: true });
+    this.setState(() => ({ saving: true }));
     const { reminders, ...profile } = this.props.profile;
     const { new: newp, confirm, ...rest } = this.state.settings;
     rest.reminders = rest.reminders ? rest.reminders : false;
@@ -57,11 +57,11 @@ class BaseClass extends Component {
       ...rest,
     });
     this.toggleMode('emailMode', false);
-    this.setState({ saving: false });
+    this.setState(() => ({ saving: false }));
   }
 
   changePassword = async () => {
-    this.setState({ saving: true });
+    this.setState(() => ({ saving: true }));
     const { email, ...rest } = this.state.settings;
     rest.reminders = rest.reminders ? rest.reminders : false;
     await this.props.actions.changePassword({
@@ -71,7 +71,7 @@ class BaseClass extends Component {
       oldPassword: rest.password,
     });
     this.toggleMode('passwordMode', false);
-    this.setState({ saving: false });
+    this.setState(() => ({ saving: false }));
   }
 
   validate = (mode) => {

@@ -13,7 +13,7 @@ import { loadBucketlists } from '../../../actions/bucketlistActions';
 import styles from './styles';
 
 class StackNav extends Component {
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.actions.loadBucketlists(0, 10);
   }
 

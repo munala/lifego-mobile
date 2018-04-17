@@ -19,7 +19,8 @@ class Splash extends Component {
   state = {
     value: new Animated.Value(0),
   }
-  componentWillMount = async () => {
+
+  componentDidMount = async () => {
     let route;
     const token = await AsyncStorage.getItem('token');
     if (!token || jwtDecode(token).exp < Date.now() / 1000) {

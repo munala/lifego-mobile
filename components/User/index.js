@@ -165,7 +165,7 @@ class User extends BaseClass {
               currentApiCalls={this.props.currentApiCalls}
               toggleResetMode={this.toggleResetMode}
             />
-            }
+        }
         <View style={styles.buttons}>
           <Icon.Button
             name="facebook"

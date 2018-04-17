@@ -31,25 +31,7 @@ class BaseClass extends Component {
     } else {
       conversation = currentConversation;
     }
-
-    if (message.content) {
-      this.props.actions.sendMessage({
-        ...message,
-        senderId: this.props.profile.id === conversation.senderId ?
-          conversation.senderId :
-          conversation.receiverId,
-        receiverId: this.props.profile.id !== conversation.senderId ?
-          conversation.senderId :
-          conversation.receiverId,
-        conversationId: conversation.id,
-      });
-      this.setState({
-        message: {
-          id: '',
-          content: '',
-        },
-      });
-    }
+    this.sendMessage(message, conversation);
   }
 
   getName = (conversation) => {
@@ -92,6 +74,27 @@ class BaseClass extends Component {
     return `- ${createdAt}${time} -`;
   }
 
+  sendMessage = (message, conversation) => {
+    if (message.content) {
+      this.props.actions.sendMessage({
+        ...message,
+        senderId: this.props.profile.id === conversation.senderId ?
+          conversation.senderId :
+          conversation.receiverId,
+        receiverId: this.props.profile.id !== conversation.senderId ?
+          conversation.senderId :
+          conversation.receiverId,
+        conversationId: conversation.id,
+      });
+      this.setState({
+        message: {
+          id: '',
+          content: '',
+        },
+      });
+    }
+  }
+
   goBack = async () => {
     this.props.actions.navigate({ route: 'MessageList', navigator: 'conversations' });
   }
@@ -113,6 +116,7 @@ class BaseClass extends Component {
       { cancelable: true },
     );
   }
+
   deleteMessage = (message) => {
     Alert.alert(
       'Delete message?',

@@ -7,7 +7,6 @@ class BaseClass extends Component {
   }
 
   onSave = (bucketlist, type) => {
-    console.log({ bucketlist });
     const { actions } = this.props;
     if (type === 'Add') {
       actions.saveBucketlist(bucketlist);

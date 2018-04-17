@@ -20,23 +20,20 @@ class Conversation extends BaseClass {
     selectedMessage: {},
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     if (this.props.conversation) {
       this.props.conversation.messages
         .filter(chatMessage => chatMessage.receiverId === this.props.profile.id)
         .forEach(message => this.props.actions.markAsRead(message));
     }
-  }
-
-  componentDidMount = () => {
     if (this.scrollView) {
       this.scrollView.scrollToEnd({ animated: true });
     }
   }
 
-  componentWillReceiveProps = ({ conversation }) => {
+  componentDidUpdate = ({ conversation, actions: { navigate } }) => {
     if (!conversation) {
-      this.props.actions.navigate({ route: this.props.previousRoute, navigator: 'conversations' });
+      navigate({ route: this.props.previousRoute, navigator: 'conversations' });
     }
   }
 

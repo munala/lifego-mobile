@@ -72,21 +72,22 @@ class MessageList extends BaseClass {
         <List containerStyle={styles.results}>
           {this.props.profile.friends
             .filter(friend => friend.displayName && friend.displayName.toLowerCase()
-              .indexOf(this.state.searchText.toLowerCase()) !== -1).map(person => (
-                <ListItem
-                  key={person.id}
-                  avatar={person.pictureUrl ?
-                    { uri: person.pictureUrl.replace('http://', 'https://') } :
-                    require('../../../../../assets/images/user.png')}
-                  roundAvatar
-                  title={person.displayName}
-                  containerStyle={styles.resultContainerStyle}
-                  wrapperStyle={styles.resultWrapperStyle}
-                  titleStyle={styles.personTitle}
-                  onPress={() => this.startChat(person)}
-                  hideChevron
-                />
-              ))
+              .indexOf(this.state.searchText.toLowerCase()) !== -1)
+            .map(person => (
+              <ListItem
+                key={person.id}
+                avatar={person.pictureUrl ?
+                  { uri: person.pictureUrl.replace('http://', 'https://') } :
+                  require('../../../../../assets/images/user.png')}
+                roundAvatar
+                title={person.displayName}
+                containerStyle={styles.resultContainerStyle}
+                wrapperStyle={styles.resultWrapperStyle}
+                titleStyle={styles.personTitle}
+                onPress={() => this.startChat(person)}
+                hideChevron
+              />
+            ))
           }
         </List>
       </ScrollView>

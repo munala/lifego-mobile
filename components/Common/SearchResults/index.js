@@ -65,8 +65,8 @@ class SearchResults extends Component {
     <ListItem
       key={person.id}
       avatar={person.pictureUrl ?
-          { uri: person.pictureUrl.replace('http://', 'https://') } :
-          require('../../../assets/images/user.png')}
+        { uri: person.pictureUrl.replace('http://', 'https://') } :
+        require('../../../assets/images/user.png')}
       roundAvatar
       title={person.displayName}
       containerStyle={styles.resultContainerStyle}
