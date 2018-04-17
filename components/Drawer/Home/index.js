@@ -5,10 +5,6 @@ import { TabNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadAllBucketlists } from '../../../actions/bucketlistActions';
-import { getConversations } from '../../../actions/messageActions';
-import { getNotifications } from '../../../actions/notificationActions';
-import { getAlerts } from '../../../actions/userAlertActions';
 import * as navigationActions from '../../../actions/navigationActions';
 import TabIcon from './TabIcon';
 import Header from '../../Common/Header';
@@ -22,13 +18,6 @@ import styles from './styles';
 class Home extends Component {
   state = {
     searchMode: false,
-  }
-
-  componentDidMount = () => {
-    this.props.actions.loadAllBucketlists();
-    this.props.actions.getConversations();
-    this.props.actions.getNotifications();
-    this.props.actions.getAlerts();
   }
 
   onFocus = () => {
@@ -155,10 +144,6 @@ Home.propTypes = {
   actions: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     setParams: PropTypes.func.isRequired,
-    getConversations: PropTypes.func.isRequired,
-    getNotifications: PropTypes.func.isRequired,
-    getAlerts: PropTypes.func.isRequired,
-    loadAllBucketlists: PropTypes.func.isRequired,
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -177,10 +162,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     ...navigationActions,
-    getConversations,
-    getNotifications,
-    getAlerts,
-    loadAllBucketlists,
   }, dispatch),
 });
 
