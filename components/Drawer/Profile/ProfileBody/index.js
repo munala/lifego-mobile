@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   Animated,
   Text,
-  Image,
   ScrollView,
   Platform,
 } from 'react-native';
+import Image from 'react-native-image-progress';
+import * as Progress from 'react-native-progress';
 
 import EditProfileForm from '../EditProfileForm';
 import styles from '../styles';
@@ -49,6 +50,7 @@ const ProfileBody = ({
       >
         <Image
           style={styles.profilePic}
+          indicator={Progress.Pie}
           source={
             avatar ?
               { uri: avatar.replace('http://', 'https://') } :

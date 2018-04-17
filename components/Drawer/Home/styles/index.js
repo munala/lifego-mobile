@@ -18,7 +18,6 @@ export default StyleSheet.create({
   },
   image: {
     display: 'flex',
-    resizeMode: 'cover',
     justifyContent: 'center',
     width: '100%',
     marginVertical: 10,

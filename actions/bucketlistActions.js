@@ -142,7 +142,7 @@ export const deleteBucketlist = bucketlist => async (dispatch) => {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(deleteBucketlistSuccess(response));
+    dispatch(deleteBucketlistSuccess({ bucketlist, ...response }));
     dispatch(apiCallActions.resetMessage());
   }
 };

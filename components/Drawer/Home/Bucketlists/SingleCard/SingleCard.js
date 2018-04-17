@@ -1,8 +1,10 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image as Img } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Image from 'react-native-image-progress';
+import * as Progress from 'react-native-progress';
 
 import Comments from './Comments';
 import Text from '../../../../Common/SuperText';
@@ -32,7 +34,7 @@ const SingleCard = ({
     style={styles.bucketlist}
   >
     <View style={styles.bucketlistHeader}>
-      <Image
+      <Img
         style={styles.avatar}
         source={
           bucketlist.userPictureUrl ?
@@ -89,6 +91,8 @@ const SingleCard = ({
       </View>
       {!!bucketlist.pictureUrl &&
         <Image
+          indicator={Progress.Pie}
+          color="#fff"
           source={{
             uri: (
               bucketlist.pictureUrl.replace(
