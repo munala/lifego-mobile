@@ -52,6 +52,7 @@ export default (store) => {
   };
 
   PushNotification.registerNotificationActions(['Mark as read', 'View', 'Add back']);
+
   DeviceEventEmitter.addListener('notificationActionReceived', async (action) => {
     Linking.openURL('LifeGo://');
     const info = JSON.parse(action.dataJSON);

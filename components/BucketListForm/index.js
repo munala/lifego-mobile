@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
   DatePickerAndroid,
   Platform,
@@ -12,6 +11,9 @@ import RNFetchBlob from 'react-native-fetch-blob';
 
 import Form from './Form';
 import categories from '../../miscellaneous/categories';
+import propData from './propTypes';
+
+const { propTypes, defaultProps } = propData;
 
 class BucketListForm extends Component {
   state = {
@@ -172,40 +174,9 @@ class BucketListForm extends Component {
   }
 }
 
-BucketListForm.propTypes = {
-  params: PropTypes.shape({
-    goBack: PropTypes.func.isRequired,
-    onSave: PropTypes.func,
-    content: PropTypes.shape({
-      name: PropTypes.string,
-      type: PropTypes.string,
-      pictureUrl: PropTypes.string,
-    }),
-    context: PropTypes.shape({
-      type: PropTypes.string,
-    }),
-  }).isRequired,
-  context: PropTypes.shape({
-    type: PropTypes.string,
-    name: PropTypes.string,
-  }),
-  content: PropTypes.shape({
-    description: PropTypes.string,
-    name: PropTypes.string,
-  }),
-};
+BucketListForm.propTypes = propTypes;
 
-BucketListForm.defaultProps = {
-  content: {
-    description: '',
-    name: '',
-    pictureUrl: null,
-  },
-  context: {
-    type: 'Add',
-    name: '',
-  },
-};
+BucketListForm.defaultProps = defaultProps;
 
 export default connect(({
   navigationData: { allBucketlists: { params: allParams }, myBucketlists: { params: myParams } },

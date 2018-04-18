@@ -32,7 +32,9 @@ class Profile extends BaseClass {
   }
 
   componentDidMount = () => {
-    this.props.actions.getProfile();
+    if (!this.props.profile.id) {
+      this.props.actions.getProfile();
+    }
   };
 
   componentDidUpdate = ({ error, profile }) => {

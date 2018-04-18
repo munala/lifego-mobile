@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 
 import Text from '../SuperText';
 import { loadAllBucketlists, loadBucketlists } from '../../../actions/bucketlistActions';
-import { logout, searchUsers, getProfile } from '../../../actions/userActions';
+import { logout, searchUsers } from '../../../actions/userActions';
 import * as searchActions from '../../../actions/searchActions';
 import PopupMenu from '../PopupMenu';
 import styles from './styles';
@@ -18,10 +18,6 @@ class Header extends Component {
     focused: false,
   }
 
-  componentDidMount = () => {
-    this.props.actions.getProfile();
-  }
-
   onFocus = () => {
     this.setState({ focused: true, searchText: '' });
     this.props.onFocus();
@@ -29,7 +25,9 @@ class Header extends Component {
 
   search = (searchText) => {
     this.setState({ searchText });
-    const action = this.props.mode === 'bucketlists' ? this.props.actions.loadAllBucketlists : this.props.actions.loadBucketlists;
+    const action = this.props.mode === 'bucketlists' ?
+      this.props.actions.loadAllBucketlists :
+      this.props.actions.loadBucketlists;
     this.props.handleResults(searchText);
     if (searchText) {
       action(null, null, searchText);
@@ -56,13 +54,21 @@ class Header extends Component {
     const {
       leftIcon, onPressLeft, mode, title,
     } = this.props;
-    const searchProps = this.state.focused ? { clearIcon: { color: '#eee', name: 'close' } } : {};
+
+    const searchProps = this.state.focused ? {
+      clearIcon: {
+        olor: '#eee',
+        name: 'close',
+      },
+    } : {};
+
     const menuItems = [
       {
         label: 'Logout',
         action: this.logout,
       },
     ];
+
     return (
       <View style={styles.headerStyle}>
         <Icon
@@ -148,7 +154,6 @@ const mapDispatchToProps = dispatch => ({
     loadBucketlists,
     logout,
     searchUsers,
-    getProfile,
     ...searchActions,
   }, dispatch),
 });

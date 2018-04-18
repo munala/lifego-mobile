@@ -9,14 +9,9 @@ import BucketList from './BucketList/';
 import Items from './Items';
 import BucketListForm from '../../BucketListForm';
 import { navigate } from '../../../actions/navigationActions';
-import { loadBucketlists } from '../../../actions/bucketlistActions';
 import styles from './styles';
 
 class StackNav extends Component {
-  componentDidMount = () => {
-    this.props.actions.loadBucketlists(0, 10);
-  }
-
   goBack = () => {
     this.props.actions.navigate({ route: this.props.previousRoute, navigator: 'myBucketlists' });
   }
@@ -67,7 +62,6 @@ StackNav.propTypes = {
   params: PropTypes.shape({}).isRequired,
   actions: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    loadBucketlists: PropTypes.func.isRequired,
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -84,7 +78,7 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ navigate, loadBucketlists }, dispatch),
+  actions: bindActionCreators({ navigate }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StackNav);

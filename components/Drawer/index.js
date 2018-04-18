@@ -10,17 +10,15 @@ import MyBucketlists from './MyBucketlists';
 import Home from './Home';
 import Profile from './Profile';
 import Settings from './Settings';
-import { loadAllBucketlists } from '../../actions/bucketlistActions';
+import { loadAllBucketlists, loadBucketlists } from '../../actions/bucketlistActions';
 import { getConversations } from '../../actions/messageActions';
 import { getNotifications } from '../../actions/notificationActions';
 import { getAlerts } from '../../actions/userAlertActions';
+import { getProfile } from '../../actions/userActions';
 
 class Drawer extends Component {
   componentDidMount = () => {
-    this.props.actions.loadAllBucketlists();
-    this.props.actions.getConversations();
-    this.props.actions.getNotifications();
-    this.props.actions.getAlerts();
+    Object.keys(this.props.actions).forEach(key => this.props.actions[key](0, 10));
   }
 
   render() {
@@ -91,9 +89,11 @@ Drawer.propTypes = {
   params: PropTypes.shape({}).isRequired,
   actions: PropTypes.shape({
     loadAllBucketlists: PropTypes.func.isRequired,
+    loadBucketlists: PropTypes.func.isRequired,
     getConversations: PropTypes.func.isRequired,
     getNotifications: PropTypes.func.isRequired,
     getAlerts: PropTypes.func.isRequired,
+    getProfile: PropTypes.func.isRequired,
   }).isRequired,
 };
 
@@ -109,9 +109,11 @@ const mapStateToProps = ({ navigationData: { drawer: { route, params } } }) => (
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     loadAllBucketlists,
+    loadBucketlists,
     getConversations,
     getNotifications,
     getAlerts,
+    getProfile,
   }, dispatch),
 });
 
