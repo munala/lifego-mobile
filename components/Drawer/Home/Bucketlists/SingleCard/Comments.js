@@ -35,10 +35,48 @@ class Comments extends Component {
     );
   }
 
+  renderComments = bucketlist => bucketlist.comments
+    .slice(this.state.page * 10, (this.state.page * 10) + 10)
+    .map(comment => (
+      <TouchableOpacity
+        key={comment.id}
+        onLongPress={() => (
+          bucketlist.userId === this.props.profile.id ||
+          (comment.senderId === this.props.profile.id) ?
+            this.props.selectComment(comment) :
+            () => {}
+        )}
+        delayLongPress={500}
+      >
+        <View
+          style={styles.comment}
+        >
+          <Text style={styles.commentUser}>{comment.user}</Text>
+          <Text style={styles.commentContent} >{comment.content}</Text>
+          {this.props.selectedComment.id === comment.id &&
+          <Icon
+            containerStyle={[styles.deleteButton, { marginLeft: 20 }]}
+            onPress={() => this.deleteComment(comment)}
+            name="delete"
+            color="red"
+            size={16}
+          />
+          }
+        </View>
+        {this.props.mode &&
+          <Text
+            style={[styles.timeSent, styles.commentTime]}
+          >
+            {`${this.props.setTime(comment).createdAt}${this.props.setTime(comment).time}`}
+          </Text>
+        }
+      </TouchableOpacity>
+    ))
+
   render = () => {
     const {
       bucketlist, bucket, profile, onChange, selectBucketlist,
-      onSubmit, comm, setTime, selectComment, selectedComment,
+      onSubmit, comm,
     } = this.props;
     const { page } = this.state;
     const lastPage = Math.floor(this.props.bucketlist.comments.length / 10);
@@ -55,41 +93,7 @@ class Comments extends Component {
               <Text style={styles.commentNavigator}>more comments</Text>
             </TouchableOpacity>
           }
-          {
-            bucketlist.comments.slice(page * 10, (page * 10) + 10)
-            .map(comment => (
-              <TouchableOpacity
-                key={comment.id}
-                onLongPress={() => (
-                  bucketlist.userId === profile.id || (comment.senderId === profile.id) ?
-                    selectComment(comment) :
-                    () => {}
-                )}
-                delayLongPress={500}
-              >
-                <View
-                  style={styles.comment}
-                >
-                  <Text style={styles.commentUser}>{comment.user}</Text>
-                  <Text style={styles.commentContent} >{comment.content}</Text>
-                  {selectedComment.id === comment.id &&
-                    <Icon
-                      containerStyle={[styles.deleteButton, { marginLeft: 20 }]}
-                      onPress={() => this.deleteComment(comment)}
-                      name="delete"
-                      color="red"
-                      size={16}
-                    />
-                  }
-                </View>
-                <Text
-                  style={[styles.timeSent, styles.commentTime]}
-                >
-                  {`${setTime(comment).createdAt}${setTime(comment).time}`}
-                </Text>
-              </TouchableOpacity>
-            ))
-          }
+          {this.renderComments(bucketlist) }
           {
             bucketlist.comments.length > 0 && page > 0 &&
             <TouchableOpacity
@@ -129,7 +133,7 @@ class Comments extends Component {
                 <Text style={styles.label}>POST</Text>
               </View>
             </TouchableOpacity>
-        }
+          }
         </View>
       </View>
     );
@@ -159,7 +163,7 @@ Comments.propTypes = {
   }).isRequired,
   bucket: PropTypes.shape({}),
   comm: PropTypes.shape({}).isRequired,
-  selectedComment: PropTypes.shape({}),
+  selectedComment: PropTypes.shape({ id: PropTypes.number }),
   selectBucketlist: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -175,6 +179,7 @@ Comments.propTypes = {
     friends: PropTypes.arrayOf(PropTypes.shape({})),
     searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
+  mode: PropTypes.string,
 };
 
 Comments.defaultProps = {
@@ -183,6 +188,7 @@ Comments.defaultProps = {
     comments: [],
     items: [],
   },
+  mode: null,
   selectedComment: {},
   selectComment: () => {},
   selectBucketlist: () => {},

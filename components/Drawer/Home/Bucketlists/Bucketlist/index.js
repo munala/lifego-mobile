@@ -73,6 +73,7 @@ class Bucketlist extends BaseClass {
       selectComment: this.selectComment,
       selectedComment,
       deleteComment,
+      mode: 'single',
     };
     return (
       <View style={styles.container}>

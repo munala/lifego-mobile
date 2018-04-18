@@ -23,6 +23,7 @@ export default {
   }).isRequired,
   createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   time: PropTypes.string.isRequired,
+  mode: PropTypes.string,
   showComments: PropTypes.bool.isRequired,
   bucketList: PropTypes.shape({}),
   toggleComments: PropTypes.func.isRequired,

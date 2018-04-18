@@ -4,7 +4,7 @@ import Toast from 'react-native-root-toast';
 
 export default (store) => {
   store.subscribe(() => {
-    const { message, error, loggedIn } = store.getState();
+    const { message, error } = store.getState();
     if (message) {
       if (Platform.OS === 'android') {
         ToastAndroid.showWithGravityAndOffset(
