@@ -8,6 +8,7 @@ import Toast from 'react-native-root-toast';
 import configureStore from './store/configureStore';
 import App from './screens';
 import socket from './socket';
+import './reactotronConfig';
 
 const { store, persistor } = configureStore();
 store.subscribe(() => {
@@ -51,6 +52,7 @@ store.subscribe(() => {
     }
   }
 });
+
 AsyncStorage.getItem('token').then((token) => {
   if (token && jwtDecode(token).exp >= Date.now() / 1000) {
     try {
