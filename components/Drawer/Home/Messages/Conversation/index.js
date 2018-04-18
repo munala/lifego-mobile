@@ -31,8 +31,8 @@ class Conversation extends BaseClass {
     }
   }
 
-  componentDidUpdate = ({ conversation, actions: { navigate } }) => {
-    if (!conversation) {
+  componentDidUpdate = ({ conversation, params: { newConversation }, actions: { navigate } }) => {
+    if (!conversation && !newConversation && !this.state.message.content) {
       navigate({ route: this.props.previousRoute, navigator: 'conversations' });
     }
   }
