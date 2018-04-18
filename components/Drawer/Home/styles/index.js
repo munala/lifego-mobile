@@ -657,4 +657,20 @@ export default StyleSheet.create({
     marginLeft: 10,
     marginVertical: 2,
   },
+  reload: {
+    display: 'flex',
+    backgroundColor: '#f7f7f7',
+    borderRadius: 5,
+    padding: 5,
+    width: 100,
+    height: 30,
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  reloadText: {
+    color: '#00bcd4',
+    display: 'flex',
+    textAlign: 'center',
+    fontSize: 16,
+  },
 });

@@ -146,7 +146,6 @@ class AllBucketlists extends BaseClass {
   render() {
     const {
       currentApiCalls,
-      error,
       allData: { bucketlists, nextUrl },
       actions: { loadMoreBucketlists, loadAllBucketlists },
     } = this.props;
@@ -156,16 +155,8 @@ class AllBucketlists extends BaseClass {
     return (
       <View style={styles.container}>
         {
-          bucketlists.length === 0 && currentApiCalls === 0 && error === 'Network Error' &&
-          <TouchableOpacity style={{ flex: 1 }} onPress={loadAllBucketlists}>
-            <Text style={styles.empty}>
-              Reload
-            </Text>
-          </TouchableOpacity>
-        }
-        {
-          bucketlists.length === 0 && currentApiCalls === 0 && error !== 'Network Error' ?
-            <View style={{ flex: 1 }}>
+          bucketlists.length === 0 && currentApiCalls === 0 ?
+            <View style={{ display: 'flex' }}>
               <Text style={styles.empty}>
                 No bucketlists to display
               </Text>
@@ -188,6 +179,14 @@ class AllBucketlists extends BaseClass {
               }
             />
         }
+        {
+          bucketlists.length === 0 && currentApiCalls === 0 &&
+          <TouchableOpacity style={styles.reload} onPress={loadAllBucketlists}>
+            <Text style={styles.reloadText}>
+              Reload
+            </Text>
+          </TouchableOpacity>
+        }
         <ActionButton
           size={40}
           buttonColor="#00bcd4"
@@ -203,6 +202,7 @@ class AllBucketlists extends BaseClass {
 AllBucketlists.propTypes = propTypes;
 
 const mapStateToProps = state => state;
+
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     ...bucketlistActions,

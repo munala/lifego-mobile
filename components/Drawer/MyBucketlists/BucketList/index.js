@@ -66,7 +66,6 @@ class BucketList extends BaseClass {
   render() {
     const {
       currentApiCalls,
-      error,
       bucketlists,
       nextUrl,
       actions: { loadMoreBucketlists, loadBucketlists },
@@ -94,23 +93,22 @@ class BucketList extends BaseClass {
           />
         }
         {
-          bucketlists.length === 0 && currentApiCalls === 0 && error === 'Network Error' &&
-          <TouchableOpacity style={{ flex: 1 }} onPress={loadBucketlists}>
-            <Text style={styles.empty}>
+          bucketlists.length === 0 && currentApiCalls === 0 &&
+          <View style={{ display: 'flex' }}>
+            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text style={styles.empty}>
+              No bucketlists to display
+              </Text>
+            </View>
+            <TouchableOpacity style={styles.reload} onPress={loadBucketlists}>
+              <Text style={styles.reloadText}>
               Reload
-            </Text>
-          </TouchableOpacity>
-        }
-        {
-          !this.state.searchMode && bucketlists.length === 0 && currentApiCalls === 0 && !error &&
-          <View style={{ backgroundColor: 'transparent' }}>
-            <Text style={styles.empty}>
-              you have no bucketlists
-            </Text>
+              </Text>
+            </TouchableOpacity>
           </View>
         }
         {
-          !this.state.searchMode && bucketlists.length > 0 && !error &&
+          !this.state.searchMode && bucketlists.length > 0 &&
           <FlatList
             keyExtractor={({ id }) => id.toString()}
             data={bucketlists}
