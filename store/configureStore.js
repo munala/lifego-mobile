@@ -15,11 +15,8 @@ const configureStore = (initialState) => {
     blacklist: [
       'currentApiCalls',
       'error',
-      'allData',
-      'data',
       'searchText',
       'components',
-      'profile',
       'navigationData',
     ],
   };

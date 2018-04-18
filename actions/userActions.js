@@ -1,7 +1,9 @@
 import { AsyncStorage } from 'react-native';
+
 import * as types from './actionTypes';
 import userService from '../api/userApi';
 import * as apiCallActions from './apiCallActions';
+import { persist } from '../main';
 
 export const loginSuccess = token => ({
   type: types.LOGIN_SUCCESS,
@@ -67,7 +69,10 @@ export const logoutUser = () => ({
   type: types.LOGOUT,
 });
 
-const stripHtml = text => text.replace('<b>', '').replace('</b>', '').replace('<br/>', ' ');
+const stripHtml = text => text
+  .replace('<b>', '')
+  .replace('</b>', '')
+  .replace('<br/>', ' ');
 
 const navigate = route => ({
   type: types.NAVIGATE,
@@ -93,6 +98,7 @@ export const login = user => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   await AsyncStorage.setItem('can_login', 'false');
   await AsyncStorage.removeItem('token');
+  persist.purge();
   dispatch(logoutUser());
   dispatch(navigate('user'));
 };

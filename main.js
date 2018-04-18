@@ -22,6 +22,8 @@ AsyncStorage.getItem('token').then((token) => {
   }
 });
 
+export const persist = persistor;
+
 export default () => (
   <Provider store={store}>
     <PersistGate persistor={persistor}>

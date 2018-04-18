@@ -13,8 +13,9 @@ import tags from './tagReducer';
 import searchText from './searchReducer';
 import components from './componentReducer';
 import navigationData from './navigationReducer';
+import { LOGOUT } from '../actions/actionTypes';
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   data,
   allData,
   currentApiCalls,
@@ -30,5 +31,13 @@ const rootReducer = combineReducers({
   components,
   navigationData,
 });
+
+const rootReducer = (state, action) => {
+  let newState = { ...state };
+  if (action.type === LOGOUT) {
+    newState = undefined;
+  }
+  return appReducer(newState, action);
+};
 
 export default rootReducer;

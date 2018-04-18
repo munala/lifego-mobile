@@ -57,8 +57,8 @@ export default connect(
         >
           <View style={styles.all}>
             <View style={styles.details}>
-              <Text style={styles.displayName}>{displayName}</Text>
-              <Text style={styles.email}>{email}</Text>
+              <Text style={styles.displayName}>{displayName || '- no name -'}</Text>
+              <Text style={styles.email}>{email || '- no email -'}</Text>
             </View>
             {open &&
               <TouchableOpacity
