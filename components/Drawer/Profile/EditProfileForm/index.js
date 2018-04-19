@@ -89,8 +89,12 @@ EditProfileForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired,
   profile: PropTypes.shape({}).isRequired,
-  avatar: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
   onSave: PropTypes.func.isRequired,
+};
+
+EditProfileForm.defaultProps = {
+  avatar: null,
 };
 
 export default EditProfileForm;

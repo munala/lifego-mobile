@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Alert } from 'react-native';
 import propTypes from './propTypes';
 
 class BaseClass extends Component {
@@ -52,11 +52,13 @@ class BaseClass extends Component {
     const { reminders, ...profile } = this.props.profile;
     const { new: newp, confirm, ...rest } = this.state.settings;
     rest.reminders = rest.reminders ? rest.reminders : false;
-    await this.props.actions.changeEmail({
+    const { error } = await this.props.actions.changeEmail({
       profile,
       ...rest,
     });
-    this.toggleMode('emailMode', false);
+    if (!error) {
+      this.toggleMode('emailMode', false);
+    }
     this.setState(() => ({ saving: false }));
   }
 
@@ -64,21 +66,49 @@ class BaseClass extends Component {
     this.setState(() => ({ saving: true }));
     const { email, ...rest } = this.state.settings;
     rest.reminders = rest.reminders ? rest.reminders : false;
-    await this.props.actions.changePassword({
+    const { error } = await this.props.actions.changePassword({
       ...this.props.profile,
       ...rest,
       newPassword: rest.new,
       oldPassword: rest.password,
     });
-    this.toggleMode('passwordMode', false);
+    if (!error) {
+      this.toggleMode('passwordMode', false);
+    }
     this.setState(() => ({ saving: false }));
+  }
+
+  deleteAccount = async () => {
+    Alert.alert(
+      'Delete account?',
+      'This action cannot be reversed',
+      [
+        { text: 'Cancel', onPress: () => {} },
+        {
+          text: 'OK',
+          onPress: async () => {
+            this.setState(() => ({ saving: true }));
+            const { email, password } = this.state.settings;
+            const { error } = await this.props.actions.deleteAccount({
+              email,
+              password,
+            });
+            if (!error) {
+              this.props.actions.logout();
+            }
+            this.setState({ saving: false });
+          },
+        },
+      ],
+      { cancelable: true },
+    );
   }
 
   validate = (mode) => {
     const {
       email, password, new: newP, confirm,
     } = this.state.settings;
-    if (mode === 'emailMode') {
+    if (mode === 'emailMode' || mode === 'deleteMode') {
       return (!(email && password));
     }
     return (!(newP, confirm && password));

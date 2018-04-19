@@ -44,6 +44,9 @@ export default function errorReducer(
     case types.SEARCH_USERS:
       return { ...state, searchUsers: action.users.filter(user => user.id !== state.id) };
 
+    case types.DELETE_ACCOUNT_SUCCESS:
+      return initialState.profile;
+
     default:
       return state;
   }

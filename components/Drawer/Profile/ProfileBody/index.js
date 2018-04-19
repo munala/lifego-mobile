@@ -55,10 +55,8 @@ const ProfileBody = ({
         <Image
           style={styles.profilePic}
           indicator={Progress.Pie}
-          source={
-            avatar ?
-              { uri: avatar.replace('http://', 'https://') } :
-              require('../../../../assets/images/user.png')}
+          source={{ uri: avatar ? avatar.replace('http://', 'https://') :
+            'https://res.cloudinary.com/lifego/image/upload/v1515139053/user.png' }}
         />
       </Animated.View>
       <EditProfileForm {...editProfileProps} />
@@ -133,11 +131,15 @@ ProfileBody.propTypes = {
   activeType: PropTypes.string.isRequired,
   scrollEnabled: PropTypes.bool.isRequired,
   listHeight: PropTypes.number.isRequired,
-  avatar: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
   showUserProfile: PropTypes.bool.isRequired,
   removeFriend: PropTypes.func.isRequired,
   addFriend: PropTypes.func.isRequired,
   isFriend: PropTypes.func.isRequired,
+};
+
+ProfileBody.defaultProps = {
+  avatar: null,
 };
 
 export default ProfileBody;

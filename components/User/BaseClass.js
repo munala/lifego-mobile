@@ -9,8 +9,10 @@ import propTypes from './propTypes';
 class BaseClass extends Component {
   onSubmit = async () => {
     if (this.state.registerMode) {
-      await this.props.actions.register(this.state.registerUser);
-      this.props.actions.login(this.state.registerUser);
+      const { error } = await this.props.actions.register(this.state.registerUser);
+      if (!error) {
+        this.props.actions.login(this.state.registerUser);
+      }
     } else {
       this.props.actions.login(this.state.loginUser);
     }

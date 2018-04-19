@@ -87,6 +87,11 @@ export const logoutUser = () => ({
   type: types.LOGOUT,
 });
 
+export const deleteAccountSuccess = message => ({
+  type: types.DELETE_ACCOUNT_SUCCESS,
+  message,
+});
+
 const stripHtml = text => text
   .replace('<b>', '')
   .replace('</b>', '')
@@ -111,6 +116,7 @@ export const login = user => async (dispatch) => {
     dispatch(navigate('home'));
     dispatch(apiCallActions.resetMessage());
   }
+  return token;
 };
 
 export const logout = () => async (dispatch) => {
@@ -133,6 +139,7 @@ export const socialLogin = user => async (dispatch) => {
     dispatch(navigate('home'));
     dispatch(apiCallActions.resetMessage());
   }
+  return token;
 };
 
 export const register = user => async (dispatch) => {
@@ -145,6 +152,7 @@ export const register = user => async (dispatch) => {
     dispatch(registerSuccess());
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const changeEmail = user => async (dispatch) => {
@@ -158,6 +166,7 @@ export const changeEmail = user => async (dispatch) => {
     dispatch(changeEmailSuccess(response.message));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const changePassword = user => async (dispatch) => {
@@ -171,6 +180,7 @@ export const changePassword = user => async (dispatch) => {
     dispatch(changePasswordSuccess(response.message));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const changeUsername = user => async (dispatch) => {
@@ -184,6 +194,7 @@ export const changeUsername = user => async (dispatch) => {
     dispatch(changeUsernameSuccess(response.message));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const resetPassword = email => async (dispatch) => {
@@ -196,6 +207,7 @@ export const resetPassword = email => async (dispatch) => {
     dispatch(resetPasswordSuccess(stripHtml(response.message)));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const getProfile = () => async (dispatch) => {
@@ -208,6 +220,7 @@ export const getProfile = () => async (dispatch) => {
     dispatch(getProfileSuccess(response));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const getOtherProfile = id => async (dispatch) => {
@@ -220,6 +233,7 @@ export const getOtherProfile = id => async (dispatch) => {
     dispatch(getOtherProfileSuccess(response));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const updateProfile = profile => async (dispatch) => {
@@ -232,6 +246,7 @@ export const updateProfile = profile => async (dispatch) => {
     dispatch(updateProfileSuccess(response));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const addFriend = user => async (dispatch) => {
@@ -244,6 +259,7 @@ export const addFriend = user => async (dispatch) => {
     dispatch(addFriendSuccess(response));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const removeFriend = user => async (dispatch) => {
@@ -256,6 +272,7 @@ export const removeFriend = user => async (dispatch) => {
     dispatch(removeFriendSuccess(response, user));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const searchUsers = name => async (dispatch) => {
@@ -263,4 +280,17 @@ export const searchUsers = name => async (dispatch) => {
   if (response.users) {
     dispatch(searchUsersSuccess(response));
   }
+};
+
+export const deleteAccount = user => async (dispatch) => {
+  const response = await userService.deleteAccount(user);
+  dispatch(apiCallActions.beginApiCall());
+  if (response.error) {
+    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.resetError());
+  } else {
+    dispatch(deleteAccountSuccess(response.message));
+    dispatch(apiCallActions.resetMessage());
+  }
+  return response;
 };

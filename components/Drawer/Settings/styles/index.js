@@ -115,7 +115,7 @@ export default StyleSheet.create({
   },
   saveButtonText: {
     display: 'flex',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
     color: Platform.OS === 'ios' ? '#fff' : '#00bcd4',
     backgroundColor: 'transparent',

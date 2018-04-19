@@ -40,13 +40,16 @@ class Settings extends BaseClass {
   renderInputs = fields => fields.map((name) => {
     let [field] = name.split(' ');
     field = field === 'old' ? 'password' : field;
+    field = field === 'delete' ? 'email' : field;
+    let displayName = name === 'email' ? `new ${name} (${this.props.profile.email})` : name;
+    displayName = name === 'delete email' ? 'email' : displayName;
     return (
       <View key={name}>
         <Text style={styles.inputText}>
-          {name === 'email' ? `new ${name} (${this.props.profile.email})` : name}
+          {displayName}
         </Text>
         <TextInput
-          defaultValue={this.state[name]}
+          defaultValue={this.state[name === 'delete email' ? 'email' : name]}
           secureTextEntry={field !== 'email'}
           style={styles.input}
           onChangeText={text => this.onChange(text, field)}
@@ -54,15 +57,22 @@ class Settings extends BaseClass {
           returnKeyType="next"
           underlineColorAndroid="#00bcd4"
           placeholderTextColor="#bbb"
-          placeholder={`type ${name === 'email' ? `new ${name}` : name}`}
+          placeholder={`type ${displayName}`}
         />
       </View>
     );
   })
 
-  renderSaveButtons = type => (
-    <View style={styles.saveButtons}>
-      {!this.state.saving &&
+  renderSaveButtons = (type) => {
+    const actions = {
+      passwordMode: this.changePassword,
+      emailMode: this.changeEmail,
+      deleteMode: this.deleteAccount,
+    };
+    const text = type === 'deleteMode' ? 'DELETE ACCOUNT' : (Platform.OS === 'ios' ? 'Save' : 'SAVE'); // eslint-disable-line no-nested-ternary
+    return (
+      <View style={styles.saveButtons}>
+        {!this.state.saving &&
         <TouchableOpacity
           style={[styles.saveButton, styles.cancelButton]}
           onPress={() => this.toggleMode(type, false)}
@@ -71,18 +81,19 @@ class Settings extends BaseClass {
             {Platform.OS === 'ios' ? 'Cancel' : 'CANCEL'}
           </Text>
         </TouchableOpacity>
-      }
-      <TouchableOpacity
-        style={styles.saveButton}
-        onPress={type === 'passwordMode' ? this.changePassword : this.changeEmail}
-        disabled={this.validate(type)}
-      >
-        {this.state.saving ?
-          <Text style={styles.saveButtonText}>saving...</Text> :
-          <Text style={styles.saveButtonText}>{Platform.OS === 'ios' ? 'Save' : 'SAVE'}</Text>}
-      </TouchableOpacity>
-    </View>
-  )
+        }
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={actions[type]}
+          disabled={this.validate(type)}
+        >
+          {this.state.saving ?
+            <Text style={styles.saveButtonText}>{`${type === 'deleteMode' ? 'deleting' : 'saving'}...`}</Text> :
+            <Text style={[styles.saveButtonText, type === 'deleteMode' && { color: 'red' }]}>{text}</Text>}
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   render() {
     const {
@@ -109,7 +120,7 @@ class Settings extends BaseClass {
             <Text style={styles.switchText}>Reminders</Text>
             <Switch
               style={styles.switch}
-              value={profile.reminders}
+              value={profile.reminders === true}
               onValueChange={this.toggleReminders}
             />
           </View>
@@ -122,7 +133,7 @@ class Settings extends BaseClass {
               style={styles.buttons}
               onPress={() => this.toggleMode('emailMode', true)}
             >
-              <Text style={styles.buttonText}>change email</Text>
+              <Text style={styles.buttonText}>Change email</Text>
             </TouchableOpacity>
           }
           {this.state.passwordMode ?
@@ -134,7 +145,19 @@ class Settings extends BaseClass {
               style={styles.buttons}
               onPress={() => this.toggleMode('passwordMode', true)}
             >
-              <Text style={styles.buttonText}>change password</Text>
+              <Text style={styles.buttonText}>Change password</Text>
+            </TouchableOpacity>
+          }
+          {this.state.deleteMode ?
+            <View>
+              {this.renderInputs(['delete email', 'password'])}
+              {this.renderSaveButtons('deleteMode')}
+            </View> :
+            <TouchableOpacity
+              style={styles.buttons}
+              onPress={() => this.toggleMode('deleteMode', true)}
+            >
+              <Text style={[styles.buttonText, { color: 'red' }]}>Delete Account</Text>
             </TouchableOpacity>
           }
         </View>

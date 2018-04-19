@@ -60,3 +60,4 @@ export const CLEAR_SEARCH = 'CLEAR_SEARCH';
 export const HANDLE_HEADER = 'HANDLE_HEADER';
 export const NAVIGATE = 'NAVIGATE';
 export const SET_PARAMS = 'SET_PARAMS';
+export const DELETE_ACCOUNT_SUCCESS = 'DELETE_ACCOUNT_SUCCESS';

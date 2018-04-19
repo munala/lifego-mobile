@@ -17,12 +17,16 @@ export default connect(
   }),
 )(class Account extends Component {
   static propTypes = {
-    pictureUrl: PropTypes.string.isRequired,
+    pictureUrl: PropTypes.string,
     displayName: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     actions: PropTypes.shape({
       logout: PropTypes.func.isRequired,
     }).isRequired,
+  }
+
+  static defaultProps = {
+    pictureUrl: null,
   }
 
   state = {

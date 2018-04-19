@@ -11,6 +11,17 @@ const handleError = error => ({
   error: error.response ? error.response.data.message : error.message,
 });
 
+const removeEmptyFields = (object) => {
+  const newObject = {};
+  Object.keys(object).forEach((key) => {
+    const field = object[key];
+    if (field || typeof (field) === 'boolean') {
+      newObject[key] = field;
+    }
+  });
+  return newObject;
+};
+
 export default {
   loginUser(uSer) {
     const {
@@ -18,7 +29,7 @@ export default {
     } = uSer;
     return instance.post(
       `${userUrl}login`,
-      { ...user },
+      removeEmptyFields({ ...user }),
     )
       .then(response => response.data.token)
       .catch(error => handleError(error));
@@ -26,7 +37,7 @@ export default {
   socialLogin(user) {
     return instance.post(
       `${userUrl}social_login`,
-      { ...user },
+      removeEmptyFields({ ...user }),
     )
       .then(response => response.data.token)
       .catch(error => handleError(error));
@@ -34,7 +45,7 @@ export default {
   registerUser(user) {
     return instance.post(
       `${userUrl}register`,
-      { ...user },
+      removeEmptyFields({ ...user }),
     )
       .then(response => response.data)
       .catch(error => handleError(error));
@@ -47,11 +58,11 @@ export default {
       .then(response => response.data)
       .catch(error => handleError(error));
   },
-  async changePassword(user) {
+  async changePassword({ userId, username, ...user }) {
     instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
     return instance.post(
       `${userUrl}change_password`,
-      { ...user },
+      removeEmptyFields({ ...user }),
     )
       .then(response => response.data)
       .catch(error => handleError(error));
@@ -60,7 +71,7 @@ export default {
     instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
     return instance.post(
       `${userUrl}change_email`,
-      { ...user },
+      removeEmptyFields({ ...user }),
     )
       .then(response => response.data)
       .catch(error => handleError(error));
@@ -69,7 +80,7 @@ export default {
     instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
     return instance.post(
       `${userUrl}change_username`,
-      { ...user },
+      removeEmptyFields({ ...user }),
     )
       .then(response => response.data)
       .catch(error => handleError(error));
@@ -93,7 +104,7 @@ export default {
     } = prof;
     return instance.post(
       `${userUrl}update_profile`,
-      { ...profile },
+      removeEmptyFields({ ...profile }),
     )
       .then(response => response.data)
       .catch(error => handleError(error));
@@ -113,6 +124,15 @@ export default {
   async removeFriend(friend) {
     instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
     return instance.delete(`${userUrl}remove_friend/${friend.id}`)
+      .then(response => response.data)
+      .catch(error => handleError(error));
+  },
+  async deleteAccount(user) {
+    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+    return instance.post(
+      `${userUrl}delete_account`,
+      removeEmptyFields({ ...user }),
+    )
       .then(response => response.data)
       .catch(error => handleError(error));
   },
