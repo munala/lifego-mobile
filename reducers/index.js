@@ -6,6 +6,7 @@ import currentApiCalls from './apiCallReducer';
 import error from './errorReducer';
 import message from './messageReducer';
 import profile from './profileReducer';
+import otherProfile from './otherProfileReducer';
 import conversations from './chatReducer';
 import notifications from './notificationReducer';
 import alerts from './userAlertReducer';
@@ -23,6 +24,7 @@ const appReducer = combineReducers({
   error,
   message,
   profile,
+  otherProfile,
   conversations,
   notifications,
   alerts,

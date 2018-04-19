@@ -11,6 +11,7 @@ import { List, ListItem } from 'react-native-elements';
 import { bindActionCreators } from 'redux';
 
 import * as userActions from '../../../actions/userActions';
+import * as navigationActions from '../../../actions/navigationActions';
 import Text from '../SuperText';
 import styles from './styles';
 
@@ -29,6 +30,16 @@ class SearchResults extends Component {
       .map(friend => friend.id)
       .indexOf(id) !== -1;
     return isaFriend;
+  }
+
+  goToProfile = async ({ id }) => {
+    const { navigate, setParams, getOtherProfile } = this.props.actions;
+    await setParams({
+      params: { viewProfile: true },
+      navigator: 'profile',
+    });
+    await navigate({ route: 'Profile', navigator: 'drawer' });
+    getOtherProfile(id);
   }
 
   renderOptions = person => (
@@ -73,6 +84,7 @@ class SearchResults extends Component {
       wrapperStyle={styles.resultWrapperStyle}
       titleStyle={styles.personTitle}
       rightIcon={this.renderOptions(person)}
+      onPress={() => this.goToProfile(person)}
     />
   ))
 
@@ -127,6 +139,8 @@ SearchResults.propTypes = {
   actions: PropTypes.shape({
     removeFriend: PropTypes.func.isRequired,
     addFriend: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
+    setParams: PropTypes.func.isRequired,
   }).isRequired,
   onItemPress: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired,
@@ -146,6 +160,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     ...userActions,
+    ...navigationActions,
   }, dispatch),
 });
 

@@ -9,8 +9,17 @@ export default {
     pictureUrl: PropTypes.string,
     friends: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
+  otherProfile: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+    displayName: PropTypes.string,
+    email: PropTypes.string,
+    pictureUrl: PropTypes.string,
+    friends: PropTypes.arrayOf(PropTypes.shape({})),
+  }).isRequired,
   actions: PropTypes.shape({
     getProfile: PropTypes.func.isRequired,
+    getOtherProfile: PropTypes.func.isRequired,
     addFriend: PropTypes.func.isRequired,
     removeFriend: PropTypes.func.isRequired,
     updateProfile: PropTypes.func.isRequired,

@@ -42,6 +42,12 @@ export const getProfileSuccess = profile => ({
   message: '',
 });
 
+export const getOtherProfileSuccess = profile => ({
+  type: types.GET_OTHER_PROFILE_SUCCESS,
+  profile,
+  message: '',
+});
+
 export const searchUsersSuccess = ({ users }) => ({
   type: types.SEARCH_USERS,
   users,
@@ -63,6 +69,18 @@ export const removeFriendSuccess = ({ message }, friend) => ({
   type: types.REMOVE_FRIEND,
   message,
   friend,
+});
+
+export const removeFollower = follower => ({
+  type: types.REMOVE_FOLLOWER,
+  message: '',
+  follower,
+});
+
+export const addFollower = follower => ({
+  type: types.ADD_FOLLOWER,
+  message: '',
+  follower,
 });
 
 export const logoutUser = () => ({
@@ -192,6 +210,18 @@ export const getProfile = () => async (dispatch) => {
   }
 };
 
+export const getOtherProfile = id => async (dispatch) => {
+  dispatch(apiCallActions.beginApiCall());
+  const response = await userService.getOtherProfile(id);
+  if (response.error) {
+    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.resetError());
+  } else {
+    dispatch(getOtherProfileSuccess(response));
+    dispatch(apiCallActions.resetMessage());
+  }
+};
+
 export const updateProfile = profile => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall());
   const response = await userService.updateProfile(profile);
@@ -207,7 +237,7 @@ export const updateProfile = profile => async (dispatch) => {
 export const addFriend = user => async (dispatch) => {
   const response = await userService.addFriend(user);
   dispatch(apiCallActions.beginApiCall());
-  if (!response.error) {
+  if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {

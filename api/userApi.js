@@ -80,6 +80,12 @@ export default {
       .then(response => response.data)
       .catch(error => handleError(error));
   },
+  async getOtherProfile(id) {
+    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+    return instance.get(`${userUrl}get_other_profile/${id}`)
+      .then(response => response.data)
+      .catch(error => handleError(error));
+  },
   async updateProfile(prof) {
     instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
     const {

@@ -54,7 +54,7 @@ class Settings extends BaseClass {
           returnKeyType="next"
           underlineColorAndroid="#00bcd4"
           placeholderTextColor="#bbb"
-          placeholder={`type ${name === 'email' ? `type new ${name}` : name}`}
+          placeholder={`type ${name === 'email' ? `new ${name}` : name}`}
         />
       </View>
     );

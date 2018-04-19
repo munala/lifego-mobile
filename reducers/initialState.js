@@ -27,6 +27,14 @@ export default {
     friends: [],
     followers: [],
   },
+  otherProfile: {
+    pictureUrl: '',
+    displayName: '',
+    email: '',
+    searchUsers: [],
+    friends: [],
+    followers: [],
+  },
   conversations: [],
   notifications: [],
   alerts: [],
@@ -61,6 +69,11 @@ export default {
       params: {},
     },
     conversations: {
+      previousRoute: '',
+      route: 'MessageList',
+      params: {},
+    },
+    profile: {
       previousRoute: '',
       route: 'MessageList',
       params: {},

@@ -29,6 +29,10 @@ const ProfileBody = ({
   listHeight,
   scrollY,
   avatar,
+  showUserProfile,
+  removeFriend,
+  addFriend,
+  isFriend,
 }) => (
   <View style={styles.profileBodyStyle}>
     <Animated.View style={[
@@ -60,17 +64,29 @@ const ProfileBody = ({
       <EditProfileForm {...editProfileProps} />
       <Animated.View style={[styles.profileView, { opacity }]}>
         <Text style={styles.profileName}>{profile.displayName || 'no name'}</Text>
-        <Text style={styles.profileEmail}>
-          {profile.email}
-        </Text>
-        <TouchableOpacity
-          style={styles.profileAction}
-          onPress={openEditProfileMode}
-        >
-          <Text style={styles.profileActionText}>Edit Profile</Text>
-        </TouchableOpacity>
+        {!showUserProfile &&
+          <Text style={styles.profileEmail}>
+            {profile.email}
+          </Text>
+        }
+        {showUserProfile ?
+          <TouchableOpacity
+            style={[styles.profileAction, isFriend(profile) && styles.removeAction]}
+            onPress={() => (isFriend(profile) ? removeFriend(profile) : addFriend(profile))}
+          >
+            <Text style={[styles.profileActionText, isFriend(profile) && styles.removeActionText]}>
+              {isFriend(profile) ? 'Remove' : 'Add'}
+            </Text>
+          </TouchableOpacity> :
+          <TouchableOpacity
+            style={styles.profileAction}
+            onPress={openEditProfileMode}
+          >
+            <Text style={styles.profileActionText}>Edit Profile</Text>
+          </TouchableOpacity>
+        }
         <View style={styles.profileStats} >
-          {renderStats()}
+          {renderStats(profile)}
         </View>
       </Animated.View>
     </Animated.View>
@@ -97,7 +113,7 @@ const ProfileBody = ({
                 () => {}
             }
           >
-            {renderPeople()}
+            {renderPeople(profile)}
           </ScrollView>
         </Animated.View>
     }
@@ -118,6 +134,10 @@ ProfileBody.propTypes = {
   scrollEnabled: PropTypes.bool.isRequired,
   listHeight: PropTypes.number.isRequired,
   avatar: PropTypes.string.isRequired,
+  showUserProfile: PropTypes.bool.isRequired,
+  removeFriend: PropTypes.func.isRequired,
+  addFriend: PropTypes.func.isRequired,
+  isFriend: PropTypes.func.isRequired,
 };
 
 export default ProfileBody;

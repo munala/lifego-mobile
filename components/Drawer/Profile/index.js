@@ -1,4 +1,5 @@
 /* eslint-disable global-require */
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import {
   View,
@@ -6,6 +7,7 @@ import {
   TouchableOpacity,
   Animated,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -29,6 +31,7 @@ class Profile extends BaseClass {
     image: null,
     uploading: false,
     profile: { ...this.props.profile },
+    showUserProfile: Boolean(this.props.viewProfile),
   }
 
   componentDidMount = () => {
@@ -49,9 +52,8 @@ class Profile extends BaseClass {
     }
   }
 
-  renderStats = () => {
+  renderStats = (userProfile) => {
     const { activeType } = this.state;
-    const { profile } = this.props;
     return ['Followers', 'Friends'].map(type => (
       <TouchableOpacity
         key={type}
@@ -62,7 +64,7 @@ class Profile extends BaseClass {
           <Text
             style={[styles.statCount, activeType === type && styles.statCountActive]}
           >
-            {profile[activeType.toLowerCase()] ? profile[type.toLowerCase()].length : 0}
+            {userProfile[activeType.toLowerCase()] ? userProfile[type.toLowerCase()].length : 0}
           </Text>
           <Text
             style={[styles.statLabel, activeType === type && styles.statLabelActive]}
@@ -74,14 +76,15 @@ class Profile extends BaseClass {
     ));
   }
 
-  renderPeople = () => {
+  renderPeople = (userProfile) => {
     const { activeType } = this.state;
     const { actions: { addFriend, removeFriend }, profile } = this.props;
-    return profile ?
-      profile[activeType.toLowerCase()].map((person, index) => (
-        <View
+    return userProfile ?
+      userProfile[activeType.toLowerCase()].map((person, index) => (
+        <TouchableOpacity
           key={person.id}
           style={[styles.person, this.isLastPerson(index) && styles.lastPerson]}
+          onPress={() => this.goToProfile(person.id)}
         >
           <Image
             style={styles.personPic}
@@ -90,17 +93,20 @@ class Profile extends BaseClass {
               require('../../../assets/images/user.png')}
           />
           <Text style={styles.personName}>{person.displayName || 'no name'}</Text>
-          <TouchableOpacity
-            style={[styles.personAction, this.isFriend(person) && styles.removeAction]}
-            onPress={() => (this.isFriend(person) ? removeFriend(person) : addFriend(person))}
-          >
-            <Text
-              style={[styles.actionText, this.isFriend(person) && styles.removeActionText]}
+          {
+            profile.id !== person.id &&
+            <TouchableOpacity
+              style={[styles.personAction, this.isFriend(person) && styles.removeAction]}
+              onPress={() => (this.isFriend(person) ? removeFriend(person) : addFriend(person))}
             >
-              {this.isFriend(person) ? 'Remove' : 'Add'}
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={[styles.actionText, this.isFriend(person) && styles.removeActionText]}
+              >
+                {this.isFriend(person) ? 'Remove' : 'Add'}
+              </Text>
+            </TouchableOpacity>
+          }
+        </TouchableOpacity>
       )) :
       <View />;
   }
@@ -110,9 +116,10 @@ class Profile extends BaseClass {
       activeType, scrollEnabled, editMode, uploading, scrollY,
     } = this.state;
     const {
-      profile, currentApiCalls,
+      profile, currentApiCalls, otherProfile,
     } = this.props;
-    const avatar = this.state.profile.pictureUrl;
+    const { showUserProfile } = this.state;
+    const avatar = showUserProfile ? otherProfile.pictureUrl : this.state.profile.pictureUrl;
     const height = this.state.scrollY.interpolate({
       inputRange: [0, 5],
       outputRange: [editMode ? 75 : 100, 0],
@@ -133,7 +140,8 @@ class Profile extends BaseClass {
       outputRange: [1, 0],
     });
 
-    const listHeight = 60 * profile[activeType.toLowerCase()].length;
+    const listHeight = 60 * (showUserProfile ? otherProfile : profile)[activeType.toLowerCase()]
+      .length;
     const [firstName, lastName] = (this.state.profile.displayName || '').split(' ');
     const displayName = {};
     displayName['first name'] = firstName;
@@ -155,7 +163,7 @@ class Profile extends BaseClass {
       marginTop,
       height,
       opacity,
-      profile,
+      profile: showUserProfile ? otherProfile : profile,
       editProfileProps,
       openEditProfileMode: this.openEditProfileMode,
       renderStats: this.renderStats,
@@ -165,14 +173,18 @@ class Profile extends BaseClass {
       listHeight,
       scrollY,
       avatar,
+      showUserProfile,
+      isFriend: this.isFriend,
+      removeFriend: this.props.actions.removeFriend,
+      addFriend: this.props.actions.addFriend,
     };
 
     return (
       <View style={styles.container}>
         <Header
           title="Profile"
-          leftIcon="menu"
-          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
+          leftIcon={showUserProfile ? (Platform.OS === 'ios' ? 'chevron-left' : 'arrow-back') : 'menu'}
+          onPressLeft={showUserProfile ? this.goBack : () => this.props.navigation.navigate('DrawerOpen')}
           mode="profile"
         />
         {currentApiCalls > 0 && !this.state.uploading &&
@@ -188,7 +200,10 @@ class Profile extends BaseClass {
 
 Profile.propTypes = propTypes;
 
-const mapStateToProps = ({ profile, currentApiCalls }) => ({ profile, currentApiCalls });
+const mapStateToProps = ({
+  navigationData: { profile: { params: { viewProfile } } },
+  profile, otherProfile, currentApiCalls,
+}) => ({ profile, otherProfile, currentApiCalls, viewProfile });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),

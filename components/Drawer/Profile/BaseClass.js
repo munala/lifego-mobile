@@ -155,6 +155,21 @@ class BaseClass extends Component {
       duration: 200,
     }).start();
   }
+  goToProfile = (id) => {
+    this.setState({
+      showUserProfile: true,
+    });
+    this.props.actions.getOtherProfile(id);
+  }
+  goBack = async () => {
+    this.setState({
+      showUserProfile: false,
+    });
+    await this.props.actions.setParams({
+      params: { viewProfile: undefined },
+      navigator: 'profile',
+    });
+  }
 }
 
 BaseClass.propTypes = propTypes;
