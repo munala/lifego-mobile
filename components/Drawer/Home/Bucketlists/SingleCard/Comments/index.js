@@ -4,12 +4,47 @@ import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-import Text from '../../../../Common/SuperText';
-import styles from '../../styles';
+import Text from '../../../../../Common/SuperText';
+import { setTime } from '../../../../../../utils';
+import styles from '../../../styles';
 
 class Comments extends Component {
   state = {
     page: Math.floor(this.props.bucketlist.comments.length / 10),
+    comment: {
+      id: '',
+      content: '',
+    },
+    selectedComment: {
+      id: '',
+      content: '',
+    },
+    typing: false,
+    submitting: false,
+  }
+
+  onChange = (text) => {
+    this.setState({
+      comment: { ...this.state.comment, content: text },
+    });
+  }
+
+  onSubmit = async () => {
+    const { comment } = this.state;
+    this.setState(() => ({ submitting: true }));
+    if (comment.content) {
+      const { error } = await this.props.actions.addComment(this.props.bucketlist, comment);
+      this.setState(() => ({ submitting: false }));
+      if (!error) {
+        this.setState(() => ({
+          comment: {
+            id: '',
+            content: '',
+          },
+        }));
+        this.setState(() => ({ typing: false }));
+      }
+    }
   }
 
   navigatePage = (direction) => {
@@ -27,12 +62,20 @@ class Comments extends Component {
         {
           text: 'OK',
           onPress: async () => {
-            await this.props.deleteComment(this.props.bucketlist, comment);
+            await this.props.actions.deleteComment(this.props.bucketlist, comment);
           },
         },
       ],
       { cancelable: true },
     );
+  }
+
+  focus = () => {
+    this.setState({ typing: true });
+  }
+
+  selectComment = (selectedComment) => {
+    this.setState({ selectedComment });
   }
 
   renderComments = bucketlist => bucketlist.comments
@@ -41,9 +84,8 @@ class Comments extends Component {
       <TouchableOpacity
         key={comment.id}
         onLongPress={() => (
-          bucketlist.userId === this.props.profile.id ||
           (comment.senderId === this.props.profile.id) ?
-            this.props.selectComment(comment) :
+            this.selectComment(comment) :
             () => {}
         )}
         delayLongPress={500}
@@ -53,7 +95,7 @@ class Comments extends Component {
         >
           <Text style={styles.commentUser}>{comment.user}</Text>
           <Text style={styles.commentContent} >{comment.content}</Text>
-          {this.props.selectedComment.id === comment.id &&
+          {this.state.selectedComment.id === comment.id &&
           <Icon
             containerStyle={[styles.deleteButton, { marginLeft: 20 }]}
             onPress={() => this.deleteComment(comment)}
@@ -67,18 +109,15 @@ class Comments extends Component {
           <Text
             style={[styles.timeSent, styles.commentTime]}
           >
-            {`${this.props.setTime(comment).createdAt}${this.props.setTime(comment).time}`}
+            {`${setTime(comment).createdAt}${setTime(comment).time}`}
           </Text>
         }
       </TouchableOpacity>
     ))
 
   render = () => {
-    const {
-      bucketlist, bucket, profile, onChange, selectBucketlist,
-      onSubmit, comm,
-    } = this.props;
-    const { page } = this.state;
+    const { bucketlist, profile } = this.props;
+    const { page, typing, comment, submitting } = this.state;
     const lastPage = Math.floor(this.props.bucketlist.comments.length / 10);
     return (
       <View>
@@ -107,27 +146,26 @@ class Comments extends Component {
         <View style={styles.newComment}>
           <Image
             style={styles.currentAvatar}
-            source={profile.pictureUrl ? { uri: profile.pictureUrl } : require('../../../../../assets/images/user.png')}
+            source={profile.pictureUrl ? { uri: profile.pictureUrl } : require('../../../../../../assets/images/user.png')}
           />
           <TextInput
             type="text"
             placeholder="type comment"
             style={[
               styles.inputText, {
-                flexBasis: (
-                  bucket.id === bucketlist.id
-                ) ? '70%' : '85%',
+                flexBasis: typing ? '70%' : '85%',
               },
             ]}
-            onFocus={() => selectBucketlist(bucketlist)}
-            value={bucket.id === bucketlist.id ? comm.content : ''}
-            onChangeText={onChange}
+            onFocus={this.focus}
+            value={typing ? comment.content : ''}
+            onChangeText={this.onChange}
           />
           {
-            bucket.id === bucketlist.id &&
+            typing &&
             <TouchableOpacity
               style={styles.value}
-              onPress={event => onSubmit(event)}
+              onPress={event => this.onSubmit(event)}
+              disabled={submitting}
             >
               <View>
                 <Text style={styles.label}>POST</Text>
@@ -161,15 +199,10 @@ Comments.propTypes = {
       updatedAt: PropTypes.string,
     })),
   }).isRequired,
-  bucket: PropTypes.shape({}),
-  comm: PropTypes.shape({}).isRequired,
-  selectedComment: PropTypes.shape({ id: PropTypes.number }),
-  selectBucketlist: PropTypes.func,
-  onChange: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  setTime: PropTypes.func.isRequired,
-  selectComment: PropTypes.func,
-  deleteComment: PropTypes.func,
+  actions: PropTypes.shape({
+    addComment: PropTypes.func.isRequired,
+    deleteComment: PropTypes.func.isRequired,
+  }).isRequired,
   profile: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,
@@ -189,10 +222,6 @@ Comments.defaultProps = {
     items: [],
   },
   mode: null,
-  selectedComment: {},
-  selectComment: () => {},
-  selectBucketlist: () => {},
-  deleteComment: () => {},
 };
 
 export default Comments;

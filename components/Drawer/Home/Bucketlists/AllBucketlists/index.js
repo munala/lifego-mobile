@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   FlatList,
   View,
@@ -13,16 +13,12 @@ import { bindActionCreators } from 'redux';
 import Text from '../../../../Common/SuperText';
 import * as bucketlistActions from '../../../../../actions/bucketlistActions';
 import * as userActions from '../../../../../actions/userActions';
-import * as commentActions from '../../../../../actions/commentActions';
-import * as likeActions from '../../../../../actions/likeActions';
 import * as navigationActions from '../../../../../actions/navigationActions';
-import handleHeader from '../../../../../actions/componentActions';
-import SingleCard from '../SingleCard/SingleCard';
+import SingleCard from '../SingleCard';
 import styles from '../../styles';
 import propTypes from './propTypes';
-import BaseClass from './BaseClass';
 
-class AllBucketlists extends BaseClass {
+class AllBucketlists extends Component {
   state = {
     visibleModal: false,
     context: {
@@ -32,59 +28,41 @@ class AllBucketlists extends BaseClass {
     isOpen: false,
     searchText: '',
     searchMode: false,
-    bucketlist: {
-      id: '',
-      name: '',
-      description: '',
-      category: '',
-      location: '',
-      tags: '',
-    },
-    comment: {
-      id: '',
-      content: '',
-    },
     open: false,
-    showComments: false,
     tagText: '',
     page: 0,
-    imageHeights: {},
   };
 
-  componentDidMount = async () => {
-    const { error, allData: { bucketlists } } = this.props;
-    if (error) {
-      if (error === 'Unauthorised' || error === 'Invalid token') {
-        this.logout();
-      }
+  onRefresh = async () => {
+    await this.props.actions.loadAllBucketlists();
+    this.getImageHeights(this.props.allData.bucketlists);
+  }
+
+  onSave = (bucketlist, type) => {
+    const { actions } = this.props;
+    if (type === 'Add') {
+      actions.saveBucketlist(bucketlist);
     } else {
-      this.getImageHeights(bucketlists);
+      actions.updateBucketlist({ ...bucketlist });
     }
   }
 
-  componentWillReceiveProps = async ({ allData: { bucketlists }, error }) => {
-    if (error) {
-      if (error === 'Unauthorised' || error === 'Invalid token') {
-        this.logout();
-      }
-    } else
-    if (bucketlists.length !== this.props.allData.bucketlists.length) {
-      this.getImageHeights(bucketlists);
-    }
+  openModal = () => {
+    this.setState({
+      bucketlist: {
+        id: '',
+        name: '',
+        description: '',
+        category: '',
+        tags: '',
+        location: '',
+      },
+      open: true,
+      gallery: [],
+    });
   }
 
-  toggleComments = async (bucketlist) => {
-    if (this.state.bucketlist.id !== bucketlist.id) {
-      this.selectBucketlist(bucketlist);
-      this.setState({
-        showComments: true,
-      });
-    } else {
-      this.setState({
-        showComments: !this.state.showComments,
-      });
-    }
-  }
+  logout = () => this.props.actions.logout();
 
   goToBucketlist = item => async () => {
     await this.props.actions.setParams({
@@ -113,29 +91,9 @@ class AllBucketlists extends BaseClass {
     this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlistForm' });
   }
 
-  offset = 0
-
   renderItem = ({ item }) => { // eslint-disable-line react/prop-types
-    const { createdAt, time } = this.setTime(item);
     const bucketlistProps = {
       bucketlist: item,
-      createdAt,
-      time,
-      openModal: this.openModal,
-      setTime: this.setTime,
-      setGrid: this.setGrid,
-      setLikeColor: this.setLikeColor,
-      percentWidth: this.state.percentWidth,
-      toggleComments: this.toggleComments,
-      showComments: this.state.showComments,
-      comm: this.state.comment,
-      bucketList: this.state.bucketlist,
-      selectBucketlist: this.selectBucketlist,
-      onSubmit: this.onSubmit,
-      onChange: this.onChange,
-      like: this.like,
-      profile: this.props.profile,
-      imageHeights: this.state.imageHeights,
       goToBucketlist: this.goToBucketlist(item),
     };
     return (
@@ -201,16 +159,13 @@ class AllBucketlists extends BaseClass {
 
 AllBucketlists.propTypes = propTypes;
 
-const mapStateToProps = state => state;
+const mapStateToProps = ({ currentApiCalls, allData }) => ({ currentApiCalls, allData });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     ...bucketlistActions,
     ...userActions,
-    ...commentActions,
-    ...likeActions,
     ...navigationActions,
-    handleHeader,
   }, dispatch),
 });
 

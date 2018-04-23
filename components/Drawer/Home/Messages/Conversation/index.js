@@ -9,6 +9,7 @@ import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
 import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
+import { setTime } from '../../../../../utils';
 import styles from '../../styles';
 import propTypes from './propTypes';
 
@@ -41,13 +42,52 @@ class Conversation extends BaseClass {
     this.setState({ selectedMessage });
   }
 
+  renderMessages = messages => messages.map((chatMessage) => {
+    const { createdAt, time } = setTime(chatMessage);
+    const { selectedMessage } = this.state;
+    const { profile } = this.props;
+    const dateTime = `- ${createdAt}${time} -`;
+
+    return (
+      <TouchableOpacity
+        key={chatMessage.id}
+        onLongPress={() => (
+          chatMessage.senderId === profile.id ?
+            this.selectMessage(chatMessage) :
+            () => {}
+        )}
+        delayLongPress={500}
+      >
+        <Text
+          style={[this.setStyle(chatMessage, profile), styles.message]}
+        >
+          {chatMessage.content}
+        </Text>
+        {selectedMessage.senderId === profile.id &&
+          selectedMessage.id === chatMessage.id &&
+          <Icon
+            containerStyle={styles.deleteButton}
+            onPress={() => this.deleteMessage(chatMessage)}
+            name="delete"
+            color="red"
+            size={16}
+          />
+        }
+        <Text
+          style={styles.timeSent}
+        >
+          {dateTime}
+        </Text>
+      </TouchableOpacity>
+    );
+  })
+
   render() {
     const {
       conversation,
       params: { newConversation, id },
-      profile,
     } = this.props;
-    const { message, selectedMessage } = this.state;
+    const { message } = this.state;
     let name;
 
     if (conversation || newConversation) {
@@ -56,6 +96,7 @@ class Conversation extends BaseClass {
     if (!conversation && !newConversation) {
       return (<View />);
     }
+
     return (
       <View style={[styles.container, { backgroundColor: '#fff' }]}>
         <View style={styles.top}>
@@ -86,38 +127,7 @@ class Conversation extends BaseClass {
             onContentSizeChange={() => this.scrollView.scrollToEnd()}
           >
             {
-              conversation && conversation.messages.map(chatMessage => (
-                <TouchableOpacity
-                  key={chatMessage.id}
-                  onLongPress={() => (
-                    chatMessage.senderId === profile.id ?
-                      this.selectMessage(chatMessage) :
-                      () => {}
-                  )}
-                  delayLongPress={500}
-                >
-                  <Text
-                    style={[this.setStyle(chatMessage, profile), styles.message]}
-                  >
-                    {chatMessage.content}
-                  </Text>
-                  {selectedMessage.senderId === profile.id &&
-                    selectedMessage.id === chatMessage.id &&
-                    <Icon
-                      containerStyle={styles.deleteButton}
-                      onPress={() => this.deleteMessage(chatMessage)}
-                      name="delete"
-                      color="red"
-                      size={16}
-                    />
-                  }
-                  <Text
-                    style={styles.timeSent}
-                  >
-                    {this.setTime(chatMessage)}
-                  </Text>
-                </TouchableOpacity>
-              ))
+              conversation && this.renderMessages(conversation.messages)
             }
           </ScrollView>
         </View>

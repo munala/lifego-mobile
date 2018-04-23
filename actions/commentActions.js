@@ -33,6 +33,7 @@ export const addComment = (bucketlist, comment) => async (dispatch) => {
     dispatch(addCommentSuccess(bucketlist, response));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const updateComment = (bucketlist, comment) => async (dispatch) => {
@@ -45,6 +46,7 @@ export const updateComment = (bucketlist, comment) => async (dispatch) => {
     dispatch(editCommentSuccess(bucketlist, response));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const deleteComment = (bucketlist, comment) => async (dispatch) => {
@@ -57,4 +59,5 @@ export const deleteComment = (bucketlist, comment) => async (dispatch) => {
     dispatch(deleteCommentSuccess(bucketlist, comment));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
