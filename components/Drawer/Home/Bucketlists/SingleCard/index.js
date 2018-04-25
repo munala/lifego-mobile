@@ -13,6 +13,8 @@ import Comments from './Comments';
 import Text from '../../../../Common/SuperText';
 import * as likeActions from '../../../../../actions/likeActions';
 import * as commentActions from '../../../../../actions/commentActions';
+import * as navigationActions from '../../../../../actions/navigationActions';
+import { getOtherProfile } from '../../../../../actions/userActions';
 import { setLikeColor, getTags, setTime } from '../../../../../utils';
 import styles from '../../styles/';
 import propTypes from './propTypes';
@@ -37,25 +39,31 @@ class SingleCard extends BaseClass {
         key={bucketlist.id}
         style={styles.bucketlist}
       >
-        <View style={styles.bucketlistHeader}>
-          <Img
-            style={styles.avatar}
-            source={
-              bucketlist.userPictureUrl ?
-                {
-                  uri: (
-                    bucketlist.userPictureUrl.replace(
-                      (bucketlist.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
-                      'https://',
-                    )
-                  ),
-                } :
-                require('../../../../../assets/images/user.png')
-            }
-          />
+        <TouchableOpacity onPress={goToBucketlist} style={styles.bucketlistHeader}>
+          <TouchableOpacity onPress={() => this.goToProfile({ id: bucketlist.userId })}>
+            <Img
+              style={styles.avatar}
+              source={
+                bucketlist.userPictureUrl ?
+                  {
+                    uri: (
+                      bucketlist.userPictureUrl.replace(
+                        (bucketlist.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                        'https://',
+                      )
+                    ),
+                  } :
+                  require('../../../../../assets/images/user.png')
+              }
+            />
+          </TouchableOpacity>
           <View style={styles.nameTime}>
             <View style={styles.headDetails}>
-              <Text style={styles.leftHeaderContent}>{`${bucketlist.userDisplayName}\n`}</Text>
+              <TouchableOpacity onPress={() => this.goToProfile({ id: bucketlist.userId })}>
+                <Text style={styles.leftHeaderContent}>
+                  {`${bucketlist.userDisplayName}\n`}
+                </Text>
+              </TouchableOpacity>
               <Text style={styles.time}>{`${createdAt}${time}`}</Text>
             </View>
             <View style={styles.headDetails}>
@@ -80,18 +88,16 @@ class SingleCard extends BaseClass {
               }
             </View>
           </View>
-        </View>
-        <View style={styles.bucketlistBody}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={goToBucketlist} style={styles.bucketlistBody}>
           <View style={styles.description}>
-            <TouchableOpacity style={styles.link} onPress={goToBucketlist}>
-              <View>
-                <Text style={styles.blue}>{bucketlist.name}</Text>
-                {
-                  !!bucketlist.description &&
+            <View style={styles.link} >
+              <Text style={styles.blue}>{bucketlist.name}</Text>
+              {
+                !!bucketlist.description &&
                   <Text style={styles.grey}>{bucketlist.description}</Text>
-                }
-              </View>
-            </TouchableOpacity>
+              }
+            </View>
           </View>
           {!!bucketlist.pictureUrl &&
           <Image
@@ -154,7 +160,7 @@ class SingleCard extends BaseClass {
               mode={mode}
             />
           }
-        </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -178,6 +184,8 @@ export default connect(
     actions: bindActionCreators({
       ...likeActions,
       ...commentActions,
+      ...navigationActions,
+      getOtherProfile,
     }, dispatch),
   }),
 )(SingleCard);

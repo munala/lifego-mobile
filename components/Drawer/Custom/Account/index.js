@@ -11,7 +11,18 @@ import { logout } from '../../../../actions/userActions';
 import styles from '../styles';
 
 export default connect(
-  ({ profile }) => ({ ...profile }),
+  ({
+    profile,
+    navigationData:
+    {
+      drawer: {
+        route: activeRoute,
+      },
+    },
+  }) => ({
+    ...profile,
+    activeRoute,
+  }),
   dispatch => ({
     actions: bindActionCreators({ logout }, dispatch),
   }),

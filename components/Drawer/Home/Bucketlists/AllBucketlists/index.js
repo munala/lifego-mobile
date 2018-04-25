@@ -35,7 +35,6 @@ class AllBucketlists extends Component {
 
   onRefresh = async () => {
     await this.props.actions.loadAllBucketlists();
-    this.getImageHeights(this.props.allData.bucketlists);
   }
 
   onSave = (bucketlist, type) => {

@@ -15,10 +15,11 @@ import { getConversations } from '../../actions/messageActions';
 import { getNotifications } from '../../actions/notificationActions';
 import { getAlerts } from '../../actions/userAlertActions';
 import { getProfile } from '../../actions/userActions';
+import { navigate } from '../../actions/navigationActions';
 
 class Drawer extends Component {
   componentDidMount = () => {
-    Object.keys(this.props.actions).forEach(key => this.props.actions[key](0, 10));
+    Object.keys(this.props.actions).forEach(key => (key !== 'navigate' ? this.props.actions[key](0, 10) : null));
   }
 
   render() {
@@ -74,7 +75,12 @@ class Drawer extends Component {
           inactiveTintColor: 'grey',
           activeTintColor: '#00bcd4',
         },
-        contentComponent: props => <CustomDrawer {...props} />,
+        contentComponent: props => (
+          <CustomDrawer
+            navigate={this.props.actions.navigate}
+            route={route}
+            {...props}
+          />),
       },
     );
 
@@ -94,6 +100,7 @@ Drawer.propTypes = {
     getNotifications: PropTypes.func.isRequired,
     getAlerts: PropTypes.func.isRequired,
     getProfile: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
 };
 
@@ -114,6 +121,7 @@ const mapDispatchToProps = dispatch => ({
     getNotifications,
     getAlerts,
     getProfile,
+    navigate,
   }, dispatch),
 });
 
