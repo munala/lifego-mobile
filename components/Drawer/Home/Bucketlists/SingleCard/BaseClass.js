@@ -44,18 +44,11 @@ class BaseClass extends Component {
 
   goToProfile = async ({ id }) => {
     const {
-      actions: { navigate, setParams, getOtherProfile },
-      profile,
+      actions: { navigate, getOtherProfile },
     } = this.props;
 
-    if (profile.id !== id) {
-      await setParams({
-        params: { viewProfile: true },
-        navigator: 'profile',
-      });
-      getOtherProfile(id);
-    }
-    await navigate({ route: 'Profile', navigator: 'drawer' });
+    getOtherProfile(id);
+    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: { from: 'Home', viewProfile: true } });
   }
 
   toggleComments = () => {

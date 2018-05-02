@@ -93,7 +93,9 @@ class Comments extends Component {
         <View
           style={styles.comment}
         >
-          <Text style={styles.commentUser}>{comment.user}</Text>
+          <TouchableOpacity onPress={() => this.props.goToProfile({ id: comment.senderId })}>
+            <Text style={styles.commentUser}>{comment.user}</Text>
+          </TouchableOpacity>
           <Text style={styles.commentContent} >{comment.content}</Text>
           {this.state.selectedComment.id === comment.id &&
           <Icon
@@ -213,6 +215,7 @@ Comments.propTypes = {
     searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
   mode: PropTypes.string,
+  goToProfile: PropTypes.func.isRequired,
 };
 
 Comments.defaultProps = {

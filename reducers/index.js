@@ -13,7 +13,14 @@ import alerts from './userAlertReducer';
 import tags from './tagReducer';
 import searchText from './searchReducer';
 import components from './componentReducer';
-import navigationData from './navigationReducer';
+import {
+  authNavigatorReducer as authNavigator,
+  drawerNavigatorReducer as DrawerNav,
+  homeNavigatorReducer as HomeTabNav,
+  allNavigatorReducer as AllBucketlistNavigator,
+  messageNavigatorReducer as MessageNavigator,
+  myNavigatorReducer as MyBucketlistNavigator,
+} from './navigationReducer';
 import { LOGOUT } from '../actions/actionTypes';
 
 const appReducer = combineReducers({
@@ -31,7 +38,12 @@ const appReducer = combineReducers({
   tags,
   searchText,
   components,
-  navigationData,
+  authNavigator,
+  DrawerNav,
+  HomeTabNav,
+  AllBucketlistNavigator,
+  MessageNavigator,
+  MyBucketlistNavigator,
 });
 
 const rootReducer = (state, action) => {

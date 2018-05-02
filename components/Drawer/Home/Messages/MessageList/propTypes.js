@@ -27,5 +27,4 @@ export default {
     getConversations: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
   }).isRequired,
-  currentApiCalls: PropTypes.number.isRequired,
 };

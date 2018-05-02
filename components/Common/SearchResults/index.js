@@ -33,12 +33,12 @@ class SearchResults extends Component {
   }
 
   goToProfile = async ({ id }) => {
-    const { navigate, setParams, getOtherProfile } = this.props.actions;
-    await setParams({
+    const { navigate, getOtherProfile } = this.props.actions;
+    await navigate({
       params: { viewProfile: true },
-      navigator: 'profile',
+      navigator: 'DrawerNav',
+      route: 'Profile',
     });
-    await navigate({ route: 'Profile', navigator: 'drawer' });
     getOtherProfile(id);
   }
 
@@ -140,7 +140,6 @@ SearchResults.propTypes = {
     removeFriend: PropTypes.func.isRequired,
     addFriend: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
   }).isRequired,
   onItemPress: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired,

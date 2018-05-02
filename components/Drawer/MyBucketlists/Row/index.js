@@ -27,15 +27,15 @@ class Row extends Component {
 
   handleTouch = async () => {
     const { content } = this.state;
-    const { navigate, setParams } = this.props;
+    const { navigate } = this.props;
     if (content.userId) {
-      await setParams({
+      await navigate({
         params: {
           bucketlist: content,
         },
-        navigator: 'myBucketlists',
+        navigator: 'MyBucketlistNavigator',
+        route: 'items',
       });
-      navigate({ route: 'items', navigator: 'myBucketlists' });
     }
   }
 
@@ -104,7 +104,6 @@ Row.propTypes = {
   showModal: PropTypes.func.isRequired,
   onDone: PropTypes.func,
   navigate: PropTypes.func,
-  setParams: PropTypes.func,
 };
 
 Row.defaultProps = {
@@ -114,6 +113,5 @@ Row.defaultProps = {
   },
   onDone: () => {},
   navigate: () => {},
-  setParams: () => {},
 };
 export default Row;

@@ -1,84 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { PropTypes } from 'prop-types';
-import { View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { addNavigationHelpers } from 'react-navigation';
 
-import BucketList from './BucketList/';
-import Items from './Items';
-import BucketListForm from '../../BucketListForm';
-import { navigate } from '../../../actions/navigationActions';
-import styles from './styles';
+import MyBucketlistNavigator from '../../../navigators/myBucketlists';
+import { addMyListener } from '../../../store/configureStore';
 
-class StackNav extends Component {
-  goBack = () => {
-    this.props.actions.navigate({ route: this.props.previousRoute, navigator: 'myBucketlists' });
-  }
-
-  render() {
-    const { route, params } = this.props;
-    const Navigator = () => (
-      <BucketList
-        handleResults={this.handleResults}
-        navigation={this.props.navigation}
-      />
-    );
-    Navigator.propTypes = {
-      navigation: PropTypes.shape({}).isRequired,
-    };
-
-    const screens = {
-      bucketlist: {
-        screen: Navigator,
-      },
-      items: {
-        screen: Items,
-      },
-      bucketlistForm: {
-        screen: () => (
-          <View style={styles.container}>
-            <BucketListForm goBack={this.goBack} params={params} />
-          </View>
-        ),
-      },
-    };
-
-    const Stack = StackNavigator(screens, {
-      initialRouteName: route,
-      navigationOptions: {
-        header: null,
-      },
-    });
-    return (
-      <Stack />
-    );
-  }
-}
+const StackNav = ({ dispatch, nav }) => (
+  <MyBucketlistNavigator navigation={
+    addNavigationHelpers({
+      dispatch,
+      state: nav,
+      addMyListener,
+    },
+    )}
+  />
+);
 
 StackNav.propTypes = {
-  route: PropTypes.string.isRequired,
-  previousRoute: PropTypes.string.isRequired,
-  params: PropTypes.shape({}).isRequired,
-  actions: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  nav: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = ({
-  navigationData: { myBucketlists: { route, previousRoute, params } },
-}, ownProps) => ({
-  ...ownProps,
-  route,
-  params,
-  previousRoute,
+const mapStateToProps = ({ MyBucketlistNavigator: nav }) => ({
+  nav,
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ navigate }, dispatch),
+  dispatch,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StackNav);

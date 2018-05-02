@@ -41,11 +41,11 @@ class BaseClass extends Component {
   }
 
   goToConversation = async (conversation) => {
-    await this.props.actions.setParams({
+    this.props.actions.navigate({
+      route: 'Conversation',
+      navigator: 'MessageNavigator',
       params: { id: conversation.id },
-      navigator: 'conversations',
     });
-    this.props.actions.navigate({ route: 'Conversation', navigator: 'conversations' });
   };
 
   truncateMessage = (message) => {
@@ -66,11 +66,11 @@ class BaseClass extends Component {
       receiverUsername: receiver.username,
       receiverDisplayName: receiver.displayName,
     };
-    await this.props.actions.setParams({
+    this.props.actions.navigate({
+      route: 'Conversation',
+      navigator: 'MessageNavigator',
       params: { id: null, newConversation },
-      navigator: 'conversations',
     });
-    this.props.actions.navigate({ route: 'Conversation', navigator: 'conversations' });
   }
 
   toggleNew = () => {

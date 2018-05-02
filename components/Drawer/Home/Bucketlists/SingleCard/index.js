@@ -158,6 +158,7 @@ class SingleCard extends BaseClass {
               profile={profile}
               actions={this.props.actions}
               mode={mode}
+              goToProfile={this.goToProfile}
             />
           }
         </TouchableOpacity>

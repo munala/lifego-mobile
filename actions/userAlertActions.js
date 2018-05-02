@@ -27,7 +27,7 @@ export const deleteAlertSuccess = alert => ({
 });
 
 export const getAlerts = () => async (dispatch) => {
-  const response = await alertService.getAlerts();
+  const response = await alertService.getAlerts({ source: 'alerts' });
   dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));

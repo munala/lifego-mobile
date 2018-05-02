@@ -51,7 +51,6 @@ class Items extends BaseClass {
     } = this.state;
     const {
       bucketlist,
-      previousRoute,
       actions: { navigate },
     } = this.props;
     if (!bucketlist) {
@@ -64,7 +63,7 @@ class Items extends BaseClass {
         <Header
           title={bucketlist.name}
           leftIcon={Platform.OS === 'ios' ? 'chevron-left' : 'arrow-back'}
-          onPressLeft={() => navigate({ route: previousRoute, navigator: 'myBucketlists' })}
+          onPressLeft={() => navigate({ route: 'MyBucketlists', navigator: 'MyBucketlistNavigator' })}
           search={() => {}}
           mode="items"
           clearSearch={() => {}}
@@ -122,12 +121,12 @@ class Items extends BaseClass {
 
 Items.propTypes = propTypes;
 
-const mapStateToProps = ({
-  data: { bucketlists },
-  navigationData: { myBucketlists: { params: { bucketlist: { id: idParam } }, previousRoute } },
-}) => {
-  const [bucketlist] = bucketlists.filter(({ id }) => id === idParam);
-  return ({ bucketlist, previousRoute });
+const mapStateToProps = ({ data: { bucketlists } },
+  {
+    navigation: { state },
+  }) => {
+  const [bucketlist] = bucketlists.filter(({ id }) => id === state.params.bucketlist.id);
+  return ({ bucketlist });
 };
 
 function mapDispatchToProps(dispatch) {

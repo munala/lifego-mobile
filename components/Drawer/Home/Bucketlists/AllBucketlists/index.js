@@ -37,13 +37,14 @@ class AllBucketlists extends Component {
     await this.props.actions.loadAllBucketlists();
   }
 
-  onSave = (bucketlist, type) => {
+  onSave = async (bucketlist, type) => {
     const { actions } = this.props;
     if (type === 'Add') {
-      actions.saveBucketlist(bucketlist);
+      await actions.saveBucketlist(bucketlist);
     } else {
-      actions.updateBucketlist({ ...bucketlist });
+      await actions.updateBucketlist({ ...bucketlist });
     }
+    actions.navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists' });
   }
 
   openModal = () => {
@@ -64,18 +65,19 @@ class AllBucketlists extends Component {
   logout = () => this.props.actions.logout();
 
   goToBucketlist = item => async () => {
-    await this.props.actions.setParams({
+    this.props.actions.navigate({ navigator: 'AllBucketlistNavigator',
+      route: 'bucketlist',
       params: {
         id: item.id,
         from: 'bucketlists',
       },
-      navigator: 'allBucketlists',
     });
-    this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlist' });
   }
 
   showModal = async (type, content = {}) => {
-    await this.props.actions.setParams({
+    this.props.actions.navigate({
+      navigator: 'AllBucketlistNavigator',
+      route: 'bucketlistForm',
       params: {
         context: {
           ...this.state.context,
@@ -83,11 +85,9 @@ class AllBucketlists extends Component {
         },
         content,
         onSave: this.onSave,
-        goBack: () => this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlists' }),
+        goBack: () => this.props.actions.navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists' }),
       },
-      navigator: 'allBucketlists',
     });
-    this.props.actions.navigate({ navigator: 'allBucketlists', route: 'bucketlistForm' });
   }
 
   renderItem = ({ item }) => { // eslint-disable-line react/prop-types
@@ -124,7 +124,7 @@ class AllBucketlists extends Component {
               data={bucketlists}
               renderItem={this.renderItem}
               style={styles.listView}
-              onEndReached={() => (loadMore ? loadMoreBucketlists('all', page * 10) : () => {})}
+              onEndReached={loadMore ? (() => loadMoreBucketlists('all', page * 10)) : (() => {})}
               onEndReachedThreshold={0.01}
               refreshControl={
                 <RefreshControl

@@ -31,7 +31,6 @@ class Profile extends BaseClass {
     image: null,
     uploading: false,
     profile: { ...this.props.profile },
-    showUserProfile: Boolean(this.props.viewProfile),
   }
 
   componentDidMount = () => {
@@ -41,11 +40,7 @@ class Profile extends BaseClass {
   };
 
   componentDidUpdate = ({ error, profile }) => {
-    if (error) {
-      if (error === 'Unauthorised' || error === 'Invalid token') {
-        this.logout();
-      }
-    } else if (this.props.profile !== profile) {
+    if (!error && this.props.profile !== profile) {
       this.setState({
         profile,
       });
@@ -116,9 +111,9 @@ class Profile extends BaseClass {
       activeType, scrollEnabled, editMode, uploading, scrollY,
     } = this.state;
     const {
-      profile, currentApiCalls, otherProfile,
+      profile, currentApiCalls, otherProfile, viewProfile, from,
     } = this.props;
-    const { showUserProfile } = this.state;
+    const showUserProfile = !!from && otherProfile.id !== profile.id;
     const avatar = showUserProfile ? otherProfile.pictureUrl : this.state.profile.pictureUrl;
     const height = this.state.scrollY.interpolate({
       inputRange: [0, 5],
@@ -140,7 +135,9 @@ class Profile extends BaseClass {
       outputRange: [1, 0],
     });
 
-    const listHeight = 60 * (showUserProfile ? otherProfile : profile)[activeType.toLowerCase()]
+    const listHeight = 60 * (
+      viewProfile === true ? otherProfile : profile
+    )[activeType.toLowerCase()]
       .length;
     const [firstName, lastName] = (this.state.profile.displayName || '').split(' ');
     const displayName = {};
@@ -183,8 +180,8 @@ class Profile extends BaseClass {
       <View style={styles.container}>
         <Header
           title="Profile"
-          leftIcon={showUserProfile ? (Platform.OS === 'ios' ? 'chevron-left' : 'arrow-back') : 'menu'}
-          onPressLeft={showUserProfile ? this.goBack : () => this.props.navigation.navigate('DrawerOpen')}
+          leftIcon={from ? (Platform.OS === 'ios' ? 'chevron-left' : 'arrow-back') : 'menu'}
+          onPressLeft={from ? this.goBack : () => this.props.actions.navigate({ route: 'DrawerOpen', navigator: 'DrawerNav' })}
           mode="profile"
         />
         {currentApiCalls > 0 && !this.state.uploading &&
@@ -201,9 +198,31 @@ class Profile extends BaseClass {
 Profile.propTypes = propTypes;
 
 const mapStateToProps = ({
-  navigationData: { profile: { params: { viewProfile } } },
   profile, otherProfile, currentApiCalls,
-}) => ({ profile, otherProfile, currentApiCalls, viewProfile });
+},
+{
+  navigation: { state },
+},
+) => {
+  let viewProfile;
+  let from;
+  let previousIds;
+  let previousRoutes;
+  if (state && state.params) {
+    viewProfile = state.params.viewProfile;
+    from = state.params.from;
+    previousIds = state.params.previousIds;
+    previousRoutes = state.params.previousRoutes || [from];
+  }
+  return ({
+    profile,
+    otherProfile,
+    currentApiCalls,
+    viewProfile,
+    from,
+    previousIds,
+    previousRoutes });
+};
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),

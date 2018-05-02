@@ -155,20 +155,46 @@ class BaseClass extends Component {
       duration: 200,
     }).start();
   }
+
   goToProfile = (id) => {
-    this.setState({
-      showUserProfile: true,
+    const { otherProfile: { id: previousId }, previousIds, previousRoutes } = this.props;
+    const ids = previousIds || [];
+    const routes = previousRoutes || [];
+    this.props.actions.navigate({
+      route: 'Profile',
+      navigator: 'DrawerNav',
+      params: { viewProfile: true, from: 'Profile', previousIds: [previousId, ...ids], previousRoutes: ['Profile', ...routes] },
     });
     this.props.actions.getOtherProfile(id);
   }
+
   goBack = async () => {
-    this.setState({
-      showUserProfile: false,
-    });
-    await this.props.actions.setParams({
-      params: { viewProfile: undefined },
-      navigator: 'profile',
-    });
+    const [from, ...routes] = this.props.previousRoutes;
+    const [newFrom] = routes;
+    if (from === 'Profile') {
+      const [previousId, ...newIds] = this.props.previousIds;
+      this.props.actions.navigate({
+        params: { viewProfile: true, previousIds: newIds, previousRoutes: routes, from: newFrom },
+        navigator: 'DrawerNav',
+        route: 'Profile',
+      });
+      this.props.actions.getOtherProfile(previousId || this.props.profile.id);
+    } else {
+      await this.props.actions.navigate({
+        navigator: 'DrawerNav',
+        route: 'Profile',
+        params: {
+          previousRoutes: undefined,
+          from: undefined,
+          viewProfile: false,
+          previousIds: undefined,
+        },
+      });
+      this.props.actions.navigate({
+        navigator: 'DrawerNav',
+        route: from,
+      });
+    }
   }
 }
 

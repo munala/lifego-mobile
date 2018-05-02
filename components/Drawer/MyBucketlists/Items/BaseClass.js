@@ -20,17 +20,23 @@ class BaseClass extends Component {
     );
   }
 
-  onSave = (item = {}, type) => {
+  onSave = async (item = {}, type) => {
     const { actions, bucketlist } = this.props;
     if (type === 'Add') {
-      actions.saveItem(bucketlist, item);
+      await actions.saveItem(bucketlist, item);
     } else {
-      actions.updateItem(bucketlist, { ...item });
+      await actions.updateItem(bucketlist, { ...item });
     }
+    this.props.actions.navigate({
+      navigator: 'MyBucketlistNavigator',
+      route: 'items',
+      params: {
+        bucketlist,
+      } });
   }
 
   showModal = async (type, content = {}) => {
-    await this.props.actions.setParams({
+    await this.props.actions.navigate({
       params: {
         context: {
           ...this.state.context,
@@ -40,19 +46,18 @@ class BaseClass extends Component {
         bucketlist: this.props.bucketlist,
         onSave: this.onSave,
         goBack: async () => {
-          await this.props.actions.setParams({
+          await this.props.actions.navigate({
             params: {
               bucketlist: this.props.bucketlist,
-              goBack: () => this.props.actions.navigate({ navigator: 'myBucketlists', route: 'bucketlist' }),
             },
-            navigator: 'myBucketlists',
+            navigator: 'MyBucketlistNavigator',
+            route: 'items',
           });
-          this.props.actions.navigate({ navigator: 'myBucketlists', route: 'items' });
         },
       },
-      navigator: 'myBucketlists',
+      navigator: 'MyBucketlistNavigator',
+      route: 'newBucketlistForm',
     });
-    this.props.actions.navigate({ route: 'bucketlistForm', navigator: 'myBucketlists' });
   }
 
   toggleFilter = () => {

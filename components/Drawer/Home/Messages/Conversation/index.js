@@ -34,7 +34,7 @@ class Conversation extends BaseClass {
 
   componentDidUpdate = ({ conversation, params: { newConversation }, actions: { navigate } }) => {
     if (!conversation && !newConversation && !this.state.message.content) {
-      navigate({ route: this.props.previousRoute, navigator: 'conversations' });
+      navigate({ route: 'MessageList', navigator: 'MessageNavigator' });
     }
   }
 
@@ -89,12 +89,14 @@ class Conversation extends BaseClass {
     } = this.props;
     const { message } = this.state;
     let name;
+    let userId;
 
     if (conversation || newConversation) {
       name = this.getName(conversation || newConversation);
+      userId = this.getId(conversation || newConversation);
     }
     if (!conversation && !newConversation) {
-      return (<View />);
+      return (<View style={styles.container} />);
     }
 
     return (
@@ -107,18 +109,16 @@ class Conversation extends BaseClass {
             color="#00bcd4"
             size={30}
           />
-          <Text style={styles.name}>{name}</Text>
-          {
-            conversation ?
-              <Icon
-                style={styles.deleteButton}
-                onPress={() => this.deleteConversation({ id })}
-                name="delete"
-                color="red"
-                size={24}
-              /> :
-              <View />
-          }
+          <TouchableOpacity onPress={() => this.goToProfile({ id: userId })}>
+            <Text style={styles.name}>{name}</Text>
+          </TouchableOpacity>
+          <Icon
+            style={styles.deleteButton}
+            onPress={conversation ? () => this.deleteConversation({ id }) : this.goBack}
+            name="delete"
+            color="red"
+            size={24}
+          />
         </View>
         <View style={styles.bodyWrapper}>
           <ScrollView
@@ -126,9 +126,7 @@ class Conversation extends BaseClass {
             ref={(ref) => { this.scrollView = ref; }}
             onContentSizeChange={() => this.scrollView.scrollToEnd()}
           >
-            {
-              conversation && this.renderMessages(conversation.messages)
-            }
+            {conversation && this.renderMessages(conversation.messages)}
           </ScrollView>
         </View>
         <View style={styles.newMessage}>
@@ -162,15 +160,18 @@ Conversation.propTypes = propTypes;
 const mapStateToProps = ({
   profile,
   conversations,
-  navigationData: { conversations: { previousRoute, params, params: { id } } },
-}, ownProps) => {
-  const [conversation] = conversations.filter(chat => chat.id === id);
+}, { navigation: { state } }) => {
+  let param = {};
+  let conversation;
+  if (state && state.params) {
+    const { params, params: { id } } = state;
+    param = params;
+    conversation = conversations.filter(chat => chat.id === id)[0];
+  }
   return ({
-    previousRoute,
-    params,
+    params: param,
     profile,
     conversation,
-    ...ownProps,
   });
 };
 

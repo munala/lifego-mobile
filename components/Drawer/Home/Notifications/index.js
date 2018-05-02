@@ -64,18 +64,14 @@ class Notifications extends Component {
     return read;
   }
 
-  goToBucketlist = (notification) => {
+  goToBucketlist = async (notification) => {
     this.markAsRead(notification);
-    this.props.actions.setParams({
+    await this.props.actions.navigate({ route: 'HomeBucketlists', navigator: 'HomeTabNav' });
+    this.props.actions.navigate({
+      route: 'bucketlist',
+      navigator: 'AllBucketlistNavigator',
       params: { id: notification.bucketlistId, from: 'Notifications' },
-      navigator: 'home',
     });
-    this.props.actions.navigate({ route: 'Home', navigator: 'home' });
-    this.props.actions.setParams({
-      params: { id: notification.bucketlistId, from: 'Notifications' },
-      navigator: 'allBucketlists',
-    });
-    this.props.actions.navigate({ route: 'bucketlist', navigator: 'allBucketlists' });
   }
 
   stripHtml = text => text.replace('<b>', '').replace('</b>', '').replace('<br/>', ' ')
@@ -180,7 +176,6 @@ Notifications.propTypes = {
     deleteNotification: PropTypes.func.isRequired,
     getNotifications: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
   }).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
 };

@@ -88,7 +88,7 @@ export const loadMoreBucketlists = (type, offset = 0, limit = 10, search = '') =
 };
 
 export const loadBucketlists = (offset = 0, limit = 10, search = '') => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ source: 'my' }));
   const response = await BucketlistService.getBucketlists(offset, limit, search);
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
@@ -100,7 +100,7 @@ export const loadBucketlists = (offset = 0, limit = 10, search = '') => async (d
 };
 
 export const loadAllBucketlists = (offset = 0, limit = 10, search = '') => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ source: 'all' }));
   const response = await BucketlistService.getAllBucketlists(offset, limit, search);
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
