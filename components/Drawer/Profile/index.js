@@ -172,6 +172,7 @@ class Profile extends BaseClass {
       avatar,
       showUserProfile,
       isFriend: this.isFriend,
+      sendMessage: this.sendMessage,
       removeFriend: this.props.actions.removeFriend,
       addFriend: this.props.actions.addFriend,
     };

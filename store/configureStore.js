@@ -9,11 +9,6 @@ import { createReactNavigationReduxMiddleware, createReduxBoundAddListener } fro
 
 import rootReducer from '../reducers';
 
-// const authMiddleware = createReactNavigationReduxMiddleware(
-//   'AuthNavigator',
-//   state => state.AuthNavigator,
-// );
-//
 const drawerMiddleware = createReactNavigationReduxMiddleware(
   'DrawerNav',
   state => state.DrawerNav,
@@ -39,7 +34,6 @@ const messageMiddleware = createReactNavigationReduxMiddleware(
   state => state.MessageNavigator,
 );
 
-// export const addAuthListener = createReduxBoundAddListener('AuthNavigator');
 export const addDrawerListener = createReduxBoundAddListener('DrawerNav');
 export const addHomeListener = createReduxBoundAddListener('HomeTabNav');
 export const addAllListener = createReduxBoundAddListener('AllBucketlistNavigator');
@@ -69,7 +63,6 @@ const configureStore = (initialState) => {
     persistReducer(config, rootReducer),
     initialState,
     applyMiddleware(
-      // authMiddleware,
       drawerMiddleware,
       homeMiddleware,
       allMiddleware,

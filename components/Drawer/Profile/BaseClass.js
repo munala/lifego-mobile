@@ -196,6 +196,32 @@ class BaseClass extends Component {
       });
     }
   }
+
+  sendMessage = async (receiver) => {
+    const newConversation = {
+      senderId: this.props.profile.id,
+      senderDisplayName: this.props.profile.displayName,
+      senderUsername: this.props.profile.username,
+      senderPictureUrl: this.props.profile.pictureUrl,
+      receiverId: receiver.id,
+      receiverPictureUrl: receiver.pictureUrl,
+      receiverUsername: receiver.username,
+      receiverDisplayName: receiver.displayName,
+    };
+    await this.props.actions.navigate({
+      route: 'Home',
+      navigator: 'DrawerNav',
+    });
+    await this.props.actions.navigate({
+      route: 'Messages',
+      navigator: 'HomeTabNav',
+    });
+    this.props.actions.navigate({
+      route: 'Conversation',
+      navigator: 'MessageNavigator',
+      params: { id: null, newConversation },
+    });
+  }
 }
 
 BaseClass.propTypes = propTypes;

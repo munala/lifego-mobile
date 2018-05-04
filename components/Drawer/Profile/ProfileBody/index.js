@@ -33,6 +33,7 @@ const ProfileBody = ({
   removeFriend,
   addFriend,
   isFriend,
+  sendMessage,
 }) => (
   <View style={styles.profileBodyStyle}>
     <Animated.View style={[
@@ -68,14 +69,24 @@ const ProfileBody = ({
           </Text>
         }
         {showUserProfile ?
-          <TouchableOpacity
-            style={[styles.profileAction, isFriend(profile) && styles.removeAction]}
-            onPress={() => (isFriend(profile) ? removeFriend(profile) : addFriend(profile))}
-          >
-            <Text style={[styles.profileActionText, isFriend(profile) && styles.removeActionText]}>
-              {isFriend(profile) ? 'Remove' : 'Add'}
-            </Text>
-          </TouchableOpacity> :
+          <View>
+            <TouchableOpacity
+              style={[styles.profileAction, isFriend(profile) && styles.removeAction]}
+              onPress={() => (isFriend(profile) ? removeFriend(profile) : addFriend(profile))}
+            >
+              <Text
+                style={[styles.profileActionText, isFriend(profile) && styles.removeActionText]}
+              >
+                {isFriend(profile) ? 'Remove' : 'Add'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.profileAction}
+              onPress={() => sendMessage(profile)}
+            >
+              <Text style={styles.profileActionText}>Send message</Text>
+            </TouchableOpacity>
+          </View> :
           <TouchableOpacity
             style={styles.profileAction}
             onPress={openEditProfileMode}
@@ -136,6 +147,7 @@ ProfileBody.propTypes = {
   removeFriend: PropTypes.func.isRequired,
   addFriend: PropTypes.func.isRequired,
   isFriend: PropTypes.func.isRequired,
+  sendMessage: PropTypes.func.isRequired,
 };
 
 ProfileBody.defaultProps = {

@@ -164,9 +164,15 @@ const mapStateToProps = ({
   let param = {};
   let conversation;
   if (state && state.params) {
-    const { params, params: { id } } = state;
+    const { params, params: { id, newConversation } } = state;
     param = params;
-    conversation = conversations.filter(chat => chat.id === id)[0];
+    if (newConversation) {
+      conversation = conversations
+        .filter(chat => chat.senderId === newConversation.senderId
+          && chat.receiverId === newConversation.receiverId)[0];
+    } else {
+      conversation = conversations.filter(chat => chat.id === id)[0];
+    }
   }
   return ({
     params: param,

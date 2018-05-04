@@ -1,4 +1,3 @@
-// import AuthNavigator from '../navigators/auth';
 import DrawerNav from '../navigators/drawer';
 import HomeTabNav from '../navigators/home';
 import AllBucketlistNavigator from '../navigators/allBucketlists';
@@ -6,7 +5,6 @@ import MessageNavigator from '../navigators/messages';
 import MyBucketlistNavigator from '../navigators/myBucketlists';
 
 export const navigators = {
-  // AuthNavigator,
   DrawerNav,
   HomeTabNav,
   AllBucketlistNavigator,
@@ -15,8 +13,6 @@ export const navigators = {
 };
 
 export const navigationData = {
-  // AuthNavigator: AuthNavigator.router
-  // .getStateForAction(AuthNavigator.router.getActionForPathAndParams('splash/{DEFAULT_SCREEN}')),
   DrawerNav: DrawerNav.router.getStateForAction(DrawerNav.router.getActionForPathAndParams('Home/{DEFAULT_SCREEN}')),
   HomeTabNav: HomeTabNav.router.getStateForAction(HomeTabNav.router.getActionForPathAndParams('HomeBucketlists/{DEFAULT_SCREEN}')),
   AllBucketlistNavigator: AllBucketlistNavigator.router.getStateForAction(AllBucketlistNavigator.router.getActionForPathAndParams('bucketlists/{DEFAULT_SCREEN}')),
