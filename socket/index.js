@@ -202,7 +202,7 @@ export default (store) => {
         list.bucketlists.forEach((bucketlist) => {
           if (data.sourceUserId !== storeData.profile.id &&
           bucketlist.id === data.comment.bucketlistId) {
-            store.dispatch(commentActions.updateCommentSuccess({
+            store.dispatch(commentActions.editCommentSuccess({
               id: data.comment.bucketlistId,
             }, data.comment));
           }

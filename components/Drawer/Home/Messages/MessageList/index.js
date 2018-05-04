@@ -12,12 +12,14 @@ import {
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { MenuProvider } from 'react-native-popup-menu';
 
 import BaseClass from './BaseClass';
 import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
 import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
+import { ContextMenu } from '../../../../Common/PopupMenu';
 import styles from '../../styles';
 import propTypes from './propTypes';
 
@@ -30,6 +32,8 @@ class MessageList extends BaseClass {
         style={styles.notificationView}
         key={conversation.id}
         onPress={() => this.goToConversation(conversation)}
+        onLongPress={() => this.openMenu(conversation)}
+        delayLongPress={500}
       >
         <View style={styles.notification}>
           <Image
@@ -96,9 +100,14 @@ class MessageList extends BaseClass {
 
   render() {
     const { conversations, currentApiCalls } = this.props;
+    const items = [
+      { label: 'Delete', action: () => this.deleteConversation(this.state.conversation) },
+      { label: 'Mark as read', action: () => this.markAsRead(this.state.conversation) },
+    ];
     return (
-      <View style={styles.container}>
-        {this.state.searching &&
+      <MenuProvider ref={(mc) => { this.menuContext = mc; }} >
+        <View style={styles.container}>
+          {this.state.searching &&
           <TextInput
             style={styles.searchInput}
             value={this.state.searchText}
@@ -107,15 +116,15 @@ class MessageList extends BaseClass {
             placeholderTextColor="#f7f7f7"
             placeholder="Search friends"
           />
-        }
-        {this.state.searching && this.renderResults()}
-        <TouchableOpacity
-          style={[styles.read, styles.compose]}
-          onPress={() => this.toggleNew()}
-        >
-          <Text style={styles.notificationActionText}>{this.state.searching ? 'Cancel' : 'Compose'}</Text>
-        </TouchableOpacity>
-        {!this.state.searching && conversations.length > 0 &&
+          }
+          {this.state.searching && this.renderResults()}
+          <TouchableOpacity
+            style={[styles.read, styles.compose]}
+            onPress={() => this.toggleNew()}
+          >
+            <Text style={styles.notificationActionText}>{this.state.searching ? 'Cancel' : 'Compose'}</Text>
+          </TouchableOpacity>
+          {!this.state.searching && conversations.length > 0 &&
           <FlatList
             enableEmptySections
             keyExtractor={({ id }) => id.toString()}
@@ -131,9 +140,9 @@ class MessageList extends BaseClass {
               />
             }
           />
-        }
-        {
-          !this.state.searching &&
+          }
+          {
+            !this.state.searching &&
           (this.props.conversations.length > 0 ?
             <View style={styles.options}>
               <TouchableOpacity
@@ -142,18 +151,14 @@ class MessageList extends BaseClass {
               >
                 <Text style={styles.notificationActionText}>mark all as read</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.read}
-                onPress={this.clear}
-              >
-                <Text style={styles.notificationActionText}>clear</Text>
-              </TouchableOpacity>
             </View> :
             <View style={styles.none}>
               <Text style={styles.noneText}>{'you\'re all caught up'}</Text>
             </View>)
-        }
-      </View>
+          }
+          <ContextMenu items={items} name="conversations" />
+        </View>
+      </MenuProvider>
     );
   }
 }

@@ -9,9 +9,9 @@ export const addCommentSuccess = (bucketlist, comment) => ({
   message: '',
 });
 
-export const editCommentSuccess = (bucketlist, { content }) => ({
+export const editCommentSuccess = (bucketlist, comment) => ({
   type: types.EDIT_COMMENT,
-  content,
+  comment,
   bucketlist,
   message: '',
 });

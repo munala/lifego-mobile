@@ -4,7 +4,8 @@ import * as apiCallActions from './apiCallActions';
 
 export const sendMessageSuccess = message => ({
   type: types.SEND_MESSAGE,
-  message,
+  message: '',
+  newMessage: message,
 });
 
 export const startConversationSuccess = conversation => ({
@@ -15,12 +16,14 @@ export const startConversationSuccess = conversation => ({
 
 export const editMessageSuccess = message => ({
   type: types.EDIT_MESSAGE,
-  message,
+  message: '',
+  newMessage: message,
 });
 
 export const deleteMessageSuccess = message => ({
   type: types.DELETE_MESSAGE,
-  message,
+  message: '',
+  newMessage: message,
 });
 
 export const deleteConversationSuccess = ({ message, conversation }) => ({
@@ -37,8 +40,13 @@ export const getConversationsSuccess = ({ conversations }) => ({
 
 export const sendMessage = message => async (dispatch) => {
   const response = await messageService.sendMessage(message);
+  dispatch(apiCallActions.beginApiCall());
   if (!response.error) {
     dispatch(sendMessageSuccess(response));
+    dispatch(apiCallActions.resetMessage());
+  } else {
+    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.resetError());
   }
 };
 
@@ -57,9 +65,15 @@ export const startConversation = conversation => async (dispatch) => {
 
 export const updateMessage = message => async (dispatch) => {
   const response = await messageService.updateMessage(message);
+  dispatch(apiCallActions.beginApiCall());
   if (!response.error) {
     dispatch(editMessageSuccess(response));
+    dispatch(apiCallActions.resetMessage());
+  } else {
+    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.resetError());
   }
+  return response;
 };
 
 export const markAsRead = message => async (dispatch) => {
@@ -94,8 +108,8 @@ export const getConversations = () => async (dispatch) => {
 };
 
 export const deleteConversation = conversation => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
   const response = await messageService.deleteConversation(conversation);
+  dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());

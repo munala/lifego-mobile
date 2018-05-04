@@ -1,10 +1,12 @@
 import { Component } from 'react';
+import { Alert } from 'react-native';
 import propTypes from './propTypes';
 
 class BaseClass extends Component {
   state = {
     searching: false,
     searchText: '',
+    conversation: null,
   }
 
   onRefresh =() => {
@@ -37,6 +39,12 @@ class BaseClass extends Component {
   markAllAsRead = () => {
     this.props.conversations.forEach((conversation) => {
       this.markAsRead(conversation);
+    });
+  }
+
+  markAsRead = (conversation) => {
+    conversation.messages.forEach((message) => {
+      this.props.actions.markAsRead(message);
     });
   }
 
@@ -75,6 +83,35 @@ class BaseClass extends Component {
 
   toggleNew = () => {
     this.setState({ searching: !this.state.searching });
+  }
+
+  openMenu = (conversation) => {
+    this.setState({ conversation });
+    this.menuContext.openMenu('conversations');
+  }
+
+  deleteConversation = async (conversation) => {
+    this.menuContext.closeMenu('conversations');
+    Alert.alert(
+      'Delete conversation?',
+      null,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            this.setState({ conversation: null });
+          },
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            await this.props.actions.deleteConversation(conversation);
+            this.setState({ conversation: null });
+          },
+        },
+      ],
+      { cancelable: true },
+    );
   }
 }
 

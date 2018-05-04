@@ -18,8 +18,8 @@ export default function conversationReducer(
 
     case types.SEND_MESSAGE:
       return state.map((conversation) => {
-        if (conversation.id === action.message.conversationId) {
-          return { ...conversation, messages: [action.message, ...conversation.messages] };
+        if (conversation.id === action.newMessage.conversationId) {
+          return { ...conversation, messages: [action.newMessage, ...conversation.messages] };
         }
         return { ...conversation };
       });
@@ -31,7 +31,7 @@ export default function conversationReducer(
           messages: [
             ...conversation.messages
               .map(message => (
-                (message.id === action.message.id) ?
+                (message.id === action.newMessage.id) ?
                   action.message :
                   message)),
           ],
@@ -43,7 +43,7 @@ export default function conversationReducer(
         ...state.map(conversation => ({
           ...conversation,
           messages: [...conversation.messages
-            .filter(message => message.id !== action.message.id)],
+            .filter(message => message.id !== action.newMessage.id)],
         })),
       ];
 

@@ -34,4 +34,14 @@ export default StyleSheet.create({
     paddingLeft: 10,
     height: 40,
   },
+  anchorStyle: {
+    right: 10,
+    top: 0,
+    position: 'absolute',
+  },
+  menu: {
+    top: 0,
+    right: 10,
+    position: 'absolute',
+  },
 });

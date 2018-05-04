@@ -51,7 +51,7 @@ class Bucketlist extends Component {
               <Text style={styles.backButton}>Back</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView >
+          <ScrollView>
             <SingleCard {...bucketlistProps} />
           </ScrollView>
         </View>

@@ -60,6 +60,21 @@ class BaseClass extends Component {
     this.setState({ contentHeight });
   }
 
+  saveMessage = async () => {
+    if (this.state.editMode) {
+      const response = await this.props.actions.updateMessage(this.state.message);
+      if (!response.error) {
+        this.setState({
+          editMode: false,
+          message: { content: '' },
+          selectedMessage: {},
+        });
+      }
+    } else {
+      this.onSubmit();
+    }
+  }
+
   sendMessage = (message, conversation) => {
     if (message.content) {
       this.props.actions.sendMessage({
@@ -99,8 +114,8 @@ class BaseClass extends Component {
 
   deleteConversation = async (conversation) => {
     Alert.alert(
-      'Delete conversation?',
       null,
+      'Delete conversation?',
       [
         { text: 'Cancel', onPress: () => {} },
         {
@@ -115,16 +130,27 @@ class BaseClass extends Component {
     );
   }
 
-  deleteMessage = (message) => {
+  editMessage = () => {
+    this.menuContext.closeMenu('messages');
+    this.setState({
+      message: this.state.selectedMessage,
+      editMode: true,
+    });
+  }
+
+  deleteMessage = () => {
+    this.menuContext.closeMenu('messages');
     Alert.alert(
       'Delete message?',
       null,
       [
-        { text: 'Cancel', onPress: () => {} },
+        {
+          text: 'Cancel',
+          onPress: () => {} },
         {
           text: 'OK',
-          onPress: async () => {
-            await this.props.actions.deleteMessage(message);
+          onPress: () => {
+            this.props.actions.deleteMessage(this.state.selectedMessage);
           },
         },
       ],

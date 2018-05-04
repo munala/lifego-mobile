@@ -3,7 +3,9 @@ import { View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { MenuProvider } from 'react-native-popup-menu';
 
+import { ContextMenu } from '../../../../Common/PopupMenu';
 import BaseClass from './BaseClass';
 import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
@@ -19,6 +21,7 @@ class Conversation extends BaseClass {
       content: '',
     },
     selectedMessage: {},
+    editMode: false,
   }
 
   componentDidMount = () => {
@@ -39,12 +42,12 @@ class Conversation extends BaseClass {
   }
 
   selectMessage = (selectedMessage) => {
+    this.menuContext.openMenu('messages');
     this.setState({ selectedMessage });
   }
 
   renderMessages = messages => messages.map((chatMessage) => {
     const { createdAt, time } = setTime(chatMessage);
-    const { selectedMessage } = this.state;
     const { profile } = this.props;
     const dateTime = `- ${createdAt}${time} -`;
 
@@ -63,16 +66,6 @@ class Conversation extends BaseClass {
         >
           {chatMessage.content}
         </Text>
-        {selectedMessage.senderId === profile.id &&
-          selectedMessage.id === chatMessage.id &&
-          <Icon
-            containerStyle={styles.deleteButton}
-            onPress={() => this.deleteMessage(chatMessage)}
-            name="delete"
-            color="red"
-            size={16}
-          />
-        }
         <Text
           style={styles.timeSent}
         >
@@ -91,6 +84,11 @@ class Conversation extends BaseClass {
     let name;
     let userId;
 
+    const items = [
+      { label: 'Edit', action: this.editMessage },
+      { label: 'Delete', action: this.deleteMessage },
+    ];
+
     if (conversation || newConversation) {
       name = this.getName(conversation || newConversation);
       userId = this.getId(conversation || newConversation);
@@ -100,57 +98,60 @@ class Conversation extends BaseClass {
     }
 
     return (
-      <View style={[styles.container, { backgroundColor: '#fff' }]}>
-        <View style={styles.top}>
-          <Icon
-            style={styles.backButton}
-            onPress={this.goBack}
-            name="chevron-left"
-            color="#00bcd4"
-            size={30}
-          />
-          <TouchableOpacity onPress={() => this.goToProfile({ id: userId })}>
-            <Text style={styles.name}>{name}</Text>
-          </TouchableOpacity>
-          <Icon
-            style={styles.deleteButton}
-            onPress={conversation ? () => this.deleteConversation({ id }) : this.goBack}
-            name="delete"
-            color="red"
-            size={24}
-          />
+      <MenuProvider ref={(mc) => { this.menuContext = mc; }} >
+        <View style={[styles.container, { backgroundColor: '#fff' }]}>
+          <View style={styles.top}>
+            <Icon
+              style={styles.backButton}
+              onPress={this.goBack}
+              name="chevron-left"
+              color="#00bcd4"
+              size={30}
+            />
+            <TouchableOpacity onPress={() => this.goToProfile({ id: userId })}>
+              <Text style={styles.name}>{name}</Text>
+            </TouchableOpacity>
+            <Icon
+              style={styles.deleteButton}
+              onPress={conversation ? () => this.deleteConversation({ id }) : this.goBack}
+              name="delete"
+              color="red"
+              size={24}
+            />
+          </View>
+          <View style={styles.bodyWrapper}>
+            <ScrollView
+              contentContainerStyle={styles.body}
+              ref={(ref) => { this.scrollView = ref; }}
+              onContentSizeChange={() => this.scrollView.scrollToEnd()}
+            >
+              {conversation && this.renderMessages(conversation.messages)}
+            </ScrollView>
+          </View>
+          <View style={styles.newMessage}>
+            <TextInput
+              autoFocus
+              placeholder="type message"
+              underlineColorAndroid="#00bcd4"
+              style={styles.inputStyles}
+              value={message.content}
+              onChangeText={this.onChange}
+              onKeyPress={({ key }) => {
+                if (key === 'Enter') {
+                  this.saveMessage();
+                }
+              }}
+            />
+            <Icon
+              style={styles.newButton}
+              onPress={this.saveMessage}
+              name="send"
+              color="#00bcd4"
+            />
+          </View>
         </View>
-        <View style={styles.bodyWrapper}>
-          <ScrollView
-            contentContainerStyle={styles.body}
-            ref={(ref) => { this.scrollView = ref; }}
-            onContentSizeChange={() => this.scrollView.scrollToEnd()}
-          >
-            {conversation && this.renderMessages(conversation.messages)}
-          </ScrollView>
-        </View>
-        <View style={styles.newMessage}>
-          <TextInput
-            autoFocus
-            placeholder="type message"
-            underlineColorAndroid="#00bcd4"
-            style={styles.inputStyles}
-            value={message.content}
-            onChangeText={this.onChange}
-            onKeyPress={({ key }) => {
-              if (key === 'Enter') {
-                this.onSubmit();
-              }
-            }}
-          />
-          <Icon
-            style={styles.newButton}
-            onPress={this.onSubmit}
-            name="send"
-            color="#00bcd4"
-          />
-        </View>
-      </View>
+        <ContextMenu items={items} name="messages" />
+      </MenuProvider>
     );
   }
 }
