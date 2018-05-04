@@ -97,4 +97,25 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#fff',
   },
+  route: {
+    display: 'flex',
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  routeName: {
+    display: 'flex',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'grey',
+    marginLeft: 20,
+  },
+  active: {
+    color: '#00bcd4',
+  },
+  activeBackground: {
+    backgroundColor: '#f7f7f7',
+  },
 });

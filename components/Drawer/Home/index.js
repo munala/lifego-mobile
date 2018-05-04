@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { TabNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { addNavigationHelpers } from 'react-navigation';
 
 import * as navigationActions from '../../../actions/navigationActions';
-import TabIcon from './TabIcon';
 import Header from '../../Common/Header';
 import SearchResults from '../../Common/SearchResults';
-import HomeScreen from './Bucketlists';
-import Messages from './Messages';
-import Notifications from './Notifications';
-import UserAlerts from './UserAlerts';
 import styles from './styles';
+import HomeTabNavigator from '../../../navigators/home';
+import { addHomeListener } from '../../../store/configureStore';
 
 class Home extends Component {
   state = {
@@ -30,11 +27,11 @@ class Home extends Component {
     await this.setState(() => ({
       searchMode: false,
     }));
-    this.props.actions.setParams({
+    this.props.actions.navigate({
+      route: 'bucketlist',
+      navigator: 'AllBucketlistNavigator',
       params: { id: bucketlist.id, from: 'bucketlists' },
-      navigator: 'allBucketlists',
     });
-    this.props.actions.navigate({ route: 'bucketlist', navigator: 'allBucketlists' });
   }
 
   clearSearch = () => {
@@ -44,74 +41,12 @@ class Home extends Component {
   }
 
   render() {
-    const {
-      route,
-      actions: { navigate },
-    } = this.props;
-    const Tabs = TabNavigator(
-      {
-        Home: {
-          screen: (() => (
-            <HomeScreen
-              imageHeights={this.state.imageHeights}
-              handleHeader={this.handleHeader}
-            />
-          )),
-        },
-        Messages: {
-          screen: Messages,
-        },
-        UserAlerts: {
-          screen: UserAlerts,
-        },
-        Notifications: {
-          screen: Notifications,
-        },
-      },
-      {
-        initialRouteName: route,
-        tabBarPosition: 'bottom',
-        tabBarOptions: {
-          activeTintColor: '#00bcd4',
-          inactiveTintColor: 'gray',
-          showIcon: true,
-          showLabel: false,
-          style: styles.tabBarOptions,
-          indicatorStyle: styles.indicatorStyle,
-        },
-        navigationOptions: ({ navigation: { state } }) => ({
-          tabBarIcon: ({ tintColor }) => {
-            const { routeName } = state;
-            const names = {
-              Home: 'home',
-              Messages: 'message',
-              UserAlerts: 'person-add',
-              Notifications: 'notifications',
-            };
-            const types = {
-              Home: 'allData',
-              Messages: 'conversations',
-              UserAlerts: 'alerts',
-              Notifications: 'notifications',
-            };
-            const name = names[routeName];
-            const type = types[routeName];
-            const iconProps = {
-              name,
-              tintColor,
-              type,
-            };
-            return (<TabIcon {...iconProps} />);
-          },
-        }),
-      },
-    );
     return (
       <View style={[styles.container, styles.iPhoneX]}>
         <Header
           title="Home"
           leftIcon="menu"
-          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
+          onPressLeft={() => this.props.actions.navigate({ route: 'DrawerOpen', navigator: 'DrawerNav' })}
           onFocus={this.onFocus}
           clearSearch={this.clearSearch}
           mode="bucketlists"
@@ -121,17 +56,14 @@ class Home extends Component {
             <SearchResults
               onItemPress={this.onItemPress}
             /> :
-            <Tabs
-              onNavigationStateChange={() => {
-                navigate({
-                  route: 'bucketlists',
-                  navigator: 'allBucketlists',
-                });
-                navigate({
-                  route: 'MessageList',
-                  navigator: 'conversations',
-                });
-              }}
+            <HomeTabNavigator
+              navigation={
+                addNavigationHelpers({
+                  dispatch: this.props.dispatch,
+                  state: this.props.nav,
+                  addHomeListener,
+                })
+              }
             />
         }
       </View>
@@ -140,29 +72,21 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  route: PropTypes.string.isRequired,
   actions: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
   }).isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  nav: PropTypes.shape({}).isRequired,
 };
-
-const mapStateToProps = ({
-  navigationData: { home: { route, params, previousRoute } },
-}, ownProps) => ({
-  ...ownProps,
-  route,
-  params,
-  previousRoute,
+const mapStateToProps = ({ HomeTabNav: nav }) => ({
+  nav,
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     ...navigationActions,
   }, dispatch),
+  dispatch,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

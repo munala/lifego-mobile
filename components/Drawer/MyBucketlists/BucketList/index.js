@@ -43,20 +43,11 @@ class BucketList extends BaseClass {
     searchMode: false,
   };
 
-  componentDidUpdate = ({ error }) => {
-    if (error) {
-      if (error === 'Unauthorised' || error === 'Invalid token') {
-        this.logout();
-      }
-    }
-  }
-
   renderItem = ({ item }) => ( // eslint-disable-line react/prop-types
     <Row
       onDelete={this.onDelete}
       style={styles.bucketlistRow}
       navigate={this.props.actions.navigate}
-      setParams={this.props.actions.setParams}
       content={item}
       context={this.state.context}
       showModal={this.showModal}
@@ -79,7 +70,7 @@ class BucketList extends BaseClass {
         <Header
           title="My Bucketlists"
           leftIcon="menu"
-          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
+          onPressLeft={() => this.props.actions.navigate({ route: 'DrawerOpen', navigator: 'DrawerNav' })}
           search={this.search}
           mode="my_bucketlists"
           clearSearch={this.clearSearch}

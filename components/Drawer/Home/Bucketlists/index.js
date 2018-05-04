@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon } from 'react-native-elements';
 import { View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
+import { addNavigationHelpers } from 'react-navigation';
 
-import AllBucketlists from './AllBucketlists';
-import Bucketlist from './Bucketlist';
+import AllBucketlistNavigator from '../../../../navigators/allBucketlists';
 import styles from '../styles';
-import BucketListForm from '../../../BucketListForm';
+import { addAllListener } from '../../../../store/configureStore';
 
 class HomeView extends Component {
   static navigationOptions = {
@@ -16,43 +15,28 @@ class HomeView extends Component {
   }
 
   render() {
-    const {
-      route,
-    } = this.props;
-    const screens = {
-      bucketlists: {
-        screen: AllBucketlists,
-      },
-      bucketlist: {
-        screen: Bucketlist,
-      },
-      bucketlistForm: {
-        screen: BucketListForm,
-      },
-    };
-    const navigationOptions = {
-      navigationOptions: { header: null },
-      initialRouteName: route,
-    };
-    const Stack = StackNavigator(screens, navigationOptions);
     return (
       <View style={styles.container}>
-        <Stack />
+        <AllBucketlistNavigator navigation={
+          addNavigationHelpers({
+            dispatch: this.props.dispatch,
+            state: this.props.nav,
+            addAllListener,
+          },
+          )}
+        />
       </View>
     );
   }
 }
 
 HomeView.propTypes = {
-  route: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  nav: PropTypes.shape({}).isRequired,
 };
 
-export default connect((({
-  navigationData: {
-    allBucketlists: {
-      route,
-    },
-  },
-}) => ({
-  route,
-})))(HomeView);
+const mapStateToProps = ({ AllBucketlistNavigator: nav }) => ({
+  nav,
+});
+
+export default connect(mapStateToProps)(HomeView);

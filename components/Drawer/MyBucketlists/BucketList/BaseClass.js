@@ -6,13 +6,14 @@ class BaseClass extends Component {
     this.props.actions.loadBucketlists(0, 10, '');
   }
 
-  onSave = (bucketlist, type) => {
+  onSave = async (bucketlist, type) => {
     const { actions } = this.props;
     if (type === 'Add') {
-      actions.saveBucketlist(bucketlist);
+      await actions.saveBucketlist(bucketlist);
     } else {
-      actions.updateBucketlist({ ...bucketlist });
+      await actions.updateBucketlist({ ...bucketlist });
     }
+    this.props.actions.navigate({ navigator: 'MyBucketlistNavigator', route: 'MyBucketlists' });
   }
 
   onDelete = (content) => {
@@ -26,8 +27,9 @@ class BaseClass extends Component {
   }
 
   showModal = async (type, content = {}) => {
-    await this.props.actions.setParams({
-      navigator: 'myBucketlists',
+    this.props.actions.navigate({
+      route: 'newBucketlistForm',
+      navigator: 'MyBucketlistNavigator',
       params: {
         context: {
           ...this.state.context,
@@ -35,10 +37,9 @@ class BaseClass extends Component {
         },
         content,
         onSave: this.onSave,
-        goBack: () => this.props.actions.navigate({ navigator: 'myBucketlists', route: 'bucketlist' }),
+        goBack: () => this.props.actions.navigate({ navigator: 'MyBucketlistNavigator', route: 'MyBucketlists' }),
       },
     });
-    this.props.actions.navigate({ route: 'bucketlistForm', navigator: 'myBucketlists' });
   }
 
   search = (text) => {
@@ -58,20 +59,14 @@ class BaseClass extends Component {
     });
   }
 
-  logout = () => {
-    const { actions } = this.props;
-    actions.logout();
-  }
-
   goToBucketlistForm = async (bucketlist) => {
-    await this.props.actions.setParams({
+    await this.props.actions.navigate({
       params: {
         bucketlist,
-        goBack: () => this.props.actions.navigate({ navigator: 'myBucketlists', route: 'bucketlist' }),
       },
-      navigator: 'myBucketlists',
+      navigator: 'MyBucketlistNavigator',
+      route: 'items',
     });
-    this.props.actions.navigate({ route: 'items', navigator: 'myBucketlists' });
   }
 }
 

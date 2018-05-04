@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native';
 import * as types from './actionTypes';
 import userService from '../api/userApi';
 import * as apiCallActions from './apiCallActions';
+import { navigate } from './navigationActions';
 import { persist } from '../main';
 
 export const loginSuccess = token => ({
@@ -97,12 +98,6 @@ const stripHtml = text => text
   .replace('</b>', '')
   .replace('<br/>', ' ');
 
-const navigate = route => ({
-  type: types.NAVIGATE,
-  navigator: 'auth',
-  route,
-});
-
 export const login = user => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall());
   const token = await userService.loginUser(user);
@@ -112,8 +107,8 @@ export const login = user => async (dispatch) => {
   } else {
     await AsyncStorage.setItem('token', token);
     await AsyncStorage.setItem('start', 'false');
-    dispatch(loginSuccess(token));
-    dispatch(navigate('home'));
+    await dispatch(loginSuccess(token));
+    navigate({ route: 'home', navigator: 'AuthNavigator' })(dispatch);
     dispatch(apiCallActions.resetMessage());
   }
   return token;
@@ -122,9 +117,9 @@ export const login = user => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   await AsyncStorage.setItem('can_login', 'false');
   await AsyncStorage.removeItem('token');
+  await dispatch(logoutUser());
+  await navigate({ route: 'user', navigator: 'AuthNavigator' })(dispatch);
   persist.purge();
-  dispatch(logoutUser());
-  dispatch(navigate('user'));
 };
 
 export const socialLogin = user => async (dispatch) => {
@@ -134,9 +129,10 @@ export const socialLogin = user => async (dispatch) => {
     dispatch(apiCallActions.apiCallError(token.error));
     dispatch(apiCallActions.resetError());
   } else {
-    AsyncStorage.setItem('token', token);
-    dispatch(loginSuccess(token));
-    dispatch(navigate('home'));
+    await AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('start', 'false');
+    await dispatch(loginSuccess(token));
+    navigate({ route: 'home', navigator: 'AuthNavigator' })(dispatch);
     dispatch(apiCallActions.resetMessage());
   }
   return token;

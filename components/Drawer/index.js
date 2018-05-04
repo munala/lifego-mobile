@@ -1,92 +1,38 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { DrawerNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { addNavigationHelpers } from 'react-navigation';
 
-import navigationOptionsWrapper from './navigationOptionsWrapper';
-import CustomDrawer from './Custom';
-import MyBucketlists from './MyBucketlists';
-import Home from './Home';
-import Profile from './Profile';
-import Settings from './Settings';
 import { loadAllBucketlists, loadBucketlists } from '../../actions/bucketlistActions';
 import { getConversations } from '../../actions/messageActions';
 import { getNotifications } from '../../actions/notificationActions';
 import { getAlerts } from '../../actions/userAlertActions';
 import { getProfile } from '../../actions/userActions';
+import { navigate } from '../../actions/navigationActions';
+import DrawerNav from '../../navigators/drawer';
+import { addDrawerListener } from '../../store/configureStore';
 
 class Drawer extends Component {
   componentDidMount = () => {
-    Object.keys(this.props.actions).forEach(key => this.props.actions[key](0, 10));
+    Object.keys(this.props.actions).forEach(key => (key !== 'navigate' ? this.props.actions[key](0, 10) : null));
   }
 
   render() {
-    const { route } = this.props;
-
-    const HomeComponent = navigationOptionsWrapper({
-      drawerLabel: 'Home',
-      icon: 'home',
-      ReturnComponent: Home,
-    });
-
-    const MyBucketlistsComponent = navigationOptionsWrapper({
-      drawerLabel: 'My Bucketlists',
-      icon: 'list',
-      ReturnComponent: MyBucketlists,
-    });
-
-    const ProfileComponent = navigationOptionsWrapper({
-      drawerLabel: 'Profile',
-      icon: 'person',
-      ReturnComponent: Profile,
-    });
-
-    const SettingsComponent = navigationOptionsWrapper({
-      drawerLabel: 'Settings',
-      icon: 'settings',
-      ReturnComponent: Settings,
-    });
-
-    const screens = {
-      Home: {
-        screen: HomeComponent,
-      },
-      Bucketlists: {
-        screen: MyBucketlistsComponent,
-      },
-      Profile: {
-        screen: ProfileComponent,
-      },
-      Settings: {
-        screen: SettingsComponent,
-      },
-    };
-
-    const DrawerNav = DrawerNavigator(
-      screens,
-      {
-        initialRouteName: route,
-        navigationOptions: {
-          header: false,
-        },
-        contentOptions: {
-          inactiveTintColor: 'grey',
-          activeTintColor: '#00bcd4',
-        },
-        contentComponent: props => <CustomDrawer {...props} />,
-      },
-    );
-
     return (
-      <DrawerNav />
+      <DrawerNav navigation={
+        addNavigationHelpers({
+          dispatch: this.props.dispatch,
+          state: this.props.nav,
+          addDrawerListener,
+        },
+        )}
+      />
     );
   }
 }
 
 Drawer.propTypes = {
-  route: PropTypes.string.isRequired,
-  params: PropTypes.shape({}).isRequired,
   actions: PropTypes.shape({
     loadAllBucketlists: PropTypes.func.isRequired,
     loadBucketlists: PropTypes.func.isRequired,
@@ -94,16 +40,14 @@ Drawer.propTypes = {
     getNotifications: PropTypes.func.isRequired,
     getAlerts: PropTypes.func.isRequired,
     getProfile: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  nav: PropTypes.shape({}).isRequired,
 };
 
-Drawer.propTypes = {
-  route: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = ({ navigationData: { drawer: { route, params } } }) => ({
-  route,
-  params,
+const mapStateToProps = ({ DrawerNav: nav }) => ({
+  nav,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -114,7 +58,9 @@ const mapDispatchToProps = dispatch => ({
     getNotifications,
     getAlerts,
     getProfile,
+    navigate,
   }, dispatch),
+  dispatch,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

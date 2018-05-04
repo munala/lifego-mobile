@@ -13,7 +13,11 @@ class BaseClass extends Component {
       Image.getSize(bucketlist.pictureUrl.replace('http', 'https'), (width, height) => {
         const { width: windowWidth } = Dimensions.get('window');
         const factor = width / windowWidth;
-        this.setState({ imageHeight: { width: windowWidth - 10, height: height / factor } });
+        this.setState({
+          imageDimensions: {
+            width: windowWidth - 10, height: height / factor,
+          },
+        });
       });
     }
   }
@@ -36,6 +40,15 @@ class BaseClass extends Component {
         this.setState(() => ({ liking: false }));
       }
     }
+  }
+
+  goToProfile = async ({ id }) => {
+    const {
+      actions: { navigate, getOtherProfile },
+    } = this.props;
+
+    getOtherProfile(id);
+    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: { from: 'Home', viewProfile: true } });
   }
 
   toggleComments = () => {

@@ -1,36 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
+import { addNavigationHelpers } from 'react-navigation';
 
-import Conversation from './Conversation';
-import MessageList from './MessageList';
+import MessageNavigator from '../../../../navigators/messages';
+import { addMessageListener } from '../../../../store/configureStore';
 import styles from '../styles';
 
-const Messages = ({ route }) => {
-  const screens = {
-    MessageList: {
-      screen: MessageList,
-    },
-    Conversation: {
-      screen: Conversation,
-    },
-  };
-  const navigationOptions = {
-    initialRouteName: route,
-    navigationOptions: { header: null },
-  };
-  const Stack = StackNavigator(screens, navigationOptions);
-  return (
-    <View style={styles.container}>
-      <Stack />
-    </View>
-  );
-};
+const Messages = ({ dispatch, nav }) => (
+  <View style={styles.container}>
+    <MessageNavigator navigation={
+      addNavigationHelpers({
+        dispatch,
+        state: nav,
+        addMessageListener,
+      },
+      )}
+    />
+  </View>
+);
 
 Messages.propTypes = {
-  route: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  nav: PropTypes.shape({}).isRequired,
 };
 
-export default connect(({ navigationData: { conversations: { route } } }) => ({ route }))(Messages);
+export default connect(({ MessageNavigator: nav }) => ({
+  nav,
+}))(Messages);

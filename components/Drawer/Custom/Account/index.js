@@ -11,15 +11,20 @@ import { logout } from '../../../../actions/userActions';
 import styles from '../styles';
 
 export default connect(
-  ({ profile }) => ({ ...profile }),
+  ({
+    profile,
+  },
+  ) => ({
+    ...profile,
+  }),
   dispatch => ({
     actions: bindActionCreators({ logout }, dispatch),
   }),
 )(class Account extends Component {
   static propTypes = {
     pictureUrl: PropTypes.string,
-    displayName: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
+    displayName: PropTypes.string,
+    email: PropTypes.string,
     actions: PropTypes.shape({
       logout: PropTypes.func.isRequired,
     }).isRequired,
@@ -27,6 +32,8 @@ export default connect(
 
   static defaultProps = {
     pictureUrl: null,
+    displayName: null,
+    email: null,
   }
 
   state = {

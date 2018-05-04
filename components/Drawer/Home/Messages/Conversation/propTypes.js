@@ -22,5 +22,4 @@ export default {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   params: PropTypes.shape({}).isRequired,
-  previousRoute: PropTypes.string.isRequired,
 };

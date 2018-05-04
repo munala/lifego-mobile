@@ -5,7 +5,6 @@ import {
   Picker,
   View,
 } from 'react-native';
-import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 
@@ -18,19 +17,20 @@ const { propTypes, defaultProps } = propData;
 class BucketListForm extends Component {
   state = {
     disabled: true,
-    content: this.props.params ?
-      { ...this.props.params.content } :
+    content: this.props.navigation.state && this.props.navigation.state.params ?
+      { ...this.props.navigation.state.params.content } :
       { ...this.props.content },
-    context: this.props.params ?
-      { ...this.props.params.context } :
+    context: this.props.navigation.state && this.props.navigation.state.params ?
+      { ...this.props.navigation.state.params.context } :
       { ...this.props.context },
     datePickerMode: false,
     categoryPickerMode: false,
     uploading: false,
     image: {
-      uri: this.props.params.content.pictureUrl ?
-        this.props.params.content.pictureUrl.replace(
-          (this.props.params.content.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+      uri: this.props.navigation.state && this.props.navigation.state.params &&
+      this.props.navigation.state.params.content.pictureUrl ?
+        this.props.navigation.state.params.content.pictureUrl.replace(
+          (this.props.navigation.state.params.content.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
           'https://',
         )
         : null,
@@ -49,10 +49,11 @@ class BucketListForm extends Component {
 
   onSave = async () => {
     this.setState({ uploading: true });
-    const { onSave } = this.props.params;
+    const { onSave } = this.props.navigation.state.params;
     const content = { ...this.state.content };
     if (
-      this.props.params.content.pictureUrl !== (this.state.image.origURL || this.state.image.uri)
+      this.props.navigation.state.params.content.pictureUrl !==
+      (this.state.image.origURL || this.state.image.uri)
     ) {
       if (this.state.image.origURL || this.state.image.uri) {
         let response = await this.uploadFile(this.state.image);
@@ -62,7 +63,6 @@ class BucketListForm extends Component {
       }
     }
     await onSave(content, this.state.context.type);
-    this.props.params.goBack();
   }
 
   onDateChange = (date) => {
@@ -146,7 +146,7 @@ class BucketListForm extends Component {
   ))
 
   render() {
-    const { params: { goBack } } = this.props;
+    const { navigation: { state: { params: { goBack } } } } = this.props;
     const {
       content, context, datePickerMode, categoryPickerMode, disabled, uploading, image,
     } = this.state;
@@ -178,8 +178,4 @@ BucketListForm.propTypes = propTypes;
 
 BucketListForm.defaultProps = defaultProps;
 
-export default connect(({
-  navigationData: { allBucketlists: { params: allParams }, myBucketlists: { params: myParams } },
-}) => ({
-  params: allParams.context ? allParams : myParams,
-}))(BucketListForm);
+export default BucketListForm;

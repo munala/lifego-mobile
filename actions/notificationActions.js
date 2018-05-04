@@ -27,7 +27,7 @@ export const deleteNotificationSuccess = notification => ({
 });
 
 export const getNotifications = () => async (dispatch) => {
-  const response = await notificationService.getNotifications();
+  const response = await notificationService.getNotifications({ source: 'notifications' });
   dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));

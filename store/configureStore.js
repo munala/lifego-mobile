@@ -5,8 +5,46 @@ import logger from 'redux-logger';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import Reactotron from 'reactotron-react-native';
+import { createReactNavigationReduxMiddleware, createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 import rootReducer from '../reducers';
+
+// const authMiddleware = createReactNavigationReduxMiddleware(
+//   'AuthNavigator',
+//   state => state.AuthNavigator,
+// );
+//
+const drawerMiddleware = createReactNavigationReduxMiddleware(
+  'DrawerNav',
+  state => state.DrawerNav,
+);
+
+const homeMiddleware = createReactNavigationReduxMiddleware(
+  'HomeTabNav',
+  state => state.HomeTabNav,
+);
+
+const allMiddleware = createReactNavigationReduxMiddleware(
+  'AllBucketlistNavigator',
+  state => state.AllBucketlistNavigator,
+);
+
+const myMiddleware = createReactNavigationReduxMiddleware(
+  'MyBucketlistNavigator',
+  state => state.MyBucketlistNavigator,
+);
+
+const messageMiddleware = createReactNavigationReduxMiddleware(
+  'MessageNavigator',
+  state => state.MessageNavigator,
+);
+
+// export const addAuthListener = createReduxBoundAddListener('AuthNavigator');
+export const addDrawerListener = createReduxBoundAddListener('DrawerNav');
+export const addHomeListener = createReduxBoundAddListener('HomeTabNav');
+export const addAllListener = createReduxBoundAddListener('AllBucketlistNavigator');
+export const addMyListener = createReduxBoundAddListener('MyBucketlistNavigator');
+export const addMessageListener = createReduxBoundAddListener('MessageNavigator');
 
 const configureStore = (initialState) => {
   const config = {
@@ -17,14 +55,30 @@ const configureStore = (initialState) => {
       'error',
       'searchText',
       'components',
-      'navigationData',
+      'authNavigator',
+      // 'AuthNavigator',
+      'DrawerNav',
+      'HomeTabNav',
+      'AllBucketlistNavigator',
+      'MessageNavigator',
+      'MyBucketlistNavigator',
     ],
   };
 
   const store = Reactotron.createStore(
     persistReducer(config, rootReducer),
     initialState,
-    applyMiddleware(thunk, reduxImmutableStateInvariant(), logger),
+    applyMiddleware(
+      // authMiddleware,
+      drawerMiddleware,
+      homeMiddleware,
+      allMiddleware,
+      myMiddleware,
+      messageMiddleware,
+      thunk,
+      reduxImmutableStateInvariant(),
+      logger,
+    ),
   );
 
   const persistor = persistStore(store);

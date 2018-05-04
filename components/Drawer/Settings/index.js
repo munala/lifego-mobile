@@ -26,11 +26,7 @@ class Settings extends BaseClass {
   };
 
   componentDidUpdate = ({ error, profile }) => {
-    if (error) {
-      if (error === 'Unauthorised' || error === 'Invalid token') {
-        this.props.actions.logout();
-      }
-    } else if (this.props.profile !== profile) {
+    if (!error && this.props.profile !== profile) {
       this.setState({
         profile,
       });
@@ -104,7 +100,7 @@ class Settings extends BaseClass {
         <Header
           title="Settings"
           leftIcon="menu"
-          onPressLeft={() => this.props.navigation.navigate('DrawerOpen')}
+          onPressLeft={() => this.props.actions.navigate({ route: 'DrawerOpen', navigator: 'DrawerNav' })}
           mode="profile"
         />
         <View style={styles.body}>

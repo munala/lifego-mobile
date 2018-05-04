@@ -1,7 +1,7 @@
 import React from 'react';
-import { DrawerItems } from 'react-navigation';
 import { View } from 'react-native';
 
+import DrawerItems from './DrawerItems';
 import Text from '../../Common/SuperText';
 import Account from './Account';
 import styles from './styles';

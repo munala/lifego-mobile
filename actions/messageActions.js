@@ -82,7 +82,7 @@ export const deleteMessage = message => async (dispatch) => {
 };
 
 export const getConversations = () => async (dispatch) => {
-  const response = await messageService.getConversations();
+  const response = await messageService.getConversations({ source: 'messages' });
   dispatch(apiCallActions.beginApiCall());
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));

@@ -19,18 +19,21 @@ class BaseClass extends Component {
   onSubmit = async () => {
     let conversation;
     const { message } = this.state;
-    const { params, conversation: currentConversation } = this.props;
-    if (!currentConversation) {
-      conversation = await this.props.actions
-        .startConversation(params.newConversation);
-      await this.props.actions.setParams({
-        params: { id: conversation.id },
-        navigator: 'conversations',
-      });
-    } else {
-      conversation = currentConversation;
+    if (message.content) {
+      const { params, conversation: currentConversation } = this.props;
+      if (!currentConversation) {
+        conversation = await this.props.actions
+          .startConversation(params.newConversation);
+        await this.props.actions.navigate({
+          params: { id: conversation.id },
+          navigator: 'MessageNavigator',
+          route: 'Conversation',
+        });
+      } else {
+        conversation = currentConversation;
+      }
+      this.sendMessage(message, conversation);
     }
-    this.sendMessage(message, conversation);
   }
 
   getName = (conversation) => {
@@ -38,6 +41,13 @@ class BaseClass extends Component {
       return conversation.receiverDisplayName;
     }
     return conversation.senderDisplayName;
+  }
+
+  getId = (conversation) => {
+    if (this.props.profile.id === conversation.senderId) {
+      return conversation.receiverId;
+    }
+    return conversation.senderId;
   }
 
   setStyle= ({ senderId }, { id }) => ({
@@ -72,7 +82,19 @@ class BaseClass extends Component {
   }
 
   goBack = async () => {
-    this.props.actions.navigate({ route: 'MessageList', navigator: 'conversations' });
+    this.props.actions.navigate({ route: 'MessageList', navigator: 'MessageNavigator', params: { id: undefined, newConversation: undefined } });
+  }
+
+  goToProfile = async ({ id }) => {
+    const {
+      actions: { navigate, getOtherProfile },
+      profile,
+    } = this.props;
+
+    if (profile.id !== id) {
+      getOtherProfile(id);
+    }
+    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: profile.id !== id && { viewProfile: true, from: 'Home' } });
   }
 
   deleteConversation = async (conversation) => {

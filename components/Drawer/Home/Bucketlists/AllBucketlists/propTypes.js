@@ -7,7 +7,6 @@ export default {
     saveBucketlist: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
   }).isRequired,
   allData: PropTypes.shape({
     bucketlists: PropTypes.arrayOf(PropTypes.shape({

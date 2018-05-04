@@ -1,3 +1,7 @@
+import * as navigation from './navigationInitialState';
+
+const { navigationData } = navigation;
+
 export default {
   data: {
     bucketlists: [],
@@ -42,41 +46,8 @@ export default {
   components: {
     showHeader: true,
   },
-  navigationData: {
-    auth: {
-      previousRoute: '',
-      route: 'splash',
-      params: {},
-    },
-    drawer: {
-      previousRoute: '',
-      route: 'Home',
-      params: {},
-    },
-    home: {
-      previousRoute: '',
-      route: 'Home',
-      params: {},
-    },
-    allBucketlists: {
-      previousRoute: '',
-      route: 'bucketlists',
-      params: {},
-    },
-    myBucketlists: {
-      previousRoute: '',
-      route: 'bucketlist',
-      params: {},
-    },
-    conversations: {
-      previousRoute: '',
-      route: 'MessageList',
-      params: {},
-    },
-    profile: {
-      previousRoute: '',
-      route: 'MessageList',
-      params: {},
-    },
+  ...navigationData,
+  authNavigator: {
+    routeName: 'splash',
   },
 };

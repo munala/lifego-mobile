@@ -8,7 +8,6 @@ export default {
     updateItem: PropTypes.func.isRequired,
     deleteItem: PropTypes.func.isRequired,
     navigate: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
   }).isRequired,
   bucketlist: PropTypes.shape({
     name: PropTypes.string.isRequired,
@@ -23,6 +22,5 @@ export default {
       updatedAt: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
     })),
-  }).isRequired,
-  previousRoute: PropTypes.string.isRequired,
+  }),
 };

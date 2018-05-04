@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 
 import * as alertActions from '../../../../actions/userAlertActions';
 import * as userActions from '../../../../actions/userActions';
+import { navigate } from '../../../../actions/navigationActions';
 import Text from '../../../Common/SuperText';
 import styles from '../styles';
 
@@ -51,8 +52,10 @@ class AlertComponent extends Component {
     });
   }
 
-  markAsRead = (alert) => {
+  markAsRead = async (alert) => {
     this.props.actions.markAlertAsRead(alert);
+    this.props.actions.getOtherProfile(alert.userId);
+    this.props.actions.navigate({ route: 'Profile', navigator: 'DrawerNav', params: { viewProfile: true, from: 'Home' } });
   }
 
   deleteAlert = (alert) => {
@@ -178,6 +181,8 @@ AlertComponent.propTypes = {
     markAlertAsRead: PropTypes.func.isRequired,
     deleteAlert: PropTypes.func.isRequired,
     getAlerts: PropTypes.func.isRequired,
+    getOtherProfile: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
   currentApiCalls: PropTypes.number.isRequired,
 };
@@ -190,7 +195,7 @@ const mapStateToProps = ({ profile, alerts, currentApiCalls }, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...alertActions, ...userActions }, dispatch),
+  actions: bindActionCreators({ ...alertActions, ...userActions, navigate }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlertComponent);

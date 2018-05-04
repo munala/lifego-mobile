@@ -5,7 +5,7 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import jwtDecode from 'jwt-decode';
 
 import configureStore from './store/configureStore';
-import App from './screens';
+import App from './app/app';
 import socket from './socket';
 import './reactotronConfig';
 import subscribeMessages from './subscribeMessages';
@@ -16,9 +16,7 @@ subscribeMessages(store);
 
 AsyncStorage.getItem('token').then((token) => {
   if (token && jwtDecode(token).exp >= Date.now() / 1000) {
-    try {
-      socket(store);
-    } catch (err) { } // eslint-disable-line no-empty
+    socket(store);
   }
 });
 
