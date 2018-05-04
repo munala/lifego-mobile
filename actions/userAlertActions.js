@@ -2,10 +2,11 @@ import * as types from './actionTypes';
 import alertService from '../api/userAlertApi';
 import * as apiCallActions from './apiCallActions';
 
-export const getAlertsSuccess = ({ alerts }) => ({
+export const getAlertsSuccess = ({ alerts, screen }) => ({
   type: types.GET_ALERTS,
   alerts,
   message: '',
+  screen,
 });
 
 export const newAlert = ({ alert }) => ({
@@ -27,12 +28,12 @@ export const deleteAlertSuccess = alert => ({
 });
 
 export const getAlerts = () => async (dispatch) => {
-  const response = await alertService.getAlerts({ source: 'alerts' });
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'userAlerts' }));
+  const response = await alertService.getAlerts();
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'userAlerts', error: response.error }));
   } else {
-    dispatch(getAlertsSuccess(response));
+    dispatch(getAlertsSuccess({ ...response, screen: 'userAlerts' }));
   }
 };
 

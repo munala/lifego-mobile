@@ -18,7 +18,17 @@ export default {
   bucketlist: {
     name: '',
   },
-  currentApiCalls: 0,
+  currentApiCalls: {
+    user: 0,
+    allBucketlists: 0,
+    myBucketlists: 0,
+    notifications: 0,
+    messages: 0,
+    userAlerts: 0,
+    profile: 0,
+    settings: 0,
+    others: 0,
+  },
   loggedIn: false,
   error: '',
   message: '',

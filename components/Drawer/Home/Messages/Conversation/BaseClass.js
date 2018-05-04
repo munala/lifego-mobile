@@ -61,7 +61,7 @@ class BaseClass extends Component {
   }
 
   saveMessage = async () => {
-    if (this.state.editMode) {
+    if (this.state.editMode === true) {
       const response = await this.props.actions.updateMessage(this.state.message);
       if (!response.error) {
         this.setState({

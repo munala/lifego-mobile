@@ -187,7 +187,9 @@ AlertComponent.propTypes = {
   currentApiCalls: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ profile, alerts, currentApiCalls }, ownProps) => ({
+const mapStateToProps = ({
+  profile, alerts, currentApiCalls: { userAlerts: currentApiCalls },
+}, ownProps) => ({
   profile,
   alerts,
   currentApiCalls,

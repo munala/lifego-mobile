@@ -199,7 +199,7 @@ class Profile extends BaseClass {
 Profile.propTypes = propTypes;
 
 const mapStateToProps = ({
-  profile, otherProfile, currentApiCalls,
+  profile, otherProfile, currentApiCalls: { profile: currentApiCalls },
 },
 {
   navigation: { state },

@@ -2,10 +2,11 @@ import * as types from './actionTypes';
 import notificationService from '../api/notificationApi';
 import * as apiCallActions from './apiCallActions';
 
-export const getNotificationsSuccess = ({ notifications }) => ({
+export const getNotificationsSuccess = ({ notifications, screen }) => ({
   type: types.GET_NOTIFICATIONS,
   notifications,
   message: '',
+  screen,
 });
 
 export const newNotification = ({ notification }) => ({
@@ -27,13 +28,13 @@ export const deleteNotificationSuccess = notification => ({
 });
 
 export const getNotifications = () => async (dispatch) => {
-  const response = await notificationService.getNotifications({ source: 'notifications' });
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'notifications' }));
+  const response = await notificationService.getNotifications();
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'notifications', error: response.error }));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(getNotificationsSuccess(response));
+    dispatch(getNotificationsSuccess({ ...response, screen: 'notifications' }));
     dispatch(apiCallActions.resetMessage());
   }
 };

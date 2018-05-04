@@ -1,12 +1,14 @@
 import * as types from './actionTypes';
 
-export const beginApiCall = () => ({
+export const beginApiCall = ({ screen }) => ({
   type: types.BEGIN_API_CALL,
+  screen,
 });
 
-export const apiCallError = error => ({
+export const apiCallError = ({ screen, error }) => ({
   type: types.API_CALL_ERROR,
   error,
+  screen,
 });
 
 export const resetMessage = () => ({

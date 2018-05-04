@@ -164,7 +164,9 @@ class Settings extends BaseClass {
 
 Settings.propTypes = propTypes;
 
-const mapStateToProps = ({ profile, currentApiCalls }) => ({ profile, currentApiCalls });
+const mapStateToProps = ({
+  profile, currentApiCalls: { settings: currentApiCalls },
+}) => ({ profile, currentApiCalls });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),

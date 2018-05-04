@@ -132,7 +132,7 @@ class BucketList extends BaseClass {
 BucketList.propTypes = propTypes;
 
 const mapStateToProps = ({
-  currentApiCalls,
+  currentApiCalls: { myBucketlists: currentApiCalls },
   error,
   data: { bucketlists, nextUrl },
 }) => ({

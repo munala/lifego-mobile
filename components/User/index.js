@@ -139,7 +139,7 @@ class User extends BaseClass {
                 disabled={disabled}
               >
                 {
-                  this.props.currentApiCalls > 0 ?
+                  this.props.currentApiCalls.user > 0 ?
                     <ActivityIndicator color="#fff" size="large" /> :
                     <Text style={styles.buttonText}>Sign {registerMode ? 'up' : 'in'}</Text>
                 }

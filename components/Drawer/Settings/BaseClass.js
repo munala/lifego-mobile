@@ -27,7 +27,7 @@ class BaseClass extends Component {
     } = { ...this.props.profile };
     profile.reminders = profile.reminders ? profile.reminders : false;
     profile.reminders = !profile.reminders;
-    this.props.actions.updateProfile(profile);
+    this.props.actions.updateProfile(profile, 'settings');
   }
 
   toggleNotifications = () => {

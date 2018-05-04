@@ -32,10 +32,11 @@ export const deleteConversationSuccess = ({ message, conversation }) => ({
   conversation,
 });
 
-export const getConversationsSuccess = ({ conversations }) => ({
+export const getConversationsSuccess = ({ conversations, screen }) => ({
   type: types.GET_CONVERSATIONS_SUCCESS,
   message: '',
   conversations,
+  screen,
 });
 
 export const sendMessage = message => async (dispatch) => {
@@ -96,13 +97,13 @@ export const deleteMessage = message => async (dispatch) => {
 };
 
 export const getConversations = () => async (dispatch) => {
-  const response = await messageService.getConversations({ source: 'messages' });
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'messages' }));
+  const response = await messageService.getConversations();
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'userAlerts', error: response.error }));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(getConversationsSuccess(response));
+    dispatch(getConversationsSuccess({ ...response, screen: 'messages' }));
     dispatch(apiCallActions.resetMessage());
   }
 };

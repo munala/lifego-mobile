@@ -165,7 +165,9 @@ class MessageList extends BaseClass {
 
 MessageList.propTypes = propTypes;
 
-const mapStateToProps = ({ profile, conversations, currentApiCalls }, ownProps) => ({
+const mapStateToProps = ({
+  profile, conversations, currentApiCalls: { messages: currentApiCalls },
+}, ownProps) => ({
   profile,
   conversations,
   currentApiCalls,

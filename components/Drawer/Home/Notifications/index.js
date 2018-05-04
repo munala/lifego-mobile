@@ -180,7 +180,9 @@ Notifications.propTypes = {
   currentApiCalls: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ profile, notifications, currentApiCalls }, ownProps) => ({
+const mapStateToProps = ({
+  profile, notifications, currentApiCalls: { notifications: currentApiCalls },
+}, ownProps) => ({
   profile,
   notifications,
   currentApiCalls,

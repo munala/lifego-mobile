@@ -6,15 +6,17 @@ import * as apiCallActions from './apiCallActions';
 import { navigate } from './navigationActions';
 import { persist } from '../main';
 
-export const loginSuccess = token => ({
+export const loginSuccess = ({ token, screen }) => ({
   type: types.LOGIN_SUCCESS,
   token,
   message: '',
+  screen,
 });
 
-export const registerSuccess = () => ({
+export const registerSuccess = ({ screen }) => ({
   type: types.REGISTER_SUCCESS,
   message: 'Successfully registered',
+  screen,
 });
 
 export const changeEmailSuccess = message => ({
@@ -32,21 +34,24 @@ export const changeUsernameSuccess = message => ({
   message,
 });
 
-export const resetPasswordSuccess = message => ({
+export const resetPasswordSuccess = ({ message, screen }) => ({
   type: types.RESET_PASSWORD_SUCCESS,
   message,
+  screen,
 });
 
-export const getProfileSuccess = profile => ({
+export const getProfileSuccess = ({ profile, screen }) => ({
   type: types.GET_PROFILE_SUCCESS,
   profile,
   message: '',
+  screen,
 });
 
-export const getOtherProfileSuccess = profile => ({
+export const getOtherProfileSuccess = ({ profile, screen }) => ({
   type: types.GET_OTHER_PROFILE_SUCCESS,
   profile,
   message: '',
+  screen,
 });
 
 export const searchUsersSuccess = ({ users }) => ({
@@ -54,10 +59,11 @@ export const searchUsersSuccess = ({ users }) => ({
   users,
 });
 
-export const updateProfileSuccess = ({ profile, message }) => ({
+export const updateProfileSuccess = ({ profile, screen }) => ({
   type: types.UPDATE_PROFILE_SUCCESS,
   profile,
-  message,
+  message: 'Success',
+  screen,
 });
 
 export const addFriendSuccess = ({ message, friend }) => ({
@@ -99,15 +105,15 @@ const stripHtml = text => text
   .replace('<br/>', ' ');
 
 export const login = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'user' }));
   const token = await userService.loginUser(user);
   if (token.error) {
-    dispatch(apiCallActions.apiCallError(token.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'user', error: token.error }));
     dispatch(apiCallActions.resetError());
   } else {
     await AsyncStorage.setItem('token', token);
     await AsyncStorage.setItem('start', 'false');
-    await dispatch(loginSuccess(token));
+    await dispatch(loginSuccess({ token, screen: 'user' }));
     navigate({ route: 'home', navigator: 'AuthNavigator' })(dispatch);
     dispatch(apiCallActions.resetMessage());
   }
@@ -123,15 +129,15 @@ export const logout = () => async (dispatch) => {
 };
 
 export const socialLogin = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'user' }));
   const token = await userService.socialLogin(user);
   if (token.error) {
-    dispatch(apiCallActions.apiCallError(token.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'user', error: token.error }));
     dispatch(apiCallActions.resetError());
   } else {
     await AsyncStorage.setItem('token', token);
     await AsyncStorage.setItem('start', 'false');
-    await dispatch(loginSuccess(token));
+    await dispatch(loginSuccess({ token, screen: 'user' }));
     navigate({ route: 'home', navigator: 'AuthNavigator' })(dispatch);
     dispatch(apiCallActions.resetMessage());
   }
@@ -139,13 +145,13 @@ export const socialLogin = user => async (dispatch) => {
 };
 
 export const register = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'user' }));
   const response = await userService.registerUser(user);
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'user', error: response.error }));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(registerSuccess());
+    dispatch(registerSuccess({ screen: 'user' }));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
@@ -194,52 +200,52 @@ export const changeUsername = user => async (dispatch) => {
 };
 
 export const resetPassword = email => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'user' }));
   const response = await userService.resetPassword(email);
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'user', error: response.error }));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(resetPasswordSuccess(stripHtml(response.message)));
+    dispatch(resetPasswordSuccess({ screen: 'user', message: stripHtml(response.message) }));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
 };
 
 export const getProfile = () => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'profile' }));
   const response = await userService.getProfile();
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'profile', error: response.error }));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(getProfileSuccess(response));
+    dispatch(getProfileSuccess({ profile: response, screen: 'profile' }));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
 };
 
 export const getOtherProfile = id => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'profile' }));
   const response = await userService.getOtherProfile(id);
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ screen: 'profile', error: response.error }));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(getOtherProfileSuccess(response));
+    dispatch(getOtherProfileSuccess({ profile: response, screen: 'profile' }));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
 };
 
-export const updateProfile = profile => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall());
+export const updateProfile = (profile, screen) => async (dispatch) => {
+  dispatch(apiCallActions.beginApiCall({ screen }));
   const response = await userService.updateProfile(profile);
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ screen, error: response.error }));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(updateProfileSuccess(response));
+    dispatch(updateProfileSuccess({ profile, screen }));
     dispatch(apiCallActions.resetMessage());
   }
   return response;

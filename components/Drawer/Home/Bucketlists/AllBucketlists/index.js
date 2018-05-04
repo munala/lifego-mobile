@@ -102,7 +102,7 @@ class AllBucketlists extends Component {
 
   render() {
     const {
-      currentApiCalls,
+      currentApiCalls: { allBucketlists: currentApiCalls },
       allData: { bucketlists, nextUrl },
       actions: { loadMoreBucketlists, loadAllBucketlists },
     } = this.props;
@@ -158,7 +158,9 @@ class AllBucketlists extends Component {
 
 AllBucketlists.propTypes = propTypes;
 
-const mapStateToProps = ({ currentApiCalls, allData }) => ({ currentApiCalls, allData });
+const mapStateToProps = ({
+  currentApiCalls: { allBucketlists: currentApiCalls }, allData,
+}) => ({ currentApiCalls, allData });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({

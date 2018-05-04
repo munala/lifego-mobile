@@ -35,7 +35,7 @@ class BaseClass extends Component {
       response = await response.json();
       profile.pictureUrl = response.secure_url;
     }
-    await this.props.actions.updateProfile(profile);
+    await this.props.actions.updateProfile(profile, 'profile');
     this.cancel();
   }
 
