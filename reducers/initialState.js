@@ -28,6 +28,7 @@ export default {
     profile: 0,
     settings: 0,
     others: 0,
+    loader: 0,
   },
   loggedIn: false,
   error: '',

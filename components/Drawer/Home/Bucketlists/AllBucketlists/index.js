@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Text from '../../../../Common/SuperText';
+import Loader from '../../../../Common/SmallLoader';
 import * as bucketlistActions from '../../../../../actions/bucketlistActions';
 import * as userActions from '../../../../../actions/userActions';
 import * as navigationActions from '../../../../../actions/navigationActions';
@@ -102,7 +103,8 @@ class AllBucketlists extends Component {
 
   render() {
     const {
-      currentApiCalls: { allBucketlists: currentApiCalls },
+      currentApiCalls,
+      loaderCalls,
       allData: { bucketlists, nextUrl },
       actions: { loadMoreBucketlists, loadAllBucketlists },
     } = this.props;
@@ -144,6 +146,7 @@ class AllBucketlists extends Component {
             </Text>
           </TouchableOpacity>
         }
+        {loaderCalls > 0 && <Loader /> }
         <ActionButton
           size={40}
           buttonColor="#00bcd4"
@@ -159,8 +162,8 @@ class AllBucketlists extends Component {
 AllBucketlists.propTypes = propTypes;
 
 const mapStateToProps = ({
-  currentApiCalls: { allBucketlists: currentApiCalls }, allData,
-}) => ({ currentApiCalls, allData });
+  currentApiCalls: { allBucketlists: currentApiCalls, loader: loaderCalls }, allData,
+}) => ({ currentApiCalls, allData, loaderCalls });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({

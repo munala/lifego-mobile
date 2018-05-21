@@ -79,19 +79,26 @@ export const addNewBucketlist = bucketlist => ({
 export const loadMore = data => ({
   type: types.LOAD_MORE_BUCKETLISTS,
   data,
+  message: '',
+  screen: 'loader',
 });
 
 export const loadMoreAll = data => ({
   type: types.LOAD_MORE_ALL_BUCKETLISTS,
   data,
+  message: '',
+  screen: 'loader',
 });
 
 export const loadMoreBucketlists = (type, offset = 0, limit = 10, search = '') => async (dispatch) => {
   const action = type === 'all' ? BucketlistService.getAllBucketlists : BucketlistService.getBucketlists;
   const actionCreator = type === 'all' ? loadMoreAll : loadMore;
+  dispatch(apiCallActions.beginApiCall({ screen: 'loader' }));
   const response = await action(offset, limit, search);
   if (!response.error) {
     dispatch(actionCreator(response));
+  } else {
+    dispatch(apiCallActions.apiCallError({ screen: 'loader', error: '' }));
   }
 };
 

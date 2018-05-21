@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Text from '../../../Common/SuperText';
+import Loader from '../../../Common/SmallLoader';
 import Header from '../../../Common/Header';
 import SearchResults from '../../../Common/SearchResults';
 import * as bucketlistActions from '../../../../actions/bucketlistActions';
@@ -59,6 +60,7 @@ class BucketList extends BaseClass {
       currentApiCalls,
       bucketlists,
       nextUrl,
+      loaderCalls,
       actions: { loadMoreBucketlists, loadBucketlists },
     } = this.props;
     const { length } = bucketlists;
@@ -117,6 +119,7 @@ class BucketList extends BaseClass {
             }
           />
         }
+        {loaderCalls > 0 && <Loader /> }
         <ActionButton
           size={40}
           fixNativeFeedbackRadius
@@ -132,7 +135,7 @@ class BucketList extends BaseClass {
 BucketList.propTypes = propTypes;
 
 const mapStateToProps = ({
-  currentApiCalls: { myBucketlists: currentApiCalls },
+  currentApiCalls: { myBucketlists: currentApiCalls, loader: loaderCalls },
   error,
   data: { bucketlists, nextUrl },
 }) => ({
@@ -140,6 +143,7 @@ const mapStateToProps = ({
   error,
   bucketlists,
   nextUrl,
+  loaderCalls,
 });
 
 const mapDispatchToProps = dispatch => ({
