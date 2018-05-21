@@ -19,19 +19,22 @@ export const registerSuccess = ({ screen }) => ({
   screen,
 });
 
-export const changeEmailSuccess = message => ({
+export const changeEmailSuccess = (message, screen) => ({
   type: types.CHANGE_EMAIL_SUCCESS,
   message,
+  screen,
 });
 
-export const changePasswordSuccess = message => ({
+export const changePasswordSuccess = (message, screen) => ({
   type: types.CHANGE_PASSWORD_SUCCESS,
   message,
+  screen,
 });
 
-export const changeUsernameSuccess = message => ({
+export const changeUsernameSuccess = (message, screen) => ({
   type: types.CHANGE_USERNAME_SUCCESS,
   message,
+  screen,
 });
 
 export const resetPasswordSuccess = ({ message, screen }) => ({
@@ -70,12 +73,14 @@ export const addFriendSuccess = ({ message, friend }) => ({
   type: types.ADD_FRIEND,
   message,
   friend,
+  screen: 'others',
 });
 
 export const removeFriendSuccess = ({ message }, friend) => ({
   type: types.REMOVE_FRIEND,
   message,
   friend,
+  screen: 'others',
 });
 
 export const removeFollower = follower => ({
@@ -94,9 +99,10 @@ export const logoutUser = () => ({
   type: types.LOGOUT,
 });
 
-export const deleteAccountSuccess = message => ({
+export const deleteAccountSuccess = (message, screen) => ({
   type: types.DELETE_ACCOUNT_SUCCESS,
   message,
+  screen,
 });
 
 const stripHtml = text => text
@@ -159,13 +165,13 @@ export const register = user => async (dispatch) => {
 
 export const changeEmail = user => async (dispatch) => {
   const response = await userService.changeEmail(user);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'settings' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
-    dispatch(changeEmailSuccess(response.message));
+    dispatch(changeEmailSuccess(response.message, 'settings'));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
@@ -173,13 +179,13 @@ export const changeEmail = user => async (dispatch) => {
 
 export const changePassword = user => async (dispatch) => {
   const response = await userService.changePassword(user);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'settings' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
-    dispatch(changePasswordSuccess(response.message));
+    dispatch(changePasswordSuccess(response.message, 'settings'));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
@@ -187,13 +193,13 @@ export const changePassword = user => async (dispatch) => {
 
 export const changeUsername = user => async (dispatch) => {
   const response = await userService.changeUsername(user);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'settings' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
-    dispatch(changeUsernameSuccess(response.message));
+    dispatch(changeUsernameSuccess(response.message, 'settings'));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
@@ -253,12 +259,12 @@ export const updateProfile = (profile, screen) => async (dispatch) => {
 
 export const addFriend = user => async (dispatch) => {
   const response = await userService.addFriend(user);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(addFriendSuccess(response));
+    dispatch(addFriendSuccess(response, 'others'));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
@@ -266,12 +272,12 @@ export const addFriend = user => async (dispatch) => {
 
 export const removeFriend = user => async (dispatch) => {
   const response = await userService.removeFriend(user);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(removeFriendSuccess(response, user));
+    dispatch(removeFriendSuccess(response, user, 'others'));
     dispatch(apiCallActions.resetMessage());
   }
   return response;
@@ -286,12 +292,12 @@ export const searchUsers = name => async (dispatch) => {
 
 export const deleteAccount = user => async (dispatch) => {
   const response = await userService.deleteAccount(user);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'settings' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(deleteAccountSuccess(response.message));
+    dispatch(deleteAccountSuccess(response.message, 'settings'));
     dispatch(apiCallActions.resetMessage());
   }
   return response;

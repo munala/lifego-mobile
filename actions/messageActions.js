@@ -41,7 +41,7 @@ export const getConversationsSuccess = ({ conversations, screen }) => ({
 
 export const sendMessage = message => async (dispatch) => {
   const response = await messageService.sendMessage(message);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (!response.error) {
     dispatch(sendMessageSuccess(response));
     dispatch(apiCallActions.resetMessage());
@@ -53,7 +53,7 @@ export const sendMessage = message => async (dispatch) => {
 
 export const startConversation = conversation => async (dispatch) => {
   const response = await messageService.startConversation(conversation);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
@@ -66,7 +66,7 @@ export const startConversation = conversation => async (dispatch) => {
 
 export const updateMessage = message => async (dispatch) => {
   const response = await messageService.updateMessage(message);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (!response.error) {
     dispatch(editMessageSuccess(response));
     dispatch(apiCallActions.resetMessage());
@@ -86,7 +86,7 @@ export const markAsRead = message => async (dispatch) => {
 
 export const deleteMessage = message => async (dispatch) => {
   const response = await messageService.deleteMessage(message);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
@@ -110,7 +110,7 @@ export const getConversations = () => async (dispatch) => {
 
 export const deleteConversation = conversation => async (dispatch) => {
   const response = await messageService.deleteConversation(conversation);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());

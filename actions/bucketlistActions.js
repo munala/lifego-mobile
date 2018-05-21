@@ -44,6 +44,7 @@ export const createItemSuccess = (bucketlist, item) => ({
   bucketlist,
   item,
   message: '',
+  screen: 'myBucketlists',
 });
 
 export const updateItemSuccess = ({ bucketlist, item }) => ({
@@ -51,6 +52,7 @@ export const updateItemSuccess = ({ bucketlist, item }) => ({
   bucketlist,
   item,
   message: 'Success',
+  screen: 'myBucketlists',
 });
 
 export const deleteItemSuccess = ({ bucketlist, item }) => ({
@@ -58,6 +60,7 @@ export const deleteItemSuccess = ({ bucketlist, item }) => ({
   bucketlist,
   item,
   message: 'Success',
+  screen: 'myBucketlists',
 });
 
 export const resetMessage = dispatch => dispatch({
@@ -154,7 +157,7 @@ export const deleteBucketlist = (bucketlist, screen) => async (dispatch) => {
 
 export const saveItem = (bucketlist, item) => async (dispatch) => {
   const response = await BucketlistService.addItem(bucketlist, item);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'myBucketlists' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
@@ -166,7 +169,7 @@ export const saveItem = (bucketlist, item) => async (dispatch) => {
 
 export const updateItem = (bucketlist, item) => async (dispatch) => {
   const response = await BucketlistService.updateItem(bucketlist, item);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'myBucketlists' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
@@ -178,7 +181,7 @@ export const updateItem = (bucketlist, item) => async (dispatch) => {
 
 export const deleteItem = (bucketlist, item) => async (dispatch) => {
   const response = await BucketlistService.deleteItem(bucketlist, item);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'myBucketlists' }));
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
     dispatch(apiCallActions.resetError());
