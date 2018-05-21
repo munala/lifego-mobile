@@ -16,7 +16,11 @@ export const authNavigatorReducer = (state = initialState.authNavigator, action)
   return state;
 };
 
-export const drawerNavigatorReducer = (state = initialState.DrawerNav, action) => {
+export const drawerNavigatorReducer = (state = initialState.DrawerNav, act) => {
+  const action = act;
+  if (!action.navigator && (action.routeName === 'DrawerOpen' || action.routeName === 'DrawerClose')) {
+    action.navigator = 'DrawerNav';
+  }
   if (action.navigator === 'DrawerNav') {
     const nextState = DrawerNav.router
       .getStateForAction(action, state);

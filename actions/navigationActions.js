@@ -12,6 +12,14 @@ export const navigate = ({
       params,
     }),
   });
+  if (navigator === 'DrawerNav' && route !== 'DrawerOpen') {
+    dispatch({
+      navigator,
+      ...NavigationActions.navigate({
+        routeName: 'DrawerClose',
+      }),
+    });
+  }
 };
 
 export const setParams = ({
