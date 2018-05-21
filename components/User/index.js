@@ -139,7 +139,7 @@ class User extends BaseClass {
                 disabled={disabled}
               >
                 {
-                  this.props.currentApiCalls.user > 0 ?
+                  this.props.currentApiCalls > 0 ?
                     <ActivityIndicator color="#fff" size="large" /> :
                     <Text style={styles.buttonText}>Sign {registerMode ? 'up' : 'in'}</Text>
                 }
@@ -191,7 +191,11 @@ class User extends BaseClass {
 
 User.propTypes = propTypes;
 
-const mapStateToProps = ({ error, message, ...state }) => state;
+const mapStateToProps = ({
+  error,
+  message,
+  currentApiCalls: { user: currentApiCalls }, ...state
+}) => ({ ...state, currentApiCalls });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),

@@ -33,13 +33,12 @@ class SearchResults extends Component {
   }
 
   goToProfile = async ({ id }) => {
-    const { navigate, getOtherProfile } = this.props.actions;
-    await navigate({
-      params: { viewProfile: true },
-      navigator: 'DrawerNav',
-      route: 'Profile',
-    });
+    const {
+      actions: { navigate, getOtherProfile },
+    } = this.props;
+
     getOtherProfile(id);
+    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: { from: 'Home', viewProfile: true } });
   }
 
   renderOptions = person => (
