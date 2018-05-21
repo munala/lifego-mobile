@@ -9,15 +9,15 @@ class BaseClass extends Component {
   onSave = async (bucketlist, type) => {
     const { actions } = this.props;
     if (type === 'Add') {
-      await actions.saveBucketlist(bucketlist);
+      await actions.saveBucketlist(bucketlist, 'myBucketlists');
     } else {
-      await actions.updateBucketlist({ ...bucketlist });
+      await actions.updateBucketlist({ ...bucketlist }, 'myBucketlists');
     }
     this.props.actions.navigate({ navigator: 'MyBucketlistNavigator', route: 'MyBucketlists' });
   }
 
   onDelete = (content) => {
-    this.props.actions.deleteBucketlist(content);
+    this.props.actions.deleteBucketlist(content, 'myBucketlists');
   }
 
   onFocus = () => {

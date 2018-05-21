@@ -48,7 +48,6 @@ class BucketListForm extends Component {
   }
 
   onSave = async () => {
-    this.setState({ uploading: true });
     const { onSave } = this.props.navigation.state.params;
     const content = { ...this.state.content };
     if (
@@ -56,6 +55,7 @@ class BucketListForm extends Component {
       (this.state.image.origURL || this.state.image.uri)
     ) {
       if (this.state.image.origURL || this.state.image.uri) {
+        this.setState({ uploading: true });
         let response = await this.uploadFile(this.state.image);
         this.setState({ uploading: false });
         response = await response.json();
