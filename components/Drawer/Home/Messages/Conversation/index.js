@@ -60,6 +60,7 @@ class Conversation extends BaseClass {
             () => {}
         )}
         delayLongPress={500}
+        activeOpacity={1}
       >
         <Text
           style={[this.setStyle(chatMessage, profile), styles.message]}

@@ -32,7 +32,7 @@ export default function conversationReducer(
             ...conversation.messages
               .map(message => (
                 (message.id === action.newMessage.id) ?
-                  action.message :
+                  action.newMessage :
                   message)),
           ],
         })),

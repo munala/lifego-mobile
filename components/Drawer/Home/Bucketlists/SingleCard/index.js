@@ -39,8 +39,15 @@ class SingleCard extends BaseClass {
         key={bucketlist.id}
         style={styles.bucketlist}
       >
-        <TouchableOpacity onPress={goToBucketlist} style={styles.bucketlistHeader}>
-          <TouchableOpacity onPress={() => this.goToProfile({ id: bucketlist.userId })}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={goToBucketlist}
+          style={styles.bucketlistHeader}
+        >
+          <TouchableOpacity
+            onPress={() => this.goToProfile({ id: bucketlist.userId })}
+            activeOpacity={1}
+          >
             <Img
               style={styles.avatar}
               source={
@@ -89,7 +96,7 @@ class SingleCard extends BaseClass {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={goToBucketlist} style={styles.bucketlistBody}>
+        <TouchableOpacity onPress={goToBucketlist} style={styles.bucketlistBody} activeOpacity={1}>
           <View style={styles.description}>
             <View style={styles.link} >
               <Text style={styles.blue}>{bucketlist.name}</Text>

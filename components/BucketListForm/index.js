@@ -26,6 +26,7 @@ class BucketListForm extends Component {
     datePickerMode: false,
     categoryPickerMode: false,
     uploading: false,
+    saving: false,
     image: {
       uri: this.props.navigation.state && this.props.navigation.state.params &&
       this.props.navigation.state.params.content.pictureUrl ?
@@ -50,6 +51,7 @@ class BucketListForm extends Component {
   onSave = async () => {
     const { onSave } = this.props.navigation.state.params;
     const content = { ...this.state.content };
+    this.setState({ saving: true });
     if (
       this.props.navigation.state.params.content.pictureUrl !==
       (this.state.image.origURL || this.state.image.uri)
@@ -63,6 +65,7 @@ class BucketListForm extends Component {
       }
     }
     await onSave(content, this.state.context.type);
+    this.setState({ saving: false });
   }
 
   onDateChange = (date) => {
@@ -148,7 +151,7 @@ class BucketListForm extends Component {
   render() {
     const { navigation: { state: { params: { goBack } } } } = this.props;
     const {
-      content, context, datePickerMode, categoryPickerMode, disabled, uploading, image,
+      content, context, datePickerMode, categoryPickerMode, disabled, saving, image,
     } = this.state;
     const formProps = {
       content,
@@ -157,7 +160,7 @@ class BucketListForm extends Component {
       categoryPickerMode,
       goBack,
       disabled,
-      uploading,
+      saving,
       image,
       showDatePicker: this.showDatePicker,
       showCategoryPicker: this.showCategoryPicker,

@@ -52,10 +52,14 @@ class AlertComponent extends Component {
     });
   }
 
+  goToProfile = (alert) => {
+    this.markAsRead(alert);
+    this.props.actions.navigate({ route: 'Profile', navigator: 'DrawerNav', params: { viewProfile: true, from: 'Home' } });
+  }
+
   markAsRead = async (alert) => {
     this.props.actions.markAlertAsRead(alert);
     this.props.actions.getOtherProfile(alert.userId);
-    this.props.actions.navigate({ route: 'Profile', navigator: 'DrawerNav', params: { viewProfile: true, from: 'Home' } });
   }
 
   deleteAlert = (alert) => {
@@ -88,7 +92,8 @@ class AlertComponent extends Component {
     <TouchableOpacity
       style={styles.notificationView}
       key={alert.id}
-      onPress={() => this.markAsRead(alert)}
+      onPress={() => this.goToProfile(alert)}
+      activeOpacity={1}
     >
       <View style={[styles.notification, { justifyContent: 'space-between' }]}>
         <Text style={[styles.notificationText, {

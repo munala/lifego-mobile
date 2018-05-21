@@ -87,6 +87,7 @@ class Notifications extends Component {
         style={styles.notificationView}
         key={notification.id}
         onPress={() => this.goToBucketlist(notification)}
+        activeOpacity={1}
       >
         <View style={styles.notification}>
           <Icon

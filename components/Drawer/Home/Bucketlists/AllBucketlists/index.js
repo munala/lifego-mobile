@@ -40,12 +40,15 @@ class AllBucketlists extends Component {
 
   onSave = async (bucketlist, type) => {
     const { actions } = this.props;
+    let response;
     if (type === 'Add') {
-      await actions.saveBucketlist(bucketlist, 'allBucketlists');
+      response = await actions.saveBucketlist(bucketlist, 'allBucketlists');
     } else {
-      await actions.updateBucketlist({ ...bucketlist }, 'allBucketlists');
+      response = await actions.updateBucketlist({ ...bucketlist }, 'allBucketlists');
     }
-    actions.navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists' });
+    if (!response.error) {
+      actions.navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists' });
+    }
   }
 
   openModal = () => {

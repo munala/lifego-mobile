@@ -29,7 +29,7 @@ const Form = ({
   renderCategories,
   onSave,
   disabled,
-  uploading,
+  saving,
   image,
   changePhoto,
 }) => (
@@ -173,10 +173,10 @@ const Form = ({
       <TouchableOpacity
         style={styles.button}
         onPress={onSave}
-        disabled={disabled || uploading}
+        disabled={disabled || saving}
       >
-        {uploading ?
-          <Text style={styles.buttonText}>uploading...</Text> :
+        {saving ?
+          <Text style={styles.buttonText}>saving...</Text> :
           <Text style={styles.buttonText}>{Platform.OS === 'ios' ? 'Save' : 'SAVE'}</Text>}
       </TouchableOpacity>
     </View>

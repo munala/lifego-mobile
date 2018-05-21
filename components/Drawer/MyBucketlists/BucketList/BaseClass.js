@@ -8,12 +8,15 @@ class BaseClass extends Component {
 
   onSave = async (bucketlist, type) => {
     const { actions } = this.props;
+    let response;
     if (type === 'Add') {
-      await actions.saveBucketlist(bucketlist, 'myBucketlists');
+      response = await actions.saveBucketlist(bucketlist, 'myBucketlists');
     } else {
-      await actions.updateBucketlist({ ...bucketlist }, 'myBucketlists');
+      response = await actions.updateBucketlist({ ...bucketlist }, 'myBucketlists');
     }
-    this.props.actions.navigate({ navigator: 'MyBucketlistNavigator', route: 'MyBucketlists' });
+    if (!response.error) {
+      this.props.actions.navigate({ navigator: 'MyBucketlistNavigator', route: 'MyBucketlists' });
+    }
   }
 
   onDelete = (content) => {

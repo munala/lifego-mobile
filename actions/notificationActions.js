@@ -43,7 +43,7 @@ export const markNotificationAsRead = notification => async (dispatch) => {
   const response = await notificationService.markAsRead(notification);
   dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'others' }));
   } else {
     dispatch(markAsReadSuccess(response));
   }
@@ -53,7 +53,7 @@ export const deleteNotification = notification => async (dispatch) => {
   const response = await notificationService.deleteNotification(notification);
   dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'others' }));
   } else {
     dispatch(deleteNotificationSuccess(notification));
   }

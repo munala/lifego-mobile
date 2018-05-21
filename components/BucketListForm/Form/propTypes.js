@@ -19,7 +19,7 @@ export default {
   renderCategories: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
-  uploading: PropTypes.bool.isRequired,
+  saving: PropTypes.bool.isRequired,
   image: PropTypes.shape({}).isRequired,
   changePhoto: PropTypes.func.isRequired,
 };

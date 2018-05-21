@@ -34,6 +34,7 @@ class MessageList extends BaseClass {
         onPress={() => this.goToConversation(conversation)}
         onLongPress={() => this.openMenu(conversation)}
         delayLongPress={500}
+        activeOpacity={1}
       >
         <View style={styles.notification}>
           <Image

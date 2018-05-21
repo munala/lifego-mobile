@@ -22,17 +22,20 @@ class BaseClass extends Component {
 
   onSave = async (item = {}, type) => {
     const { actions, bucketlist } = this.props;
+    let response;
     if (type === 'Add') {
-      await actions.saveItem(bucketlist, item);
+      response = await actions.saveItem(bucketlist, item);
     } else {
-      await actions.updateItem(bucketlist, { ...item });
+      response = await actions.updateItem(bucketlist, { ...item });
     }
-    this.props.actions.navigate({
-      navigator: 'MyBucketlistNavigator',
-      route: 'items',
-      params: {
-        bucketlist,
-      } });
+    if (!response.error) {
+      this.props.actions.navigate({
+        navigator: 'MyBucketlistNavigator',
+        route: 'items',
+        params: {
+          bucketlist,
+        } });
+    }
   }
 
   showModal = async (type, content = {}) => {

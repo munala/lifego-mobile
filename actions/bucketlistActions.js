@@ -130,31 +130,33 @@ export const saveBucketlist = (bucketlist, screen) => async (dispatch) => {
   const response = await BucketlistService.saveBucketlist(bucketlist);
   dispatch(apiCallActions.beginApiCall({ screen }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(createBucketlistSuccess(response, screen));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const updateBucketlist = (bucketlist, screen) => async (dispatch) => {
   const response = await BucketlistService.updateBucketlist(bucketlist);
   dispatch(apiCallActions.beginApiCall({ screen }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(updateBucketlistSuccess(response, screen));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const deleteBucketlist = (bucketlist, screen) => async (dispatch) => {
   const response = await BucketlistService.deleteBucketlist(bucketlist);
   dispatch(apiCallActions.beginApiCall({ screen }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError(...response, screen));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(deleteBucketlistSuccess({ bucketlist, ...response, screen }));
@@ -166,31 +168,33 @@ export const saveItem = (bucketlist, item) => async (dispatch) => {
   const response = await BucketlistService.addItem(bucketlist, item);
   dispatch(apiCallActions.beginApiCall({ screen: 'myBucketlists' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'myBucketlists' }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(createItemSuccess(bucketlist, response));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const updateItem = (bucketlist, item) => async (dispatch) => {
   const response = await BucketlistService.updateItem(bucketlist, item);
   dispatch(apiCallActions.beginApiCall({ screen: 'myBucketlists' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'myBucketlists' }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(updateItemSuccess({ bucketlist, item, ...response }));
     dispatch(apiCallActions.resetMessage());
   }
+  return response;
 };
 
 export const deleteItem = (bucketlist, item) => async (dispatch) => {
   const response = await BucketlistService.deleteItem(bucketlist, item);
   dispatch(apiCallActions.beginApiCall({ screen: 'myBucketlists' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'myBucketlists' }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(deleteItemSuccess({ bucketlist, item, ...response }));

@@ -37,6 +37,7 @@ class Comments extends BaseClass {
             () => {}
         )}
         delayLongPress={500}
+        activeOpacity={1}
       >
         <View
           style={styles.comment}

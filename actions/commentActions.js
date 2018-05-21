@@ -27,7 +27,7 @@ export const addComment = (bucketlist, comment) => async (dispatch) => {
   const response = await commentService.addComment(bucketlist, comment);
   dispatch(apiCallActions.beginApiCall({ screen: 'allBucketlists' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'allBucketlists' }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(addCommentSuccess(bucketlist, response));
@@ -41,7 +41,7 @@ export const updateComment = (bucketlist, comment) => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall({ screen: 'allBucketlists' }));
   if (response.error) {
     dispatch(apiCallActions.resetError());
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'allBucketlists' }));
   } else {
     dispatch(editCommentSuccess(bucketlist, response));
     dispatch(apiCallActions.resetMessage());
@@ -54,7 +54,7 @@ export const deleteComment = (bucketlist, comment) => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall({ screen: 'allBucketlists' }));
   if (response.error) {
     dispatch(apiCallActions.resetError());
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'allBucketlists' }));
   } else {
     dispatch(deleteCommentSuccess(bucketlist, comment));
     dispatch(apiCallActions.resetMessage());

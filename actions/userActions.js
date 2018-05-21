@@ -167,7 +167,7 @@ export const changeEmail = user => async (dispatch) => {
   const response = await userService.changeEmail(user);
   dispatch(apiCallActions.beginApiCall({ screen: 'settings' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'settings' }));
     dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
@@ -181,7 +181,7 @@ export const changePassword = user => async (dispatch) => {
   const response = await userService.changePassword(user);
   dispatch(apiCallActions.beginApiCall({ screen: 'settings' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'settings' }));
     dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
@@ -195,7 +195,7 @@ export const changeUsername = user => async (dispatch) => {
   const response = await userService.changeUsername(user);
   dispatch(apiCallActions.beginApiCall({ screen: 'settings' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'settings' }));
     dispatch(apiCallActions.resetError());
   } else {
     AsyncStorage.setItem('token', response.token);
@@ -261,7 +261,7 @@ export const addFriend = user => async (dispatch) => {
   const response = await userService.addFriend(user);
   dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'others' }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(addFriendSuccess(response, 'others'));
@@ -274,7 +274,7 @@ export const removeFriend = user => async (dispatch) => {
   const response = await userService.removeFriend(user);
   dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'others' }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(removeFriendSuccess(response, user, 'others'));
@@ -294,7 +294,7 @@ export const deleteAccount = user => async (dispatch) => {
   const response = await userService.deleteAccount(user);
   dispatch(apiCallActions.beginApiCall({ screen: 'settings' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'settings' }));
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(deleteAccountSuccess(response.message, 'settings'));

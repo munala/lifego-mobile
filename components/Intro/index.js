@@ -61,6 +61,7 @@ const Intro = ({ actions: { navigate: nav } }) => (
     <AppIntro
       onDoneBtnClick={() => navigateToLogin(nav)}
       onSkipBtnClick={() => navigateToLogin(nav)}
+      customStyles={{ btnContainer: { flex: 1 } }}
     >
       {features.map(feature => (
         <View style={styles.slide} key={feature.icon}>

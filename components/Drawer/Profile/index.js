@@ -80,6 +80,7 @@ class Profile extends BaseClass {
           key={person.id}
           style={[styles.person, this.isLastPerson(index) && styles.lastPerson]}
           onPress={() => this.goToProfile(person.id)}
+          activeOpacity={1}
         >
           <Image
             style={styles.personPic}
@@ -111,7 +112,7 @@ class Profile extends BaseClass {
       activeType, scrollEnabled, editMode, uploading, scrollY,
     } = this.state;
     const {
-      profile, currentApiCalls, otherProfile, viewProfile, from,
+      profile, currentApiCalls, otherProfile, from,
     } = this.props;
     const showUserProfile = !!from && otherProfile.id !== profile.id;
     const avatar = showUserProfile ? otherProfile.pictureUrl : this.state.profile.pictureUrl;
@@ -136,7 +137,7 @@ class Profile extends BaseClass {
     });
 
     const listHeight = 60 * (
-      viewProfile === true ? otherProfile : profile
+      showUserProfile ? otherProfile : profile
     )[activeType.toLowerCase()]
       .length;
     const [firstName, lastName] = (this.state.profile.displayName || '').split(' ');

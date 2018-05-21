@@ -19,12 +19,14 @@ export const markAsReadSuccess = alert => ({
   type: types.EDIT_ALERT,
   alert,
   message: '',
+  screen: 'userAlerts',
 });
 
 export const deleteAlertSuccess = alert => ({
   type: types.DELETE_ALERT,
   alert,
   message: '',
+  screen: 'userAlerts',
 });
 
 export const getAlerts = () => async (dispatch) => {
@@ -39,9 +41,9 @@ export const getAlerts = () => async (dispatch) => {
 
 export const markAlertAsRead = alert => async (dispatch) => {
   const response = await alertService.markAsRead(alert);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'userAlerts' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'userAlerts' }));
   } else {
     dispatch(markAsReadSuccess(response));
   }
@@ -49,9 +51,9 @@ export const markAlertAsRead = alert => async (dispatch) => {
 
 export const deleteAlert = alert => async (dispatch) => {
   const response = await alertService.deleteAlert(alert);
-  dispatch(apiCallActions.beginApiCall());
+  dispatch(apiCallActions.beginApiCall({ screen: 'userAlerts' }));
   if (response.error) {
-    dispatch(apiCallActions.apiCallError(response.error));
+    dispatch(apiCallActions.apiCallError({ ...response, screen: 'userAlerts' }));
   } else {
     dispatch(deleteAlertSuccess(alert));
   }
