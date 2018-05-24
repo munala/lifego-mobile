@@ -20,6 +20,9 @@ class BucketListForm extends Component {
     content: this.props.navigation.state && this.props.navigation.state.params ?
       { ...this.props.navigation.state.params.content } :
       { ...this.props.content },
+    contentCopy: this.props.navigation.state && this.props.navigation.state.params ?
+      { ...this.props.navigation.state.params.content } :
+      { ...this.props.content },
     context: this.props.navigation.state && this.props.navigation.state.params ?
       { ...this.props.navigation.state.params.context } :
       { ...this.props.context },
@@ -40,10 +43,12 @@ class BucketListForm extends Component {
 
   onChange = (text, type) => {
     const content = { ...this.state.content };
-    content[type] = text;
+    const { contentCopy } = this.state;
+    content[type] = text || null;
+    const disabled = !content.name && content[type] === contentCopy[type];
     this.setState({
       content,
-      disabled: !content.name,
+      disabled,
       showCategoryPicker: false,
     });
   }
@@ -62,6 +67,8 @@ class BucketListForm extends Component {
         this.setState({ uploading: false });
         response = await response.json();
         content.pictureUrl = response.url;
+      } else {
+        content.pictureUrl = null;
       }
     }
     await onSave(content, this.state.context.type);
@@ -69,12 +76,13 @@ class BucketListForm extends Component {
   }
 
   onDateChange = (date) => {
-    const { content } = { ...this.state };
-    content.dueDate = date;
+    const { content, contentCopy } = { ...this.state };
+    content.dueDate = date || null;
+    const disabled = !content.name && content.dueDate === contentCopy.dueDate;
     this.setState({
       content,
       showDatePicker: false,
-      disabled: !content.name || content === this.props.content,
+      disabled,
     });
   }
 
@@ -128,14 +136,11 @@ class BucketListForm extends Component {
 
     ImagePicker.showImagePicker(options, async (response) => {
       const { error, didCancel, customButton } = response;
-      const { content } = { ...this.state };
+      const { content } = this.state;
       if (customButton) {
-        this.setState({ image: {} });
+        this.setState({ image: { ...this.state.image, uri: null }, disabled: !content.name });
       } else if (!error && !didCancel) {
-        this.setState({
-          image: response,
-          disabled: !content.name || content === this.props.content,
-        });
+        this.setState({ image: response, disabled: !content.name });
       }
     });
   }
