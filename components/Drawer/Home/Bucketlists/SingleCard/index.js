@@ -30,7 +30,7 @@ class SingleCard extends BaseClass {
   }
 
   render() {
-    const { bucketlist, goToBucketlist, profile, mode } = this.props;
+    const { bucketlist, goToBucketlist, profile, mode, ...rest } = this.props;
     const { imageDimensions, showComments } = this.state;
     const { createdAt, time } = setTime(bucketlist);
 
@@ -166,6 +166,7 @@ class SingleCard extends BaseClass {
               actions={this.props.actions}
               mode={mode}
               goToProfile={this.goToProfile}
+              {...rest}
             />
           }
         </TouchableOpacity>

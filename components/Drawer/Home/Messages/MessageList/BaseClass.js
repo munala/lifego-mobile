@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Alert } from 'react-native';
 import propTypes from './propTypes';
 
 class BaseClass extends Component {
@@ -88,26 +87,25 @@ class BaseClass extends Component {
 
   deleteConversation = async (conversation) => {
     this.closeMenu();
-    Alert.alert(
-      'Delete conversation?',
-      null,
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {
-            this.setState({ conversation: null });
-          },
-        },
-        {
-          text: 'OK',
-          onPress: async () => {
-            await this.props.actions.deleteConversation(conversation);
-            this.setState({ conversation: null });
-          },
-        },
-      ],
-      { cancelable: true },
-    );
+    this.setState({
+      showDialog: true,
+      conversation,
+      deleteMode: 'conversation',
+    });
+  }
+
+  delete = async () => {
+    this.closeDialog();
+    await this.props.actions.deleteConversation(this.state.conversation);
+    this.setState({ conversation: null });
+  }
+
+  cancel = () => {
+    this.setState({
+      editMode: false,
+      deleteMode: '',
+      conversation: null,
+    });
   }
 
   openMenu = (conversation) => {
@@ -120,6 +118,12 @@ class BaseClass extends Component {
   closeMenu = () => {
     this.setState({
       showMenu: false,
+    });
+  }
+
+  closeDialog = () => {
+    this.setState({
+      showDialog: false,
     });
   }
 }

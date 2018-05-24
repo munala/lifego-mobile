@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
 import SingleCard from '../SingleCard';
+import ContextMenu from '../../../../Common/ContextMenu';
+import Dialog from '../../../../Common/Dialog';
+
 import styles from '../../styles';
 import propTypes from './propTypes';
 
 class Bucketlist extends Component {
+  state = { items: [] }
+
   componentDidMount = () => {
     const { bucketlist } = this.props;
     if (!bucketlist) {
@@ -21,6 +26,38 @@ class Bucketlist extends Component {
     if (!bucketlist) {
       navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists' });
     }
+  }
+
+  setItems = (items) => {
+    this.setState({ items });
+  }
+
+  setButtons = (buttons) => {
+    this.setState({ buttons });
+  }
+
+  openMenu = () => {
+    this.setState({
+      showMenu: true,
+    });
+  }
+
+  closeMenu = () => {
+    this.setState({
+      showMenu: false,
+    });
+  }
+
+  openDialog = () => {
+    this.setState({
+      showDialog: true,
+    });
+  }
+
+  closeDialog = () => {
+    this.setState({
+      showDialog: false,
+    });
   }
 
   goBack = async () => {
@@ -40,20 +77,46 @@ class Bucketlist extends Component {
     const bucketlistProps = {
       bucketlist,
       mode: 'single',
+      setItems: this.setItems,
+      setButtons: this.setButtons,
+      openMenu: this.openMenu,
+      closeMenu: this.closeMenu,
+      openDialog: this.openDialog,
+      closeDialog: this.closeDialog,
     };
+    const items = this.state.items;
+    const buttons = this.state.buttons;
+    const dialogProps = {
+      text: 'Delete comment? This action cannot be undone.',
+      buttons,
+      cancelable: true,
+      onCancel: this.closeDialog,
+    };
+
     if (bucketlist) {
       return (
         <View style={styles.container}>
-          <View style={styles.navButtons}>
-            <TouchableOpacity
-              onPress={this.goBack}
-            >
-              <Text style={styles.backButton}>Back</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView>
-            <SingleCard {...bucketlistProps} />
-          </ScrollView>
+          <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
+            <View>
+              <View style={styles.navButtons}>
+                <TouchableOpacity
+                  onPress={this.goBack}
+                >
+                  <Text style={styles.backButton}>Back</Text>
+                </TouchableOpacity>
+              </View>
+              <ScrollView>
+                <SingleCard {...bucketlistProps} />
+              </ScrollView>
+            </View>
+          </TouchableWithoutFeedback>
+          {
+            this.state.showMenu && <ContextMenu items={items} />
+          }
+          {
+            this.state.showDialog && <Dialog {...dialogProps} />
+          }
+
         </View>
       );
     }

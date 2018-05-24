@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Alert } from 'react-native';
 
 import propTypes from './propTypes';
 
@@ -36,22 +35,14 @@ class BaseClass extends Component {
 
   deleteComment = () => {
     this.closeMenu();
-    Alert.alert(
-      'Delete comment?',
-      null,
-      [
-        { text: 'Cancel', onPress: () => {} },
-        {
-          text: 'OK',
-          onPress: async () => {
-            await this.props.actions.deleteComment(
-              this.props.bucketlist,
-              this.state.selectedComment,
-            );
-          },
-        },
-      ],
-      { cancelable: true },
+    this.props.openDialog();
+  }
+
+  delete = () => {
+    this.props.closeDialog();
+    this.props.actions.deleteComment(
+      this.props.bucketlist,
+      this.state.selectedComment,
     );
   }
 
@@ -100,14 +91,12 @@ class BaseClass extends Component {
   openMenu = (selectedComment) => {
     this.setState({
       selectedComment,
-      showMenu: true,
     });
+    this.props.openMenu();
   }
 
   closeMenu = () => {
-    this.setState({
-      showMenu: false,
-    });
+    this.props.closeMenu();
   }
 }
 

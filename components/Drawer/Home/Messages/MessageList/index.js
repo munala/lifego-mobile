@@ -19,6 +19,7 @@ import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
 import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
+import Dialog from '../../../../Common/Dialog';
 import ContextMenu from '../../../../Common/ContextMenu';
 import styles from '../../styles';
 import propTypes from './propTypes';
@@ -105,6 +106,16 @@ class MessageList extends BaseClass {
       { label: 'Delete', action: () => this.deleteConversation(this.state.conversation) },
       { label: 'Mark as read', action: () => this.markAsRead(this.state.conversation) },
     ];
+    const dialogProps = {
+      text: 'Delete conversation? This action cannot be undone.',
+      buttons: [{
+        label: 'Delete',
+        action: this.delete,
+      }],
+      cancelable: true,
+      onCancel: this.closeDialog,
+    };
+
     return (
       <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
         <View style={styles.container}>
@@ -159,6 +170,9 @@ class MessageList extends BaseClass {
           }
           {
             this.state.showMenu && <ContextMenu items={items} />
+          }
+          {
+            this.state.showDialog && <Dialog {...dialogProps} />
           }
         </View>
       </TouchableWithoutFeedback>

@@ -1,9 +1,8 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { View, TouchableOpacity, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput } from 'react-native';
 
 import BaseClass from './BaseClass';
-import ContextMenu from '../../../../../Common/ContextMenu';
 import Text from '../../../../../Common/SuperText';
 import { setTime } from '../../../../../../utils';
 import styles from '../../../styles';
@@ -23,6 +22,17 @@ class Comments extends BaseClass {
     typing: false,
     submitting: false,
     editMode: false,
+  }
+
+  componentDidMount = () => {
+    this.props.setItems([
+      { label: 'Edit', action: this.editComment },
+      { label: 'Delete', action: this.deleteComment },
+    ]);
+    this.props.setButtons([{
+      label: 'Delete',
+      action: this.delete,
+    }]);
   }
 
   renderComments = bucketlist => bucketlist.comments
@@ -60,17 +70,12 @@ class Comments extends BaseClass {
     const { bucketlist, profile } = this.props;
     const { page, typing, comment, submitting, editMode } = this.state;
     const lastPage = Math.floor(this.props.bucketlist.comments.length / 8);
-    const items = [
-      { label: 'Edit', action: this.editComment },
-      { label: 'Delete', action: this.deleteComment },
-    ];
 
     return (
-      <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
-        <View>
-          <View style={styles.commentSection}>
-            {
-              bucketlist.comments.length > 0 &&
+      <View>
+        <View style={styles.commentSection}>
+          {
+            bucketlist.comments.length > 0 &&
               page < lastPage &&
               <TouchableOpacity
                 style={styles.value}
@@ -78,37 +83,37 @@ class Comments extends BaseClass {
               >
                 <Text style={styles.commentNavigator}>more comments</Text>
               </TouchableOpacity>
-            }
-            {this.renderComments(bucketlist) }
-            {
-              bucketlist.comments.length > 0 && page > 0 &&
+          }
+          {this.renderComments(bucketlist) }
+          {
+            bucketlist.comments.length > 0 && page > 0 &&
               <TouchableOpacity
                 style={styles.value}
                 onPress={() => this.navigatePage('previous')}
               >
                 <Text style={styles.commentNavigator}>previous comments</Text>
               </TouchableOpacity>
-            }
-          </View>
-          <View style={styles.newComment}>
-            <Image
-              style={styles.currentAvatar}
-              source={profile.pictureUrl ? { uri: profile.pictureUrl } : require('../../../../../../assets/images/user.png')}
-            />
-            <TextInput
-              type="text"
-              placeholder="type comment"
-              style={[
-                styles.inputText, {
-                  flexBasis: typing ? '70%' : '85%',
-                },
-              ]}
-              onFocus={this.focus}
-              value={typing ? comment.content : ''}
-              onChangeText={this.onChange}
-            />
-            {
-              typing &&
+          }
+        </View>
+        <View style={styles.newComment}>
+          <Image
+            style={styles.currentAvatar}
+            source={profile.pictureUrl ? { uri: profile.pictureUrl } : require('../../../../../../assets/images/user.png')}
+          />
+          <TextInput
+            type="text"
+            placeholder="type comment"
+            style={[
+              styles.inputText, {
+                flexBasis: typing ? '70%' : '85%',
+              },
+            ]}
+            onFocus={this.focus}
+            value={typing ? comment.content : ''}
+            onChangeText={this.onChange}
+          />
+          {
+            typing &&
               <TouchableOpacity
                 style={styles.value}
                 onPress={this.saveComment}
@@ -118,19 +123,15 @@ class Comments extends BaseClass {
                   <Text style={styles.label}>{editMode ? 'SAVE' : 'POST'}</Text>
                 </View>
               </TouchableOpacity>
-            }
-          </View>
-          {
-            this.state.editMode &&
+          }
+        </View>
+        {
+          this.state.editMode &&
             <TouchableOpacity onPress={this.cancel} style={styles.cancel}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
-          }
-          {
-            this.state.showMenu && <ContextMenu items={items} style={styles.commentMenu} />
-          }
-        </View>
-      </TouchableWithoutFeedback>
+        }
+      </View>
     );
   }
 }

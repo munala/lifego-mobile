@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ContextMenu from '../../../../Common/ContextMenu';
+import Dialog from '../../../../Common/Dialog';
 import BaseClass from './BaseClass';
 import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
@@ -22,6 +23,7 @@ class Conversation extends BaseClass {
     selectedMessage: {},
     editMode: false,
     showMenu: false,
+    deleteMode: '',
   }
 
   componentDidMount = () => {
@@ -81,7 +83,7 @@ class Conversation extends BaseClass {
       conversation,
       params: { newConversation, id },
     } = this.props;
-    const { message, showMenu } = this.state;
+    const { message, showMenu, showDialog, deleteMode } = this.state;
     let name;
     let userId;
 
@@ -89,6 +91,16 @@ class Conversation extends BaseClass {
       { label: 'Edit', action: this.editMessage },
       { label: 'Delete', action: this.deleteMessage },
     ];
+
+    const dialogProps = {
+      text: `Delete ${deleteMode}? This action cannot be undone.`,
+      buttons: [{
+        label: 'Delete',
+        action: this.delete,
+      }],
+      cancelable: true,
+      onCancel: this.closeDialog,
+    };
 
     if (conversation || newConversation) {
       name = this.getName(conversation || newConversation);
@@ -131,7 +143,6 @@ class Conversation extends BaseClass {
           </View>
           <View style={styles.newMessage}>
             <TextInput
-              autoFocus
               placeholder="type message"
               underlineColorAndroid="#00bcd4"
               style={styles.inputStyles}
@@ -158,6 +169,9 @@ class Conversation extends BaseClass {
           }
           {
             showMenu && <ContextMenu items={items} />
+          }
+          {
+            showDialog && <Dialog {...dialogProps} />
           }
         </View>
       </TouchableWithoutFeedback>

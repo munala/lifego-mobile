@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Alert } from 'react-native';
 
 import propTypes from './propTypes';
 
@@ -113,21 +112,11 @@ class BaseClass extends Component {
   }
 
   deleteConversation = async (conversation) => {
-    Alert.alert(
-      null,
-      'Delete conversation?',
-      [
-        { text: 'Cancel', onPress: () => {} },
-        {
-          text: 'OK',
-          onPress: async () => {
-            await this.props.actions.deleteConversation(conversation);
-            this.goBack();
-          },
-        },
-      ],
-      { cancelable: true },
-    );
+    this.setState({
+      showDialog: true,
+      conversation,
+      deleteMode: 'conversation',
+    });
   }
 
   editMessage = () => {
@@ -141,28 +130,29 @@ class BaseClass extends Component {
   cancel = () => {
     this.setState({
       message: { content: '' },
+      conversation: null,
       editMode: false,
+      deleteMode: '',
     });
+  }
+
+  delete = async () => {
+    this.closeDialog();
+    if (this.state.deleteMode === 'conversation') {
+      await this.props.actions.deleteConversation(this.state.conversation);
+      this.goBack();
+    } else {
+      this.props.actions.deleteMessage(this.state.selectedMessage);
+    }
   }
 
   deleteMessage = () => {
     this.closeMenu();
-    Alert.alert(
-      'Delete message?',
-      null,
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {} },
-        {
-          text: 'OK',
-          onPress: () => {
-            this.props.actions.deleteMessage(this.state.selectedMessage);
-          },
-        },
-      ],
-      { cancelable: true },
-    );
+    this.setState({
+      showDialog: true,
+      message: this.state.selectedMessage,
+      deleteMode: 'message',
+    });
   }
 
   openMenu = (selectedMessage) => {
@@ -175,6 +165,12 @@ class BaseClass extends Component {
   closeMenu = () => {
     this.setState({
       showMenu: false,
+    });
+  }
+
+  closeDialog = () => {
+    this.setState({
+      showDialog: false,
     });
   }
 }
