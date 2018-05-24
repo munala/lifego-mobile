@@ -6,12 +6,12 @@ import {
   AsyncStorage,
   Animated,
   Image,
-  Text,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import jwtDecode from 'jwt-decode';
 
+import Text from '../Common/SuperText';
 import { navigate } from '../../actions/navigationActions';
 import styles from './styles';
 

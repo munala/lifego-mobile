@@ -1,10 +1,9 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { View, TouchableOpacity, Image, TextInput } from 'react-native';
-import { MenuProvider } from 'react-native-popup-menu';
+import { View, TouchableOpacity, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
 
 import BaseClass from './BaseClass';
-import { ContextMenu } from '../../../../../Common/PopupMenu';
+import ContextMenu from '../../../../../Common/ContextMenu';
 import Text from '../../../../../Common/SuperText';
 import { setTime } from '../../../../../../utils';
 import styles from '../../../styles';
@@ -33,7 +32,7 @@ class Comments extends BaseClass {
         key={comment.id}
         onLongPress={() => (
           (comment.senderId === this.props.profile.id && this.props.mode) ?
-            this.selectComment(comment) :
+            this.openMenu(comment) :
             () => {}
         )}
         delayLongPress={500}
@@ -67,8 +66,7 @@ class Comments extends BaseClass {
     ];
 
     return (
-      <MenuProvider ref={(mc) => { this.menuContext = mc; }} >
-        <ContextMenu items={items} name="comments" />
+      <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
         <View>
           <View style={styles.commentSection}>
             {
@@ -122,8 +120,17 @@ class Comments extends BaseClass {
               </TouchableOpacity>
             }
           </View>
+          {
+            this.state.editMode &&
+            <TouchableOpacity onPress={this.cancel} style={styles.cancel}>
+              <Text style={styles.cancelText}>Cancel</Text>
+            </TouchableOpacity>
+          }
+          {
+            this.state.showMenu && <ContextMenu items={items} style={styles.commentMenu} />
+          }
         </View>
-      </MenuProvider>
+      </TouchableWithoutFeedback>
     );
   }
 }

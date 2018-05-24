@@ -46,6 +46,7 @@ class BaseClass extends Component {
     conversation.messages.forEach((message) => {
       this.props.actions.markAsRead(message);
     });
+    this.closeMenu();
   }
 
   goToConversation = async (conversation) => {
@@ -85,13 +86,8 @@ class BaseClass extends Component {
     this.setState({ searching: !this.state.searching });
   }
 
-  openMenu = (conversation) => {
-    this.setState({ conversation });
-    this.menuContext.openMenu('conversations');
-  }
-
   deleteConversation = async (conversation) => {
-    this.menuContext.closeMenu('conversations');
+    this.closeMenu();
     Alert.alert(
       'Delete conversation?',
       null,
@@ -112,6 +108,19 @@ class BaseClass extends Component {
       ],
       { cancelable: true },
     );
+  }
+
+  openMenu = (conversation) => {
+    this.setState({
+      conversation,
+      showMenu: true,
+    });
+  }
+
+  closeMenu = () => {
+    this.setState({
+      showMenu: false,
+    });
   }
 }
 

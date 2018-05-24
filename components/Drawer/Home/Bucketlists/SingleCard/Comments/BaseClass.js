@@ -35,7 +35,7 @@ class BaseClass extends Component {
   }
 
   deleteComment = () => {
-    this.menuContext.closeMenu('comments');
+    this.closeMenu();
     Alert.alert(
       'Delete comment?',
       null,
@@ -60,7 +60,7 @@ class BaseClass extends Component {
   }
 
   editComment = () => {
-    this.menuContext.closeMenu('comments');
+    this.closeMenu();
     this.setState({
       comment: this.state.selectedComment,
       editMode: true,
@@ -68,9 +68,14 @@ class BaseClass extends Component {
     });
   }
 
-  selectComment = (selectedComment) => {
-    this.menuContext.openMenu('comments');
-    this.setState({ selectedComment });
+  cancel = () => {
+    this.setState({
+      comment: {
+        id: '',
+        content: '',
+      },
+      editMode: false,
+    });
   }
 
   saveComment = async () => {
@@ -90,6 +95,19 @@ class BaseClass extends Component {
     } else {
       this.onSubmit();
     }
+  }
+
+  openMenu = (selectedComment) => {
+    this.setState({
+      selectedComment,
+      showMenu: true,
+    });
+  }
+
+  closeMenu = () => {
+    this.setState({
+      showMenu: false,
+    });
   }
 }
 

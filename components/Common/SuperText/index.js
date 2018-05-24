@@ -9,11 +9,7 @@ const SuperText = props => (
 );
 
 SuperText.propTypes = {
-  style: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({}),
-    PropTypes.arrayOf(PropTypes.any),
-  ]),
+  style: Text.propTypes.style,
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -22,7 +18,7 @@ SuperText.propTypes = {
 };
 
 SuperText.defaultProps = {
-  style: {},
+  style: null,
   children: '',
 };
 

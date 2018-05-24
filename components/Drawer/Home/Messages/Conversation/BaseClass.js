@@ -131,15 +131,22 @@ class BaseClass extends Component {
   }
 
   editMessage = () => {
-    this.menuContext.closeMenu('messages');
+    this.closeMenu();
     this.setState({
       message: this.state.selectedMessage,
       editMode: true,
     });
   }
 
+  cancel = () => {
+    this.setState({
+      message: { content: '' },
+      editMode: false,
+    });
+  }
+
   deleteMessage = () => {
-    this.menuContext.closeMenu('messages');
+    this.closeMenu();
     Alert.alert(
       'Delete message?',
       null,
@@ -156,6 +163,19 @@ class BaseClass extends Component {
       ],
       { cancelable: true },
     );
+  }
+
+  openMenu = (selectedMessage) => {
+    this.setState({
+      selectedMessage,
+      showMenu: true,
+    });
+  }
+
+  closeMenu = () => {
+    this.setState({
+      showMenu: false,
+    });
   }
 }
 

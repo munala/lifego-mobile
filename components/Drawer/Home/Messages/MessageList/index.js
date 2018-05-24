@@ -8,18 +8,18 @@ import {
   Image,
   TextInput,
   ScrollView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { MenuProvider } from 'react-native-popup-menu';
 
 import BaseClass from './BaseClass';
 import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
 import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
-import { ContextMenu } from '../../../../Common/PopupMenu';
+import ContextMenu from '../../../../Common/ContextMenu';
 import styles from '../../styles';
 import propTypes from './propTypes';
 
@@ -106,7 +106,7 @@ class MessageList extends BaseClass {
       { label: 'Mark as read', action: () => this.markAsRead(this.state.conversation) },
     ];
     return (
-      <MenuProvider ref={(mc) => { this.menuContext = mc; }} >
+      <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
         <View style={styles.container}>
           {this.state.searching &&
           <TextInput
@@ -157,9 +157,11 @@ class MessageList extends BaseClass {
               <Text style={styles.noneText}>{'you\'re all caught up'}</Text>
             </View>)
           }
-          <ContextMenu items={items} name="conversations" />
+          {
+            this.state.showMenu && <ContextMenu items={items} />
+          }
         </View>
-      </MenuProvider>
+      </TouchableWithoutFeedback>
     );
   }
 }

@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { MenuProvider } from 'react-native-popup-menu';
 
-import { ContextMenu } from '../../../../Common/PopupMenu';
+import ContextMenu from '../../../../Common/ContextMenu';
 import BaseClass from './BaseClass';
 import * as messageActions from '../../../../../actions/messageActions';
 import * as userActions from '../../../../../actions/userActions';
@@ -22,6 +21,7 @@ class Conversation extends BaseClass {
     },
     selectedMessage: {},
     editMode: false,
+    showMenu: false,
   }
 
   componentDidMount = () => {
@@ -42,7 +42,7 @@ class Conversation extends BaseClass {
   }
 
   selectMessage = (selectedMessage) => {
-    this.menuContext.openMenu('messages');
+    this.openMenu();
     this.setState({ selectedMessage });
   }
 
@@ -56,7 +56,7 @@ class Conversation extends BaseClass {
         key={chatMessage.id}
         onLongPress={() => (
           chatMessage.senderId === profile.id ?
-            this.selectMessage(chatMessage) :
+            this.openMenu(chatMessage) :
             () => {}
         )}
         delayLongPress={500}
@@ -81,7 +81,7 @@ class Conversation extends BaseClass {
       conversation,
       params: { newConversation, id },
     } = this.props;
-    const { message } = this.state;
+    const { message, showMenu } = this.state;
     let name;
     let userId;
 
@@ -99,7 +99,7 @@ class Conversation extends BaseClass {
     }
 
     return (
-      <MenuProvider ref={(mc) => { this.menuContext = mc; }} >
+      <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
         <View style={[styles.container, { backgroundColor: '#fff' }]}>
           <View style={styles.top}>
             <Icon
@@ -150,9 +150,17 @@ class Conversation extends BaseClass {
               color="#00bcd4"
             />
           </View>
+          {
+            this.state.editMode &&
+            <TouchableOpacity onPress={this.cancel} style={styles.cancel}>
+              <Text style={styles.cancelText}>Cancel</Text>
+            </TouchableOpacity>
+          }
+          {
+            showMenu && <ContextMenu items={items} />
+          }
         </View>
-        <ContextMenu items={items} name="messages" />
-      </MenuProvider>
+      </TouchableWithoutFeedback>
     );
   }
 }
