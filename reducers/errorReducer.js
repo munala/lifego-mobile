@@ -7,7 +7,7 @@ export default function errorReducer(
 ) {
   switch (action.type) {
     case types.API_CALL_ERROR:
-      return action.error;
+      return action.error === state ? state : action.error;
 
     case types.LOGOUT:
       return '';

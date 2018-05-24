@@ -20,7 +20,7 @@ class DrawerItems extends Component {
   render() {
     const displayNames = {
       Home: 'Home',
-      Bucketlists: 'My Bucketlists',
+      Bucketlists: 'My Lists',
       Profile: 'Profile',
       Settings: 'Settings',
     };
