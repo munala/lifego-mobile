@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Bucketlists from '../../../List/Bucketlists';
+import Bucketlists from '../../List/Bucketlists';
 
-const AllBucketlists = () => {
-  const navigator = 'AllBucketlistNavigator';
+const MyBucketlists = () => {
+  const navigator = 'MyBucketlistNavigator';
   const route = 'bucketlist';
-  const screen = 'allBucketlists';
+  const screen = 'myBucketlists';
   const currentRoute = 'bucketlists';
 
   const props = {
@@ -18,4 +18,4 @@ const AllBucketlists = () => {
   return (<Bucketlists {...props} />);
 };
 
-export default AllBucketlists;
+export default MyBucketlists;

@@ -70,7 +70,9 @@ class Notifications extends Component {
     this.props.actions.navigate({
       route: 'bucketlist',
       navigator: 'AllBucketlistNavigator',
-      params: { id: notification.bucketlistId, from: 'Notifications' },
+      params: {
+        bucketlist: { id: notification.bucketlistId }, from: 'Notifications', navigator: 'AllBucketlistNavigator',
+      },
     });
   }
 

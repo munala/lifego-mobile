@@ -180,6 +180,17 @@ export default StyleSheet.create({
     backgroundColor: '#eee',
     maxWidth: '95%',
   },
+  item: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 5,
+    padding: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    backgroundColor: '#eee',
+  },
   commentUser: {
     display: 'flex',
     fontSize: 13,
@@ -396,6 +407,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 5,
+    width: 100,
   },
   backButton: {
     display: 'flex',
@@ -727,5 +739,23 @@ export default StyleSheet.create({
     paddingVertical: -1,
     overflow: 'hidden',
     paddingHorizontal: 20,
+  },
+  checkbox: {
+    display: 'flex',
+  },
+  stretch: {
+    display: 'flex',
+    alignSelf: 'stretch',
+  },
+  buttonRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  navigationButtons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

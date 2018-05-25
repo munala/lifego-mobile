@@ -1,18 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ScrollView, TouchableOpacity, View, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as navigationActions from '../../../../../actions/navigationActions';
-import Text from '../../../../Common/SuperText';
+import * as navigationActions from '../../../../actions/navigationActions';
+import * as bucketlistActions from '../../../../actions/bucketlistActions';
+import BaseClass from '../CommonClass';
+import Text from '../../../Common/SuperText';
 import SingleCard from '../SingleCard';
-import ContextMenu from '../../../../Common/ContextMenu';
-import Dialog from '../../../../Common/Dialog';
+import ContextMenu from '../../../Common/ContextMenu';
+import Dialog from '../../../Common/Dialog';
 
-import styles from '../../styles';
+import styles from '../../Home/styles';
 import propTypes from './propTypes';
 
-class Bucketlist extends Component {
+class Bucketlist extends BaseClass {
   state = { items: [] }
 
   componentDidMount = () => {
@@ -20,60 +22,41 @@ class Bucketlist extends Component {
     if (!bucketlist) {
       this.props.actions.navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists' });
     }
+    this.setItems([
+      { label: 'Edit', action: this.editBucketlist },
+      { label: 'Delete', action: this.deleteBucketlist },
+    ]);
+    this.setButtons([{
+      label: 'Delete',
+      action: this.delete,
+    }]);
   }
 
   componentDidUpdate = ({ bucketlist, actions: { navigate } }) => {
     if (!bucketlist) {
-      navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists' });
+      navigate({ navigator: this.props.params.navigator, route: 'bucketlists' });
     }
-  }
-
-  setItems = (items) => {
-    this.setState({ items });
-  }
-
-  setButtons = (buttons) => {
-    this.setState({ buttons });
-  }
-
-  openMenu = () => {
-    this.setState({
-      showMenu: true,
-    });
-  }
-
-  closeMenu = () => {
-    this.setState({
-      showMenu: false,
-    });
-  }
-
-  openDialog = () => {
-    this.setState({
-      showDialog: true,
-    });
-  }
-
-  closeDialog = () => {
-    this.setState({
-      showDialog: false,
-    });
   }
 
   goBack = async () => {
     const {
       actions: { navigate },
-      params,
+      params: { navigator, from },
     } = this.props;
-    const navigator = params.from === 'bucketlists' ? 'AllBucketlistNavigator' : 'HomeTabNav';
-    await navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists', params: { id: undefined } });
-    if (params.from === 'Notifications') {
-      navigate({ navigator, route: params.from });
+    await navigate({ navigator, route: from, params: { id: undefined } });
+    if (from === 'Notifications') {
+      navigate({ navigator: from === 'Notifications' ? 'HomeTabNav' : navigator, route: from });
+      navigate({ navigator, route: 'bucketlists' });
     }
   }
 
+  goToBucketlist = () => {
+    this.closeMenu();
+  }
+
   render() {
-    const { bucketlist } = this.props;
+    const { bucketlist, params: { navigator: nav, from } } = this.props;
+    const navigator = from === 'Notifications' ? 'HomeTabNav' : nav;
     const bucketlistProps = {
       bucketlist,
       mode: 'single',
@@ -83,11 +66,15 @@ class Bucketlist extends Component {
       closeMenu: this.closeMenu,
       openDialog: this.openDialog,
       closeDialog: this.closeDialog,
+      goToBucketlist: this.goToBucketlist,
+      showMenu: this.state.showMenu,
+      fromRoute: 'bucketlist',
+      navigator,
     };
     const items = this.state.items;
     const buttons = this.state.buttons;
     const dialogProps = {
-      text: 'Delete comment? This action cannot be undone.',
+      text: 'Are you sure? This action cannot be undone.',
       buttons,
       cancelable: true,
       onCancel: this.closeDialog,
@@ -116,7 +103,6 @@ class Bucketlist extends Component {
           {
             this.state.showDialog && <Dialog {...dialogProps} />
           }
-
         </View>
       );
     }
@@ -127,7 +113,7 @@ class Bucketlist extends Component {
 Bucketlist.propTypes = propTypes;
 
 const mapStateToProps = ({
-  allData: { bucketlists },
+  allData: { bucketlists }, profile,
 },
 {
   navigation: { state },
@@ -136,9 +122,11 @@ const mapStateToProps = ({
   let param = {};
   if (state && state.params) {
     param = state.params;
-    bucketlist = bucketlists.filter(buck => buck.id === parseInt(state.params.id, 10))[0];
+    bucketlist = bucketlists
+      .filter(buck => buck.id === parseInt(state.params.bucketlist.id, 10))[0];
   }
   return ({
+    profile,
     bucketlist,
     params: param,
   });
@@ -147,6 +135,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     ...navigationActions,
+    ...bucketlistActions,
   }, dispatch),
 });
 

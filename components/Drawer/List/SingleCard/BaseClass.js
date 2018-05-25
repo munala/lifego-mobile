@@ -43,17 +43,27 @@ class BaseClass extends Component {
   }
 
   goToProfile = async ({ id }) => {
-    const {
-      actions: { navigate, getOtherProfile },
-    } = this.props;
+    if (this.props.showMenu) {
+      this.props.closeMenu();
+    } else {
+      const {
+        actions: { navigate, getOtherProfile },
+      } = this.props;
 
-    getOtherProfile(id);
-    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: { from: 'Home', viewProfile: true } });
+      getOtherProfile(id);
+      await navigate({ route: 'Profile', navigator: 'DrawerNav', params: { from: 'Home', viewProfile: true } });
+    }
   }
 
   toggleComments = () => {
     this.setState({
-      showComments: !this.state.showComments,
+      showMode: this.state.showMode === 'comments' ? '' : 'comments',
+    });
+  }
+
+  toggleItems = () => {
+    this.setState({
+      showMode: this.state.showMode === 'items' ? '' : 'items',
     });
   }
 }

@@ -1,17 +1,8 @@
 import { Component } from 'react';
+
 import propTypes from './propTypes';
 
 class BaseClass extends Component {
-  onRefresh = async () => {
-    this.setState(() => ({ refreshing: true }));
-    await this.props.actions.loadBucketlists(0, 10, '');
-    this.setState(() => ({ refreshing: false }));
-  }
-
-  onDelete = (content) => {
-    this.props.actions.deleteItem(this.props.bucketlist, content);
-  }
-
   onDone = (item) => {
     const newItem = { ...item, done: !item.done };
     this.props.actions.updateItem(
@@ -30,19 +21,50 @@ class BaseClass extends Component {
     }
     if (!response.error) {
       this.props.actions.navigate({
-        navigator: 'MyBucketlistNavigator',
-        route: 'items',
+        navigator: this.props.navigator,
+        route: this.props.fromRoute,
         params: {
           bucketlist,
         } });
     }
   }
 
-  showModal = async (type, content = {}) => {
-    await this.props.actions.navigate({
+  navigatePage = (direction) => {
+    this.setState({
+      page: this.state.page + (direction === 'next' ? 1 : -1),
+    });
+  }
+
+  deleteItem = () => {
+    this.closeMenu();
+    this.props.openDialog();
+  }
+
+  delete = () => {
+    this.props.closeDialog();
+    this.props.actions.deleteItem(
+      this.props.bucketlist,
+      this.state.selectedItem,
+    );
+  }
+
+  editItem = () => {
+    this.closeMenu();
+    this.openForm('Edit', this.state.selectedItem);
+  }
+
+  cancel = () => {
+    this.setState({
+      item: {},
+      editMode: false,
+    });
+  }
+
+  openForm = (type, content = {}) => {
+    this.props.actions.navigate({
       params: {
         context: {
-          ...this.state.context,
+          name: 'item',
           type,
         },
         content,
@@ -53,21 +75,25 @@ class BaseClass extends Component {
             params: {
               bucketlist: this.props.bucketlist,
             },
-            navigator: 'MyBucketlistNavigator',
-            route: 'items',
+            navigator: this.props.navigator,
+            route: this.props.fromRoute,
           });
         },
       },
-      navigator: 'MyBucketlistNavigator',
-      route: 'newBucketlistForm',
+      navigator: this.props.navigator,
+      route: 'bucketlistForm',
     });
   }
 
-  toggleFilter = () => {
-    const filter = this.state.filter === 'all' ? 'pending' : 'all';
+  openMenu = (selectedItem) => {
     this.setState({
-      filter,
+      selectedItem,
     });
+    this.props.openMenu();
+  }
+
+  closeMenu = () => {
+    this.props.closeMenu();
   }
 }
 

@@ -1,7 +1,7 @@
 import { StackNavigator } from 'react-navigation';
 
 import AllBucketlists from '../components/Drawer/Home/Bucketlists/AllBucketlists';
-import Bucketlist from '../components/Drawer/Home/Bucketlists/Bucketlist';
+import Bucketlist from '../components/Drawer/List/Bucketlist';
 import BucketListForm from '../components/BucketListForm';
 
 const allBucketlistsScreens = {

@@ -91,8 +91,8 @@ export const loadMoreAll = data => ({
 });
 
 export const loadMoreBucketlists = (type, offset = 0, limit = 10, search = '') => async (dispatch) => {
-  const action = type === 'all' ? BucketlistService.getAllBucketlists : BucketlistService.getBucketlists;
-  const actionCreator = type === 'all' ? loadMoreAll : loadMore;
+  const action = type === 'allBucketlists' ? BucketlistService.getAllBucketlists : BucketlistService.getBucketlists;
+  const actionCreator = type === 'allBucketlists' ? loadMoreAll : loadMore;
   dispatch(apiCallActions.beginApiCall({ screen: 'loader' }));
   const response = await action(offset, limit, search);
   if (!response.error) {

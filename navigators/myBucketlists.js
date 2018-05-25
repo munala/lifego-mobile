@@ -1,24 +1,22 @@
 import { StackNavigator } from 'react-navigation';
 
+import MyBucketlists from '../components/Drawer/MyBucketlists/Bucketlists';
+import Bucketlist from '../components/Drawer/List/Bucketlist';
 import BucketListForm from '../components/BucketListForm';
-import BucketList from '../components/Drawer/MyBucketlists/BucketList/';
-import Items from '../components/Drawer/MyBucketlists/Items';
 
 const myBucketlistsScreens = {
-  MyBucketlists: {
-    screen: BucketList,
+  bucketlists: {
+    screen: MyBucketlists,
   },
-  items: {
-    screen: Items,
+  bucketlist: {
+    screen: Bucketlist,
   },
-  newBucketlistForm: {
+  bucketlistForm: {
     screen: BucketListForm,
   },
 };
 
 export default StackNavigator(myBucketlistsScreens, {
-  inittialRouteName: 'MyBucketlists',
-  navigationOptions: {
-    header: null,
-  },
+  inittialRouteName: 'bucketlists',
+  navigationOptions: { header: null },
 });

@@ -7,5 +7,6 @@ export default {
   }).isRequired,
   bucketlist: PropTypes.shape({
     comments: PropTypes.arrayOf(PropTypes.shape({})),
-  }).isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
 };

@@ -17,5 +17,5 @@ export const navigationData = {
   HomeTabNav: HomeTabNav.router.getStateForAction(HomeTabNav.router.getActionForPathAndParams('HomeBucketlists/{DEFAULT_SCREEN}')),
   AllBucketlistNavigator: AllBucketlistNavigator.router.getStateForAction(AllBucketlistNavigator.router.getActionForPathAndParams('bucketlists/{DEFAULT_SCREEN}')),
   MessageNavigator: MessageNavigator.router.getStateForAction(MessageNavigator.router.getActionForPathAndParams('MessageList/{DEFAULT_SCREEN}')),
-  MyBucketlistNavigator: MyBucketlistNavigator.router.getStateForAction(MyBucketlistNavigator.router.getActionForPathAndParams('MyBucketlists/{DEFAULT_SCREEN}')),
+  MyBucketlistNavigator: MyBucketlistNavigator.router.getStateForAction(MyBucketlistNavigator.router.getActionForPathAndParams('bucketlists/{DEFAULT_SCREEN}')),
 };
