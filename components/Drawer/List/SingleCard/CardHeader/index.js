@@ -102,7 +102,10 @@ CardHeader.propTypes = {
     })),
   }).isRequired,
   goToBucketlist: PropTypes.func.isRequired,
-  createdAt: PropTypes.string.isRequired,
+  createdAt: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
   time: PropTypes.string.isRequired,
   openMenu: PropTypes.func.isRequired,
   goToProfile: PropTypes.func.isRequired,

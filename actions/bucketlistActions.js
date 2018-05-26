@@ -51,7 +51,7 @@ export const updateItemSuccess = ({ bucketlist, item }) => ({
   type: types.UPDATE_ITEM_SUCCESS,
   bucketlist,
   item,
-  message: 'Success',
+  message: '',
   screen: 'myBucketlists',
 });
 
@@ -59,7 +59,7 @@ export const deleteItemSuccess = ({ bucketlist, item }) => ({
   type: types.DELETE_ITEM_SUCCESS,
   bucketlist,
   item,
-  message: 'Success',
+  message: '',
   screen: 'myBucketlists',
 });
 

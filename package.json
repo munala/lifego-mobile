@@ -30,6 +30,7 @@
 		"react-native-action-button": "^2.8.1",
 		"react-native-app-intro": "git+https://github.com/merryjs/react-native-app-intro.git",
 		"react-native-autocomplete-input": "^3.5.0",
+		"react-native-calendar-events": "^1.5.0",
 		"react-native-context-menu-strip": "0.0.2",
 		"react-native-deprecated-custom-components": "^0.1.1",
 		"react-native-elements": "^1.0.0-beta2",

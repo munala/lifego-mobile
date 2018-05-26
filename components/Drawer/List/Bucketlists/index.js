@@ -10,6 +10,8 @@ import ActionButton from 'react-native-action-button';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import RNCalendarEvents from 'react-native-calendar-events';
+import moment from 'moment';
 
 import ContextMenu from '../../../Common/ContextMenu';
 import Dialog from '../../../Common/Dialog';
@@ -57,7 +59,7 @@ class AllBucketlists extends BaseClass {
     await this.loadBucketlists();
   }
 
-  onSave = async (bucketlist, type) => {
+  onSave = async (bucketlist, type, addToCalendar) => {
     const { actions, navigator, screen } = this.props;
     let response;
     if (type === 'Add') {
@@ -67,10 +69,31 @@ class AllBucketlists extends BaseClass {
     }
     if (!response.error) {
       actions.navigate({ navigator, route: 'bucketlists' });
+      if (addToCalendar === true) {
+        const calendars = await RNCalendarEvents.findCalendars();
+        const { id } = calendars[calendars.length - 1];
+        const date = moment(response.dueDate, 'YYYY-MM-DD').utc().add(1, 'days');
+        let status = RNCalendarEvents.authorizationStatus();
+        if (status === 'denied' || status === 'undetermined') {
+          status = RNCalendarEvents.authorizeEventStore();
+        }
+        if (status !== 'denied' && status !== 'undetermined') {
+          const title = response.name;
+          const details = {
+            allDay: true,
+            location: response.location || 'not specified',
+            description: response.description || 'no description',
+            startDate: date,
+            endDate: date,
+            calendarId: id,
+          };
+          RNCalendarEvents.saveEvent(title, details);
+        }
+      }
     }
   }
 
-  loadBucketlists = () => (this.props.screen === 'allBucketlists' ? this.props.actions.loadAllBucketlists : this.props.actions.loadBucketlists)
+  loadBucketlists = this.props.navigator === 'AllBucketlistNavigator' ? this.props.actions.loadAllBucketlists : this.props.actions.loadBucketlists
 
   openModal = () => {
     this.setState({

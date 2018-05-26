@@ -4,6 +4,7 @@ import {
   Platform,
   Picker,
   View,
+  Alert,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -54,25 +55,29 @@ class BucketListForm extends Component {
   }
 
   onSave = async () => {
-    const { onSave } = this.props.navigation.state.params;
     const content = { ...this.state.content };
-    this.setState({ saving: true });
-    if (
-      this.props.navigation.state.params.content.pictureUrl !==
+    if (this.state.addToCalendar && !content.dueDate) {
+      Alert.alert('Missing due date', 'Due date is required to add the buckeltist to your calendar.');
+    } else {
+      const { onSave } = this.props.navigation.state.params;
+      this.setState({ saving: true });
+      if (
+        this.props.navigation.state.params.content.pictureUrl !==
       (this.state.image.origURL || this.state.image.uri)
-    ) {
-      if (this.state.image.origURL || this.state.image.uri) {
-        this.setState({ uploading: true });
-        let response = await this.uploadFile(this.state.image);
-        this.setState({ uploading: false });
-        response = await response.json();
-        content.pictureUrl = response.url;
-      } else {
-        content.pictureUrl = null;
+      ) {
+        if (this.state.image.origURL || this.state.image.uri) {
+          this.setState({ uploading: true });
+          let response = await this.uploadFile(this.state.image);
+          this.setState({ uploading: false });
+          response = await response.json();
+          content.pictureUrl = response.url;
+        } else {
+          content.pictureUrl = null;
+        }
       }
+      await onSave(content, this.state.context.type, this.state.addToCalendar);
+      this.setState({ saving: false });
     }
-    await onSave(content, this.state.context.type);
-    this.setState({ saving: false });
   }
 
   onDateChange = (date) => {
@@ -99,7 +104,15 @@ class BucketListForm extends Component {
         date: content.dueDate ? new Date(content.dueDate) : new Date(),
       });
       if (action !== DatePickerAndroid.dismissedAction) {
-        this.onDateChange(new Date(year, month, day));
+        const date = new Date(year, month, day);
+        this.onDateChange(new Date(
+          Date.UTC(date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            date.getHours(),
+            date.getMinutes(),
+            date.getSeconds(),
+          )));
       }
     }
   }
@@ -145,6 +158,10 @@ class BucketListForm extends Component {
     });
   }
 
+  toggleCalendar = () => {
+    this.setState({ addToCalendar: !this.state.addToCalendar });
+  }
+
   renderCategories = () => categories.map(category => (
     <Picker.Item
       key={category}
@@ -156,7 +173,7 @@ class BucketListForm extends Component {
   render() {
     const { navigation: { state: { params: { goBack } } } } = this.props;
     const {
-      content, context, datePickerMode, categoryPickerMode, disabled, saving, image,
+      content, context, datePickerMode, categoryPickerMode, disabled, saving, image, addToCalendar,
     } = this.state;
     const formProps = {
       content,
@@ -174,6 +191,8 @@ class BucketListForm extends Component {
       renderCategories: this.renderCategories,
       onSave: this.onSave,
       changePhoto: this.changePhoto,
+      toggleCalendar: this.toggleCalendar,
+      addToCalendar,
     };
     if (!context || !content) {
       return (<View />);

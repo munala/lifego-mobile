@@ -174,4 +174,14 @@ export default StyleSheet.create({
     color: Platform.OS === 'ios' ? '#fff' : '#00bcd4',
     backgroundColor: 'transparent',
   },
+  calendar: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  checkbox: {
+    display: 'flex',
+    marginTop: 10,
+  },
 });

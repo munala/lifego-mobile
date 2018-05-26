@@ -108,12 +108,8 @@ Home.propTypes = {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
-  nav: PropTypes.shape({
-    routeName: PropTypes.string.isRequired,
-  }).isRequired,
-  AllBucketlistNavigator: PropTypes.shape({
-    routeName: PropTypes.string.isRequired,
-  }).isRequired,
+  nav: PropTypes.shape({}).isRequired,
+  AllBucketlistNavigator: PropTypes.shape({}).isRequired,
 };
 const mapStateToProps = ({ HomeTabNav: nav, AllBucketlistNavigator }) => ({
   nav,

@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import com.facebook.react.ReactActivity;
 import com.imagepicker.permissions.OnImagePickerPermissionsCallback;
 import com.facebook.react.modules.core.PermissionListener;
+import com.calendarevents.CalendarEventsPackage;
 
 public class MainActivity extends ReactActivity implements OnImagePickerPermissionsCallback  {
 
@@ -34,6 +35,8 @@ public class MainActivity extends ReactActivity implements OnImagePickerPermissi
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
+      CalendarEventsPackage.onRequestPermissionsResult(requestCode, permissions, grantResults);
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
       if (listener != null)
       {
         listener.onRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -8,6 +8,7 @@ import {
   Picker,
   ScrollView,
   Image,
+  CheckBox,
 } from 'react-native';
 
 import Text from '../../Common/SuperText';
@@ -32,6 +33,8 @@ const Form = ({
   saving,
   image,
   changePhoto,
+  addToCalendar,
+  toggleCalendar,
 }) => (
   <View style={styles.flexOne}>
     <ScrollView
@@ -159,7 +162,17 @@ const Form = ({
               <Text style={styles.paragraph}>change</Text> :
               <Text style={styles.plusSign}>add</Text>}
           </TouchableOpacity>
-
+          {context.type === 'Add' &&
+          <View
+            style={styles.calendar}
+          >
+            <Text style={styles.grey}>Add to calendar</Text>
+            <CheckBox
+              style={styles.checkbox}
+              value={addToCalendar}
+              onValueChange={toggleCalendar}
+            />
+          </View>}
         </View>
       }
     </ScrollView>
