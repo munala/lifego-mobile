@@ -8,6 +8,10 @@ class BaseClass extends Component {
     conversation: null,
   }
 
+  shouldComponentUpdate = ({
+    conversations,
+  }) => JSON.stringify(conversations) !== JSON.stringify(this.props.conversations)
+
   onRefresh =() => {
     this.props.actions.getConversations();
   }

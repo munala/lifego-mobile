@@ -12,6 +12,10 @@ import Text from '../../../Common/SuperText';
 import styles from '../styles';
 
 class AlertComponent extends Component {
+  shouldComponentUpdate = ({
+    alerts,
+  }) => JSON.stringify(alerts) !== JSON.stringify(this.props.alerts)
+
   onRefresh = () => {
     this.props.actions.getAlerts();
   }

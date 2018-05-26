@@ -50,7 +50,6 @@ const configureStore = (initialState) => {
       'searchText',
       'components',
       'authNavigator',
-      // 'AuthNavigator',
       'DrawerNav',
       'HomeTabNav',
       'AllBucketlistNavigator',
@@ -58,6 +57,13 @@ const configureStore = (initialState) => {
       'MyBucketlistNavigator',
     ],
   };
+
+  let devMiddleware = [];
+
+  if (__DEV__) { // eslint-disable-line no-undef
+    devMiddleware = devMiddleware.concat([reduxImmutableStateInvariant(), logger]);
+  }
+
 
   const store = Reactotron.createStore(
     persistReducer(config, rootReducer),
@@ -69,8 +75,7 @@ const configureStore = (initialState) => {
       myMiddleware,
       messageMiddleware,
       thunk,
-      reduxImmutableStateInvariant(),
-      logger,
+      ...devMiddleware,
     ),
   );
 

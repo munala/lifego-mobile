@@ -11,6 +11,10 @@ import * as navigationActions from '../../../../actions/navigationActions';
 import styles from '../styles';
 
 class Notifications extends Component {
+  shouldComponentUpdate = ({
+    notifications,
+  }) => JSON.stringify(notifications) !== JSON.stringify(this.props.notifications)
+
   onRefresh = () => {
     this.props.actions.getNotifications();
   }

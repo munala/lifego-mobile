@@ -123,6 +123,7 @@ class SingleCard extends BaseClass {
             <Image
               indicator={Progress.Pie}
               color="#fff"
+              resizeMethod="resize"
               source={{
                 uri: (
                   bucketlist.pictureUrl.replace(

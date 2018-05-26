@@ -167,61 +167,6 @@ class BaseClass extends Component {
     });
     this.props.actions.getOtherProfile(id);
   }
-
-  goBack = async () => {
-    const [from, ...routes] = this.props.previousRoutes;
-    const [newFrom] = routes;
-    if (from === 'Profile') {
-      const [previousId, ...newIds] = this.props.previousIds;
-      this.props.actions.navigate({
-        params: { viewProfile: true, previousIds: newIds, previousRoutes: routes, from: newFrom },
-        navigator: 'DrawerNav',
-        route: 'Profile',
-      });
-      this.props.actions.getOtherProfile(previousId || this.props.profile.id);
-    } else {
-      await this.props.actions.navigate({
-        navigator: 'DrawerNav',
-        route: 'Profile',
-        params: {
-          previousRoutes: undefined,
-          from: undefined,
-          viewProfile: false,
-          previousIds: undefined,
-        },
-      });
-      this.props.actions.navigate({
-        navigator: 'DrawerNav',
-        route: from,
-      });
-    }
-  }
-
-  sendMessage = async (receiver) => {
-    const newConversation = {
-      senderId: this.props.profile.id,
-      senderDisplayName: this.props.profile.displayName,
-      senderUsername: this.props.profile.username,
-      senderPictureUrl: this.props.profile.pictureUrl,
-      receiverId: receiver.id,
-      receiverPictureUrl: receiver.pictureUrl,
-      receiverUsername: receiver.username,
-      receiverDisplayName: receiver.displayName,
-    };
-    await this.props.actions.navigate({
-      route: 'Home',
-      navigator: 'DrawerNav',
-    });
-    await this.props.actions.navigate({
-      route: 'Messages',
-      navigator: 'HomeTabNav',
-    });
-    this.props.actions.navigate({
-      route: 'Conversation',
-      navigator: 'MessageNavigator',
-      params: { id: null, newConversation },
-    });
-  }
 }
 
 BaseClass.propTypes = propTypes;

@@ -54,6 +54,10 @@ class Bucketlist extends BaseClass {
     this.closeMenu();
   }
 
+  shouldComponentUpdate = ({
+    bucketlist,
+  }) => JSON.stringify(bucketlist) !== JSON.stringify(this.props.bucketlist)
+
   render() {
     const { bucketlist, params: { navigator: nav, from } } = this.props;
     const navigator = from === 'Notifications' ? 'HomeTabNav' : nav;

@@ -102,6 +102,12 @@ class AllBucketlists extends BaseClass {
     }
   }
 
+  shouldComponentUpdate = ({
+    currentApiCalls, data, loaderCalls,
+  }) => JSON.stringify(data) !== JSON.stringify(this.props.data) ||
+  currentApiCalls !== this.props.currentApiCalls ||
+  loaderCalls !== this.props.loaderCalls
+
   renderItem = ({ item }) => { // eslint-disable-line react/prop-types
     const bucketlistProps = {
       bucketlist: item,
@@ -160,6 +166,7 @@ class AllBucketlists extends BaseClass {
                 loadMore ? (() => loadMoreBucketlists(screen, offset)) : (() => {})
               }
               onEndReachedThreshold={0.01}
+              removeClippedSubviews
               refreshControl={
                 <RefreshControl
                   refreshing={currentApiCalls > 0}
