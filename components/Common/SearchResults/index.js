@@ -57,7 +57,7 @@ class SearchResults extends Component {
     </TouchableOpacity>
   )
 
-  renderBucketlists = (bucketlists, onItemPress) => bucketlists.map(result => (
+  renderBucketlists = (bucketlists, onItemPress) => bucketlists && bucketlists.map(result => (
     <ListItem
       key={result.id}
       title={result.name}
@@ -90,7 +90,7 @@ class SearchResults extends Component {
   render() {
     const { bucketlistMode } = this.state;
     const {
-      bucketlists, onItemPress, profile: { searchUsers }, searchText,
+      bucketlists, onItemPress, profile: { searchUsers },
     } = this.props;
     return (
       <ScrollView>
@@ -108,16 +108,13 @@ class SearchResults extends Component {
             <Text style={[styles.optionText, { color: !bucketlistMode ? '#f7f7f7' : 'grey' }]}>users</Text>
           </TouchableOpacity>
         </View>
-        {
-          !!searchText &&
-          <List containerStyle={styles.results}>
-            {
-              bucketlistMode ?
-                this.renderBucketlists(bucketlists, onItemPress) :
-                this.renderUsers(searchUsers)
-            }
-          </List>
-        }
+        <List containerStyle={styles.results}>
+          {
+            bucketlistMode ?
+              this.renderBucketlists(bucketlists, onItemPress) :
+              this.renderUsers(searchUsers)
+          }
+        </List>
       </ScrollView>
     );
   }
@@ -141,12 +138,11 @@ SearchResults.propTypes = {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   onItemPress: PropTypes.func.isRequired,
-  searchText: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = ({
   searchText,
-  allData: { bucketlists },
+  allData: { searchResults: bucketlists },
   profile,
 }, ownProps) => ({
   searchText,

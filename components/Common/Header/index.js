@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Text from '../SuperText';
-import { loadAllBucketlists, loadBucketlists } from '../../../actions/bucketlistActions';
+import { searchBucketlists, clearSearch as clearBucketlists } from '../../../actions/bucketlistActions';
 import { logout, searchUsers } from '../../../actions/userActions';
 import * as searchActions from '../../../actions/searchActions';
 import PopupMenu from '../PopupMenu';
@@ -19,23 +19,13 @@ class Header extends Component {
   }
 
   onFocus = () => {
-    this.setState({ focused: true, searchText: '' });
+    this.setState({ focused: true });
     this.props.onFocus();
   }
 
   search = (searchText) => {
     this.setState({ searchText });
-    const action = this.props.mode === 'bucketlists' ?
-      this.props.actions.loadAllBucketlists :
-      this.props.actions.loadBucketlists;
-    this.props.handleResults(searchText);
-    if (searchText) {
-      action(null, null, searchText);
-      this.props.actions.search(searchText);
-    } else {
-      this.props.actions.clearSearch();
-      action();
-    }
+    this.props.actions.searchBucketlists(null, null, searchText);
     this.props.actions.searchUsers(searchText);
   }
 
@@ -118,8 +108,8 @@ class Header extends Component {
 
 Header.propTypes = {
   actions: PropTypes.shape({
-    loadBucketlists: PropTypes.func.isRequired,
-    loadAllBucketlists: PropTypes.func.isRequired,
+    searchBucketlists: PropTypes.func.isRequired,
+    clearBucketlists: PropTypes.func.isRequired,
     search: PropTypes.func,
     searchUsers: PropTypes.func,
     clearSearch: PropTypes.func,
@@ -150,8 +140,8 @@ const mapStateToProps = ({ searchText, components: { showHeader } }, ownProps) =
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    loadAllBucketlists,
-    loadBucketlists,
+    searchBucketlists,
+    clearBucketlists,
     logout,
     searchUsers,
     ...searchActions,

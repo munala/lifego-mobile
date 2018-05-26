@@ -63,6 +63,11 @@ export const deleteItemSuccess = ({ bucketlist, item }) => ({
   screen: 'myBucketlists',
 });
 
+export const searchSuccess = ({ data: { bucketlists } }) => ({
+  type: types.SEARCH_BUCKETLISTS,
+  bucketlists,
+});
+
 export const resetMessage = dispatch => dispatch({
   type: types.RESET_MESSAGE,
 });
@@ -124,6 +129,19 @@ export const loadAllBucketlists = (offset = 0, limit = 10, search = '') => async
     dispatch(loadAllBucketlistsSuccess({ data: response, screen: 'allBucketlists' }));
   }
   dispatch(apiCallActions.resetMessage());
+};
+
+export const clearSearch = () => async (dispatch) => {
+  dispatch({ type: types.CLEAR_SEARCH_RESULTS });
+};
+
+export const searchBucketlists = (offset = 0, limit = 100, search = '') => async (dispatch) => {
+  if (search) {
+    const response = await BucketlistService.getAllBucketlists(offset, limit, search);
+    dispatch(searchSuccess({ data: response }));
+  } else {
+    clearSearch()(dispatch);
+  }
 };
 
 export const saveBucketlist = (bucketlist, screen) => async (dispatch) => {

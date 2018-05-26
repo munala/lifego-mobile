@@ -193,6 +193,17 @@ export default function allBucketlistReducer(
         ],
       };
 
+    case types.SEARCH_BUCKETLISTS:
+      return {
+        ...state,
+        searchResults: action.bucketlists,
+      };
+
+    case types.CLEAR_SEARCH_RESULTS:
+      return {
+        ...state,
+        searchResults: [],
+      };
 
     default:
       return state;

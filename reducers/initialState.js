@@ -14,6 +14,7 @@ export default {
     previousUrl: '',
     newBucketlists: [],
     count: 0,
+    searchResults: [],
   },
   bucketlist: {
     name: '',

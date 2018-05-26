@@ -30,7 +30,11 @@ class Home extends Component {
     this.props.actions.navigate({
       route: 'bucketlist',
       navigator: 'AllBucketlistNavigator',
-      params: { id: bucketlist.id, from: 'bucketlists' },
+      params: {
+        bucketlist,
+        navigator: 'AllBucketlistNavigator',
+        from: 'bucketlists',
+      },
     });
   }
 
