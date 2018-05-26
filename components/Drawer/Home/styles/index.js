@@ -711,6 +711,7 @@ export default StyleSheet.create({
   },
   touchArea: {
     flex: 1,
+    overflow: 'scroll',
   },
   cancel: {
     display: 'flex',

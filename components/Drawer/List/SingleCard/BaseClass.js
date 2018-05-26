@@ -7,10 +7,6 @@ import {
 import propTypes from './propTypes';
 
 class BaseClass extends Component {
-  shouldComponentUpdate = ({ bucketlist }, { imageDimensions }) =>
-    JSON.stringify(bucketlist) !== JSON.stringify(this.props.bucketlist) ||
-    JSON.stringify(imageDimensions) !== JSON.stringify(this.state.imageDimensions)
-
   getImageDimensions = async () => {
     const { bucketlist } = this.props;
     if (bucketlist.pictureUrl) {

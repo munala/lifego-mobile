@@ -9,10 +9,6 @@ class BaseClass extends Component {
     },
   }
 
-  shouldComponentUpdate = ({
-    conversation,
-  }) => JSON.stringify(conversation) !== JSON.stringify(this.props.conversation)
-
   onChange = (content) => {
     this.setState({
       message: { ...this.state.message, content },

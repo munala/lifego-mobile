@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, TouchableOpacity, View, TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -57,17 +57,6 @@ class Bucketlist extends BaseClass {
     this.closeMenu();
   }
 
-  shouldComponentUpdate = ({
-    bucketlist,
-  }, {
-    selectedBucketlist,
-    showMenu,
-    showDialog,
-  }) => JSON.stringify(bucketlist) !== JSON.stringify(this.props.bucketlist) ||
-  selectedBucketlist !== this.state.selectedBucketlist ||
-  showMenu !== this.state.showMenu ||
-  showDialog !== this.state.showDialog
-
   render() {
     const { bucketlist, params: { navigator: nav, from } } = this.props;
     const navigator = from === 'Notifications' ? 'HomeTabNav' : nav;
@@ -97,20 +86,16 @@ class Bucketlist extends BaseClass {
     if (bucketlist) {
       return (
         <View style={styles.container}>
-          <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
-            <View>
-              <View style={styles.navButtons}>
-                <TouchableOpacity
-                  onPress={this.goBack}
-                >
-                  <Text style={styles.backButton}>Back</Text>
-                </TouchableOpacity>
-              </View>
-              <ScrollView>
-                <SingleCard {...bucketlistProps} />
-              </ScrollView>
-            </View>
-          </TouchableWithoutFeedback>
+          <View style={styles.navButtons}>
+            <TouchableOpacity
+              onPress={this.goBack}
+            >
+              <Text style={styles.backButton}>Back</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView>
+            <SingleCard {...bucketlistProps} />
+          </ScrollView>
           {
             this.state.showMenu && <ContextMenu items={items} />
           }
