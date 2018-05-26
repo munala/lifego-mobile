@@ -30,6 +30,7 @@ class AllBucketlists extends BaseClass {
     context: {
       name: 'bucketlist',
     },
+    selectedBucketlist: {},
     content: {},
     isOpen: false,
     searchText: '',
@@ -104,9 +105,17 @@ class AllBucketlists extends BaseClass {
 
   shouldComponentUpdate = ({
     currentApiCalls, data, loaderCalls,
+  }, {
+    selectedBucketlist,
+    showMenu,
+    showDialog,
   }) => JSON.stringify(data) !== JSON.stringify(this.props.data) ||
   currentApiCalls !== this.props.currentApiCalls ||
-  loaderCalls !== this.props.loaderCalls
+  loaderCalls !== this.props.loaderCalls ||
+  selectedBucketlist !== this.state.selectedBucketlist ||
+  showMenu !== this.state.showMenu ||
+  showDialog !== this.state.showDialog
+
 
   renderItem = ({ item }) => { // eslint-disable-line react/prop-types
     const bucketlistProps = {

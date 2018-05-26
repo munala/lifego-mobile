@@ -19,7 +19,7 @@ class ContextMenu extends Component {
 
   renderItems = () => this.props.items.map(({ label, action }) => (
     <TouchableOpacity onPress={action} style={styles.button} key={label}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, label.toLowerCase() === 'delete' && { color: 'red' }]}>{label}</Text>
     </TouchableOpacity>
   ))
 

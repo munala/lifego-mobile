@@ -10,7 +10,7 @@ export default StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'flex-end',
     borderRadius: 5,
-    elevation: 1,
+    elevation: 5,
     borderWidth: 1,
     borderColor: '#eee',
     backgroundColor: '#fff',
@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    color: 'grey',
+    color: '#00bcd4',
     display: 'flex',
     textAlign: 'center',
   },

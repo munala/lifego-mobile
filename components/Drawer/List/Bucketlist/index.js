@@ -15,7 +15,10 @@ import styles from '../../Home/styles';
 import propTypes from './propTypes';
 
 class Bucketlist extends BaseClass {
-  state = { items: [] }
+  state = {
+    items: [],
+    selectedBucketlist: {},
+  }
 
   componentDidMount = () => {
     const { bucketlist } = this.props;
@@ -56,7 +59,14 @@ class Bucketlist extends BaseClass {
 
   shouldComponentUpdate = ({
     bucketlist,
-  }) => JSON.stringify(bucketlist) !== JSON.stringify(this.props.bucketlist)
+  }, {
+    selectedBucketlist,
+    showMenu,
+    showDialog,
+  }) => JSON.stringify(bucketlist) !== JSON.stringify(this.props.bucketlist) ||
+  selectedBucketlist !== this.state.selectedBucketlist ||
+  showMenu !== this.state.showMenu ||
+  showDialog !== this.state.showDialog
 
   render() {
     const { bucketlist, params: { navigator: nav, from } } = this.props;

@@ -10,7 +10,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderRadius: 5,
-    elevation: 1,
+    elevation: 5,
     borderWidth: 1,
     borderColor: '#eee',
     backgroundColor: '#fff',
