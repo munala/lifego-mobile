@@ -20,8 +20,12 @@ const CardContent = ({
   toggleItems,
   toggleComments,
   goToBucketlist,
+  openMenu,
 }) => (
-  <TouchableWithoutFeedback onPress={goToBucketlist}>
+  <TouchableWithoutFeedback
+    onPress={goToBucketlist}
+    onLongPress={() => openMenu(bucketlist)}
+  >
     <View>
       <View style={styles.description}>
         <View style={styles.link} >
@@ -33,20 +37,20 @@ const CardContent = ({
         </View>
       </View>
       {!!bucketlist.pictureUrl &&
-      <Image
-        indicator={Progress.Pie}
-        color="#fff"
-        resizeMethod="resize"
-        source={{
-          uri: (
-            bucketlist.pictureUrl.replace(
-              (bucketlist.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
-              'https://',
-            )
-          ),
-        }}
-        style={[styles.image, imageDimensions]}
-      />
+        <Image
+          indicator={Progress.Pie}
+          color="#fff"
+          resizeMethod="resize"
+          source={{
+            uri: (
+              bucketlist.pictureUrl.replace(
+                (bucketlist.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                'https://',
+              )
+            ),
+          }}
+          style={[styles.image, imageDimensions]}
+        />
       }
       <View style={styles.tagList}>
         {
@@ -123,6 +127,7 @@ CardContent.propTypes = {
   toggleItems: PropTypes.func.isRequired,
   toggleComments: PropTypes.func.isRequired,
   goToBucketlist: PropTypes.func.isRequired,
+  openMenu: PropTypes.func.isRequired,
   profile: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,

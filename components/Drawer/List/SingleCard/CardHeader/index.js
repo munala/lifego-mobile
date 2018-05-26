@@ -46,7 +46,9 @@ const CardHeader = ({
     </TouchableOpacity>
     <View style={styles.nameTime}>
       <View style={styles.headDetails}>
-        <TouchableOpacity onPress={() => goToProfile({ id: bucketlist.userId })}>
+        <TouchableOpacity
+          onPress={() => goToProfile({ id: bucketlist.userId })}
+        >
           <Text style={styles.leftHeaderContent}>
             {`${bucketlist.userDisplayName}\n`}
           </Text>

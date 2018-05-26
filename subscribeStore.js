@@ -24,7 +24,7 @@ const showToast = ({ message, duration }) => {
   }
 };
 
-export default (store) => {
+export default async (store) => {
   store.subscribe(() => {
     const { message, error } = store.getState();
     if (message) {

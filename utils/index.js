@@ -47,3 +47,13 @@ export const getTags = (bucketlist) => {
   }
   return [];
 };
+
+export const filterExpired = bucketlists => bucketlists.filter((bucketlist) => {
+  if (bucketlist.dueDate) {
+    const dueDate = new Date(bucketlist.dueDate);
+    const now = new Date();
+    const difference = (dueDate.getTime() - now.getTime());
+    return difference >= 0;
+  }
+  return true;
+});

@@ -51,10 +51,11 @@ class BaseClass extends Component {
       } = this.props;
 
       getOtherProfile(id);
-      await navigate({ route: 'Profile',
+      await navigate({
+        route: 'Profile',
         navigator: 'DrawerNav',
         params: {
-          fromRoute: this.props.fromRoute,
+          fromRoute: this.props.from ? 'bucketlist' : this.props.fromRoute,
           viewProfile: true },
       });
     }

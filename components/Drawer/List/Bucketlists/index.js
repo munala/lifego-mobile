@@ -4,6 +4,7 @@ import {
   View,
   RefreshControl,
   TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import { Icon } from 'react-native-elements';
@@ -11,15 +12,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ContextMenu from '../../../Common/ContextMenu';
-
 import Dialog from '../../../Common/Dialog';
-
 import BaseClass from '../CommonClass';
 import Text from '../../../Common/SuperText';
 import Loader from '../../../Common/SmallLoader';
 import * as bucketlistActions from '../../../../actions/bucketlistActions';
 import * as userActions from '../../../../actions/userActions';
 import * as navigationActions from '../../../../actions/navigationActions';
+import { filterExpired } from '../../../../utils';
 import SingleCard from '../SingleCard';
 import styles from '../../Home/styles';
 import propTypes from './propTypes';
@@ -40,7 +40,9 @@ class AllBucketlists extends BaseClass {
     page: 0,
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    const hideExpired = await AsyncStorage.getItem('expired');
+    this.setState({ hideExpired });
     this.setItems([
       { label: 'Edit', action: this.editBucketlist },
       { label: 'Delete', action: this.deleteBucketlist },
@@ -99,7 +101,7 @@ class AllBucketlists extends BaseClass {
           route: this.props.route,
           from: this.props.currentRoute,
           navigator: this.props.navigator,
-          fromRoute: 'bucketlists',
+          fromRoute: this.props.fromRoute,
         },
       });
     }
@@ -130,9 +132,10 @@ class AllBucketlists extends BaseClass {
       currentApiCalls,
       loaderCalls,
       screen,
-      data: { bucketlists, nextUrl },
+      data: { bucketlists: bucketLists, nextUrl },
       actions: { loadMoreBucketlists },
     } = this.props;
+    const bucketlists = this.state.hideExpired ? filterExpired(bucketLists) : bucketLists;
     const { length } = bucketlists;
     const offset = (Math.ceil(length / 10)) * 10;
     const loadMore = bucketlists.length === 10 && nextUrl.length > 0;

@@ -21,7 +21,8 @@ import styles from './styles';
 class Settings extends BaseClass {
   componentDidMount = async () => {
     const hideNotifications = await AsyncStorage.getItem('push');
-    this.setState({ hideNotifications });
+    const hideExpired = await AsyncStorage.getItem('expired');
+    this.setState({ hideNotifications, hideExpired });
     this.props.actions.getProfile();
   };
 
@@ -109,7 +110,15 @@ class Settings extends BaseClass {
             <Switch
               style={styles.switch}
               value={!this.state.hideNotifications}
-              onValueChange={this.toggleNotifications}
+              onValueChange={() => this.toggleSettings('push')}
+            />
+          </View>
+          <View style={styles.switchRow}>
+            <Text style={styles.switchText}>Show expired bucketlists</Text>
+            <Switch
+              style={styles.switch}
+              value={!this.state.hideExpired}
+              onValueChange={() => this.toggleSettings('expired')}
             />
           </View>
           <View style={styles.switchRow}>

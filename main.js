@@ -8,11 +8,11 @@ import configureStore from './store/configureStore';
 import App from './app/app';
 import socket from './socket';
 import './reactotronConfig';
-import subscribeMessages from './subscribeMessages';
+import subscribeStore from './subscribeStore';
 
 const { store, persistor } = configureStore();
 
-subscribeMessages(store);
+subscribeStore(store);
 
 AsyncStorage.getItem('token').then((token) => {
   if (token && jwtDecode(token).exp >= Date.now() / 1000) {

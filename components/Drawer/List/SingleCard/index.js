@@ -50,6 +50,7 @@ class SingleCard extends BaseClass {
       like: this.like,
       toggleItems: this.toggleItems,
       toggleComments: this.toggleComments,
+      openMenu: this.props.openMenu,
       goToBucketlist,
     };
 

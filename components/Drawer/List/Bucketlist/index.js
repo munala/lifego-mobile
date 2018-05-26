@@ -57,7 +57,7 @@ class Bucketlist extends BaseClass {
       closeDialog: this.closeDialog,
       goToBucketlist: this.goToBucketlist,
       showMenu: this.state.showMenu,
-      currentRoute: 'bucketlist',
+      currentRoute: 'bucketlists',
       fromRoute,
       navigator,
     };

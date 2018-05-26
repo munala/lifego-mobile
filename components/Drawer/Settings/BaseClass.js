@@ -30,14 +30,18 @@ class BaseClass extends Component {
     this.props.actions.updateProfile(profile, 'settings');
   }
 
-  toggleNotifications = () => {
-    if (this.state.hideNotifications) {
-      AsyncStorage.removeItem('push');
+  toggleSettings = (type) => {
+    const settings = {
+      push: 'hideNotifications',
+      expired: 'hideExpired',
+    };
+    if (this.state[settings[type]]) {
+      AsyncStorage.removeItem(type);
     } else {
-      AsyncStorage.setItem('push', 'true');
+      AsyncStorage.setItem(type, 'true');
     }
     this.setState({
-      hideNotifications: !this.state.hideNotifications,
+      [settings[type]]: !this.state[settings[type]],
     });
   }
 
