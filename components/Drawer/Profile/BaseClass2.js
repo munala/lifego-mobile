@@ -23,7 +23,6 @@ class BaseClass2 extends BaseClass {
           previousIds: newIds,
           previousRoutes: routes,
           fromRoute: newFrom,
-          from: newFrom,
         },
         navigator: 'DrawerNav',
         route: 'Profile',
@@ -35,17 +34,14 @@ class BaseClass2 extends BaseClass {
         route: 'Profile',
         params: {
           previousRoutes: undefined,
-          from: undefined,
           viewProfile: false,
           previousIds: undefined,
+          fromRoute: undefined,
         },
       });
       this.props.actions.navigate({
         navigator: 'DrawerNav',
-        route: from,
-        params: {
-          fromRoute: undefined,
-        },
+        route: this.state.fromRoute,
       });
     }
   }

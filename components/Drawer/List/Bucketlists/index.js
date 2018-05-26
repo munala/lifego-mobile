@@ -91,14 +91,15 @@ class AllBucketlists extends BaseClass {
     if (this.state.showMenu) {
       this.closeMenu();
     } else {
-      this.props.actions.navigate({ navigator: this.props.navigator,
+      this.props.actions.navigate({
+        navigator: this.props.navigator,
         route: this.props.route,
         params: {
           bucketlist,
           route: this.props.route,
           from: this.props.currentRoute,
           navigator: this.props.navigator,
-          fromRoute: this.props.fromRoute,
+          fromRoute: 'bucketlists',
         },
       });
     }

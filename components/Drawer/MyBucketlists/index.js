@@ -67,8 +67,8 @@ class StackNav extends Component {
     const route = routes[routes.length - 1];
     const params = route && route.params;
     const bucketlist = params && params.bucketlist;
-    const name = bucketlist ? (bucketlist.name) : 'bucketlist';
-    const title = `${name.slice(0, 30)}${name.length > 20 && ' ...'}`;
+    const name = bucketlist && bucketlist.name ? bucketlist.name : 'bucketlist';
+    const title = `${name.slice(0, 20)}${name.length > 20 ? ' ...' : ''}`;
     const singleBucketlistMode = route && route.routeName === 'bucketlist';
 
     return (
