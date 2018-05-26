@@ -54,7 +54,7 @@ class AlertComponent extends Component {
 
   goToProfile = (alert) => {
     this.markAsRead(alert);
-    this.props.actions.navigate({ route: 'Profile', navigator: 'DrawerNav', params: { viewProfile: true, from: 'Home' } });
+    this.props.actions.navigate({ route: 'Profile', navigator: 'DrawerNav', params: { viewProfile: true, fromRoute: 'Home' } });
   }
 
   markAsRead = async (alert) => {

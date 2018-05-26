@@ -27,6 +27,7 @@ class Profile extends BaseClass {
     image: null,
     uploading: false,
     profile: { ...this.props.profile },
+    fromRoute: this.props.fromRoute,
   }
 
   componentDidMount = () => {
@@ -143,13 +144,11 @@ const mapStateToProps = ({
 },
 ) => {
   let viewProfile;
-  let from;
   let fromRoute;
   let previousIds;
   let previousRoutes;
   if (state && state.params) {
     viewProfile = state.params.viewProfile;
-    from = state.params.from;
     fromRoute = state.params.fromRoute;
     previousIds = state.params.previousIds;
     previousRoutes = state.params.previousRoutes || [fromRoute];
@@ -159,7 +158,6 @@ const mapStateToProps = ({
     otherProfile,
     currentApiCalls,
     viewProfile,
-    from,
     fromRoute,
     previousIds,
     previousRoutes });

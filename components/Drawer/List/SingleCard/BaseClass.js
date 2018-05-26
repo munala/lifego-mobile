@@ -54,7 +54,6 @@ class BaseClass extends Component {
       await navigate({ route: 'Profile',
         navigator: 'DrawerNav',
         params: {
-          from: this.props.currentRoute,
           fromRoute: this.props.fromRoute,
           viewProfile: true },
       });

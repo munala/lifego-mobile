@@ -39,10 +39,6 @@ class Comments extends BaseClass {
     }
   }
 
-  shouldComponentUpdate = ({
-    bucketlist: { comments },
-  }) => JSON.stringify(comments) !== JSON.stringify(this.props.bucketlist.comments)
-
   renderComments = bucketlist => bucketlist.comments
     .slice(this.state.page * 8, (this.state.page * 8) + 8)
     .map(comment => (

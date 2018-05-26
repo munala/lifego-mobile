@@ -45,8 +45,7 @@ class Bucketlist extends BaseClass {
   }
 
   render() {
-    const { bucketlist, params: { navigator: nav, from, fromRoute } } = this.props;
-    const navigator = from === 'Notifications' ? 'HomeTabNav' : nav;
+    const { bucketlist, params: { navigator, fromRoute } } = this.props;
     const bucketlistProps = {
       bucketlist,
       mode: 'single',

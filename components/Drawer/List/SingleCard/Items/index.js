@@ -38,10 +38,6 @@ class Items extends BaseClass {
     }
   }
 
-  shouldComponentUpdate = ({
-    bucketlist: { items },
-  }) => JSON.stringify(items) !== JSON.stringify(this.props.bucketlist.items)
-
   renderItems = bucketlist => bucketlist.items
     .slice(this.state.page * 5, (this.state.page * 5) + 5)
     .map(item => (

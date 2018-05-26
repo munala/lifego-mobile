@@ -29,10 +29,12 @@ class Home extends Component {
     }));
     const params = {
       bucketlist,
-      navigator: 'AllBucketlistNavigator',
-      from: 'bucketlists',
     };
-    this.navigateToAll(params, 'bucketlist');
+    this.props.actions.navigate({
+      navigator: 'AllBucketlistNavigator',
+      route: 'bucketlist',
+      params,
+    });
   }
 
   clearSearch = () => {
@@ -41,16 +43,16 @@ class Home extends Component {
     });
   }
 
-  navigateToAll = async (params, routeName) => {
+  navigateToAll = async () => {
     const { AllBucketlistNavigator: { routes }, actions: { navigate } } = this.props;
-    const [, route] = routes;
+    const route = routes[routes.length - 1];
     const param = route && route.params;
-    const from = param && param.from;
+    const from = param && param.fromRoute;
     const navigator = param && param.navigator;
     await navigate({
       navigator: navigator || 'AllBucketlistNavigator',
-      route: routeName || from,
-      params: params || { bucketlist: undefined, from: undefined },
+      route: 'bucketlists',
+      params: { bucketlist: undefined, fromRoute: undefined },
     });
     if (from === 'Notifications') {
       navigate({ navigator: from === 'Notifications' ? 'HomeTabNav' : navigator, route: from });
@@ -67,9 +69,10 @@ class Home extends Component {
     const route = routes[routes.length - 1];
     const params = route && route.params;
     const bucketlist = params && params.bucketlist;
-    const name = bucketlist ? (bucketlist.name) : 'bucketlist';
-    const title = `${name.slice(0, 30)}${name.length > 20 && ' ...'}`;
+    const name = bucketlist && bucketlist.name ? (bucketlist.name) : 'bucketlist';
+    const title = `${name.slice(0, 20)}${name.length > 20 ? ' ...' : ''}`;
     const singleBucketlistMode = route && route.routeName === 'bucketlist';
+
     return (
       <View style={[styles.container, styles.iPhoneX]}>
         <Header

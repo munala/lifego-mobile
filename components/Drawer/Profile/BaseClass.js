@@ -163,7 +163,11 @@ class BaseClass extends Component {
     this.props.actions.navigate({
       route: 'Profile',
       navigator: 'DrawerNav',
-      params: { viewProfile: true, from: 'Profile', fromRoute: 'Profile', previousIds: [previousId, ...ids], previousRoutes: ['Profile', ...routes] },
+      params: {
+        viewProfile: true,
+        fromRoute: 'Profile',
+        previousIds: [previousId, ...ids],
+        previousRoutes: ['Profile', ...routes] },
     });
     this.props.actions.getOtherProfile(id);
   }

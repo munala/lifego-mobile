@@ -108,7 +108,7 @@ class BaseClass extends Component {
     if (profile.id !== id) {
       getOtherProfile(id);
     }
-    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: profile.id !== id && { viewProfile: true, from: 'Home' } });
+    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: profile.id !== id && { viewProfile: true, fromRoute: 'Home' } });
   }
 
   deleteConversation = async (conversation) => {
