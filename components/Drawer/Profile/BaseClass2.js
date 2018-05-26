@@ -18,7 +18,13 @@ class BaseClass2 extends BaseClass {
     if (from === 'Profile') {
       const [previousId, ...newIds] = this.props.previousIds;
       this.props.actions.navigate({
-        params: { viewProfile: true, previousIds: newIds, previousRoutes: routes, from: newFrom },
+        params: {
+          viewProfile: true,
+          previousIds: newIds,
+          previousRoutes: routes,
+          fromRoute: newFrom,
+          from: newFrom,
+        },
         navigator: 'DrawerNav',
         route: 'Profile',
       });
@@ -37,6 +43,9 @@ class BaseClass2 extends BaseClass {
       this.props.actions.navigate({
         navigator: 'DrawerNav',
         route: from,
+        params: {
+          fromRoute: undefined,
+        },
       });
     }
   }

@@ -48,7 +48,7 @@ class Profile extends BaseClass {
       activeType, scrollEnabled, editMode, uploading, scrollY,
     } = this.state;
     const {
-      profile, currentApiCalls, otherProfile, from,
+      profile, currentApiCalls, otherProfile, fromRoute: from,
     } = this.props;
     const showUserProfile = !!from && otherProfile.id !== profile.id;
     const avatar = showUserProfile ? otherProfile.pictureUrl : this.state.profile.pictureUrl;
@@ -144,13 +144,15 @@ const mapStateToProps = ({
 ) => {
   let viewProfile;
   let from;
+  let fromRoute;
   let previousIds;
   let previousRoutes;
   if (state && state.params) {
     viewProfile = state.params.viewProfile;
     from = state.params.from;
+    fromRoute = state.params.fromRoute;
     previousIds = state.params.previousIds;
-    previousRoutes = state.params.previousRoutes || [from];
+    previousRoutes = state.params.previousRoutes || [fromRoute];
   }
   return ({
     profile,
@@ -158,6 +160,7 @@ const mapStateToProps = ({
     currentApiCalls,
     viewProfile,
     from,
+    fromRoute,
     previousIds,
     previousRoutes });
 };

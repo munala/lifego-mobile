@@ -69,7 +69,7 @@ class Header extends Component {
           underlayColor="#00bcd4"
         />
         {
-          (mode === 'bucketlists' || mode === 'my_bucketlists') ?
+          (mode === 'bucketlists') ?
             <SearchBar
               textInputRef={(el) => { this.el = el; }}
               lightTheme
@@ -89,14 +89,11 @@ class Header extends Component {
               {title}
             </Text>
         }
-        {
-          mode !== 'items' &&
-          <PopupMenu
-            icon="more-vert"
-            style={styles.iconRightStyle}
-            items={menuItems}
-          />
-        }
+        <PopupMenu
+          icon="more-vert"
+          style={styles.iconRightStyle}
+          items={menuItems}
+        />
         {
           mode === 'items' &&
           <View style={styles.iconRightStyle} />

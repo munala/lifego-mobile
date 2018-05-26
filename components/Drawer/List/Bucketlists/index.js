@@ -87,17 +87,18 @@ class AllBucketlists extends BaseClass {
 
   logout = () => this.props.actions.logout();
 
-  goToBucketlist = item => async () => {
+  goToBucketlist = bucketlist => async () => {
     if (this.state.showMenu) {
       this.closeMenu();
     } else {
       this.props.actions.navigate({ navigator: this.props.navigator,
         route: this.props.route,
         params: {
-          bucketlist: { id: item.id },
+          bucketlist,
           route: this.props.route,
           from: this.props.currentRoute,
           navigator: this.props.navigator,
+          fromRoute: this.props.fromRoute,
         },
       });
     }
@@ -115,7 +116,8 @@ class AllBucketlists extends BaseClass {
       openDialog: this.openDialog,
       closeDialog: this.closeDialog,
       showMenu: this.state.showMenu,
-      fromRoute: 'bucketlists',
+      currentRoute: 'bucketlists',
+      fromRoute: this.props.fromRoute,
     };
     return (
       <SingleCard {...bucketlistProps} />

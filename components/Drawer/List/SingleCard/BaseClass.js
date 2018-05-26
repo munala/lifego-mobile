@@ -51,7 +51,13 @@ class BaseClass extends Component {
       } = this.props;
 
       getOtherProfile(id);
-      await navigate({ route: 'Profile', navigator: 'DrawerNav', params: { from: 'Home', viewProfile: true } });
+      await navigate({ route: 'Profile',
+        navigator: 'DrawerNav',
+        params: {
+          from: this.props.currentRoute,
+          fromRoute: this.props.fromRoute,
+          viewProfile: true },
+      });
     }
   }
 

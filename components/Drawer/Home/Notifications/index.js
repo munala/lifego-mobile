@@ -71,7 +71,7 @@ class Notifications extends Component {
       route: 'bucketlist',
       navigator: 'AllBucketlistNavigator',
       params: {
-        bucketlist: { id: notification.bucketlistId }, from: 'Notifications', navigator: 'AllBucketlistNavigator',
+        bucketlist: { id: notification.bucketlistId, name: 'Bucketlist' }, from: 'Notifications', navigator: 'AllBucketlistNavigator',
       },
     });
   }

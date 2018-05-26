@@ -7,12 +7,14 @@ const AllBucketlists = () => {
   const route = 'bucketlist';
   const screen = 'allBucketlists';
   const currentRoute = 'bucketlists';
+  const fromRoute = 'Home';
 
   const props = {
     navigator,
     route,
     screen,
     currentRoute,
+    fromRoute,
   };
 
   return (<Bucketlists {...props} />);

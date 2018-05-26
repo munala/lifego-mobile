@@ -1,12 +1,11 @@
 import React from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as navigationActions from '../../../../actions/navigationActions';
 import * as bucketlistActions from '../../../../actions/bucketlistActions';
 import BaseClass from '../CommonClass';
-import Text from '../../../Common/SuperText';
 import SingleCard from '../SingleCard';
 import ContextMenu from '../../../Common/ContextMenu';
 import Dialog from '../../../Common/Dialog';
@@ -41,24 +40,12 @@ class Bucketlist extends BaseClass {
     }
   }
 
-  goBack = async () => {
-    const {
-      actions: { navigate },
-      params: { navigator, from },
-    } = this.props;
-    await navigate({ navigator, route: from, params: { id: undefined } });
-    if (from === 'Notifications') {
-      navigate({ navigator: from === 'Notifications' ? 'HomeTabNav' : navigator, route: from });
-      navigate({ navigator, route: 'bucketlists' });
-    }
-  }
-
   goToBucketlist = () => {
     this.closeMenu();
   }
 
   render() {
-    const { bucketlist, params: { navigator: nav, from } } = this.props;
+    const { bucketlist, params: { navigator: nav, from, fromRoute } } = this.props;
     const navigator = from === 'Notifications' ? 'HomeTabNav' : nav;
     const bucketlistProps = {
       bucketlist,
@@ -71,7 +58,8 @@ class Bucketlist extends BaseClass {
       closeDialog: this.closeDialog,
       goToBucketlist: this.goToBucketlist,
       showMenu: this.state.showMenu,
-      fromRoute: 'bucketlist',
+      currentRoute: 'bucketlist',
+      fromRoute,
       navigator,
     };
     const items = this.state.items;
@@ -86,13 +74,6 @@ class Bucketlist extends BaseClass {
     if (bucketlist) {
       return (
         <View style={styles.container}>
-          <View style={styles.navButtons}>
-            <TouchableOpacity
-              onPress={this.goBack}
-            >
-              <Text style={styles.backButton}>Back</Text>
-            </TouchableOpacity>
-          </View>
           <ScrollView>
             <SingleCard {...bucketlistProps} />
           </ScrollView>
