@@ -13,6 +13,7 @@ import jwtDecode from 'jwt-decode';
 
 import Text from '../Common/SuperText';
 import { navigate } from '../../actions/navigationActions';
+import { login } from '../../actions/userActions';
 import styles from './styles';
 
 class Splash extends Component {
@@ -27,8 +28,14 @@ class Splash extends Component {
     if (!notFirstTime) {
       route = 'intro';
     } else if (!token || jwtDecode(token).exp < Date.now() / 1000) {
-      route = 'user';
-      AsyncStorage.removeItem('token');
+      const user = await AsyncStorage.getItem('user');
+      if (user) {
+        const { error } = await this.props.actions.login(JSON.parse(user));
+        route = error ? 'user' : 'home';
+      } else {
+        route = 'user';
+        AsyncStorage.removeItem('token');
+      }
     } else {
       route = 'home';
     }
@@ -94,9 +101,10 @@ class Splash extends Component {
 Splash.propTypes = {
   actions: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
   }).isRequired,
 };
 
 export default connect(null, dispatch => ({
-  actions: bindActionCreators({ navigate }, dispatch),
+  actions: bindActionCreators({ navigate, login }, dispatch),
 }))(Splash);

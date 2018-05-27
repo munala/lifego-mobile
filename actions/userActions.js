@@ -110,44 +110,33 @@ const stripHtml = text => text
   .replace('</b>', '')
   .replace('<br/>', ' ');
 
-export const login = user => async (dispatch) => {
+const loginUser = (user, serviceCall) => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall({ screen: 'user' }));
-  const token = await userService.loginUser(user);
-  if (token.error) {
-    dispatch(apiCallActions.apiCallError({ screen: 'user', error: token.error }));
+  const response = await serviceCall(user);
+  if (response.error) {
+    dispatch(apiCallActions.apiCallError({ screen: 'user', error: response.error }));
     dispatch(apiCallActions.resetError());
   } else {
-    await AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('token', response);
     await AsyncStorage.setItem('start', 'false');
-    await dispatch(loginSuccess({ token, screen: 'user' }));
+    await AsyncStorage.setItem('user', JSON.stringify(user));
+    await dispatch(loginSuccess({ response, screen: 'user' }));
     navigate({ route: 'home', navigator: 'AuthNavigator' })(dispatch);
     dispatch(apiCallActions.resetMessage());
   }
-  return token;
+  return response;
 };
+
+export const login = user => loginUser(user, userService.loginUser);
+export const socialLogin = user => loginUser(user, userService.socialLogin);
 
 export const logout = () => async (dispatch) => {
   await AsyncStorage.setItem('can_login', 'false');
   await AsyncStorage.removeItem('token');
+  await AsyncStorage.removeItem('user');
   await dispatch(logoutUser());
   await navigate({ route: 'user', navigator: 'AuthNavigator' })(dispatch);
   persist.purge();
-};
-
-export const socialLogin = user => async (dispatch) => {
-  dispatch(apiCallActions.beginApiCall({ screen: 'user' }));
-  const token = await userService.socialLogin(user);
-  if (token.error) {
-    dispatch(apiCallActions.apiCallError({ screen: 'user', error: token.error }));
-    dispatch(apiCallActions.resetError());
-  } else {
-    await AsyncStorage.setItem('token', token);
-    await AsyncStorage.setItem('start', 'false');
-    await dispatch(loginSuccess({ token, screen: 'user' }));
-    navigate({ route: 'home', navigator: 'AuthNavigator' })(dispatch);
-    dispatch(apiCallActions.resetMessage());
-  }
-  return token;
 };
 
 export const register = user => async (dispatch) => {
