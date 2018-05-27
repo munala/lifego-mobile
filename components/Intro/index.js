@@ -22,28 +22,34 @@ const features = [
     description: 'Welcome to LifeGo',
   },
   {
+    title: 'Photos',
     icon: 'insert-photo',
     description: 'Add photos to your bucketlists',
   },
   {
+    title: 'Comments',
     icon: 'comment',
     description: 'Comment on other people\'s bucketlists',
   },
   {
+    title: 'Stars',
     icon: 'star',
     description: 'Star other people\'s bucketlists',
   },
   {
+    title: 'Locations',
     icon: 'room',
     description: 'Add locations to your bucketlists',
   },
   {
+    title: 'Reminders',
     icon: 'schedule',
     description: 'Get reminders of your bucketlists due dates',
   },
   {
+    title: 'Tag friends',
     icon: 'person-pin',
-    description: 'Tag people on your bucketlists (coming soon)',
+    description: 'Tag friends on your bucketlists (coming soon)',
   },
 ];
 
@@ -62,10 +68,14 @@ const Intro = ({ actions: { navigate: nav } }) => (
       onDoneBtnClick={() => navigateToLogin(nav)}
       onSkipBtnClick={() => navigateToLogin(nav)}
       customStyles={{ btnContainer: { flex: 1 } }}
+      activeDotColor="#00bcd4"
+      dotColor="grey"
+      rightTextColor="#00bcd4"
+      leftTextColor="#00bcd4"
     >
       {features.map(feature => (
         <View style={styles.slide} key={feature.icon}>
-          <View level={-10}>
+          <View level={-20}>
             {feature.image ?
               <Image
                 style={styles.logo}
@@ -80,6 +90,11 @@ const Intro = ({ actions: { navigate: nav } }) => (
                 underlayColor="#00bcd4"
               />
             }
+          </View>
+          <View level={0}>
+            <Text level={20} style={styles.title}>
+              {feature.title}
+            </Text>
           </View>
           <View level={20}>
             <Text style={feature.image ? styles.title : styles.text}>
