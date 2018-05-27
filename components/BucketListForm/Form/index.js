@@ -40,8 +40,6 @@ const Form = ({
     <ScrollView
       contentContainerStyle={styles.container}
     >
-      <Text style={styles.title}>{`${context.type} ${context.name}`}</Text>
-      <View style={styles.hr} />
       <Text style={styles.grey}>name</Text>
       <TextInput
         defaultValue={content.name}

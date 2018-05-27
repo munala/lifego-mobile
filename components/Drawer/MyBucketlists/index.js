@@ -67,19 +67,21 @@ class StackNav extends Component {
     const route = routes[routes.length - 1];
     const params = route && route.params;
     const bucketlist = params && params.bucketlist;
-    const name = bucketlist && bucketlist.name ? bucketlist.name : 'bucketlist';
-    const title = `${name.slice(0, 20)}${name.length > 20 ? ' ...' : ''}`;
-    const singleBucketlistMode = route && route.routeName === 'bucketlist';
+    const context = params && params.context;
+    const headerTitle = context && `${context.type} ${context.name}`;
+    const name = bucketlist && bucketlist.name ? (bucketlist.name) : 'bucketlist';
+    const title = context ? headerTitle : `${name.slice(0, 20)}${name.length > 20 ? ' ...' : ''}`;
+    const mode = route && route.routeName === 'bucketlists' ? 'bucketlists' : 'other';
 
     return (
       <View style={[styles.container, styles.iPhoneX]}>
         <Header
           title={title}
-          leftIcon={singleBucketlistMode ? 'arrow-back' : 'menu'}
-          onPressLeft={() => this.navigate(dispatch, singleBucketlistMode)}
+          leftIcon={mode === 'bucketlists' ? 'menu' : 'arrow-back'}
+          onPressLeft={mode === 'bucketlists' ? this.openDrawer : () => this.navigateToAll()}
           onFocus={this.onFocus}
           clearSearch={this.clearSearch}
-          mode={singleBucketlistMode ? 'bucketlist' : 'bucketlists'}
+          mode={mode}
         />
         {
           this.state.searchMode ?
