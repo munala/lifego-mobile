@@ -122,7 +122,7 @@ class Settings extends BaseClass {
             />
           </View>
           <View style={styles.switchRow}>
-            <Text style={styles.switchText}>Reminders</Text>
+            <Text style={styles.switchText}>Email reminders</Text>
             <Switch
               style={styles.switch}
               value={profile.reminders === true}
