@@ -1,21 +1,32 @@
 import {
   StyleSheet,
   Platform,
-  Dimensions,
 } from 'react-native';
-
-const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
-    flexGrow: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignContent: 'stretch',
-    backgroundColor: '#fff',
-    width,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingBottom: 10,
+    overflow: 'scroll',
+    borderTopEndRadius: 5,
+    borderTopLeftRadius: 5,
+  },
+  wrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignContent: 'stretch',
+    borderRadius: 5,
+    overflow: 'scroll',
+    backgroundColor: '#fff',
+  },
+  scrollWrapper: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignContent: 'stretch',
     overflow: 'scroll',
   },
   title: {
@@ -99,6 +110,8 @@ export default StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#eee',
     paddingHorizontal: 20,
+    borderBottomEndRadius: 5,
+    borderBottomLeftRadius: 5,
   },
   divider: {
     display: 'flex',
@@ -120,6 +133,10 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch',
+    backgroundColor: '#00bcd4',
+    paddingHorizontal: 5,
+    paddingBottom: 5,
+    overflow: 'scroll',
   },
   imageWrapper: {
     marginTop: 10,
@@ -183,5 +200,17 @@ export default StyleSheet.create({
   checkbox: {
     display: 'flex',
     marginTop: 10,
+  },
+  dateButton: {
+    display: 'flex',
+    borderRadius: 5,
+    backgroundColor: '#f7f7f7',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingRight: 10,
+  },
+  flex1: {
+    flex: 1,
   },
 });
