@@ -27,7 +27,7 @@ export default StyleSheet.create({
   },
   subtitle: {
     color: 'grey',
-    fontSize: 12,
+    fontSize: 14,
   },
   options: {
     display: 'flex',
@@ -47,7 +47,7 @@ export default StyleSheet.create({
   },
   optionText: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   personAction: {
@@ -69,7 +69,7 @@ export default StyleSheet.create({
   actionText: {
     display: 'flex',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
     color: '#00bcd4',
     fontWeight: 'bold',
   },

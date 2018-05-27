@@ -42,7 +42,7 @@ export default StyleSheet.create({
   profileEmail: {
     display: 'flex',
     color: '#F7F7F7',
-    fontSize: 16,
+    fontSize: 14,
     marginVertical: 5,
   },
   profileAction: {
@@ -109,7 +109,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     width: '100%',
     color: '#f7f7f7',
-    fontSize: 12,
+    fontSize: 14,
   },
   statLabelActive: {
     fontWeight: 'bold',
@@ -188,7 +188,7 @@ export default StyleSheet.create({
     color: 'grey',
     width: '100%',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 14,
   },
   list: {
     backgroundColor: '#00bcd4',
@@ -210,7 +210,7 @@ export default StyleSheet.create({
   input: {
     display: 'flex',
     color: 'grey',
-    fontSize: 16,
+    fontSize: 14,
     marginHorizontal: 0,
     marginVertical: 2,
     paddingVertical: 5,
@@ -221,13 +221,13 @@ export default StyleSheet.create({
   grey: {
     display: 'flex',
     color: Platform.OS === 'ios' ? 'grey' : '#00bcd4',
-    fontSize: 12,
+    fontSize: 14,
     paddingHorizontal: 5,
     marginTop: 10,
   },
   buttonText: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     color: Platform.OS === 'ios' ? '#fff' : '#00bcd4',
     backgroundColor: 'transparent',
@@ -258,7 +258,7 @@ export default StyleSheet.create({
     padding: 5,
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: Platform.OS === 'ios' ? '#00bcd4' : 'grey',
     display: 'flex',
@@ -267,7 +267,7 @@ export default StyleSheet.create({
     paddingHorizontal: 5,
   },
   uploading: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#f7f7f7',
     display: 'flex',
     textAlign: 'center',
@@ -302,7 +302,7 @@ export default StyleSheet.create({
   },
   photoButtonText: {
     color: '#f7f7f7',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'normal',
   },
   editForm: {

@@ -28,7 +28,7 @@ const CardContent = ({
   >
     <View>
       <View style={styles.description}>
-        <View style={styles.link} >
+        <View>
           <Text style={styles.blue}>{bucketlist.name}</Text>
           {
             !!bucketlist.description &&

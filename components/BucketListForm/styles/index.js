@@ -19,7 +19,7 @@ export default StyleSheet.create({
     overflow: 'scroll',
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: Platform.OS === 'ios' ? '#00bcd4' : 'grey',
     display: 'flex',
@@ -35,7 +35,7 @@ export default StyleSheet.create({
     display: 'flex',
     color: 'grey',
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: 14,
     marginLeft: 0,
     marginRight: 0,
     marginBottom: 3,
@@ -66,7 +66,7 @@ export default StyleSheet.create({
   },
   buttonText: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     color: Platform.OS === 'ios' ? '#fff' : '#00bcd4',
     backgroundColor: 'transparent',
@@ -107,12 +107,12 @@ export default StyleSheet.create({
   grey: {
     display: 'flex',
     color: Platform.OS === 'ios' ? 'grey' : '#00bcd4',
-    fontSize: 12,
+    fontSize: 14,
     paddingHorizontal: 5,
     marginTop: 10,
   },
   uploading: {
-    fontSize: 16,
+    fontSize: 14,
   },
   flexOne: {
     flex: 1,
@@ -136,7 +136,7 @@ export default StyleSheet.create({
     display: 'flex',
     backgroundColor: '#ccc',
     color: '#fff',
-    fontSize: 12,
+    fontSize: 14,
     textAlign: 'center',
     lineHeight: 80,
     width: 80,
@@ -169,7 +169,7 @@ export default StyleSheet.create({
   },
   saveButtonText: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     color: Platform.OS === 'ios' ? '#fff' : '#00bcd4',
     backgroundColor: 'transparent',

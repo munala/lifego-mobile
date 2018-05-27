@@ -12,7 +12,7 @@ export default StyleSheet.create({
   },
   copyright: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     color: 'grey',
     textAlign: 'left',
     height: 20,

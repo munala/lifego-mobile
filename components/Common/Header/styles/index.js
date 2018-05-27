@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -32,7 +33,7 @@ export default StyleSheet.create({
     display: 'flex',
     backgroundColor: 'rgba(0,0,0,0.1)',
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
   },
   titleText: {
     display: 'flex',

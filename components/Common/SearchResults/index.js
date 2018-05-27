@@ -123,7 +123,7 @@ SearchResults.propTypes = {
   bucketlists: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
-  })).isRequired,
+  })),
   profile: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,
@@ -138,6 +138,10 @@ SearchResults.propTypes = {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   onItemPress: PropTypes.func.isRequired,
+};
+
+SearchResults.defaultProps = {
+  bucketlists: [],
 };
 
 const mapStateToProps = ({

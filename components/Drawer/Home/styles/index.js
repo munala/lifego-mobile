@@ -152,13 +152,13 @@ export default StyleSheet.create({
   },
   commentButton: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     color: 'grey',
   },
   likeButton: {
     display: 'flex',
     alignSelf: 'flex-start',
-    fontSize: 12,
+    fontSize: 14,
   },
   commentSection: {
     display: 'flex',
@@ -193,11 +193,11 @@ export default StyleSheet.create({
   },
   commentUser: {
     display: 'flex',
-    fontSize: 13,
+    fontSize: 14,
     color: '#00bcd4',
   },
   commentContent: {
-    fontSize: 12,
+    fontSize: 14,
     display: 'flex',
     color: 'grey',
     marginLeft: 5,
@@ -222,14 +222,14 @@ export default StyleSheet.create({
   },
   inputText: {
     marginLeft: 10,
-    fontSize: 12,
+    fontSize: 14,
     borderWidth: 0,
     backgroundColor: 'transparent',
     color: 'grey',
   },
   label: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     color: '#00bcd4',
   },
   value: {
@@ -290,7 +290,7 @@ export default StyleSheet.create({
   span: {
     display: 'flex',
     width: 20,
-    fontSize: 12,
+    fontSize: 14,
     marginLeft: 5,
     color: 'grey',
   },
@@ -319,33 +319,33 @@ export default StyleSheet.create({
     height: 20,
     lineHeight: 20,
     color: '#00bcd4',
-    fontSize: 10,
+    fontSize: 14,
     marginRight: 5,
   },
   leftHeaderContent: {
     display: 'flex',
     color: 'grey',
-    fontSize: 10,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   rightHeaderContent: {
     display: 'flex',
     color: 'grey',
-    fontSize: 10,
+    fontSize: 14,
   },
   titleIcon: {
     display: 'flex',
-    fontSize: 10,
-    height: 10,
-    lineHeight: 10,
+    fontSize: 14,
+    height: 14,
+    lineHeight: 14,
     marginRight: 5,
     color: '#00bcd4',
   },
   locationIcon: {
     display: 'flex',
-    fontSize: 10,
-    height: 10,
-    lineHeight: 10,
+    fontSize: 14,
+    height: 14,
+    lineHeight: 14,
     marginRight: 5,
     marginBottom: 5,
     color: '#00bcd4',
@@ -387,7 +387,7 @@ export default StyleSheet.create({
     marginTop: 2.5,
   },
   time: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'normal',
     color: 'grey',
   },
@@ -414,7 +414,7 @@ export default StyleSheet.create({
     color: '#fff',
     marginHorizontal: 20,
     marginVertical: 5,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   flexOne: {
@@ -431,7 +431,7 @@ export default StyleSheet.create({
   notificationText: {
     display: 'flex',
     marginHorizontal: 10,
-    fontSize: 16,
+    fontSize: 14,
   },
   icon: {
     display: 'flex',
@@ -484,7 +484,7 @@ export default StyleSheet.create({
   notificationActionText: {
     display: 'flex',
     color: '#f7f7f7',
-    fontSize: 16,
+    fontSize: 14,
   },
   navButtons: {
     display: 'flex',
@@ -495,7 +495,7 @@ export default StyleSheet.create({
   separator: {
     display: 'flex',
     color: '#f7f7f7',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   preview: {
@@ -506,7 +506,7 @@ export default StyleSheet.create({
   },
   wordWrap: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     marginHorizontal: 10,
     color: 'grey',
   },
@@ -571,7 +571,7 @@ export default StyleSheet.create({
   name: {
     display: 'flex',
     color: 'grey',
-    fontSize: 16,
+    fontSize: 14,
   },
   message: {
     margin: 5,
@@ -579,13 +579,13 @@ export default StyleSheet.create({
     borderRadius: 10,
     padding: 2,
     paddingLeft: 5,
-    fontSize: 16,
+    fontSize: 14,
     zIndex: 3,
     overflow: 'hidden',
   },
   inputStyles: {
     display: 'flex',
-    fontSize: 16,
+    fontSize: 14,
     width: '90%',
     color: 'grey',
   },
@@ -615,7 +615,7 @@ export default StyleSheet.create({
   searchInput: {
     display: 'flex',
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     minHeight: 30,
     marginLeft: 10,
     marginRight: 10,
@@ -627,7 +627,7 @@ export default StyleSheet.create({
   },
   commentNavigator: {
     display: 'flex',
-    fontSize: 12,
+    fontSize: 14,
     color: 'grey',
     paddingHorizontal: 10,
     marginVertical: 5,
@@ -635,7 +635,7 @@ export default StyleSheet.create({
   timeSent: {
     display: 'flex',
     color: '#ddd',
-    fontSize: 10,
+    fontSize: 12,
     alignSelf: 'center',
   },
   commentTime: {
@@ -657,7 +657,7 @@ export default StyleSheet.create({
     color: '#00bcd4',
     display: 'flex',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 14,
   },
   tabIcon: {
     display: 'flex',
@@ -672,7 +672,7 @@ export default StyleSheet.create({
     borderRadius: 7,
     marginTop: 10,
     color: '#FFFFFF',
-    fontSize: 10,
+    fontSize: 14,
     display: 'flex',
     textAlign: 'center',
     lineHeight: 14,
@@ -720,7 +720,7 @@ export default StyleSheet.create({
   },
   cancelText: {
     display: 'flex',
-    fontSize: 16,
+    fontSize: 14,
     color: 'grey',
   },
   commentMenu: {
