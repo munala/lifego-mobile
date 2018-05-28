@@ -22,7 +22,7 @@ class BaseClass extends Component {
     if (!response.error) {
       this.props.actions.navigate({
         navigator: this.props.navigator,
-        route: this.props.fromRoute,
+        route: 'bucketlist',
         params: {
           bucketlist,
         } });

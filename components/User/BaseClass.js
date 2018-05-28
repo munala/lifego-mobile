@@ -11,6 +11,7 @@ class BaseClass extends Component {
     if (this.state.registerMode) {
       const { error } = await this.props.actions.register(this.state.registerUser);
       if (!error) {
+        await AsyncStorage.setItem('new_user', 'true');
         this.props.actions.login(this.state.registerUser);
       }
     } else {

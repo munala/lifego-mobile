@@ -73,9 +73,10 @@ class Items extends BaseClass {
         <View style={styles.stretch}>
           <View style={[styles.commentSection, { alignItems: 'stretch', paddingHorizontal: 10 }]}>
             <View style={styles.buttonRow}>
-              <TouchableOpacity onPress={() => this.openForm('Add')} style={[styles.value, { justifyContent: 'flex-start' }]}>
-                <Text style={styles.commentNavigator}>Add item</Text>
-              </TouchableOpacity>
+              {this.props.bucketlist.userId === this.props.profile.id && this.props.mode &&
+                <TouchableOpacity onPress={() => this.openForm('Add')} style={[styles.value, { justifyContent: 'flex-start' }]}>
+                  <Text style={styles.commentNavigator}>Add item</Text>
+                </TouchableOpacity>}
               <View style={styles.navigationButtons}>
                 {
                   bucketlist.items.length > 0 && page > 0 &&
