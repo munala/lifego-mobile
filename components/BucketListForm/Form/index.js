@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+import GooglePlacesInput from '../GooglePlacesSearch';
 import Text from '../../Common/SuperText';
 import styles from '../styles';
 import propTypes from './propTypes';
@@ -36,6 +37,7 @@ const Form = ({
   changePhoto,
   addToCalendar,
   toggleCalendar,
+  listViewDisplayed,
 }) => (
   <View style={styles.flexOne}>
     <View style={styles.wrapper}>
@@ -72,17 +74,12 @@ const Form = ({
           context.name === 'bucketlist' &&
             <View>
               <Text style={styles.grey}>Location</Text>
-              <TextInput
-                defaultValue={content.location}
-                style={styles.input}
-                onChangeText={text => onChange(text, 'location')}
-                selectTextOnFocus={context.type === 'Edit'}
-                enablesReturnKeyAutomatically
-                returnKeyType="next"
-                underlineColorAndroid="#00bcd4"
-                placeholderTextColor="#bbb"
-                placeholder="location of bucketlist"
+              <GooglePlacesInput
+                onChange={onChange}
+                content={content}
+                listViewDisplayed={listViewDisplayed}
               />
+              <View style={styles.hr} />
               <Text style={styles.grey}>Due date</Text>
               <TouchableOpacity
                 style={styles.dateButton}

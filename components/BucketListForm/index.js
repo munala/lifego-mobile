@@ -40,7 +40,12 @@ class BucketListForm extends Component {
         )
         : null,
     },
+    listViewDisplayed: false,
   };
+
+  componentDidMount =() => {
+    this.setState({ listViewDisplayed: false });
+  }
 
   onChange = (text, type) => {
     const content = { ...this.state.content };
@@ -173,7 +178,8 @@ class BucketListForm extends Component {
   render() {
     const { navigation: { state: { params: { goBack } } } } = this.props;
     const {
-      content, context, datePickerMode, categoryPickerMode, disabled, saving, image, addToCalendar,
+      content, context, datePickerMode, categoryPickerMode, disabled,
+      saving, image, addToCalendar, listViewDisplayed,
     } = this.state;
     const formProps = {
       content,
@@ -184,6 +190,7 @@ class BucketListForm extends Component {
       disabled,
       saving,
       image,
+      listViewDisplayed,
       showDatePicker: this.showDatePicker,
       showCategoryPicker: this.showCategoryPicker,
       onChange: this.onChange,
