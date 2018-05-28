@@ -28,14 +28,8 @@ class Splash extends Component {
     if (!notFirstTime) {
       route = 'intro';
     } else if (!token || jwtDecode(token).exp < Date.now() / 1000) {
-      const user = await AsyncStorage.getItem('user');
-      if (user) {
-        const { error } = await this.props.actions.login(JSON.parse(user));
-        route = error ? 'user' : 'home';
-      } else {
-        route = 'user';
-        AsyncStorage.removeItem('token');
-      }
+      route = 'user';
+      AsyncStorage.removeItem('token');
     } else {
       route = 'home';
     }

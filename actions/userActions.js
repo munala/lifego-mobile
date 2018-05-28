@@ -119,7 +119,6 @@ const loginUser = (user, serviceCall) => async (dispatch) => {
   } else {
     await AsyncStorage.setItem('token', response);
     await AsyncStorage.setItem('start', 'false');
-    await AsyncStorage.setItem('user', JSON.stringify(user));
     await dispatch(loginSuccess({ response, screen: 'user' }));
     navigate({ route: 'home', navigator: 'AuthNavigator' })(dispatch);
     dispatch(apiCallActions.resetMessage());
@@ -133,7 +132,6 @@ export const socialLogin = user => loginUser(user, userService.socialLogin);
 export const logout = () => async (dispatch) => {
   await AsyncStorage.setItem('can_login', 'false');
   await AsyncStorage.removeItem('token');
-  await AsyncStorage.removeItem('user');
   await dispatch(logoutUser());
   await navigate({ route: 'user', navigator: 'AuthNavigator' })(dispatch);
   persist.purge();
