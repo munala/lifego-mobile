@@ -84,7 +84,7 @@ class BaseClass extends Component {
 
   deleteAccount = async () => {
     Alert.alert(
-      'Delete account?',
+      'Are you sure?',
       'This action cannot be reversed',
       [
         { text: 'Cancel', onPress: () => {} },
