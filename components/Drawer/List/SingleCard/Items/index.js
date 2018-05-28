@@ -54,7 +54,7 @@ class Items extends BaseClass {
         <View
           style={styles.item}
         >
-          <Text style={styles.commentUser}>{item.name}</Text>
+          <Text numberOfLines={2} style={styles.commentUser}>{item.name}</Text>
           <CheckBox
             value={item.done}
             onValueChange={() => this.onDone(item)}

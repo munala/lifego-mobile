@@ -56,13 +56,6 @@ class BaseClass extends Component {
     });
   };
 
-  truncateMessage = (message) => {
-    if (message.length > 30) {
-      return `${message.substr(0, 30)} ...`;
-    }
-    return message;
-  }
-
   startChat = async (receiver) => {
     const newConversation = {
       senderId: this.props.profile.id,

@@ -74,7 +74,6 @@ class Notifications extends Component {
         bucketlist: {
           id: notification.bucketlistId, name: 'Bucketlist' },
         fromRoute: 'Notifications',
-        from: 'Notifications',
         navigator: 'AllBucketlistNavigator',
       },
     });
@@ -104,9 +103,11 @@ class Notifications extends Component {
             color="#aaa"
             size={20}
           />
-          <Text style={[styles.notificationText, {
-            color: notification.read ? 'grey' : '#009baf',
-          }]}
+          <Text
+            numberOfLines={2}
+            style={[styles.notificationText, {
+              color: notification.read ? 'grey' : '#009baf',
+            }]}
           >{this.stripHtml(notification.text)}
           </Text>
         </View>

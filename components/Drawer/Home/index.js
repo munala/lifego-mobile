@@ -72,7 +72,7 @@ class Home extends Component {
     const context = params && params.context;
     const headerTitle = context && `${context.type} ${context.name}`;
     const name = bucketlist && bucketlist.name ? (bucketlist.name) : 'bucketlist';
-    const title = context ? headerTitle : `${name.slice(0, 20)}${name.length > 20 ? ' ...' : ''}`;
+    const title = context ? headerTitle : name;
     const mode = route && route.routeName === 'bucketlists' ? 'bucketlists' : 'other';
 
     return (

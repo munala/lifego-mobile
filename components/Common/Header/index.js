@@ -85,7 +85,7 @@ class Header extends Component {
               onClearText={this.clearSearch}
               value={this.state.searchText}
             /> :
-            <Text style={styles.titleText}>
+            <Text style={styles.titleText} numberOfLines={1}>
               {title}
             </Text>
         }

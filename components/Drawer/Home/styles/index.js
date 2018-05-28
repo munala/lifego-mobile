@@ -327,18 +327,25 @@ export default StyleSheet.create({
     color: 'grey',
     fontSize: 14,
     fontWeight: 'bold',
+    width: '100%',
+  },
+  leftUser: {
+    display: 'flex',
+    width: '100%',
   },
   rightHeaderContent: {
     display: 'flex',
     color: 'grey',
     fontSize: 14,
+    flex: 1,
+    textAlign: 'right',
+    width: 100,
+    marginRight: 5,
   },
   titleIcon: {
     display: 'flex',
     fontSize: 14,
-    height: 14,
     lineHeight: 14,
-    marginRight: 5,
     color: '#00bcd4',
   },
   locationIcon: {
@@ -346,8 +353,6 @@ export default StyleSheet.create({
     fontSize: 14,
     height: 14,
     lineHeight: 14,
-    marginRight: 5,
-    marginBottom: 5,
     color: '#00bcd4',
   },
   lifegoBlue: {
@@ -382,6 +387,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
+    flex: 1,
   },
   listView: {
     marginTop: 2.5,
@@ -395,11 +401,16 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    alignSelf: 'flex-end',
+    width: '100%',
   },
   location: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'flex-end',
+    justifyContent: 'space-between',
+    width: '100%',
   },
   buttonStyle: {
     backgroundColor: '#f7f7f7',

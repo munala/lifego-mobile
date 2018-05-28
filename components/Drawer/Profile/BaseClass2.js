@@ -112,7 +112,7 @@ class BaseClass2 extends BaseClass {
               { uri: person.pictureUrl.replace('http://', 'https://') } :
               require('../../../assets/images/user.png')}
           />
-          <Text style={styles.personName}>{person.displayName || 'no name'}</Text>
+          <Text numberOfLines={1} style={styles.personName}>{person.displayName || 'no name'}</Text>
           {
             profile.id !== person.id &&
             <TouchableOpacity

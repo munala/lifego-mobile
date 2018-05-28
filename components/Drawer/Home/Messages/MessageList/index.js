@@ -54,16 +54,18 @@ class MessageList extends BaseClass {
             }
           />
           <View style={styles.preview}>
-            <Text style={[styles.notificationText, {
-              color: conversation.read ? 'grey' : '#009baf',
-            }]}
+            <Text
+              style={[styles.notificationText, {
+                color: conversation.read ? 'grey' : '#009baf',
+              }]}
+              numberOfLines={1}
             >
               { this.getName(conversation) }
             </Text>
             {
               conversation.messages.length > 0 &&
-              <Text style={[styles.wordWrap, unread > 0 && { fontWeight: 'bold' }]}>
-                {this.truncateMessage(conversation.messages[0].content)}
+              <Text numberOfLines={1} style={[styles.wordWrap, unread > 0 && { fontWeight: 'bold' }]}>
+                {conversation.messages[0].content}
               </Text>
             }
           </View>

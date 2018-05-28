@@ -64,7 +64,7 @@ const ProfileBody = ({
       <Animated.View style={[styles.profileView, { opacity }]}>
         <Text style={styles.profileName}>{profile.displayName || 'no name'}</Text>
         {!showUserProfile &&
-          <Text style={styles.profileEmail}>
+          <Text style={styles.profileEmail} numberOfLines={1}>
             {profile.email}
           </Text>
         }

@@ -52,18 +52,14 @@ class Comments extends BaseClass {
         delayLongPress={500}
         activeOpacity={1}
       >
-        <View
-          style={styles.comment}
-        >
+        <View style={styles.comment}>
           <TouchableOpacity onPress={() => this.props.goToProfile({ id: comment.senderId })}>
-            <Text style={styles.commentUser}>{comment.user}</Text>
+            <Text style={styles.commentUser} numberOfLines={1}>{comment.user}</Text>
           </TouchableOpacity>
-          <Text style={styles.commentContent} >{comment.content}</Text>
+          <Text selectable style={styles.commentContent} >{comment.content}</Text>
         </View>
         {this.props.mode &&
-          <Text
-            style={[styles.timeSent, styles.commentTime]}
-          >
+          <Text numberOfLines={1} style={[styles.timeSent, styles.commentTime]}>
             {`${setTime(comment).createdAt}${setTime(comment).time}`}
           </Text>
         }

@@ -47,6 +47,7 @@ class SingleCard extends BaseClass {
       getTags,
       setLikeColor,
       profile,
+      mode,
       like: this.like,
       toggleItems: this.toggleItems,
       toggleComments: this.toggleComments,

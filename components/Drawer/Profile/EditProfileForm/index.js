@@ -45,7 +45,7 @@ const EditProfileForm = ({
           {
             ['first name', 'last name'].map(name => (
               <View key={name}>
-                <Text style={styles.grey}>{name}</Text>
+                <Text numberOfLines={1} style={styles.grey}>{name}</Text>
                 <TextInput
                   defaultValue={displayName[name]}
                   style={styles.input}

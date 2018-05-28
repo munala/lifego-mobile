@@ -122,7 +122,7 @@ class Conversation extends BaseClass {
               size={30}
             />
             <TouchableOpacity onPress={() => this.goToProfile({ id: userId })}>
-              <Text style={styles.name}>{name}</Text>
+              <Text style={styles.name} numberOfLines={1}>{name}</Text>
             </TouchableOpacity>
             <Icon
               style={styles.deleteButton}

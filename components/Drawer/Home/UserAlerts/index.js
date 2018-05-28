@@ -96,9 +96,11 @@ class AlertComponent extends Component {
       activeOpacity={1}
     >
       <View style={[styles.notification, { justifyContent: 'space-between' }]}>
-        <Text style={[styles.notificationText, {
-          color: alert.read ? 'grey' : '#009baf',
-        }]}
+        <Text
+          numberOfLines={2}
+          style={[styles.notificationText, {
+            color: alert.read ? 'grey' : '#009baf',
+          }]}
         >{this.stripHtml(alert.text)}
         </Text>
         {!this.checkFriend(alert) &&

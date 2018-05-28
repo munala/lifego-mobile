@@ -13,7 +13,6 @@ import Text from '../../../../Common/SuperText';
 const CardContent = ({
   bucketlist,
   imageDimensions,
-  getTags,
   setLikeColor,
   profile,
   like,
@@ -21,6 +20,7 @@ const CardContent = ({
   toggleComments,
   goToBucketlist,
   openMenu,
+  mode,
 }) => (
   <TouchableWithoutFeedback
     onPress={goToBucketlist}
@@ -29,10 +29,18 @@ const CardContent = ({
     <View>
       <View style={styles.description}>
         <View>
-          <Text style={styles.blue}>{bucketlist.name}</Text>
+          <Text
+            selectable
+            numberOfLines={mode ? undefined : 1}
+            style={styles.blue}
+          >{bucketlist.name}</Text>
           {
             !!bucketlist.description &&
-            <Text style={styles.grey}>{bucketlist.description}</Text>
+            <Text
+              numberOfLines={mode ? undefined : 4}
+              selectable
+              style={styles.grey}
+            >{bucketlist.description}</Text>
           }
         </View>
       </View>
@@ -52,18 +60,6 @@ const CardContent = ({
           style={[styles.image, imageDimensions]}
         />
       }
-      <View style={styles.tagList}>
-        {
-          getTags(bucketlist).map(tag => (
-            <Text
-              key={getTags(bucketlist).indexOf(tag)}
-              style={styles.hashTag}
-            >
-    #{tag.label}
-            </Text>
-          ))
-        }
-      </View>
       <View style={styles.likesComments}>
         <View style={[styles.likesComments, { width: 100, justifyContent: 'flex-start' }]}>
           <TouchableOpacity
@@ -120,8 +116,8 @@ CardContent.propTypes = {
       updatedAt: PropTypes.string,
     })),
   }).isRequired,
+  mode: PropTypes.string,
   imageDimensions: PropTypes.shape({}).isRequired,
-  getTags: PropTypes.func.isRequired,
   setLikeColor: PropTypes.func.isRequired,
   like: PropTypes.func.isRequired,
   toggleItems: PropTypes.func.isRequired,
@@ -137,6 +133,10 @@ CardContent.propTypes = {
     friends: PropTypes.arrayOf(PropTypes.shape({})),
     searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
+};
+
+CardContent.defaultProps = {
+  mode: '',
 };
 
 export default CardContent;
