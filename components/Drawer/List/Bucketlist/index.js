@@ -104,7 +104,7 @@ const mapStateToProps = ({
     param = state.params;
     navigator = param.navigator;
     bucketlist = bucketlists
-      .filter(buck => buck.id === parseInt(state.params.bucketlist.id, 10))[0];
+      .filter(buck => buck.id === parseInt(param.bucketlist.id, 10))[0];
   }
   return ({
     profile,
