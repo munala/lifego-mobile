@@ -25,6 +25,7 @@ class BaseClass extends Component {
         route: 'bucketlist',
         params: {
           bucketlist,
+          navigator: this.props.navigator,
         } });
     }
   }
@@ -50,7 +51,7 @@ class BaseClass extends Component {
 
   editItem = () => {
     this.closeMenu();
-    this.openForm('Edit', this.state.selectedItem);
+    this.openForm({ type: 'Edit', name: 'item' }, this.state.selectedItem);
   }
 
   cancel = () => {
@@ -60,23 +61,22 @@ class BaseClass extends Component {
     });
   }
 
-  openForm = (type, content = {}) => {
+  openForm = (context, content = {}) => {
     this.props.actions.navigate({
       params: {
-        context: {
-          name: 'item',
-          type,
-        },
+        context,
         content,
         bucketlist: this.props.bucketlist,
+        fromRoute: 'bucketlist',
         onSave: this.onSave,
-        goBack: async () => {
-          await this.props.actions.navigate({
+        goBack: () => {
+          this.props.actions.navigate({
             params: {
               bucketlist: this.props.bucketlist,
+              navigator: this.props.navigator,
             },
             navigator: this.props.navigator,
-            route: this.props.fromRoute,
+            route: 'bucketlist',
           });
         },
       },
@@ -89,7 +89,7 @@ class BaseClass extends Component {
     this.setState({
       selectedItem,
     });
-    this.props.openMenu(this.props.bucketlist);
+    this.props.openMenu(this.props.bucketlist, 'showItemMenu');
   }
 
   closeMenu = () => {

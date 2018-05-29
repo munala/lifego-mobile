@@ -212,4 +212,43 @@ export default StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  listView: {
+    borderRadius: 5,
+    backgroundColor: '#f7f7f7',
+  },
+  poweredContainer: {
+    display: 'none',
+  },
+  textInputContainer: {
+    display: 'flex',
+    marginHorizontal: 0,
+    marginTop: 2,
+    marginBottom: -15,
+    backgroundColor: '#fff',
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+  },
+  textInput: {
+    display: 'flex',
+    flex: 1,
+    color: 'grey',
+    fontWeight: '600',
+    fontSize: 14,
+    marginLeft: 0,
+    marginRight: 0,
+    marginBottom: 0,
+    marginTop: 5,
+    borderRadius: 0,
+    paddingVertical: 5,
+    paddingHorizontal: 0,
+    left: -5,
+    right: -5,
+    fontFamily: 'Roboto',
+    borderBottomWidth: 0,
+    borderBottomColor: '#00bcd4',
+  },
+  description: {
+    fontWeight: 'bold',
+    color: 'grey',
+  },
 });

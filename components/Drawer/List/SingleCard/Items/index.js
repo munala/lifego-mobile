@@ -24,14 +24,14 @@ class Items extends BaseClass {
   }
 
   componentDidMount = () => {
-    if (this.props.setItems) {
-      this.props.setItems([
+    if (this.props.setOtherItems) {
+      this.props.setOtherItems([
         { label: 'Edit', action: this.editItem },
         { label: 'Delete', action: this.deleteItem },
       ]);
     }
-    if (this.props.setButtons) {
-      this.props.setButtons([{
+    if (this.props.setOtherButtons) {
+      this.props.setOtherButtons([{
         label: 'Delete',
         action: this.delete,
       }]);
@@ -73,10 +73,12 @@ class Items extends BaseClass {
         <View style={styles.stretch}>
           <View style={[styles.commentSection, { alignItems: 'stretch', paddingHorizontal: 10 }]}>
             <View style={styles.buttonRow}>
-              {this.props.bucketlist.userId === this.props.profile.id && this.props.mode &&
-                <TouchableOpacity onPress={() => this.openForm('Add')} style={[styles.value, { justifyContent: 'flex-start' }]}>
+              {
+                this.props.bucketlist.userId === this.props.profile.id && this.props.mode &&
+                <TouchableOpacity onPress={() => this.openForm({ type: 'Add', name: 'item' })} style={[styles.value, { justifyContent: 'flex-start' }]}>
                   <Text style={styles.commentNavigator}>Add item</Text>
-                </TouchableOpacity>}
+                </TouchableOpacity>
+              }
               <View style={styles.navigationButtons}>
                 {
                   bucketlist.items.length > 0 && page > 0 &&

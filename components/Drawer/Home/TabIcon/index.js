@@ -38,7 +38,7 @@ const TabIcon = ({
             styles={styles.tab}
             onPress={() => navigateTabs({ route: route.routeName, navigator: 'HomeTabNav' })}
           >
-            <View style={{ height: '100%', width: '25%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
+            <View style={styles.counter} >
               <Icon
                 name={names[route.routeName]}
                 size={focused ? 25 : 20}

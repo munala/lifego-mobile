@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import styles from '../styles';
@@ -20,55 +21,26 @@ const GooglePlacesInput = ({ onChange, content, listViewDisplayed }) => (
       types: '(cities)',
     }}
     styles={{
-      listView: {
-        borderRadius: 5,
-        backgroundColor: '#f7f7f7',
-      },
-      poweredContainer: {
-        display: 'none',
-      },
-      textInputContainer: {
-        display: 'flex',
-        marginHorizontal: 0,
-        marginTop: 2,
-        marginBottom: -15,
-        backgroundColor: '#fff',
-        borderTopWidth: 0,
-        borderBottomWidth: 0,
-      },
-      textInput: {
-        display: 'flex',
-        flex: 1,
-        color: 'grey',
-        fontWeight: '600',
-        fontSize: 14,
-        marginLeft: 0,
-        marginRight: 0,
-        marginBottom: 0,
-        marginTop: 5,
-        borderRadius: 0,
-        paddingVertical: 5,
-        paddingHorizontal: 0,
-        left: -5,
-        right: -5,
-        fontFamily: 'Roboto',
-        borderBottomWidth: 0,
-        borderBottomColor: '#00bcd4',
-      },
-      description: {
-        fontWeight: 'bold',
-        color: 'grey',
-      },
+      listView: styles.listView,
+      poweredContainer: styles.poweredContainer,
+      textInputContainer: styles.textInputContainer,
+      textInput: styles.textInput,
+      description: styles.description,
     }}
     nearbyPlacesAPI="GooglePlacesSearch"
     GooglePlacesSearchQuery={{
       rankby: 'distance',
       types: 'food',
     }}
-
     filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
     debounce={200}
   />
 );
+
+GooglePlacesInput.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  content: PropTypes.shape({}).isRequired,
+  listViewDisplayed: PropTypes.bool.isRequired,
+};
 
 export default GooglePlacesInput;

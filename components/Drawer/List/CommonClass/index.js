@@ -46,14 +46,24 @@ export default class BaseClass extends Component {
     this.setState({ items });
   }
 
+  setOtherItems = (otherItems) => {
+    this.setState({ otherItems });
+  }
+
   setButtons = (buttons) => {
     this.setState({ buttons });
   }
 
-  openMenu = (selectedBucketlist) => {
+  setOtherButtons = (otherButtons) => {
+    this.setState({ otherButtons });
+  }
+
+  openMenu = (selectedBucketlist, type) => {
     if (selectedBucketlist.userId === this.props.profile.id) {
       this.setState({
-        showMenu: true,
+        showMenu: false,
+        showItemMenu: false,
+        [type]: true,
         selectedBucketlist,
       });
     }
@@ -114,20 +124,17 @@ export default class BaseClass extends Component {
 
   editBucketlist = () => {
     this.closeMenu();
-    this.showModal('Edit', this.state.selectedBucketlist);
+    this.showModal({ type: 'Edit', name: 'bucketlist' }, this.state.selectedBucketlist);
   }
 
-  showModal = async (type, content = {}) => {
-    const nav = this.props.navigator || this.props.params.navigator;
-    const route = this.props.currentRoute || 'bucketlist';
+  showModal = async (context, content = {}) => {
+    const nav = this.props.navigator;
+    const route = this.props.current || this.props.currentRoute;
     this.props.actions.navigate({
       navigator: nav,
       route: 'bucketlistForm',
       params: {
-        context: {
-          name: 'bucketlist',
-          type,
-        },
+        context,
         content,
         onSave: this.onSave,
         goBack: () => {
@@ -154,6 +161,7 @@ BaseClass.propTypes = {
   navigator: PropTypes.string.isRequired,
   currentRoute: PropTypes.string.isRequired,
   params: PropTypes.shape({ navigator: PropTypes.string }).isRequired,
+  current: PropTypes.string.isRequired,
   profile: PropTypes.shape({
     id: PropTypes.number,
   }).isRequired,

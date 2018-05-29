@@ -48,15 +48,20 @@ class Home extends Component {
     const route = routes[routes.length - 1];
     const param = route && route.params;
     const from = param && param.fromRoute;
+    const goBack = param && param.goBack;
     const navigator = param && param.navigator;
-    await navigate({
-      navigator: navigator || 'AllBucketlistNavigator',
-      route: 'bucketlists',
-      params: { bucketlist: undefined, fromRoute: undefined },
-    });
-    if (from === 'Notifications') {
-      navigate({ navigator: from === 'Notifications' ? 'HomeTabNav' : navigator, route: from });
-      navigate({ navigator, route: 'bucketlists' });
+    if (goBack) {
+      goBack();
+    } else {
+      await navigate({
+        navigator: navigator || 'AllBucketlistNavigator',
+        route: 'bucketlists',
+        params: { bucketlist: undefined, fromRoute: undefined },
+      });
+      if (from === 'Notifications') {
+        navigate({ navigator: from === 'Notifications' ? 'HomeTabNav' : navigator, route: from });
+        navigate({ navigator, route: 'bucketlists' });
+      }
     }
   }
 

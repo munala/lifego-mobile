@@ -39,6 +39,7 @@ class SingleCard extends BaseClass {
       time,
       openMenu: this.props.openMenu,
       goToProfile: this.goToProfile,
+      scrollView: this.props.scrollView,
     };
 
     const cardContentProps = {
@@ -52,6 +53,7 @@ class SingleCard extends BaseClass {
       toggleItems: this.toggleItems,
       toggleComments: this.toggleComments,
       openMenu: this.props.openMenu,
+      scrollView: this.props.scrollView,
       goToBucketlist,
     };
 
@@ -59,8 +61,6 @@ class SingleCard extends BaseClass {
       <TouchableWithoutFeedback
         onPress={this.props.closeMenu}
         style={styles.touchArea}
-        onLongPress={() => this.props.openMenu(bucketlist)}
-        delayLongPress={500}
       >
         <View
           key={bucketlist.id}
@@ -68,8 +68,6 @@ class SingleCard extends BaseClass {
         >
           <TouchableOpacity
             onPress={goToBucketlist}
-            onLongPress={() => this.props.openMenu(bucketlist)}
-            delayLongPress={500}
             style={styles.bucketlistBody}
             activeOpacity={1}
           >

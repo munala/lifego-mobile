@@ -18,13 +18,13 @@ const CardHeader = ({
   <TouchableOpacity
     activeOpacity={1}
     onPress={goToBucketlist}
-    onLongPress={() => openMenu(bucketlist)}
+    onLongPress={() => openMenu(bucketlist, 'showMenu')}
     delayLongPress={500}
     style={styles.bucketlistHeader}
   >
     <TouchableOpacity
       onPress={() => goToProfile({ id: bucketlist.userId })}
-      onLongPress={() => openMenu(bucketlist)}
+      onLongPress={() => openMenu(bucketlist, 'showMenu')}
       delayLongPress={500}
       activeOpacity={1}
     >

@@ -24,7 +24,8 @@ const CardContent = ({
 }) => (
   <TouchableWithoutFeedback
     onPress={goToBucketlist}
-    onLongPress={() => openMenu(bucketlist)}
+    onLongPress={() => openMenu(bucketlist, 'showMenu')}
+    delayLongPress={500}
   >
     <View>
       <View style={styles.description}>
