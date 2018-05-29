@@ -149,7 +149,7 @@ class AllBucketlists extends BaseClass {
           buttonColor="#00bcd4"
           fixNativeFeedbackRadius
           icon={<Icon name="add" color="#fff" />}
-          onPress={() => this.showModal('Add')}
+          onPress={() => this.showModal({ type: 'Add', name: 'bucketlist' })}
         />
       </View>
     );

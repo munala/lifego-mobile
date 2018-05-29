@@ -45,7 +45,7 @@ class Bucketlist extends BaseClass {
   }
 
   render() {
-    const { bucketlist, params: { navigator, fromRoute } } = this.props;
+    const { bucketlist, navigator, params: { fromRoute } } = this.props;
     const bucketlistProps = {
       bucketlist,
       mode: 'single',
@@ -99,14 +99,17 @@ const mapStateToProps = ({
 }) => {
   let bucketlist;
   let param = {};
+  let navigator = '';
   if (state && state.params) {
     param = state.params;
+    navigator = param.navigator;
     bucketlist = bucketlists
       .filter(buck => buck.id === parseInt(state.params.bucketlist.id, 10))[0];
   }
   return ({
     profile,
     bucketlist,
+    navigator,
     params: param,
   });
 };

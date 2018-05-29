@@ -70,13 +70,13 @@ class BaseClass extends Component {
         content,
         bucketlist: this.props.bucketlist,
         onSave: this.onSave,
-        goBack: async () => {
-          await this.props.actions.navigate({
+        goBack: () => {
+          this.props.actions.navigate({
             params: {
               bucketlist: this.props.bucketlist,
             },
             navigator: this.props.navigator,
-            route: this.props.fromRoute,
+            route: 'bucketlist',
           });
         },
       },

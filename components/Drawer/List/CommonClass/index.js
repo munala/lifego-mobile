@@ -117,17 +117,14 @@ export default class BaseClass extends Component {
     this.showModal('Edit', this.state.selectedBucketlist);
   }
 
-  showModal = async (type, content = {}) => {
-    const nav = this.props.navigator || this.props.params.navigator;
-    const route = this.props.currentRoute || 'bucketlist';
+  showModal = async (context, content = {}) => {
+    const nav = this.props.navigator;
+    const route = this.props.currentRoute;
     this.props.actions.navigate({
       navigator: nav,
       route: 'bucketlistForm',
       params: {
-        context: {
-          name: 'bucketlist',
-          type,
-        },
+        context,
         content,
         onSave: this.onSave,
         goBack: () => {

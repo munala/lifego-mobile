@@ -10,7 +10,7 @@ import propTypes from './propTypes';
 
 class Comments extends BaseClass {
   state = {
-    page: Math.floor(this.props.bucketlist.comments.length / 8),
+    page: 0,
     comment: {
       id: '',
       content: '',
@@ -40,7 +40,9 @@ class Comments extends BaseClass {
   }
 
   renderComments = bucketlist => bucketlist.comments
-    .slice(this.state.page * 8, (this.state.page * 8) + 8)
+    .slice(
+      ((this.state.page * 8)),
+      ((this.state.page * 8) + 8))
     .map(comment => (
       <TouchableOpacity
         key={comment.id}
@@ -76,21 +78,21 @@ class Comments extends BaseClass {
         <View>
           <View style={styles.commentSection}>
             {
-              bucketlist.comments.length > 0 &&
-              page < lastPage &&
+              bucketlist.comments.length > 0 && page > 0 &&
               <TouchableOpacity
                 style={styles.value}
-                onPress={() => this.navigatePage('next')}
+                onPress={() => this.navigatePage('previous')}
               >
                 <Text style={styles.commentNavigator}>more comments</Text>
               </TouchableOpacity>
             }
             {this.renderComments(bucketlist) }
             {
-              bucketlist.comments.length > 0 && page > 0 &&
+              bucketlist.comments.length > 0 &&
+              page < lastPage &&
               <TouchableOpacity
                 style={styles.value}
-                onPress={() => this.navigatePage('previous')}
+                onPress={() => this.navigatePage('next')}
               >
                 <Text style={styles.commentNavigator}>previous comments</Text>
               </TouchableOpacity>
