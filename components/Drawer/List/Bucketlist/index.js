@@ -51,6 +51,8 @@ class Bucketlist extends BaseClass {
       mode: 'single',
       setItems: this.setItems,
       setButtons: this.setButtons,
+      setOtherItems: this.setOtherItems,
+      setOtherButtons: this.setOtherButtons,
       openMenu: this.openMenu,
       closeMenu: this.closeMenu,
       openDialog: this.openDialog,
@@ -61,8 +63,9 @@ class Bucketlist extends BaseClass {
       fromRoute,
       navigator,
     };
-    const items = this.state.items;
-    const buttons = this.state.buttons;
+    const showMenu = this.state.showMenu || this.state.showItemMenu;
+    const items = this.state.showItemMenu ? this.state.otherItems : this.state.items;
+    const buttons = this.state.showItemMenu ? this.state.otherButtons : this.state.buttons;
     const dialogProps = {
       text: 'Are you sure? This action cannot be undone.',
       buttons,
@@ -73,11 +76,14 @@ class Bucketlist extends BaseClass {
     if (bucketlist) {
       return (
         <View style={styles.container}>
-          <ScrollView>
+          <ScrollView
+            ref={(el) => { this.scrollView = el; }}
+            onContentSizeChange={() => this.scrollView.scrollToEnd()}
+          >
             <SingleCard {...bucketlistProps} />
           </ScrollView>
           {
-            this.state.showMenu && <ContextMenu items={items} />
+            showMenu && <ContextMenu items={items} />
           }
           {
             this.state.showDialog && <Dialog {...dialogProps} />
@@ -111,6 +117,7 @@ const mapStateToProps = ({
     bucketlist,
     navigator,
     params: param,
+    current: 'bucketlist',
   });
 };
 
