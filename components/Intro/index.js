@@ -46,11 +46,6 @@ const features = [
     icon: 'schedule',
     description: 'Get reminders of your bucketlists due dates',
   },
-  {
-    title: 'Tag friends',
-    icon: 'person-pin',
-    description: 'Tag friends on your bucketlists (coming soon)',
-  },
 ];
 
 const navigateToLogin = (nav) => {
