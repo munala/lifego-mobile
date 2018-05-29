@@ -683,7 +683,7 @@ export default StyleSheet.create({
     borderRadius: 7,
     marginTop: 10,
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 10,
     display: 'flex',
     textAlign: 'center',
     lineHeight: 14,
@@ -769,5 +769,13 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  counter: {
+    height: '100%',
+    width: '25%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
