@@ -95,7 +95,7 @@ class BaseClass extends Component {
     this.setState({
       selectedComment,
     });
-    this.props.openMenu();
+    this.props.openMenu(this.props.bucketlist, 'showMenu');
   }
 
   closeMenu = () => {
