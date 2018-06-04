@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import RootApp from './main';
+import RootApp from './src';
 
 AppRegistry.registerComponent('LifeGo', () => RootApp);

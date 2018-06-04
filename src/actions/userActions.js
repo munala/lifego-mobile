@@ -4,7 +4,7 @@ import * as types from './actionTypes';
 import userService from '../api/userApi';
 import * as apiCallActions from './apiCallActions';
 import { navigate } from './navigationActions';
-import { persist } from '../main';
+import { persist } from '..';
 import { stripHtml } from '../utils';
 
 export const loginSuccess = ({ token, screen }) => ({

@@ -5,10 +5,10 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import jwtDecode from 'jwt-decode';
 
 import configureStore from './store/configureStore';
-import App from './app/app';
+import App from './app';
 import socket from './socket';
-import './reactotronConfig';
-import subscribeStore from './subscribeStore';
+import './config/reactotronConfig';
+import subscribeStore from './store/subscribeStore';
 
 const { store, persistor } = configureStore();
 
