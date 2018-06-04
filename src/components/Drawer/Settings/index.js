@@ -7,12 +7,8 @@ import {
   Platform,
   AsyncStorage,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as userActions from '../../../actions/userActions';
-import * as navigationActions from '../../../actions/navigationActions';
-import Header from '../../Common/Header';
+import Header from '../../../containers/Header';
 import BaseClass from './BaseClass';
 import Text from '../../Common/SuperText';
 import propTypes from './propTypes';
@@ -174,12 +170,4 @@ class Settings extends BaseClass {
 
 Settings.propTypes = propTypes;
 
-const mapStateToProps = ({
-  profile, currentApiCalls: { settings: currentApiCalls },
-}) => ({ profile, currentApiCalls });
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default Settings;

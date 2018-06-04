@@ -6,12 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { connect } from 'react-redux';
 import { List, ListItem } from 'react-native-elements';
-import { bindActionCreators } from 'redux';
 
-import * as userActions from '../../../actions/userActions';
-import * as navigationActions from '../../../actions/navigationActions';
 import Text from '../SuperText';
 import styles from './styles';
 
@@ -126,6 +122,7 @@ class SearchResults extends Component {
     );
   }
 }
+
 SearchResults.propTypes = {
   bucketlists: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
@@ -151,22 +148,4 @@ SearchResults.defaultProps = {
   bucketlists: [],
 };
 
-const mapStateToProps = ({
-  searchText,
-  allData: { searchResults: bucketlists },
-  profile,
-}, ownProps) => ({
-  searchText,
-  bucketlists,
-  profile,
-  ...ownProps,
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    ...userActions,
-    ...navigationActions,
-  }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+export default SearchResults;

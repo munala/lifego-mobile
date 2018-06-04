@@ -15,7 +15,7 @@ import * as bucketlistActions from '../../../../actions/bucketlistActions';
 import * as navigationActions from '../../../../actions/navigationActions';
 import { getOtherProfile } from '../../../../actions/userActions';
 import { setLikeColor, getTags, setTime } from '../../../../utils';
-import styles from '../../Home/styles/';
+import styles from '../styles/';
 import propTypes from './propTypes';
 
 class SingleCard extends BaseClass {

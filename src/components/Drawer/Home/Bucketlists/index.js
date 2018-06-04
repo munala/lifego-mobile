@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon } from 'react-native-elements';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
 import { addNavigationHelpers } from 'react-navigation';
 
 import AllBucketlistNavigator from '../../../../navigators/allBucketlists';
@@ -41,8 +40,4 @@ HomeView.propTypes = {
   nav: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = ({ AllBucketlistNavigator: nav }) => ({
-  nav,
-});
-
-export default connect(mapStateToProps)(HomeView);
+export default HomeView;

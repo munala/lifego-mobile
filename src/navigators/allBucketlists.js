@@ -1,7 +1,7 @@
 import { StackNavigator } from 'react-navigation';
 
 import AllBucketlists from '../components/Drawer/Home/Bucketlists/AllBucketlists';
-import Bucketlist from '../components/Drawer/List/Bucketlist';
+import Bucketlist from '../containers/SingleList';
 import BucketListForm from '../components/BucketListForm';
 
 const allBucketlistsScreens = {
@@ -17,6 +17,6 @@ const allBucketlistsScreens = {
 };
 
 export default StackNavigator(allBucketlistsScreens, {
-  inittialRouteName: 'bucketlists',
+  initialRouteName: 'bucketlists',
   navigationOptions: { header: null },
 });

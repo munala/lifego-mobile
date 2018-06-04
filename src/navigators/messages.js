@@ -1,11 +1,11 @@
 import { StackNavigator } from 'react-navigation';
 
-import Conversation from '../components/Drawer/Home/Messages/Conversation';
-import MessageList from '../components/Drawer/Home/Messages/MessageList';
+import Conversation from '../containers/Conversation';
+import Conversations from '../containers/Conversations';
 
 const messagesScreens = {
   MessageList: {
-    screen: MessageList,
+    screen: Conversations,
   },
   Conversation: {
     screen: Conversation,

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
 import { addNavigationHelpers } from 'react-navigation';
 
 import MessageNavigator from '../../../../navigators/messages';
@@ -26,6 +25,4 @@ Messages.propTypes = {
   nav: PropTypes.shape({}).isRequired,
 };
 
-export default connect(({ MessageNavigator: nav }) => ({
-  nav,
-}))(Messages);
+export default Messages;

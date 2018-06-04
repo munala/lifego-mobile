@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 
 import SearchResults from '../../Common/SearchResults';
-import Header from '../../Common/Header';
+import Header from '../../../containers/Header';
 import MyBucketlistNavigator from '../../../navigators/myBucketlists';
 import { addMyListener } from '../../../store/configureStore';
 import styles from '../Home/styles';
@@ -62,6 +61,13 @@ class StackNav extends Component {
     }
   };
 
+  openDrawer = () => {
+    this.props.actions.navigate({
+      route: 'DrawerOpen',
+      navigator: 'DrawerNav',
+    });
+  }
+
   render() {
     const {
       dispatch,
@@ -77,13 +83,14 @@ class StackNav extends Component {
     const name = bucketlist && bucketlist.name ? (bucketlist.name) : 'bucketlist';
     const title = context ? headerTitle : name;
     const mode = route && route.routeName === 'bucketlists' ? 'bucketlists' : 'other';
+    const singleBucketlistMode = route.routeName === 'bucketlist';
 
     return (
       <View style={[styles.container, styles.iPhoneX]}>
         <Header
           title={title}
           leftIcon={mode === 'bucketlists' ? 'menu' : 'arrow-back'}
-          onPressLeft={mode === 'bucketlists' ? this.openDrawer : () => this.navigateToAll()}
+          onPressLeft={mode === 'bucketlists' ? this.openDrawer : () => this.navigate(dispatch, singleBucketlistMode)}
           onFocus={this.onFocus}
           clearSearch={this.clearSearch}
           mode={mode}
@@ -110,14 +117,9 @@ class StackNav extends Component {
 StackNav.propTypes = {
   dispatch: PropTypes.func.isRequired,
   nav: PropTypes.shape({}).isRequired,
+  actions: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-const mapStateToProps = ({ MyBucketlistNavigator: nav }) => ({
-  nav,
-});
-
-const mapDispatchToProps = dispatch => ({
-  dispatch,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(StackNav);
+export default StackNav;

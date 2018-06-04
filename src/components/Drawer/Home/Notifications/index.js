@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
+import { View,
+  TouchableOpacity,
+  FlatList,
+  RefreshControl,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import Text from '../../../Common/SuperText';
-import * as notificationActions from '../../../../actions/notificationActions';
-import * as navigationActions from '../../../../actions/navigationActions';
 import styles from '../styles';
 
 class Notifications extends Component {
@@ -194,17 +194,4 @@ Notifications.propTypes = {
   currentApiCalls: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({
-  profile, notifications, currentApiCalls: { notifications: currentApiCalls },
-}, ownProps) => ({
-  profile,
-  notifications,
-  currentApiCalls,
-  ...ownProps,
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...notificationActions, ...navigationActions }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
+export default Notifications;

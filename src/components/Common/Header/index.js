@@ -2,13 +2,8 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { View, Platform } from 'react-native';
 import { Icon, SearchBar } from 'react-native-elements';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import Text from '../SuperText';
-import { searchBucketlists, clearSearch as clearBucketlists } from '../../../actions/bucketlistActions';
-import { logout, searchUsers } from '../../../actions/userActions';
-import * as searchActions from '../../../actions/searchActions';
 import PopupMenu from '../PopupMenu';
 import styles from './styles';
 
@@ -129,20 +124,4 @@ Header.defaultProps = {
   clearSearch: (() => {}),
 };
 
-const mapStateToProps = ({ searchText, components: { showHeader } }, ownProps) => ({
-  searchText,
-  showHeader,
-  ...ownProps,
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    searchBucketlists,
-    clearBucketlists,
-    logout,
-    searchUsers,
-    ...searchActions,
-  }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

@@ -5,7 +5,7 @@ import { View, TouchableOpacity, Image, TextInput, TouchableWithoutFeedback } fr
 import BaseClass from './BaseClass';
 import Text from '../../../../Common/SuperText';
 import { setTime } from '../../../../../utils';
-import styles from '../../../Home/styles';
+import styles from '../../styles';
 import propTypes from './propTypes';
 
 class Comments extends BaseClass {

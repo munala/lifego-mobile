@@ -1,7 +1,7 @@
 import { StackNavigator } from 'react-navigation';
 
-import User from '../components/User';
-import Drawer from '../components/Drawer';
+import User from '../containers/User';
+import Drawer from '../screens/Drawer';
 import Splash from '../components/Splash';
 import Intro from '../components/Intro';
 

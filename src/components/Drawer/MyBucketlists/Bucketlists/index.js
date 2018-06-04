@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Bucketlists from '../../List/Bucketlists';
+import Bucketlists from '../../../../containers/Lists';
 
 const MyBucketlists = () => {
   const navigator = 'MyBucketlistNavigator';

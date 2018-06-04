@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { View, TouchableOpacity, Image as Img } from 'react-native';
-import styles from '../../../Home/styles/';
+import styles from '../../styles/';
 import Text from '../../../../Common/SuperText';
 
 const CardHeader = ({

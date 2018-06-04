@@ -7,20 +7,15 @@ import {
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import { Icon } from 'react-native-elements';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import ContextMenu from '../../../Common/ContextMenu';
 import Dialog from '../../../Common/Dialog';
 import BaseClass from '../CommonClass';
 import Text from '../../../Common/SuperText';
 import Loader from '../../../Common/SmallLoader';
-import * as bucketlistActions from '../../../../actions/bucketlistActions';
-import * as userActions from '../../../../actions/userActions';
-import * as navigationActions from '../../../../actions/navigationActions';
 import { filterExpired } from '../../../../utils';
 import SingleCard from '../SingleCard';
-import styles from '../../Home/styles';
+import styles from '../styles';
 import propTypes from './propTypes';
 
 class AllBucketlists extends BaseClass {
@@ -160,24 +155,4 @@ class AllBucketlists extends BaseClass {
 
 AllBucketlists.propTypes = propTypes;
 
-const mapStateToProps = ({
-  currentApiCalls: calls,
-  allData,
-  data: myData,
-  profile,
-}, { screen }) => {
-  const currentApiCalls = calls[screen];
-  const loaderCalls = calls.loader;
-  const data = screen === 'allBucketlists' ? allData : myData;
-  return ({ currentApiCalls, data, loaderCalls, profile });
-};
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    ...bucketlistActions,
-    ...userActions,
-    ...navigationActions,
-  }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AllBucketlists);
+export default AllBucketlists;

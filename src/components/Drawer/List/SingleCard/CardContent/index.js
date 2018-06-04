@@ -7,7 +7,7 @@ import Image from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 import { View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
-import styles from '../../../Home/styles/';
+import styles from '../../styles/';
 import Text from '../../../../Common/SuperText';
 
 const CardContent = ({

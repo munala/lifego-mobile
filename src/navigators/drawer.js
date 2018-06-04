@@ -2,10 +2,10 @@ import React from 'react';
 import { DrawerNavigator } from 'react-navigation';
 
 import CustomDrawer from '../components/Drawer/Custom';
-import MyBucketlists from '../components/Drawer/MyBucketlists';
-import Home from '../components/Drawer/Home';
-import Profile from '../components/Drawer/Profile';
-import Settings from '../components/Drawer/Settings';
+import MyBucketlists from '../screens/MyLists';
+import Home from '../screens/HomeTabs';
+import Profile from '../containers/Profile';
+import Settings from '../containers/Settings';
 
 const drawerScreens = {
   Home: {

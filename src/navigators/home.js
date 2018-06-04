@@ -1,10 +1,10 @@
 import { TabNavigator } from 'react-navigation';
 
-import HomeScreen from '../components/Drawer/Home/Bucketlists';
-import Messages from '../components/Drawer/Home/Messages';
-import Notifications from '../components/Drawer/Home/Notifications';
-import UserAlerts from '../components/Drawer/Home/UserAlerts';
-import TabIcon from '../components/Drawer/Home/TabIcon';
+import HomeScreen from '../screens/AllLists';
+import Messages from '../screens/Conversations';
+import Notifications from '../containers/Notifications';
+import UserAlerts from '../containers/UserAlerts';
+import TabIcons from '../containers/TabIcons';
 
 const tabScreens = {
   HomeBucketlists: {
@@ -25,7 +25,7 @@ export default TabNavigator(
   tabScreens,
   {
     inittialRouteName: 'HomeBucketlists',
-    tabBarComponent: TabIcon,
+    tabBarComponent: TabIcons,
     tabBarPosition: 'bottom',
     swipeEnabled: false,
   },

@@ -11,20 +11,15 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import BaseClass from './BaseClass';
-import * as messageActions from '../../../../../actions/messageActions';
-import * as userActions from '../../../../../actions/userActions';
-import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
 import Dialog from '../../../../Common/Dialog';
 import ContextMenu from '../../../../Common/ContextMenu';
 import styles from '../../styles';
 import propTypes from './propTypes';
 
-class MessageList extends BaseClass {
+class Conversations extends BaseClass {
   renderItem = ({ item: conversation }) => { // eslint-disable-line react/prop-types
     const unread = this.getUnreadCount(conversation);
     const pictureUrl = this.setPictureUrl(conversation);
@@ -185,23 +180,6 @@ class MessageList extends BaseClass {
   }
 }
 
-MessageList.propTypes = propTypes;
+Conversations.propTypes = propTypes;
 
-const mapStateToProps = ({
-  profile, conversations, currentApiCalls: { messages: currentApiCalls },
-}, ownProps) => ({
-  profile,
-  conversations,
-  currentApiCalls,
-  ...ownProps,
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    ...messageActions,
-    ...userActions,
-    ...navigationActions,
-  }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MessageList);
+export default Conversations;

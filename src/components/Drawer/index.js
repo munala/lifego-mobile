@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { addNavigationHelpers } from 'react-navigation';
 
-import { loadAllBucketlists, loadBucketlists } from '../../actions/bucketlistActions';
-import { getConversations } from '../../actions/messageActions';
-import { getNotifications } from '../../actions/notificationActions';
-import { getAlerts } from '../../actions/userAlertActions';
-import { getProfile } from '../../actions/userActions';
-import { navigate } from '../../actions/navigationActions';
 import DrawerNav from '../../navigators/drawer';
 import { addDrawerListener } from '../../store/configureStore';
 
@@ -47,19 +39,4 @@ Drawer.propTypes = {
   nav: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = ({ DrawerNav: nav }) => ({ nav });
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    loadAllBucketlists,
-    loadBucketlists,
-    getConversations,
-    getNotifications,
-    getAlerts,
-    getProfile,
-    navigate,
-  }, dispatch),
-  dispatch,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Drawer);
+export default Drawer;

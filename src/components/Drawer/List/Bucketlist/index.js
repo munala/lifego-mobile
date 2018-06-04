@@ -1,16 +1,12 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as navigationActions from '../../../../actions/navigationActions';
-import * as bucketlistActions from '../../../../actions/bucketlistActions';
 import BaseClass from '../CommonClass';
 import SingleCard from '../SingleCard';
 import ContextMenu from '../../../Common/ContextMenu';
 import Dialog from '../../../Common/Dialog';
 
-import styles from '../../Home/styles';
+import styles from '../styles';
 import propTypes from './propTypes';
 
 class Bucketlist extends BaseClass {
@@ -121,36 +117,4 @@ class Bucketlist extends BaseClass {
 
 Bucketlist.propTypes = propTypes;
 
-const mapStateToProps = ({
-  allData: { bucketlists },
-  profile,
-},
-{
-  navigation: { state },
-}) => {
-  let bucketlist;
-  let param = {};
-  let navigator = '';
-  if (state && state.params) {
-    param = state.params;
-    navigator = param.navigator;
-    bucketlist = bucketlists
-      .filter(buck => buck.id === parseInt(param.bucketlist.id, 10))[0];
-  }
-  return ({
-    profile,
-    bucketlist,
-    navigator,
-    params: param,
-    current: 'bucketlist',
-  });
-};
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    ...navigationActions,
-    ...bucketlistActions,
-  }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Bucketlist);
+export default Bucketlist;

@@ -4,7 +4,7 @@ import { View, TouchableOpacity, CheckBox, TouchableWithoutFeedback } from 'reac
 
 import BaseClass from './BaseClass';
 import Text from '../../../../Common/SuperText';
-import styles from '../../../Home/styles';
+import styles from '../../styles';
 import propTypes from './propTypes';
 
 class Items extends BaseClass {

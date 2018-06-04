@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  FlatList,
+  RefreshControl,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as alertActions from '../../../../actions/userAlertActions';
-import * as userActions from '../../../../actions/userActions';
-import { navigate } from '../../../../actions/navigationActions';
 import Text from '../../../Common/SuperText';
 import styles from '../styles';
 
-class AlertComponent extends Component {
+class UserAlerts extends Component {
   onRefresh = () => {
     this.props.actions.getAlerts();
   }
@@ -173,7 +173,7 @@ class AlertComponent extends Component {
   }
 }
 
-AlertComponent.propTypes = {
+UserAlerts.propTypes = {
   profile: PropTypes.shape({
     id: PropTypes.number,
     userId: PropTypes.number,
@@ -202,19 +202,4 @@ AlertComponent.propTypes = {
   currentApiCalls: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({
-  profile,
-  alerts,
-  currentApiCalls: { userAlerts: currentApiCalls },
-}, ownProps) => ({
-  profile,
-  alerts,
-  currentApiCalls,
-  ...ownProps,
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...alertActions, ...userActions, navigate }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AlertComponent);
+export default UserAlerts;

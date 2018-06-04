@@ -10,12 +10,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import Text from '../Common/SuperText';
-import * as userActions from '../../actions/userActions';
-import * as navigationActions from '../../actions/navigationActions';
 import styles from './styles';
 import propTypes from './propTypes';
 import BaseClass from './BaseClass';
@@ -192,21 +188,4 @@ class User extends BaseClass {
 
 User.propTypes = propTypes;
 
-const mapStateToProps = ({
-  error,
-  message,
-  currentApiCalls: { user: currentApiCalls },
-  ...state
-}) => ({
-  ...state,
-  currentApiCalls,
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    ...userActions,
-    ...navigationActions,
-  }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default User;

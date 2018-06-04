@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { addNavigationHelpers } from 'react-navigation';
 
-import * as navigationActions from '../../../actions/navigationActions';
-import Header from '../../Common/Header';
+import Header from '../../../containers/Header';
 import SearchResults from '../../Common/SearchResults';
 import styles from './styles';
 import HomeTabNavigator from '../../../navigators/home';
@@ -136,16 +133,5 @@ Home.propTypes = {
   nav: PropTypes.shape({}).isRequired,
   AllBucketlistNavigator: PropTypes.shape({}).isRequired,
 };
-const mapStateToProps = ({ HomeTabNav: nav, AllBucketlistNavigator }) => ({
-  nav,
-  AllBucketlistNavigator,
-});
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    ...navigationActions,
-  }, dispatch),
-  dispatch,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;

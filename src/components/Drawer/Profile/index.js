@@ -6,14 +6,10 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import BaseClass from './BaseClass2';
 import ProfileBody from './ProfileBody';
-import * as userActions from '../../../actions/userActions';
-import * as navigationActions from '../../../actions/navigationActions';
-import Header from '../../Common/Header';
+import Header from '../../../containers/Header';
 import propTypes from './propTypes';
 import styles from './styles';
 
@@ -143,36 +139,4 @@ class Profile extends BaseClass {
 
 Profile.propTypes = propTypes;
 
-const mapStateToProps = (
-  {
-    profile,
-    otherProfile,
-    currentApiCalls: { profile: currentApiCalls },
-  },
-  { navigation: { state } },
-) => {
-  let viewProfile;
-  let fromRoute;
-  let previousIds;
-  let previousRoutes;
-  if (state && state.params) {
-    viewProfile = state.params.viewProfile;
-    fromRoute = state.params.fromRoute;
-    previousIds = state.params.previousIds;
-    previousRoutes = state.params.previousRoutes || [fromRoute];
-  }
-  return ({
-    profile,
-    otherProfile,
-    currentApiCalls,
-    viewProfile,
-    fromRoute,
-    previousIds,
-    previousRoutes });
-};
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default Profile;

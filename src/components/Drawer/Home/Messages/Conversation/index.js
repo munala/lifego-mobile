@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, ScrollView, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import ContextMenu from '../../../../Common/ContextMenu';
 import Dialog from '../../../../Common/Dialog';
 import BaseClass from './BaseClass';
-import * as messageActions from '../../../../../actions/messageActions';
-import * as userActions from '../../../../../actions/userActions';
-import * as navigationActions from '../../../../../actions/navigationActions';
 import Text from '../../../../Common/SuperText';
 import { setTime } from '../../../../../utils';
 import styles from '../../styles';
@@ -189,41 +189,4 @@ class Conversation extends BaseClass {
 
 Conversation.propTypes = propTypes;
 
-const mapStateToProps = ({
-  profile,
-  conversations,
-}, {
-  navigation: { state },
-}) => {
-  let param = {};
-  let conversation;
-
-  if (state && state.params) {
-    const { params, params: { id, newConversation } } = state;
-    param = params;
-
-    if (newConversation) {
-      conversation = conversations
-        .filter(chat => chat.senderId === newConversation.senderId
-          && chat.receiverId === newConversation.receiverId)[0];
-    } else {
-      conversation = conversations.filter(chat => chat.id === id)[0];
-    }
-  }
-
-  return ({
-    params: param,
-    profile,
-    conversation,
-  });
-};
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    ...messageActions,
-    ...userActions,
-    ...navigationActions,
-  }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Conversation);
+export default Conversation;
