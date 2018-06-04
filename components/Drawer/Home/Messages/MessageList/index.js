@@ -28,6 +28,7 @@ class MessageList extends BaseClass {
   renderItem = ({ item: conversation }) => { // eslint-disable-line react/prop-types
     const unread = this.getUnreadCount(conversation);
     const pictureUrl = this.setPictureUrl(conversation);
+
     return (
       <TouchableOpacity
         style={styles.notificationView}
@@ -104,10 +105,12 @@ class MessageList extends BaseClass {
 
   render() {
     const { conversations, currentApiCalls } = this.props;
+
     const items = [
       { label: 'Delete', action: () => this.deleteConversation(this.state.conversation) },
       { label: 'Mark as read', action: () => this.markAsRead(this.state.conversation) },
     ];
+
     const dialogProps = {
       text: 'Delete conversation? This action cannot be undone.',
       buttons: [{
@@ -138,37 +141,37 @@ class MessageList extends BaseClass {
           >
             <Text style={styles.notificationActionText}>{this.state.searching ? 'Cancel' : 'Compose'}</Text>
           </TouchableOpacity>
-          {!this.state.searching && conversations.length > 0 &&
-          <FlatList
-            enableEmptySections
-            keyExtractor={({ id }) => id.toString()}
-            data={conversations}
-            renderItem={this.renderItem}
-            style={styles.listView}
-            refreshControl={
-              <RefreshControl
-                refreshing={currentApiCalls > 0}
-                onRefresh={this.onRefresh}
-                colors={['#00bcd4']}
-                tintColor="#eee"
-              />
-            }
-          />
+          {
+            !this.state.searching && conversations.length > 0 &&
+            <FlatList
+              enableEmptySections
+              keyExtractor={({ id }) => id.toString()}
+              data={conversations}
+              renderItem={this.renderItem}
+              style={styles.listView}
+              refreshControl={
+                <RefreshControl
+                  refreshing={currentApiCalls > 0}
+                  onRefresh={this.onRefresh}
+                  colors={['#00bcd4']}
+                  tintColor="#eee"
+                />
+              }
+            />
           }
           {
-            !this.state.searching &&
-          (this.props.conversations.length > 0 ?
-            <View style={styles.options}>
-              <TouchableOpacity
-                style={styles.read}
-                onPress={this.markAllAsRead}
-              >
-                <Text style={styles.notificationActionText}>mark all as read</Text>
-              </TouchableOpacity>
-            </View> :
-            <View style={styles.none}>
-              <Text style={styles.noneText}>{'you\'re all caught up'}</Text>
-            </View>)
+            !this.state.searching && (this.props.conversations.length > 0 ?
+              <View style={styles.options}>
+                <TouchableOpacity
+                  style={styles.read}
+                  onPress={this.markAllAsRead}
+                >
+                  <Text style={styles.notificationActionText}>mark all as read</Text>
+                </TouchableOpacity>
+              </View> :
+              <View style={styles.none}>
+                <Text style={styles.noneText}>{'you\'re all caught up'}</Text>
+              </View>)
           }
           {
             this.state.showMenu && <ContextMenu items={items} />

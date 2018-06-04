@@ -51,7 +51,10 @@ class BaseClass extends Component {
 
   editItem = () => {
     this.closeMenu();
-    this.openForm({ type: 'Edit', name: 'item' }, this.state.selectedItem);
+    this.openForm({
+      type: 'Edit',
+      name: 'item',
+    }, this.state.selectedItem);
   }
 
   cancel = () => {

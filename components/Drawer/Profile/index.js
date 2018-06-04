@@ -48,11 +48,17 @@ class Profile extends BaseClass {
     const {
       activeType, scrollEnabled, editMode, uploading, scrollY,
     } = this.state;
+
     const {
-      profile, currentApiCalls, otherProfile, fromRoute: from,
+      profile,
+      currentApiCalls,
+      otherProfile,
+      fromRoute: from,
     } = this.props;
+
     const showUserProfile = !!from && otherProfile.id !== profile.id;
     const avatar = showUserProfile ? otherProfile.pictureUrl : this.state.profile.pictureUrl;
+
     const height = this.state.scrollY.interpolate({
       inputRange: [0, 5],
       outputRange: [editMode ? 75 : 100, 0],
@@ -77,6 +83,7 @@ class Profile extends BaseClass {
       showUserProfile ? otherProfile : profile
     )[activeType.toLowerCase()]
       .length;
+
     const [firstName, lastName] = (this.state.profile.displayName || '').split(' ');
     const displayName = {};
     displayName['first name'] = firstName;
@@ -136,12 +143,13 @@ class Profile extends BaseClass {
 
 Profile.propTypes = propTypes;
 
-const mapStateToProps = ({
-  profile, otherProfile, currentApiCalls: { profile: currentApiCalls },
-},
-{
-  navigation: { state },
-},
+const mapStateToProps = (
+  {
+    profile,
+    otherProfile,
+    currentApiCalls: { profile: currentApiCalls },
+  },
+  { navigation: { state } },
 ) => {
   let viewProfile;
   let fromRoute;

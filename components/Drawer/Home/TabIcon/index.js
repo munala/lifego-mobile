@@ -16,6 +16,7 @@ const TabIcon = ({
   navigate: navigateTabs,
 }) => {
   const { routes } = state;
+
   const names = {
     HomeBucketlists: 'home',
     Messages: 'message',
@@ -36,7 +37,10 @@ const TabIcon = ({
           <TouchableWithoutFeedback
             key={route.key}
             styles={styles.tab}
-            onPress={() => navigateTabs({ route: route.routeName, navigator: 'HomeTabNav' })}
+            onPress={() => navigateTabs({
+              route: route.routeName,
+              navigator: 'HomeTabNav',
+            })}
           >
             <View style={styles.counter} >
               <Icon

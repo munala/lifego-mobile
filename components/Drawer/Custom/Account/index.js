@@ -49,6 +49,7 @@ export default connect(
   render = () => {
     const { pictureUrl, displayName, email } = this.props;
     const { open } = this.state;
+
     return (
       <View style={styles.account} >
         <Image

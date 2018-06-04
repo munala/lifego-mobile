@@ -44,29 +44,47 @@ class Home extends Component {
   }
 
   navigateToAll = async () => {
-    const { AllBucketlistNavigator: { routes }, actions: { navigate } } = this.props;
+    const {
+      AllBucketlistNavigator: { routes },
+      actions: { navigate },
+    } = this.props;
     const route = routes[routes.length - 1];
     const param = route && route.params;
     const from = param && param.fromRoute;
     const goBack = param && param.goBack;
     const navigator = param && param.navigator;
+
     if (goBack) {
       goBack();
     } else {
       await navigate({
         navigator: navigator || 'AllBucketlistNavigator',
         route: 'bucketlists',
-        params: { bucketlist: undefined, fromRoute: undefined },
+        params: {
+          bucketlist: undefined,
+          fromRoute: undefined,
+        },
       });
       if (from === 'Notifications') {
-        navigate({ navigator: from === 'Notifications' ? 'HomeTabNav' : navigator, route: from });
-        navigate({ navigator, route: 'bucketlists' });
+        navigate({
+          navigator: from === 'Notifications' ? 'HomeTabNav' :
+            navigator,
+          route: from,
+        });
+
+        navigate({
+          navigator,
+          route: 'bucketlists',
+        });
       }
     }
   }
 
   openDrawer = () => {
-    this.props.actions.navigate({ route: 'DrawerOpen', navigator: 'DrawerNav' });
+    this.props.actions.navigate({
+      route: 'DrawerOpen',
+      navigator: 'DrawerNav',
+    });
   }
 
   render() {

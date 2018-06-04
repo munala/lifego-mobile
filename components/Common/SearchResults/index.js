@@ -26,10 +26,8 @@ class SearchResults extends Component {
 
   isFriend = (id) => {
     const { friends } = this.props.profile;
-    const isaFriend = friends
-      .map(friend => friend.id)
-      .indexOf(id) !== -1;
-    return isaFriend;
+
+    return friends.some(friend => friend.id === id);
   }
 
   goToProfile = async ({ id }) => {
@@ -38,7 +36,15 @@ class SearchResults extends Component {
     } = this.props;
 
     getOtherProfile(id);
-    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: { from: 'Home', viewProfile: true } });
+
+    await navigate({
+      route: 'Profile',
+      navigator: 'DrawerNav',
+      params: {
+        from: 'Home',
+        viewProfile: true,
+      },
+    });
   }
 
   renderOptions = person => (
@@ -92,6 +98,7 @@ class SearchResults extends Component {
     const {
       bucketlists, onItemPress, profile: { searchUsers },
     } = this.props;
+
     return (
       <ScrollView>
         <View style={styles.options}>

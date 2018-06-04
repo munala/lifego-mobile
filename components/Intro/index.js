@@ -49,7 +49,11 @@ const features = [
 ];
 
 const navigateToLogin = (nav) => {
-  nav({ route: 'user', navigator: 'AuthNavigator' });
+  nav({
+    route: 'user',
+    navigator: 'AuthNavigator',
+  });
+
   AsyncStorage.setItem('notFirstTime', 'true');
 };
 

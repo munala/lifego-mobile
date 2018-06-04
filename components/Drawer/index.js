@@ -15,7 +15,8 @@ import { addDrawerListener } from '../../store/configureStore';
 
 class Drawer extends Component {
   componentDidMount = () => {
-    Object.keys(this.props.actions).forEach(key => (key !== 'navigate' ? this.props.actions[key](0, 10) : null));
+    Object.keys(this.props.actions)
+      .forEach(key => (key !== 'navigate' ? this.props.actions[key](0, 10) : null));
   }
 
   render() {
@@ -46,9 +47,7 @@ Drawer.propTypes = {
   nav: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = ({ DrawerNav: nav }) => ({
-  nav,
-});
+const mapStateToProps = ({ DrawerNav: nav }) => ({ nav });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({

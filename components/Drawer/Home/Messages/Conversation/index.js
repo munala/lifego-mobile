@@ -37,9 +37,16 @@ class Conversation extends BaseClass {
     }
   }
 
-  componentDidUpdate = ({ conversation, params: { newConversation }, actions: { navigate } }) => {
+  componentDidUpdate = ({
+    conversation,
+    params: { newConversation },
+    actions: { navigate },
+  }) => {
     if (!conversation && !newConversation && !this.state.message.content) {
-      navigate({ route: 'MessageList', navigator: 'MessageNavigator' });
+      navigate({
+        route: 'MessageList',
+        navigator: 'MessageNavigator',
+      });
     }
   }
 
@@ -106,6 +113,7 @@ class Conversation extends BaseClass {
       name = this.getName(conversation || newConversation);
       userId = this.getId(conversation || newConversation);
     }
+
     if (!conversation && !newConversation) {
       return (<View style={styles.container} />);
     }
@@ -184,12 +192,16 @@ Conversation.propTypes = propTypes;
 const mapStateToProps = ({
   profile,
   conversations,
-}, { navigation: { state } }) => {
+}, {
+  navigation: { state },
+}) => {
   let param = {};
   let conversation;
+
   if (state && state.params) {
     const { params, params: { id, newConversation } } = state;
     param = params;
+
     if (newConversation) {
       conversation = conversations
         .filter(chat => chat.senderId === newConversation.senderId
@@ -198,6 +210,7 @@ const mapStateToProps = ({
       conversation = conversations.filter(chat => chat.id === id)[0];
     }
   }
+
   return ({
     params: param,
     profile,

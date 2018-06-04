@@ -54,16 +54,15 @@ class BaseClass extends Component {
 
   isFriend = (person) => {
     const { friends } = this.props.profile;
-    const isaFriend = friends
-      .map(friend => friend.id)
-      .indexOf(person.id) !== -1;
-    return isaFriend;
+
+    return friends.some(friend => friend.id === person.id);
   }
 
   isLastPerson = (index) => {
     const { activeType } = this.state;
     const { profile } = this.props;
     const isLast = profile[activeType.toLowerCase()].length === index + 1;
+
     return isLast;
   }
 
@@ -73,11 +72,16 @@ class BaseClass extends Component {
 
   uploadFile = (file) => {
     const uri = Platform.OS === 'ios' ? file.origURL : file.uri;
-    return RNFetchBlob.fetch('POST', 'https://api.cloudinary.com/v1_1/lifego/image/upload?upload_preset=dl5sqcqz', {
-      'Content-Type': 'multipart/form-data',
-    }, [
-      { name: 'file', filename: file.fileName, data: RNFetchBlob.wrap(uri) },
-    ]);
+
+    return RNFetchBlob.fetch(
+      'POST',
+      'https://api.cloudinary.com/v1_1/lifego/image/upload?upload_preset=dl5sqcqz',
+      { 'Content-Type': 'multipart/form-data' },
+      [{
+        name: 'file',
+        filename: file.fileName,
+        data: RNFetchBlob.wrap(uri),
+      }]);
   }
 
   changePhoto = async () => {

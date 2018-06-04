@@ -11,7 +11,13 @@ import { addAllListener } from '../../../../store/configureStore';
 
 class HomeView extends Component {
   static navigationOptions = {
-    tabBarIcon: ({ focused }) => (<Icon name="home" size={25} color={focused ? '#fff' : 'grey'} />),
+    tabBarIcon: ({ focused }) => (
+      <Icon
+        name="home"
+        size={25}
+        color={focused ? '#fff' : 'grey'}
+      />
+    ),
   }
 
   render() {

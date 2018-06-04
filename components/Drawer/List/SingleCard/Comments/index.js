@@ -27,10 +27,17 @@ class Comments extends BaseClass {
   componentDidMount = () => {
     if (this.props.setItems) {
       this.props.setItems([
-        { label: 'Edit', action: this.editComment },
-        { label: 'Delete', action: this.deleteComment },
+        {
+          label: 'Edit',
+          action: this.editComment,
+        },
+        {
+          label: 'Delete',
+          action: this.deleteComment,
+        },
       ]);
     }
+
     if (this.props.setButtons) {
       this.props.setButtons([{
         label: 'Delete',
@@ -101,16 +108,16 @@ class Comments extends BaseClass {
           <View style={styles.newComment}>
             <Image
               style={styles.currentAvatar}
-              source={profile.pictureUrl ? { uri: profile.pictureUrl } : require('../../../../../assets/images/user.png')}
+              source={
+                profile.pictureUrl ?
+                  { uri: profile.pictureUrl } :
+                  require('../../../../../assets/images/user.png')
+              }
             />
             <TextInput
               type="text"
               placeholder="type comment"
-              style={[
-                styles.inputText, {
-                  flexBasis: typing ? '70%' : '85%',
-                },
-              ]}
+              style={[styles.inputText, { flexBasis: typing ? '70%' : '85%' }]}
               onFocus={this.focus}
               value={typing ? comment.content : ''}
               onChangeText={this.onChange}

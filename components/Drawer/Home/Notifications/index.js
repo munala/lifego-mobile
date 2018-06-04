@@ -66,13 +66,18 @@ class Notifications extends Component {
 
   goToBucketlist = async (notification) => {
     this.markAsRead(notification);
-    await this.props.actions.navigate({ route: 'HomeBucketlists', navigator: 'HomeTabNav' });
+    await this.props.actions.navigate({
+      route: 'HomeBucketlists',
+      navigator: 'HomeTabNav',
+    });
     this.props.actions.navigate({
       route: 'bucketlist',
       navigator: 'AllBucketlistNavigator',
       params: {
         bucketlist: {
-          id: notification.bucketlistId, name: 'Bucketlist' },
+          id: notification.bucketlistId,
+          name: 'Bucketlist',
+        },
         fromRoute: 'Notifications',
         navigator: 'AllBucketlistNavigator',
       },
@@ -117,6 +122,7 @@ class Notifications extends Component {
 
   render() {
     const { notifications, currentApiCalls } = this.props;
+
     return (
       <View style={styles.container}>
         {this.props.notifications.length > 0 &&

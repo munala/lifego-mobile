@@ -33,7 +33,8 @@ class BaseClass extends Component {
   }
 
   getUnreadCount = conversation => conversation.messages
-    .filter(message => !message.read && message.receiverId === this.props.profile.id).length
+    .filter(message => !message.read && message.receiverId === this.props.profile.id)
+    .length
 
   markAllAsRead = () => {
     this.props.conversations.forEach((conversation) => {
@@ -67,10 +68,14 @@ class BaseClass extends Component {
       receiverUsername: receiver.username,
       receiverDisplayName: receiver.displayName,
     };
+
     this.props.actions.navigate({
       route: 'Conversation',
       navigator: 'MessageNavigator',
-      params: { id: null, newConversation },
+      params: {
+        id: null,
+        newConversation,
+      },
     });
   }
 

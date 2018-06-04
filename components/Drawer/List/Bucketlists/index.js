@@ -58,9 +58,9 @@ class AllBucketlists extends BaseClass {
     }
   }
 
-  renderEmptyArea = ({ item: {
-    id: currentApiCalls,
-  } }) => currentApiCalls === 0 && ( // eslint-disable-line react/prop-types
+  renderEmptyArea = ({
+    item: { id: currentApiCalls },
+  }) => currentApiCalls === 0 && ( // eslint-disable-line react/prop-types
     <View style={{ display: 'flex', marginTop: '30%' }}>
       <Icon
         name="bucket"
@@ -89,6 +89,7 @@ class AllBucketlists extends BaseClass {
       currentRoute: 'bucketlists',
       fromRoute: this.props.fromRoute,
     };
+
     return (
       <SingleCard {...bucketlistProps} />
     );
@@ -102,19 +103,20 @@ class AllBucketlists extends BaseClass {
       data: { bucketlists: bucketLists, nextUrl },
       actions: { loadMoreBucketlists },
     } = this.props;
+
     const bucketlists = this.state.hideExpired ? filterExpired(bucketLists) : bucketLists;
     const { length } = bucketlists;
     const offset = (Math.ceil(length / 10)) * 10;
     const loadMore = bucketlists.length === 10 && nextUrl.length > 0;
     const items = this.state.items;
     const buttons = this.state.buttons;
+
     const dialogProps = {
       text: 'Are you sure? This action cannot be undone.',
       buttons,
       cancelable: true,
       onCancel: this.closeDialog,
     };
-
 
     return (
       <View style={styles.container}>
@@ -159,7 +161,10 @@ class AllBucketlists extends BaseClass {
 AllBucketlists.propTypes = propTypes;
 
 const mapStateToProps = ({
-  currentApiCalls: calls, allData, data: myData, profile,
+  currentApiCalls: calls,
+  allData,
+  data: myData,
+  profile,
 }, { screen }) => {
   const currentApiCalls = calls[screen];
   const loaderCalls = calls.loader;

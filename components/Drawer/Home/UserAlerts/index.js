@@ -54,7 +54,14 @@ class AlertComponent extends Component {
 
   goToProfile = (alert) => {
     this.markAsRead(alert);
-    this.props.actions.navigate({ route: 'Profile', navigator: 'DrawerNav', params: { viewProfile: true, fromRoute: 'Home' } });
+    this.props.actions.navigate({
+      route: 'Profile',
+      navigator: 'DrawerNav',
+      params: {
+        viewProfile: true,
+        fromRoute: 'Home',
+      },
+    });
   }
 
   markAsRead = async (alert) => {
@@ -121,6 +128,7 @@ class AlertComponent extends Component {
 
   render() {
     const { alerts, currentApiCalls } = this.props;
+
     return (
       <View style={styles.container}>
         {alerts.length > 0 &&
@@ -195,7 +203,9 @@ AlertComponent.propTypes = {
 };
 
 const mapStateToProps = ({
-  profile, alerts, currentApiCalls: { userAlerts: currentApiCalls },
+  profile,
+  alerts,
+  currentApiCalls: { userAlerts: currentApiCalls },
 }, ownProps) => ({
   profile,
   alerts,

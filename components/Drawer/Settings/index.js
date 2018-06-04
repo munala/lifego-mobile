@@ -40,6 +40,7 @@ class Settings extends BaseClass {
     field = field === 'delete' ? 'email' : field;
     let displayName = name === 'email' ? `new ${name} (${this.props.profile.email})` : name;
     displayName = name === 'delete email' ? 'email' : displayName;
+
     return (
       <View key={name}>
         <Text style={styles.inputText}>
@@ -67,6 +68,7 @@ class Settings extends BaseClass {
       deleteMode: this.deleteAccount,
     };
     const text = type === 'deleteMode' ? 'DELETE ACCOUNT' : (Platform.OS === 'ios' ? 'Save' : 'SAVE'); // eslint-disable-line no-nested-ternary
+
     return (
       <View style={styles.saveButtons}>
         {!this.state.saving &&
@@ -93,9 +95,8 @@ class Settings extends BaseClass {
   }
 
   render() {
-    const {
-      profile,
-    } = this.props;
+    const { profile } = this.props;
+
     return (
       <View style={styles.container}>
         <Header

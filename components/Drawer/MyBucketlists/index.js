@@ -63,7 +63,12 @@ class StackNav extends Component {
   };
 
   render() {
-    const { dispatch, nav: { routes }, nav } = this.props;
+    const {
+      dispatch,
+      nav: { routes },
+      nav,
+    } = this.props;
+
     const route = routes[routes.length - 1];
     const params = route && route.params;
     const bucketlist = params && params.bucketlist;

@@ -34,7 +34,11 @@ class Splash extends Component {
       route = 'home';
     }
     setTimeout(() => {
-      this.props.actions.navigate({ route, navigator: 'AuthNavigator' });
+      this.props.actions.navigate({
+        route,
+        navigator:
+        'AuthNavigator',
+      });
     }, 2000);
     this.animate();
   }

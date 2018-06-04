@@ -96,7 +96,14 @@ class BaseClass extends Component {
   }
 
   goBack = async () => {
-    this.props.actions.navigate({ route: 'MessageList', navigator: 'MessageNavigator', params: { id: undefined, newConversation: undefined } });
+    this.props.actions.navigate({
+      route: 'MessageList',
+      navigator: 'MessageNavigator',
+      params: {
+        id: undefined,
+        newConversation: undefined,
+      },
+    });
   }
 
   goToProfile = async ({ id }) => {
@@ -108,7 +115,15 @@ class BaseClass extends Component {
     if (profile.id !== id) {
       getOtherProfile(id);
     }
-    await navigate({ route: 'Profile', navigator: 'DrawerNav', params: profile.id !== id && { viewProfile: true, fromRoute: 'Home' } });
+
+    await navigate({
+      route: 'Profile',
+      navigator: 'DrawerNav',
+      params: profile.id !== id && {
+        viewProfile: true,
+        fromRoute: 'Home',
+      },
+    });
   }
 
   deleteConversation = async (conversation) => {

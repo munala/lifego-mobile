@@ -32,6 +32,7 @@ class ResetPassword extends Component {
 
   render() {
     const { email } = this.state;
+
     return (
       <View>
         <TextInput

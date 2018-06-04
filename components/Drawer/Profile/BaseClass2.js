@@ -68,9 +68,13 @@ class BaseClass2 extends BaseClass {
     this.props.actions.navigate({
       route: 'Conversation',
       navigator: 'MessageNavigator',
-      params: { id: null, newConversation },
+      params: {
+        id: null,
+        newConversation,
+      },
     });
   }
+
   renderStats = (userProfile) => {
     const { activeType } = this.state;
     return ['Followers', 'Friends'].map(type => (

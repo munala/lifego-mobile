@@ -54,7 +54,10 @@ class BaseClass extends Component {
   changeEmail = async () => {
     this.setState(() => ({ saving: true }));
     const { reminders, ...profile } = this.props.profile;
-    const { new: newp, confirm, ...rest } = this.state.settings;
+    const {
+      new: newp,
+      confirm,
+      ...rest } = this.state.settings;
     rest.reminders = rest.reminders ? rest.reminders : false;
     const { error } = await this.props.actions.changeEmail({
       profile,

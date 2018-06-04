@@ -5,7 +5,10 @@ import propTypes from './propTypes';
 class BaseClass extends Component {
   onChange = (text) => {
     this.setState({
-      comment: { ...this.state.comment, content: text },
+      comment: {
+        ...this.state.comment,
+        content: text,
+      },
     });
   }
 

@@ -177,10 +177,12 @@ class BucketListForm extends Component {
 
   render() {
     const { navigation: { state: { params: { goBack } } } } = this.props;
+
     const {
       content, context, datePickerMode, categoryPickerMode, disabled,
       saving, image, addToCalendar, listViewDisplayed,
     } = this.state;
+
     const formProps = {
       content,
       context,
@@ -201,9 +203,11 @@ class BucketListForm extends Component {
       toggleCalendar: this.toggleCalendar,
       addToCalendar,
     };
+
     if (!context || !content) {
       return (<View />);
     }
+
     return (<Form {...formProps} />);
   }
 }

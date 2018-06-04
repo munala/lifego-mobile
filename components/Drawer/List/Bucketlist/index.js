@@ -22,21 +22,38 @@ class Bucketlist extends BaseClass {
   componentDidMount = () => {
     const { bucketlist } = this.props;
     if (!bucketlist) {
-      this.props.actions.navigate({ navigator: 'AllBucketlistNavigator', route: 'bucketlists' });
+      this.props.actions.navigate({
+        navigator: 'AllBucketlistNavigator',
+        route: 'bucketlists',
+      });
     }
+
     this.setItems([
-      { label: 'Edit', action: this.editBucketlist },
-      { label: 'Delete', action: this.deleteBucketlist },
+      {
+        label: 'Edit',
+        action: this.editBucketlist,
+      },
+      {
+        label: 'Delete',
+        action: this.deleteBucketlist,
+      },
     ]);
+
     this.setButtons([{
       label: 'Delete',
       action: this.delete,
     }]);
   }
 
-  componentDidUpdate = ({ bucketlist, actions: { navigate } }) => {
+  componentDidUpdate = ({
+    bucketlist,
+    actions: { navigate },
+  }) => {
     if (!bucketlist) {
-      navigate({ navigator: this.props.params.navigator, route: 'bucketlists' });
+      navigate({
+        navigator: this.props.params.navigator,
+        route: 'bucketlists',
+      });
     }
   }
 
@@ -45,7 +62,12 @@ class Bucketlist extends BaseClass {
   }
 
   render() {
-    const { bucketlist, navigator, params: { fromRoute } } = this.props;
+    const {
+      bucketlist,
+      navigator,
+      params: { fromRoute },
+    } = this.props;
+
     const bucketlistProps = {
       bucketlist,
       mode: 'single',
@@ -63,9 +85,11 @@ class Bucketlist extends BaseClass {
       fromRoute,
       navigator,
     };
+
     const showMenu = this.state.showMenu || this.state.showItemMenu;
     const items = this.state.showItemMenu ? this.state.otherItems : this.state.items;
     const buttons = this.state.showItemMenu ? this.state.otherButtons : this.state.buttons;
+
     const dialogProps = {
       text: 'Are you sure? This action cannot be undone.',
       buttons,
@@ -98,7 +122,8 @@ class Bucketlist extends BaseClass {
 Bucketlist.propTypes = propTypes;
 
 const mapStateToProps = ({
-  allData: { bucketlists }, profile,
+  allData: { bucketlists },
+  profile,
 },
 {
   navigation: { state },

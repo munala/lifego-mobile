@@ -13,7 +13,10 @@ export default class BaseClass extends Component {
       response = await actions.updateBucketlist({ ...bucketlist }, screen);
     }
     if (!response.error) {
-      actions.navigate({ navigator, route: 'bucketlists' });
+      actions.navigate({
+        navigator,
+        route: 'bucketlists',
+      });
       if (addToCalendar === true) {
         const calendars = await RNCalendarEvents.findCalendars();
         const { id } = calendars[calendars.length - 1];
@@ -87,7 +90,9 @@ export default class BaseClass extends Component {
     });
   }
 
-  loadBucketlists = this.props.navigator === 'AllBucketlistNavigator' ? this.props.actions.loadAllBucketlists : this.props.actions.loadBucketlists
+  loadBucketlists = this.props.navigator === 'AllBucketlistNavigator' ?
+    this.props.actions.loadAllBucketlists :
+    this.props.actions.loadBucketlists
 
   logout = () => this.props.actions.logout();
 
@@ -124,7 +129,10 @@ export default class BaseClass extends Component {
 
   editBucketlist = () => {
     this.closeMenu();
-    this.showModal({ type: 'Edit', name: 'bucketlist' }, this.state.selectedBucketlist);
+    this.showModal({
+      type: 'Edit',
+      name: 'bucketlist',
+    }, this.state.selectedBucketlist);
   }
 
   showModal = async (context, content = {}) => {

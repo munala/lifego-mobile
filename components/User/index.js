@@ -74,6 +74,7 @@ class User extends BaseClass {
       registerMode, registerUser, loginUser, disabled, resetPassword,
     } = this.state;
     const user = registerMode ? registerUser : loginUser;
+
     return (
       <ScrollView
         contentContainerStyle={styles.container}
@@ -194,11 +195,18 @@ User.propTypes = propTypes;
 const mapStateToProps = ({
   error,
   message,
-  currentApiCalls: { user: currentApiCalls }, ...state
-}) => ({ ...state, currentApiCalls });
+  currentApiCalls: { user: currentApiCalls },
+  ...state
+}) => ({
+  ...state,
+  currentApiCalls,
+});
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ ...userActions, ...navigationActions }, dispatch),
+  actions: bindActionCreators({
+    ...userActions,
+    ...navigationActions,
+  }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

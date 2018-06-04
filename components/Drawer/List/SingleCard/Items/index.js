@@ -26,10 +26,17 @@ class Items extends BaseClass {
   componentDidMount = () => {
     if (this.props.setOtherItems) {
       this.props.setOtherItems([
-        { label: 'Edit', action: this.editItem },
-        { label: 'Delete', action: this.deleteItem },
+        {
+          label: 'Edit',
+          action: this.editItem,
+        },
+        {
+          label: 'Delete',
+          action: this.deleteItem,
+        },
       ]);
     }
+
     if (this.props.setOtherButtons) {
       this.props.setOtherButtons([{
         label: 'Delete',

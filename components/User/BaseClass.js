@@ -22,12 +22,9 @@ class BaseClass extends Component {
     const { registerMode, registerUser, loginUser } = this.state;
     const user = registerMode ? registerUser : loginUser;
     user[type] = (type === 'password' || type === 'confirm') ? text : text.trim();
-    let disabled = false;
-    Object.keys(user).forEach((key) => {
-      if (user[key].length === 0) {
-        disabled = true;
-      }
-    });
+
+    const disabled = Object.keys(user).some(key => (user[key].length === 0));
+
     this.setState({ disabled, loginUser, registerUser });
   }
 

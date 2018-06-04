@@ -14,7 +14,11 @@ class DrawerItems extends Component {
       route,
       navigator: 'DrawerNav',
     });
-    this.props.navigate({ route: 'DrawerClose', navigator: 'DrawerNav' });
+
+    this.props.navigate({
+      route: 'DrawerClose',
+      navigator: 'DrawerNav',
+    });
   }
 
   render() {
