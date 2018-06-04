@@ -17,6 +17,7 @@ export default(
         if (alert.id === action.alert.id) {
           return action.alert;
         }
+
         return alert;
       });
 

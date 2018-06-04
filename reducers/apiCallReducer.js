@@ -15,8 +15,7 @@ export default function apiCallReducer(
       ...state,
       [screen]: state[screen] + 1,
     };
-  } else if (action.type === types.API_CALL_ERROR ||
-    actionTypeEndsInSuccess(action.type)) {
+  } else if (action.type === types.API_CALL_ERROR || actionTypeEndsInSuccess(action.type)) {
     return {
       ...state,
       [screen]: state[screen] - 1,

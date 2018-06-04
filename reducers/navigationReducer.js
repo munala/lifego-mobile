@@ -13,6 +13,7 @@ export const authNavigatorReducer = (state = initialState.authNavigator, action)
       routeName: action.routeName,
     };
   }
+
   return state;
 };
 
@@ -26,6 +27,7 @@ export const drawerNavigatorReducer = (state = initialState.DrawerNav, act) => {
       .getStateForAction(action, state);
     return nextState || state;
   }
+
   return state;
 };
 
@@ -35,6 +37,7 @@ export const homeNavigatorReducer = (state = initialState.HomeTabNav, action) =>
       .getStateForAction(action, state);
     return nextState || state;
   }
+
   return state;
 };
 
@@ -44,6 +47,7 @@ export const allNavigatorReducer = (state = initialState.AllBucketlistNavigator,
       .getStateForAction(action, state);
     return nextState || state;
   }
+
   return state;
 };
 
@@ -53,6 +57,7 @@ export const messageNavigatorReducer = (state = initialState.MessageNavigator, a
       .getStateForAction(action, state);
     return nextState || state;
   }
+
   return state;
 };
 
@@ -62,5 +67,6 @@ export const myNavigatorReducer = (state = initialState.MyBucketlistNavigator, a
       .getStateForAction(action, state);
     return nextState || state;
   }
+
   return state;
 };

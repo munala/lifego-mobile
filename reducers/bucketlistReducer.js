@@ -25,6 +25,7 @@ export default function bucketlistReducer(
       bucketList = {
         ...action.bucketlist, items: [], comments: [], likes: [],
       };
+
       return {
         ...state, bucketlists: [bucketList, ...state.bucketlists],
       };
@@ -63,6 +64,7 @@ export default function bucketlistReducer(
                 items: [action.item, ...bucketlist.items],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -81,10 +83,12 @@ export default function bucketlistReducer(
                     .map(item => (
                       (item.id === action.item.id) ?
                         action.item :
-                        item)),
+                        item),
+                    ),
                 ],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -101,6 +105,7 @@ export default function bucketlistReducer(
                 items: [...bucketlist.items.filter(item => item.id !== action.item.id)],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -117,6 +122,7 @@ export default function bucketlistReducer(
                 comments: [action.comment, ...bucketlist.comments],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -135,10 +141,12 @@ export default function bucketlistReducer(
                     .map(comment => (
                       (comment.id === action.comment.id) ?
                         action.comment :
-                        comment)),
+                        comment),
+                    ),
                 ],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -156,6 +164,7 @@ export default function bucketlistReducer(
                   .filter(comment => comment.id !== action.comment.id)],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -172,6 +181,7 @@ export default function bucketlistReducer(
                 likes: [action.like, ...bucketlist.likes],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -189,6 +199,7 @@ export default function bucketlistReducer(
                   .filter(like => like.id !== action.like.id)],
               };
             }
+
             return bucketlist;
           }),
         ],

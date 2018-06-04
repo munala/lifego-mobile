@@ -67,6 +67,7 @@ export default function allBucketlistReducer(
                 items: [action.item, ...bucketlist.items],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -85,10 +86,12 @@ export default function allBucketlistReducer(
                     .map(item => (
                       (item.id === action.item.id) ?
                         action.item :
-                        item)),
+                        item),
+                    ),
                 ],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -105,6 +108,7 @@ export default function allBucketlistReducer(
                 items: [...bucketlist.items.filter(item => item.id !== action.item.id)],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -121,6 +125,7 @@ export default function allBucketlistReducer(
                 comments: [action.comment, ...bucketlist.comments],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -139,10 +144,12 @@ export default function allBucketlistReducer(
                     .map(comment => (
                       (comment.id === action.comment.id) ?
                         action.comment :
-                        comment)),
+                        comment),
+                    ),
                 ],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -160,6 +167,7 @@ export default function allBucketlistReducer(
                   .filter(comment => comment.id !== action.comment.id)],
               };
             }
+
             return bucketlist;
           }),
         ],
@@ -176,6 +184,7 @@ export default function allBucketlistReducer(
                 likes: [action.like, ...bucketlist.likes || []],
               };
             }
+
             return bucketlist;
           }),
         ],

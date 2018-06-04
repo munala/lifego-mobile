@@ -18,6 +18,7 @@ export default(
         if (notification.id === action.notification.id) {
           return action.notification;
         }
+
         return notification;
       });
 

@@ -21,6 +21,7 @@ export default function conversationReducer(
         if (conversation.id === action.newMessage.conversationId) {
           return { ...conversation, messages: [action.newMessage, ...conversation.messages] };
         }
+
         return { ...conversation };
       });
 

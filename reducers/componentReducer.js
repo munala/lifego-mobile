@@ -8,6 +8,7 @@ export default (state = initialState.components, action) => {
         ...state,
         showHeader: action.showHeader,
       };
+
     default:
       return state;
   }
