@@ -11,6 +11,7 @@ instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 const BucketlistService = {
   async saveBucketlist(bucketlist) {
     const { id, ...bucketList } = bucketlist;
+
     instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
 
     return instance.post(
@@ -21,6 +22,7 @@ const BucketlistService = {
         if (response.data.message === `${bucketlist.name} already exists`) {
           return handleError(response.data.message);
         }
+
         return response.data;
       })
       .catch(error => handleError(error));
@@ -37,6 +39,7 @@ const BucketlistService = {
         if (response.data.message === `${item.name} already exists`) {
           return handleError(response.data.message);
         }
+
         return response.data;
       })
       .catch(error => handleError(error));
@@ -51,6 +54,7 @@ const BucketlistService = {
 
   async getBucketlists(offset, limit, name) {
     instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+
     return instance.get(`${bucketlistUrl}?offset=${offset}&limit=${limit}&q=${name}`)
       .then(response => response.data)
       .catch(error => handleError(error));
@@ -77,6 +81,7 @@ const BucketlistService = {
         if (response.data.message === `${bucketlist.name} is already in use`) {
           return handleError(response.data.message);
         }
+
         return response.data;
       })
       .catch(error => handleError(error));
@@ -96,6 +101,7 @@ const BucketlistService = {
         if (response.data.message === `${item.name} is already in use`) {
           return handleError(response.data.message);
         }
+
         return response.data;
       })
       .catch(error => handleError(error));

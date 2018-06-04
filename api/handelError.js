@@ -11,6 +11,7 @@ export default (error) => {
       code: error.response.status,
     };
   }
+
   return {
     error: error.message || error,
     code: 0,

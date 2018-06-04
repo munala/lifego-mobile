@@ -62,3 +62,14 @@ export const stripHtml = text => text
   .replace('<b>', '')
   .replace('</b>', '')
   .replace('<br/>', ' ');
+
+export const removeEmptyFields = (object) => {
+  const newObject = {};
+  Object.keys(object).forEach((key) => {
+    const field = object[key];
+    if (field || typeof (field) === 'boolean') {
+      newObject[key] = field;
+    }
+  });
+  return newObject;
+};

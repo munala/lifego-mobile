@@ -17,6 +17,7 @@ export default {
       .then(response => response.data)
       .catch(error => handleError(error));
   },
+
   async addTag(name) {
     instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
 
