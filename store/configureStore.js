@@ -64,7 +64,6 @@ const configureStore = (initialState) => {
     devMiddleware = devMiddleware.concat([reduxImmutableStateInvariant(), logger]);
   }
 
-
   const store = Reactotron.createStore(
     persistReducer(config, rootReducer),
     initialState,
@@ -80,6 +79,7 @@ const configureStore = (initialState) => {
   );
 
   const persistor = persistStore(store);
+
   return { store, persistor };
 };
 
