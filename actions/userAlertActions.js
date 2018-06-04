@@ -31,30 +31,54 @@ export const deleteAlertSuccess = alert => ({
 
 export const getAlerts = () => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall({ screen: 'userAlerts' }));
+
   const response = await alertService.getAlerts();
+
   if (response.error) {
-    dispatch(apiCallActions.apiCallError({ screen: 'userAlerts', error: response.error }));
+    dispatch(apiCallActions.apiCallError({
+      screen: 'userAlerts',
+      error: response.error,
+    }));
   } else {
-    dispatch(getAlertsSuccess({ ...response, screen: 'userAlerts' }));
+    dispatch(getAlertsSuccess({
+      ...response,
+      screen: 'userAlerts',
+    }));
   }
+
+  return response;
 };
 
 export const markAlertAsRead = alert => async (dispatch) => {
   const response = await alertService.markAsRead(alert);
+
   dispatch(apiCallActions.beginApiCall({ screen: 'userAlerts' }));
+
   if (response.error) {
-    dispatch(apiCallActions.apiCallError({ ...response, screen: 'userAlerts' }));
+    dispatch(apiCallActions.apiCallError({
+      ...response,
+      screen: 'userAlerts',
+    }));
   } else {
     dispatch(markAsReadSuccess(response));
   }
+
+  return response;
 };
 
 export const deleteAlert = alert => async (dispatch) => {
   const response = await alertService.deleteAlert(alert);
+
   dispatch(apiCallActions.beginApiCall({ screen: 'userAlerts' }));
+
   if (response.error) {
-    dispatch(apiCallActions.apiCallError({ ...response, screen: 'userAlerts' }));
+    dispatch(apiCallActions.apiCallError({
+      ...response,
+      screen: 'userAlerts',
+    }));
   } else {
     dispatch(deleteAlertSuccess(alert));
   }
+
+  return response;
 };

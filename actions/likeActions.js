@@ -16,6 +16,7 @@ export const unlikeSuccess = like => ({
 
 export const like = bucketlist => async (dispatch) => {
   const response = await likeService.like(bucketlist, like);
+
   if (!response.error) {
     dispatch(likeSuccess(bucketlist, response));
   }
@@ -23,6 +24,7 @@ export const like = bucketlist => async (dispatch) => {
 
 export const unlike = likes => async (dispatch) => {
   const response = await likeService.unlike(likes);
+
   if (!response.error) {
     dispatch(unlikeSuccess(likes));
   }

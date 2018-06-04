@@ -16,24 +16,36 @@ export const addTagSuccess = tag => ({
 
 export const addTag = (name, screen) => async (dispatch) => {
   const response = await tagService.addTag(name);
+
   dispatch(apiCallActions.beginApiCall({ screen }));
+
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
+
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(addTagSuccess(response));
+
     dispatch(apiCallActions.resetMessage());
   }
+
+  return response;
 };
 
 export const getTags = screen => async (dispatch) => {
   const response = await tagService.getTags();
+
   dispatch(apiCallActions.beginApiCall({ screen }));
+
   if (response.error) {
     dispatch(apiCallActions.apiCallError(response.error));
+
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(getTagsSuccess(response));
+
     dispatch(apiCallActions.resetMessage());
   }
+
+  return response;
 };

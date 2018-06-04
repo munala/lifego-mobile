@@ -12,6 +12,7 @@ export const navigate = ({
       params,
     }),
   });
+
   if (navigator === 'DrawerNav' && route !== 'DrawerOpen') {
     dispatch({
       navigator,
