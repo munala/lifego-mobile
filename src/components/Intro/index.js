@@ -61,7 +61,7 @@ const Intro = ({ actions: { navigate: nav } }) => (
   <View style={styles.container}>
     <Image
       style={styles.image}
-      source={require('../../images/bucketlist_front.jpg')}
+      source={require('../../assets/images/bucketlist_front.jpg')}
     />
     <AppIntro
       onDoneBtnClick={() => navigateToLogin(nav)}

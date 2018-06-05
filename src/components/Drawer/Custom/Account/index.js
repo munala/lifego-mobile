@@ -54,7 +54,7 @@ export default connect(
       <View style={styles.account} >
         <Image
           style={styles.image}
-          source={require('../../../../images/bucketlist_front.jpg')}
+          source={require('../../../../assets/images/bucketlist_front.jpg')}
         />
         <Image
           style={styles.profilePic}

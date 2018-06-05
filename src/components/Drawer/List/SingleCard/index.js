@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import React from 'react';
 import { View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';

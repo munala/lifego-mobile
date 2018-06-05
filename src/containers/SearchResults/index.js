@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
