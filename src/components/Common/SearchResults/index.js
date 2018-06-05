@@ -37,7 +37,7 @@ class SearchResults extends Component {
       route: 'Profile',
       navigator: 'DrawerNav',
       params: {
-        from: 'Home',
+        fromRoute: 'Home',
         viewProfile: true,
       },
     });
