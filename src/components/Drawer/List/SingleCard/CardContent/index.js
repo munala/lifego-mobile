@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';

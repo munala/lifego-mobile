@@ -79,7 +79,7 @@ class User extends BaseClass {
       >
         <Image
           style={styles.image}
-          source={require('../../images/bucketlist_front.jpg')}
+          source={require('../../assets/images/bucketlist_front.jpg')}
         />
         <Image
           style={styles.logo}
