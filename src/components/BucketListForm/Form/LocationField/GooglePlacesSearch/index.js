@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-import styles from '../styles';
+import styles from '../../../styles';
 
 const GooglePlacesInput = ({ onChange, content, listViewDisplayed }) => (
   <GooglePlacesAutocomplete

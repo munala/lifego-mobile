@@ -123,10 +123,18 @@ class Profile extends BaseClass {
         <Header
           title="Profile"
           leftIcon={from ? (Platform.OS === 'ios' ? 'chevron-left' : 'arrow-back') : 'menu'}
-          onPressLeft={from ? this.goBack : () => this.props.actions.navigate({ route: 'DrawerOpen', navigator: 'DrawerNav' })}
+          onPressLeft={
+            from ?
+              this.goBack :
+              () => this.props.actions.navigate({
+                route: 'DrawerOpen',
+                navigator: 'DrawerNav',
+              })}
           mode="profile"
         />
-        {currentApiCalls > 0 && !this.state.uploading &&
+        {
+          currentApiCalls > 0 &&
+          !this.state.uploading &&
           <View style={styles.activity}>
             <ActivityIndicator color="#fff" size="large" />
           </View>

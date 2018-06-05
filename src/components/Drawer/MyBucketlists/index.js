@@ -90,7 +90,11 @@ class StackNav extends Component {
         <Header
           title={title}
           leftIcon={mode === 'bucketlists' ? 'menu' : 'arrow-back'}
-          onPressLeft={mode === 'bucketlists' ? this.openDrawer : () => this.navigate(dispatch, singleBucketlistMode)}
+          onPressLeft={
+            mode === 'bucketlists' ?
+              this.openDrawer :
+              () => this.navigate(dispatch, singleBucketlistMode)
+          }
           onFocus={this.onFocus}
           clearSearch={this.clearSearch}
           mode={mode}

@@ -67,24 +67,31 @@ class Settings extends BaseClass {
 
     return (
       <View style={styles.saveButtons}>
-        {!this.state.saving &&
-        <TouchableOpacity
-          style={[styles.saveButton, styles.cancelButton]}
-          onPress={() => this.toggleMode(type, false)}
-        >
-          <Text style={[styles.buttonText, styles.cancelButtonText]}>
-            {Platform.OS === 'ios' ? 'Cancel' : 'CANCEL'}
-          </Text>
-        </TouchableOpacity>
+        {
+          !this.state.saving &&
+          <TouchableOpacity
+            style={[styles.saveButton, styles.cancelButton]}
+            onPress={() => this.toggleMode(type, false)}
+          >
+            <Text style={[styles.buttonText, styles.cancelButtonText]}>
+              {Platform.OS === 'ios' ? 'Cancel' : 'CANCEL'}
+            </Text>
+          </TouchableOpacity>
         }
         <TouchableOpacity
           style={styles.saveButton}
           onPress={actions[type]}
           disabled={this.validate(type)}
         >
-          {this.state.saving ?
-            <Text style={styles.saveButtonText}>{`${type === 'deleteMode' ? 'deleting' : 'saving'}...`}</Text> :
-            <Text style={[styles.saveButtonText, type === 'deleteMode' && { color: 'red' }]}>{text}</Text>}
+          {
+            this.state.saving ?
+              <Text style={styles.saveButtonText}>
+                {`${type === 'deleteMode' ? 'deleting' : 'saving'}...`}
+              </Text> :
+              <Text style={[styles.saveButtonText, type === 'deleteMode' && { color: 'red' }]}>
+                {text}
+              </Text>
+          }
         </TouchableOpacity>
       </View>
     );
@@ -98,7 +105,10 @@ class Settings extends BaseClass {
         <Header
           title="Settings"
           leftIcon="menu"
-          onPressLeft={() => this.props.actions.navigate({ route: 'DrawerOpen', navigator: 'DrawerNav' })}
+          onPressLeft={() => this.props.actions.navigate({
+            route: 'DrawerOpen',
+            navigator: 'DrawerNav',
+          })}
           mode="profile"
         />
         <View style={styles.body}>
@@ -126,41 +136,44 @@ class Settings extends BaseClass {
               onValueChange={this.toggleReminders}
             />
           </View>
-          {this.state.emailMode ?
-            <View>
-              {this.renderInputs(['email', 'password']) }
-              {this.renderSaveButtons('emailMode')}
-            </View> :
-            <TouchableOpacity
-              style={styles.buttons}
-              onPress={() => this.toggleMode('emailMode', true)}
-            >
-              <Text style={styles.buttonText}>Change email</Text>
-            </TouchableOpacity>
+          {
+            this.state.emailMode ?
+              <View>
+                {this.renderInputs(['email', 'password']) }
+                {this.renderSaveButtons('emailMode')}
+              </View> :
+              <TouchableOpacity
+                style={styles.buttons}
+                onPress={() => this.toggleMode('emailMode', true)}
+              >
+                <Text style={styles.buttonText}>Change email</Text>
+              </TouchableOpacity>
           }
-          {this.state.passwordMode ?
-            <View>
-              {this.renderInputs(['old password', 'new password', 'confirm password'])}
-              {this.renderSaveButtons('passwordMode')}
-            </View> :
-            <TouchableOpacity
-              style={styles.buttons}
-              onPress={() => this.toggleMode('passwordMode', true)}
-            >
-              <Text style={styles.buttonText}>Change password</Text>
-            </TouchableOpacity>
+          {
+            this.state.passwordMode ?
+              <View>
+                {this.renderInputs(['old password', 'new password', 'confirm password'])}
+                {this.renderSaveButtons('passwordMode')}
+              </View> :
+              <TouchableOpacity
+                style={styles.buttons}
+                onPress={() => this.toggleMode('passwordMode', true)}
+              >
+                <Text style={styles.buttonText}>Change password</Text>
+              </TouchableOpacity>
           }
-          {this.state.deleteMode ?
-            <View>
-              {this.renderInputs(['delete email', 'password'])}
-              {this.renderSaveButtons('deleteMode')}
-            </View> :
-            <TouchableOpacity
-              style={styles.buttons}
-              onPress={() => this.toggleMode('deleteMode', true)}
-            >
-              <Text style={[styles.buttonText, { color: 'red' }]}>Delete Account</Text>
-            </TouchableOpacity>
+          {
+            this.state.deleteMode ?
+              <View>
+                {this.renderInputs(['delete email', 'password'])}
+                {this.renderSaveButtons('deleteMode')}
+              </View> :
+              <TouchableOpacity
+                style={styles.buttons}
+                onPress={() => this.toggleMode('deleteMode', true)}
+              >
+                <Text style={[styles.buttonText, { color: 'red' }]}>Delete Account</Text>
+              </TouchableOpacity>
           }
         </View>
       </View>

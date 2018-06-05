@@ -102,7 +102,8 @@ class User extends BaseClass {
                   onSubmitEditing={() => {
                     this.Email.focus();
                   }}
-                />}
+                />
+              }
               <TextInput
                 ref={(element) => { this.Email = element; }}
                 autoCapitalize="none"

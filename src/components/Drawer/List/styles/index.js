@@ -778,4 +778,15 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  emptyArea: {
+    display: 'flex',
+    marginTop: '30%',
+  },
+  emptyAreaText: {
+    display: 'flex',
+    textAlign: 'center',
+    fontSize: 20,
+    color: '#fff',
+    marginTop: 20,
+  },
 });

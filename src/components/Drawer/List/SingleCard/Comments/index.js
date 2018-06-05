@@ -47,9 +47,7 @@ class Comments extends BaseClass {
   }
 
   renderComments = bucketlist => bucketlist.comments
-    .slice(
-      ((this.state.page * 8)),
-      ((this.state.page * 8) + 8))
+    .slice(this.state.page * 8, (this.state.page * 8) + 8)
     .map(comment => (
       <TouchableOpacity
         key={comment.id}
@@ -63,9 +61,13 @@ class Comments extends BaseClass {
       >
         <View style={styles.comment}>
           <TouchableOpacity onPress={() => this.props.goToProfile({ id: comment.senderId })}>
-            <Text style={styles.commentUser} numberOfLines={1}>{comment.user}</Text>
+            <Text style={styles.commentUser} numberOfLines={1}>
+              {comment.user}
+            </Text>
           </TouchableOpacity>
-          <Text selectable style={styles.commentContent} >{comment.content}</Text>
+          <Text selectable style={styles.commentContent}>
+            {comment.content}
+          </Text>
         </View>
         {this.props.mode &&
           <Text numberOfLines={1} style={[styles.timeSent, styles.commentTime]}>

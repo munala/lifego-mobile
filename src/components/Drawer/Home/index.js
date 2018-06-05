@@ -64,8 +64,7 @@ class Home extends Component {
       });
       if (from === 'Notifications') {
         navigate({
-          navigator: from === 'Notifications' ? 'HomeTabNav' :
-            navigator,
+          navigator: from === 'Notifications' ? 'HomeTabNav' : navigator,
           route: from,
         });
 
