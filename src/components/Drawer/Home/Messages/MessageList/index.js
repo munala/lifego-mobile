@@ -134,7 +134,9 @@ class Conversations extends BaseClass {
             style={[styles.read, styles.compose]}
             onPress={() => this.toggleNew()}
           >
-            <Text style={styles.notificationActionText}>{this.state.searching ? 'Cancel' : 'Compose'}</Text>
+            <Text style={styles.notificationActionText}>
+              {this.state.searching ? 'Cancel' : 'Compose'}
+            </Text>
           </TouchableOpacity>
           {
             !this.state.searching && conversations.length > 0 &&

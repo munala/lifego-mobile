@@ -56,15 +56,17 @@ class AllBucketlists extends BaseClass {
   renderEmptyArea = ({
     item: { id: currentApiCalls },
   }) => currentApiCalls === 0 && ( // eslint-disable-line react/prop-types
-    <View style={{ display: 'flex', marginTop: '30%' }}>
+    <View style={styles.emptyArea}>
       <Icon
         name="bucket"
         type="entypo"
         color="#fff"
         size={100}
       />
-      <Text style={{ display: 'flex', textAlign: 'center', fontSize: 20, color: '#fff', marginTop: 20 }}>
-        {"No bucketlists to display. \nClick on the '+' icon at the bottom right to add a bucketlist. \nOr pull down to refresh."}
+      <Text style={styles.emptyAreaText}>
+        {`No bucketlists to display. \n
+          Click on the '+' icon at the bottom right to add a bucketlist. \n
+          Or pull down to refresh.`}
       </Text>
     </View>
   );

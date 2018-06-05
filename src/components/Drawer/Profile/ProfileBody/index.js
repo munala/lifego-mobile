@@ -36,33 +36,34 @@ const ProfileBody = ({
   sendMessage,
 }) => (
   <View style={styles.profileBodyStyle}>
-    <Animated.View style={[
-      styles.profileWrapper,
-      {
-        marginTop,
-      },
-    ]}
+    <Animated.View style={[styles.profileWrapper, {
+      marginTop,
+    }]}
     >
       <Animated.View
-        style={[
-          styles.profilePicWrapper,
-          {
-            height,
-            width: height,
-            borderRadius: 50,
-          },
-        ]}
+        style={[styles.profilePicWrapper, {
+          height,
+          width: height,
+          borderRadius: 50,
+        }]}
       >
         <Image
           style={styles.profilePic}
           indicator={Progress.Pie}
-          source={{ uri: avatar ? avatar.replace('http://', 'https://') :
-            'https://res.cloudinary.com/lifego/image/upload/v1515139053/user.png' }}
+          source={{
+            uri: avatar ? avatar.replace('http://', 'https://') :
+              'https://res.cloudinary.com/lifego/image/upload/v1515139053/user.png',
+          }}
         />
       </Animated.View>
       <EditProfileForm {...editProfileProps} />
-      <Animated.View style={[styles.profileView, { opacity }]}>
-        <Text style={styles.profileName}>{profile.displayName || 'no name'}</Text>
+      <Animated.View style={[styles.profileView, {
+        opacity,
+      }]}
+      >
+        <Text style={styles.profileName}>
+          {profile.displayName || 'no name'}
+        </Text>
         {!showUserProfile &&
           <Text style={styles.profileEmail} numberOfLines={1}>
             {profile.email}
@@ -104,7 +105,10 @@ const ProfileBody = ({
         <Animated.View style={[styles.profileBody, { opacity }]} >
           <Text style={styles.noPeople}>You have no {activeType.toLowerCase()}</Text>
         </Animated.View> :
-        <Animated.View style={[styles.profileBody, styles.list, { opacity }]}>
+        <Animated.View style={[styles.profileBody, styles.list, {
+          opacity,
+        }]}
+        >
           <ScrollView
             scrollEnabled={scrollEnabled}
             style={[styles.borderRadius, {

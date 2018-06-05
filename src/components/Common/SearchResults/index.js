@@ -46,9 +46,10 @@ class SearchResults extends Component {
   renderOptions = person => (
     <TouchableOpacity
       style={[styles.personAction, this.isFriend(person.id) && styles.removeAction]}
-      onPress={() => (this.isFriend(person.id) ?
-        this.props.actions.removeFriend(person) :
-        this.props.actions.addFriend(person))
+      onPress={
+        () => (this.isFriend(person.id) ?
+          this.props.actions.removeFriend(person) :
+          this.props.actions.addFriend(person))
       }
     >
       <Text
@@ -59,7 +60,7 @@ class SearchResults extends Component {
     </TouchableOpacity>
   )
 
-  renderBucketlists = (bucketlists, onItemPress) => bucketlists && bucketlists.map(result => (
+  renderBucketlists = (bucketlists, onItemPress) => bucketlists.map(result => (
     <ListItem
       key={result.id}
       title={result.name}
@@ -99,16 +100,26 @@ class SearchResults extends Component {
       <ScrollView>
         <View style={styles.options}>
           <TouchableOpacity
-            style={[styles.option, { backgroundColor: bucketlistMode ? 'grey' : 'transparent' }]}
+            style={[styles.option, {
+              backgroundColor: bucketlistMode ? 'grey' : 'transparent',
+            }]}
             onPress={() => this.toggleMode(true)}
           >
-            <Text style={[styles.optionText, { color: bucketlistMode ? '#f7f7f7' : 'grey' }]}>bucketlists</Text>
+            <Text style={[styles.optionText, {
+              color: bucketlistMode ? '#f7f7f7' : 'grey',
+            }]}
+            >bucketlists</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.option, { backgroundColor: !bucketlistMode ? 'grey' : 'transparent' }]}
+            style={[styles.option, {
+              backgroundColor: !bucketlistMode ? 'grey' : 'transparent',
+            }]}
             onPress={() => this.toggleMode(false)}
           >
-            <Text style={[styles.optionText, { color: !bucketlistMode ? '#f7f7f7' : 'grey' }]}>users</Text>
+            <Text style={[styles.optionText, {
+              color: !bucketlistMode ? '#f7f7f7' : 'grey',
+            }]}
+            >users</Text>
           </TouchableOpacity>
         </View>
         <List containerStyle={styles.results}>

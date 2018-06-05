@@ -54,18 +54,37 @@ const CardHeader = ({
             {`${bucketlist.userDisplayName}\n`}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.time} numberOfLines={1}>{`${createdAt}${time}`}</Text>
+        <Text style={styles.time} numberOfLines={1}>
+          {`${createdAt}${time}`}
+        </Text>
       </View>
       <View style={styles.headDetails}>
         <View style={styles.location}>
-          <Text style={styles.rightHeaderContent} numberOfLines={1}>{`${bucketlist.location || bucketlist.category || ' '}`}</Text>
-          {(bucketlist.location || bucketlist.category) && <Icon style={styles.locationIcon} size={10} name={bucketlist.location ? 'place' : 'event-note'} />}
+          <Text style={styles.rightHeaderContent} numberOfLines={1}>
+            {`${bucketlist.location || bucketlist.category || ' '}`}
+          </Text>
+          {
+            (bucketlist.location || bucketlist.category) &&
+            <Icon
+              style={styles.locationIcon}
+              size={10}
+              name={bucketlist.location ? 'place' : 'event-note'}
+            />
+          }
         </View>
         <View style={styles.location}>
           <Text style={styles.rightHeaderContent} numberOfLines={1}>
             {bucketlist.location ? (bucketlist.category || ' ') : ' '}
           </Text>
-          {bucketlist.location && bucketlist.category && <Icon style={styles.titleIcon} size={10} name="event-note" />}
+          {
+            bucketlist.location &&
+            bucketlist.category &&
+            <Icon
+              style={styles.titleIcon}
+              size={10}
+              name="event-note"
+            />
+          }
         </View>
       </View>
     </View>

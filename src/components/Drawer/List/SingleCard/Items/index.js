@@ -78,11 +78,21 @@ class Items extends BaseClass {
     return (
       <TouchableWithoutFeedback onPress={this.props.closeMenu} style={styles.touchArea}>
         <View style={styles.stretch}>
-          <View style={[styles.commentSection, { alignItems: 'stretch', paddingHorizontal: 10 }]}>
+          <View style={[styles.commentSection, {
+            alignItems: 'stretch',
+            paddingHorizontal: 10,
+          }]}
+          >
             <View style={styles.buttonRow}>
               {
                 this.props.bucketlist.userId === this.props.profile.id && this.props.mode &&
-                <TouchableOpacity onPress={() => this.openForm({ type: 'Add', name: 'item' })} style={[styles.value, { justifyContent: 'flex-start' }]}>
+                <TouchableOpacity
+                  onPress={() => this.openForm({
+                    type: 'Add',
+                    name: 'item',
+                  })}
+                  style={[styles.value, { justifyContent: 'flex-start' }]}
+                >
                   <Text style={styles.commentNavigator}>Add item</Text>
                 </TouchableOpacity>
               }
@@ -90,7 +100,9 @@ class Items extends BaseClass {
                 {
                   bucketlist.items.length > 0 && page > 0 &&
                   <TouchableOpacity
-                    style={[styles.value, { justifyContent: 'flex-start' }]}
+                    style={[styles.value, {
+                      justifyContent: 'flex-start',
+                    }]}
                     onPress={() => this.navigatePage('previous')}
                   >
                     <Text style={styles.commentNavigator}>previous</Text>
@@ -100,7 +112,9 @@ class Items extends BaseClass {
                   bucketlist.items.length > 0 &&
                 bucketlist.items.length > ((page + 1) * 5) &&
                 <TouchableOpacity
-                  style={[styles.value, { justifyContent: 'flex-start' }]}
+                  style={[styles.value, {
+                    justifyContent: 'flex-start',
+                  }]}
                   onPress={() => this.navigatePage('next')}
                 >
                   <Text style={styles.commentNavigator}> next</Text>

@@ -34,7 +34,9 @@ class ContextMenu extends Component {
     const height = 50 * this.props.items.length;
 
     return (
-      <Animated.View style={[{ bottom, height }, this.props.style || styles.container]}>
+      <Animated.View
+        style={[{ bottom, height }, this.props.style || styles.container]}
+      >
         {this.renderItems()}
       </Animated.View>
     );
