@@ -103,8 +103,7 @@ class AllBucketlists extends BaseClass {
 
     const bucketlists = this.state.hideExpired ? filterExpired(bucketLists) : bucketLists;
     const { length } = bucketlists;
-    const offset = (Math.ceil(length / 10)) * 10;
-    const loadMore = bucketlists.length === 10 && nextUrl.length > 0;
+    const offset = Math.ceil(length / 10) * 10;
     const items = this.state.items;
     const buttons = this.state.buttons;
 
@@ -122,9 +121,7 @@ class AllBucketlists extends BaseClass {
           data={bucketlists.length > 0 ? bucketlists : [{ id: currentApiCalls }]}
           renderItem={bucketlists.length > 0 ? this.renderItem : this.renderEmptyArea}
           style={styles.listView}
-          onEndReached={
-            loadMore ? (() => loadMoreBucketlists(screen, offset)) : (() => {})
-          }
+          onEndReached={nextUrl ? () => loadMoreBucketlists(screen, offset) : () => {}}
           onEndReachedThreshold={0.01}
           removeClippedSubviews
           refreshControl={
