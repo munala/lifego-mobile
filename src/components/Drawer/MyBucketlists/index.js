@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { View } from 'react-native';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 
-import SearchResults from '../../Common/SearchResults';
+import SearchResults from '../../../containers/SearchResults';
 import Header from '../../../containers/Header';
 import MyBucketlistNavigator from '../../../navigators/myBucketlists';
 import { addMyListener } from '../../../store/configureStore';

@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { addNavigationHelpers } from 'react-navigation';
 
 import Header from '../../../containers/Header';
-import SearchResults from '../../Common/SearchResults';
+import SearchResults from '../../../containers/SearchResults';
 import styles from './styles';
 import HomeTabNavigator from '../../../navigators/home';
 import { addHomeListener } from '../../../store/configureStore';
