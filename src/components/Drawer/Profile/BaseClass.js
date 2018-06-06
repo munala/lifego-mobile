@@ -52,20 +52,6 @@ class BaseClass extends Component {
 
   animationFactor = new Animated.Value(0)
 
-  isFriend = (person) => {
-    const { friends } = this.props.profile;
-
-    return friends.some(friend => friend.id === person.id);
-  }
-
-  isLastPerson = (index) => {
-    const { activeType } = this.state;
-    const { profile } = this.props;
-    const isLast = profile[activeType.toLowerCase()].length === index + 1;
-
-    return isLast;
-  }
-
   toggleType = (activeType) => {
     this.setState({ activeType });
   }

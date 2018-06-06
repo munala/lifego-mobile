@@ -47,7 +47,7 @@ export default StyleSheet.create({
   },
   profileAction: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
@@ -274,6 +274,7 @@ export default StyleSheet.create({
     marginVertical: 10,
   },
   hr: {
+    display: 'flex',
     borderBottomColor: Platform.OS === 'android' ? 'grey' : '#00bcd4',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
@@ -322,5 +323,11 @@ export default StyleSheet.create({
   profileBodyStyle: {
     width: '100%',
     flexGrow: 1,
+  },
+  formBody: {
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
   },
 });

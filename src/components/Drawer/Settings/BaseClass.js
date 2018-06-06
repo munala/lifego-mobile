@@ -12,6 +12,7 @@ class BaseClass extends Component {
       new: '',
       confirm: '',
     },
+    deleteMode: false,
     saving: false,
   }
 
