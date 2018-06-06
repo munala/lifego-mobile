@@ -106,9 +106,7 @@ class Home extends Component {
         />
         {
           this.state.searchMode ?
-            <SearchResults
-              onItemPress={this.onItemPress}
-            /> :
+            <SearchResults onItemPress={this.onItemPress} /> :
             <HomeTabNavigator
               navigation={
                 addNavigationHelpers({

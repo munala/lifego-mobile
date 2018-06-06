@@ -102,12 +102,8 @@ class Bucketlist extends BaseClass {
           >
             <SingleCard {...bucketlistProps} />
           </ScrollView>
-          {
-            showMenu && <ContextMenu items={items} />
-          }
-          {
-            this.state.showDialog && <Dialog {...dialogProps} />
-          }
+          {showMenu && <ContextMenu items={items} />}
+          {this.state.showDialog && <Dialog {...dialogProps} />}
         </View>
       );
     }

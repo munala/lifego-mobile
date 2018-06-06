@@ -35,6 +35,10 @@ class BaseClass extends Component {
     });
   }
 
+  setRef = ({ key, value }) => {
+    this[key] = value;
+  }
+
   toggleResetMode = (resetPassword) => {
     this.setState({ resetPassword });
   }
