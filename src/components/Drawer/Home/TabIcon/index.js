@@ -45,7 +45,10 @@ const TabIcon = ({
                 color={tintColor}
                 containerStyle={styles.tabIcon}
               />
-              {count > 0 && <Text style={styles.badgeElement}>{count}</Text> }
+              {
+                count > 0 &&
+                <Text style={styles.badgeElement}>{count}</Text>
+              }
             </View>
           </TouchableWithoutFeedback>
         );

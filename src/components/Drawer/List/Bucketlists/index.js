@@ -134,12 +134,8 @@ class AllBucketlists extends BaseClass {
           }
         />
         {loaderCalls > 0 && <Loader /> }
-        {
-          this.state.showMenu && <ContextMenu items={items} />
-        }
-        {
-          this.state.showDialog && <Dialog {...dialogProps} />
-        }
+        {this.state.showMenu && <ContextMenu items={items} />}
+        {this.state.showDialog && <Dialog {...dialogProps} />}
         <ActionButton
           size={40}
           buttonColor="#00bcd4"

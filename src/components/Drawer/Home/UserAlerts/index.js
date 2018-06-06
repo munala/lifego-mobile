@@ -33,7 +33,8 @@ class UserAlerts extends Component {
   }
 
   getUnreadCount = alert => alert.messages
-    .filter(message => !message.read && message.receiverId === this.props.profile.id).length
+    .filter(message => !message.read && message.receiverId === this.props.profile.id)
+    .length
 
   markAllAsRead = () => {
     this.props.alerts.forEach((alert) => {
@@ -108,9 +109,11 @@ class UserAlerts extends Component {
           style={[styles.notificationText, {
             color: alert.read ? 'grey' : '#009baf',
           }]}
-        >{this.stripHtml(alert.text)}
+        >
+          {this.stripHtml(alert.text)}
         </Text>
-        {!this.checkFriend(alert) &&
+        {
+          !this.checkFriend(alert) &&
           <Icon
             style={styles.raisedButton}
             onPress={() => this.addFriend(alert)}

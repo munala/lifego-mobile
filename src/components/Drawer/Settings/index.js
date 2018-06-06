@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   TextInput,
-  Switch,
   TouchableOpacity,
   Platform,
   AsyncStorage,
@@ -11,6 +10,10 @@ import {
 import Header from '../../../containers/Header';
 import BaseClass from './BaseClass';
 import Text from '../../Common/SuperText';
+import Switch from './Switch';
+import ChangeEmailField from './ChangeEmailField';
+import ChangePasswordField from './ChangePasswordField';
+import DeleteAccountField from './DeleteAccountField';
 import propTypes from './propTypes';
 import styles from './styles';
 
@@ -39,9 +42,7 @@ class Settings extends BaseClass {
 
     return (
       <View key={name}>
-        <Text style={styles.inputText}>
-          {displayName}
-        </Text>
+        <Text style={styles.inputText}>{displayName}</Text>
         <TextInput
           defaultValue={this.state[name === 'delete email' ? 'email' : name]}
           secureTextEntry={field !== 'email'}
@@ -58,17 +59,20 @@ class Settings extends BaseClass {
   })
 
   renderSaveButtons = (type) => {
+    const { saving } = this.state;
     const actions = {
       passwordMode: this.changePassword,
       emailMode: this.changeEmail,
       deleteMode: this.deleteAccount,
     };
-    const text = type === 'deleteMode' ? 'DELETE ACCOUNT' : (Platform.OS === 'ios' ? 'Save' : 'SAVE'); // eslint-disable-line no-nested-ternary
+    const text = type === 'deleteMode' ? // eslint-disable-line no-nested-ternary
+    'DELETE ACCOUNT' :
+      (Platform.OS === 'ios' ? 'Save' : 'SAVE');
 
     return (
       <View style={styles.saveButtons}>
         {
-          !this.state.saving &&
+          !saving &&
           <TouchableOpacity
             style={[styles.saveButton, styles.cancelButton]}
             onPress={() => this.toggleMode(type, false)}
@@ -84,7 +88,7 @@ class Settings extends BaseClass {
           disabled={this.validate(type)}
         >
           {
-            this.state.saving ?
+            saving ?
               <Text style={styles.saveButtonText}>
                 {`${type === 'deleteMode' ? 'deleting' : 'saving'}...`}
               </Text> :
@@ -99,6 +103,13 @@ class Settings extends BaseClass {
 
   render() {
     const { profile } = this.props;
+    const {
+      hideNotifications,
+      hideExpired,
+      emailMode,
+      passwordMode,
+      deleteMode,
+    } = this.state;
 
     return (
       <View style={styles.container}>
@@ -112,69 +123,39 @@ class Settings extends BaseClass {
           mode="profile"
         />
         <View style={styles.body}>
-          <View style={styles.switchRow}>
-            <Text style={styles.switchText}>Push notifications</Text>
-            <Switch
-              style={styles.switch}
-              value={!this.state.hideNotifications}
-              onValueChange={() => this.toggleSettings('push')}
-            />
-          </View>
-          <View style={styles.switchRow}>
-            <Text style={styles.switchText}>Show expired bucketlists</Text>
-            <Switch
-              style={styles.switch}
-              value={!this.state.hideExpired}
-              onValueChange={() => this.toggleSettings('expired')}
-            />
-          </View>
-          <View style={styles.switchRow}>
-            <Text style={styles.switchText}>Email reminders</Text>
-            <Switch
-              style={styles.switch}
-              value={profile.reminders === true}
-              onValueChange={this.toggleReminders}
-            />
-          </View>
-          {
-            this.state.emailMode ?
-              <View>
-                {this.renderInputs(['email', 'password']) }
-                {this.renderSaveButtons('emailMode')}
-              </View> :
-              <TouchableOpacity
-                style={styles.buttons}
-                onPress={() => this.toggleMode('emailMode', true)}
-              >
-                <Text style={styles.buttonText}>Change email</Text>
-              </TouchableOpacity>
-          }
-          {
-            this.state.passwordMode ?
-              <View>
-                {this.renderInputs(['old password', 'new password', 'confirm password'])}
-                {this.renderSaveButtons('passwordMode')}
-              </View> :
-              <TouchableOpacity
-                style={styles.buttons}
-                onPress={() => this.toggleMode('passwordMode', true)}
-              >
-                <Text style={styles.buttonText}>Change password</Text>
-              </TouchableOpacity>
-          }
-          {
-            this.state.deleteMode ?
-              <View>
-                {this.renderInputs(['delete email', 'password'])}
-                {this.renderSaveButtons('deleteMode')}
-              </View> :
-              <TouchableOpacity
-                style={styles.buttons}
-                onPress={() => this.toggleMode('deleteMode', true)}
-              >
-                <Text style={[styles.buttonText, { color: 'red' }]}>Delete Account</Text>
-              </TouchableOpacity>
-          }
+          <Switch
+            label="Push notifications"
+            value={!hideNotifications}
+            onValueChange={() => this.toggleSettings('push')}
+          />
+          <Switch
+            label="Show expired bucketlists"
+            value={!hideExpired}
+            onValueChange={() => this.toggleSettings('expired')}
+          />
+          <Switch
+            label="Email reminders"
+            value={profile.reminders === true}
+            onValueChange={this.toggleReminders}
+          />
+          <ChangeEmailField
+            emailMode={emailMode}
+            renderInputs={this.renderInputs}
+            renderSaveButtons={this.renderSaveButtons}
+            toggleMode={this.toggleMode}
+          />
+          <ChangePasswordField
+            passwordMode={passwordMode}
+            renderInputs={this.renderInputs}
+            renderSaveButtons={this.renderSaveButtons}
+            toggleMode={this.toggleMode}
+          />
+          <DeleteAccountField
+            deleteMode={deleteMode}
+            renderInputs={this.renderInputs}
+            renderSaveButtons={this.renderSaveButtons}
+            toggleMode={this.toggleMode}
+          />
         </View>
       </View>
     );
