@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
-  Image,
   TextInput,
   ScrollView,
   TouchableWithoutFeedback,
@@ -16,6 +15,7 @@ import BaseClass from './BaseClass';
 import Text from '../../../../Common/SuperText';
 import Dialog from '../../../../Common/Dialog';
 import ContextMenu from '../../../../Common/ContextMenu';
+import ConversationRow from './ConversationRow';
 import styles from '../../styles';
 import propTypes from './propTypes';
 
@@ -25,48 +25,14 @@ class Conversations extends BaseClass {
     const pictureUrl = this.setPictureUrl(conversation);
 
     return (
-      <TouchableOpacity
-        style={styles.notificationView}
-        key={conversation.id}
-        onPress={() => this.goToConversation(conversation)}
-        onLongPress={() => this.openMenu(conversation)}
-        delayLongPress={500}
-        activeOpacity={1}
-      >
-        <View style={styles.notification}>
-          <Image
-            style={styles.avatar}
-            source={
-              pictureUrl ?
-                {
-                  uri: (
-                    pictureUrl.replace(
-                      (pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
-                      'https://',
-                    )
-                  ),
-                } :
-                require('../../../../../assets/images/user.png')
-            }
-          />
-          <View style={styles.preview}>
-            <Text
-              style={[styles.notificationText, {
-                color: conversation.read ? 'grey' : '#009baf',
-              }]}
-              numberOfLines={1}
-            >
-              { this.getName(conversation) }
-            </Text>
-            {
-              conversation.messages.length > 0 &&
-              <Text numberOfLines={1} style={[styles.wordWrap, unread > 0 && { fontWeight: 'bold' }]}>
-                {conversation.messages[0].content}
-              </Text>
-            }
-          </View>
-        </View>
-      </TouchableOpacity>
+      <ConversationRow
+        conversation={conversation}
+        pictureUrl={pictureUrl}
+        unread={unread}
+        goToConversation={this.goToConversation}
+        openMenu={this.openMenu}
+        getName={this.getName}
+      />
     );
   }
 
@@ -119,20 +85,21 @@ class Conversations extends BaseClass {
     return (
       <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
         <View style={styles.container}>
-          {this.state.searching &&
-          <TextInput
-            style={styles.searchInput}
-            value={this.state.searchText}
-            onChangeText={this.onChange}
-            underlineColorAndroid="#f7f7f7"
-            placeholderTextColor="#f7f7f7"
-            placeholder="Search friends"
-          />
+          {
+            this.state.searching &&
+            <TextInput
+              style={styles.searchInput}
+              value={this.state.searchText}
+              onChangeText={this.onChange}
+              underlineColorAndroid="#f7f7f7"
+              placeholderTextColor="#f7f7f7"
+              placeholder="Search friends"
+            />
           }
           {this.state.searching && this.renderResults()}
           <TouchableOpacity
             style={[styles.read, styles.compose]}
-            onPress={() => this.toggleNew()}
+            onPress={this.toggleNew}
           >
             <Text style={styles.notificationActionText}>
               {this.state.searching ? 'Cancel' : 'Compose'}
@@ -170,12 +137,8 @@ class Conversations extends BaseClass {
                 <Text style={styles.noneText}>{'you\'re all caught up'}</Text>
               </View>)
           }
-          {
-            this.state.showMenu && <ContextMenu items={items} />
-          }
-          {
-            this.state.showDialog && <Dialog {...dialogProps} />
-          }
+          {this.state.showMenu && <ContextMenu items={items} />}
+          {this.state.showDialog && <Dialog {...dialogProps} />}
         </View>
       </TouchableWithoutFeedback>
     );

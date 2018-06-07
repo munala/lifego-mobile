@@ -1,16 +1,17 @@
 import React from 'react';
-import { View,
+import {
+  View,
   ScrollView,
-  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
 
 import ContextMenu from '../../../../Common/ContextMenu';
 import Dialog from '../../../../Common/Dialog';
 import BaseClass from './BaseClass';
 import Text from '../../../../Common/SuperText';
+import ConversationHeader from './ConversationHeader';
+import NewMessage from './NewMessage';
 import { setTime } from '../../../../../utils';
 import styles from '../../styles';
 import propTypes from './propTypes';
@@ -121,25 +122,15 @@ class Conversation extends BaseClass {
     return (
       <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
         <View style={[styles.container, { backgroundColor: '#fff' }]}>
-          <View style={styles.top}>
-            <Icon
-              style={styles.backButton}
-              onPress={this.goBack}
-              name="chevron-left"
-              color="#00bcd4"
-              size={30}
-            />
-            <TouchableOpacity onPress={() => this.goToProfile({ id: userId })}>
-              <Text style={styles.name} numberOfLines={1}>{name}</Text>
-            </TouchableOpacity>
-            <Icon
-              style={styles.deleteButton}
-              onPress={conversation ? () => this.deleteConversation({ id }) : this.goBack}
-              name="delete"
-              color="red"
-              size={24}
-            />
-          </View>
+          <ConversationHeader
+            goBack={this.goBack}
+            goToProfile={this.goToProfile}
+            deleteConversation={this.deleteConversation}
+            userId={userId}
+            name={name}
+            conversation={conversation}
+            id={id}
+          />
           <View style={styles.bodyWrapper}>
             <ScrollView
               contentContainerStyle={styles.body}
@@ -149,38 +140,19 @@ class Conversation extends BaseClass {
               {conversation && this.renderMessages(conversation.messages)}
             </ScrollView>
           </View>
-          <View style={styles.newMessage}>
-            <TextInput
-              placeholder="type message"
-              underlineColorAndroid="#00bcd4"
-              style={styles.inputStyles}
-              value={message.content}
-              onChangeText={this.onChange}
-              onKeyPress={({ key }) => {
-                if (key === 'Enter') {
-                  this.saveMessage();
-                }
-              }}
-            />
-            <Icon
-              style={styles.newButton}
-              onPress={this.saveMessage}
-              name="send"
-              color="#00bcd4"
-            />
-          </View>
+          <NewMessage
+            message={message}
+            onChange={this.onChange}
+            saveMessage={this.saveMessage}
+          />
           {
             this.state.editMode &&
             <TouchableOpacity onPress={this.cancel} style={styles.cancel}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
           }
-          {
-            showMenu && <ContextMenu items={items} />
-          }
-          {
-            showDialog && <Dialog {...dialogProps} />
-          }
+          {showMenu && <ContextMenu items={items} />}
+          {showDialog && <Dialog {...dialogProps} />}
         </View>
       </TouchableWithoutFeedback>
     );
