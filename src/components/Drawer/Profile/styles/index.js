@@ -6,7 +6,7 @@ export default StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#fff',
     justifyContent: 'flex-start',
     paddingBottom: height === 812 && Platform.OS === 'ios' ? 20 : 0,
     width: '100%',
@@ -35,13 +35,13 @@ export default StyleSheet.create({
   },
   profileName: {
     display: 'flex',
-    color: '#F7F7F7',
+    color: 'grey',
     fontSize: 24,
     marginVertical: 5,
   },
   profileEmail: {
     display: 'flex',
-    color: '#F7F7F7',
+    color: 'grey',
     fontSize: 14,
     marginVertical: 5,
   },
@@ -60,7 +60,7 @@ export default StyleSheet.create({
   },
   profileActionText: {
     display: 'flex',
-    color: '#00bcd4',
+    color: 'grey',
     fontWeight: 'bold',
   },
   profileStats: {
@@ -72,7 +72,7 @@ export default StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     borderColor: '#f7f7f7',
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#f7f7f7',
     marginHorizontal: 10,
     marginTop: 15,
   },
@@ -80,11 +80,7 @@ export default StyleSheet.create({
     display: 'flex',
     flexBasis: '50%',
     alignItems: 'center',
-    height: Platform.OS === 'ios' ? '100%' : 48,
-    borderRadius: 2,
-  },
-  statActive: {
-    backgroundColor: '#f7f7f7',
+    height: '100%',
   },
   statWrapper: {
     display: 'flex',
@@ -97,7 +93,7 @@ export default StyleSheet.create({
     display: 'flex',
     textAlign: 'center',
     width: '100%',
-    color: '#f7f7f7',
+    color: 'grey',
     fontSize: 20,
   },
   statCountActive: {
@@ -108,7 +104,7 @@ export default StyleSheet.create({
     display: 'flex',
     textAlign: 'center',
     width: '100%',
-    color: '#f7f7f7',
+    color: 'grey',
     fontSize: 14,
   },
   statLabelActive: {
@@ -124,7 +120,6 @@ export default StyleSheet.create({
     marginVertical: 20,
     borderRadius: 5,
     paddingVertical: 10,
-    backgroundColor: '#f7f7f7',
     zIndex: 10,
   },
   person: {
@@ -135,8 +130,7 @@ export default StyleSheet.create({
     height: 60,
     marginHorizontal: 20,
     padding: 2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#fff',
   },
   lastPerson: {
     borderBottomWidth: 0,
@@ -162,7 +156,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#fff',
     width: 70,
     height: 25,
     borderRadius: 10,
@@ -180,7 +174,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   removeActionText: {
-    color: '#f7f7f7',
+    color: '#fff',
   },
   noPeople: {
     display: 'flex',
@@ -191,7 +185,6 @@ export default StyleSheet.create({
     fontSize: 14,
   },
   list: {
-    backgroundColor: '#00bcd4',
     flex: 1,
     overflow: 'hidden',
     padding: 0,
@@ -205,7 +198,7 @@ export default StyleSheet.create({
     overflow: 'scroll',
     paddingVertical: 10,
     borderRadius: 5,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#fff',
   },
   input: {
     display: 'flex',
@@ -268,14 +261,14 @@ export default StyleSheet.create({
   },
   uploading: {
     fontSize: 14,
-    color: '#f7f7f7',
+    color: '#fff',
     display: 'flex',
     textAlign: 'center',
     marginVertical: 10,
   },
   hr: {
     display: 'flex',
-    borderBottomColor: Platform.OS === 'android' ? 'grey' : '#00bcd4',
+    borderBottomColor: Platform.OS === 'android' ? '#f7f7f7' : '#00bcd4',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   activity: {
@@ -302,7 +295,7 @@ export default StyleSheet.create({
     marginVertical: 0,
   },
   photoButtonText: {
-    color: '#f7f7f7',
+    color: '#fff',
     fontSize: 14,
     fontWeight: 'normal',
   },

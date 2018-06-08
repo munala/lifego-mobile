@@ -76,6 +76,7 @@ class SmallLoader extends Component {
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
+      width: '100%',
       height: 10,
       margin: 5,
     };

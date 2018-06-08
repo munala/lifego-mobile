@@ -136,7 +136,7 @@ class Profile extends BaseClass {
           currentApiCalls > 0 &&
           !this.state.uploading &&
           <View style={styles.activity}>
-            <ActivityIndicator color="#fff" size="large" />
+            <ActivityIndicator color="#00bcd4" size="large" />
           </View>
         }
         <ProfileBody {...profileBodyProps} />

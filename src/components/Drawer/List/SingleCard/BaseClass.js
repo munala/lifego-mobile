@@ -17,7 +17,7 @@ class BaseClass extends Component {
           const factor = width / windowWidth;
           this.setState({
             imageDimensions: {
-              width: windowWidth - 10, height: height / factor,
+              width: windowWidth, height: height / factor,
             },
           });
         },

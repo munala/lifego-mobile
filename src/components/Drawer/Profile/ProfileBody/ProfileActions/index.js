@@ -63,19 +63,14 @@ class ProfileActions extends Component {
           showUserProfile ?
             <View>
               <TouchableOpacity
-                style={[styles.profileAction, isFriend(profile) && styles.removeAction]}
+                style={styles.profileAction}
                 onPress={() => (
                   isFriend(profile) ?
                     removeFriend(profile) :
                     addFriend(profile)
                 )}
               >
-                <Text
-                  style={[
-                    styles.profileActionText,
-                    isFriend(profile) && styles.removeActionText,
-                  ]}
-                >
+                <Text style={styles.profileActionText}>
                   {isFriend(profile) ? 'Remove' : 'Add'}
                 </Text>
               </TouchableOpacity>

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#f7f7f7',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -23,7 +23,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderRadius: 75,
     padding: 25,
-    backgroundColor: '#fff',
+    backgroundColor: '#f7f7f7',
     overflow: 'hidden',
     zIndex: 1,
   },
@@ -36,7 +36,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     padding: 25,
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: 'rgba(0,188,212,0.1)',
     overflow: 'hidden',
     zIndex: 1,
   },
@@ -45,10 +45,9 @@ export default StyleSheet.create({
     top: '20%',
     textAlign: 'center',
     width: '100%',
-    color: '#fff',
+    color: '#00bcd4',
     fontFamily: 'Chalkduster',
     fontSize: 50,
     fontWeight: 'bold',
-    // fontStyle: 'italic',
   },
 });

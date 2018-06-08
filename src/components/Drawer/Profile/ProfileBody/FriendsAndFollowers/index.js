@@ -31,10 +31,10 @@ class FriendsAndFollowers extends Component {
     } = this.props;
 
     return userProfile ?
-      userProfile[activeType.toLowerCase()].map((person, index) => (
+      userProfile[activeType.toLowerCase()].map(person => (
         <TouchableOpacity
           key={person.id}
-          style={[styles.person, this.isLastPerson(index) && styles.lastPerson]}
+          style={styles.person}
           onPress={() => this.props.goToProfile(person.id)}
           activeOpacity={1}
         >

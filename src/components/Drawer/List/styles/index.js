@@ -5,7 +5,7 @@ const { height } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#eee',
     justifyContent: 'flex-start',
   },
   iPhoneX: {
@@ -56,8 +56,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     width: '90%',
-    marginLeft: 20,
-    marginRight: 20,
+    marginHorizontal: 20,
   },
   profileAvatar: {
     flexBasis: '10%',
@@ -73,9 +72,8 @@ export default StyleSheet.create({
     color: 'grey',
   },
   newBucketlist: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#fff',
     borderRadius: 5,
-    paddingTop: 20,
     padding: 20,
     margin: 5,
     display: 'flex',
@@ -89,18 +87,13 @@ export default StyleSheet.create({
     flex: 1,
   },
   bucketlist: {
-    backgroundColor: '#f7f7f7',
-    borderRadius: 5,
-    paddingTop: 20,
-    paddingBottom: 10,
-    marginHorizontal: 5,
-    marginVertical: 2.5,
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    marginBottom: 5,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    height: 'auto',
-    elevation: 1,
   },
   bucketlistHeader: {
     display: 'flex',
@@ -108,7 +101,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     width: '100%',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   avatar: {
     display: 'flex',
@@ -142,10 +135,8 @@ export default StyleSheet.create({
     height: 'auto',
   },
   description: {
-    width: '90%',
     marginVertical: 10,
-    borderRadius: 5,
-    marginHorizontal: 20,
+    paddingHorizontal: 10,
   },
   blue: {
     color: '#00bcd4',
@@ -165,7 +156,7 @@ export default StyleSheet.create({
     flexDirection: 'column-reverse',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#fff',
     width: '100%',
     paddingHorizontal: 20,
   },
@@ -207,7 +198,7 @@ export default StyleSheet.create({
     height: 40,
     marginTop: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -276,7 +267,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 'auto',
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   iconStyle: {
     display: 'flex',
@@ -289,7 +280,6 @@ export default StyleSheet.create({
   },
   span: {
     display: 'flex',
-    width: 20,
     fontSize: 14,
     marginLeft: 5,
     color: 'grey',
@@ -417,7 +407,6 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 5,
     width: 100,
   },
   backButton: {
@@ -611,7 +600,7 @@ export default StyleSheet.create({
     borderRadius: 13,
     marginHorizontal: 10,
     marginTop: 10,
-    backgroundColor: Platform.OS === 'ios' ? '#f7f7f7' : 'transparent',
+    backgroundColor: 'transparent',
   },
   newButton: {
     display: 'flex',
@@ -682,7 +671,7 @@ export default StyleSheet.create({
     width: 14,
     borderRadius: 7,
     marginTop: 10,
-    color: '#FFFFFF',
+    color: '#fff',
     fontSize: 10,
     display: 'flex',
     textAlign: 'center',
@@ -781,12 +770,13 @@ export default StyleSheet.create({
   emptyArea: {
     display: 'flex',
     marginTop: '30%',
+    padding: 50,
   },
   emptyAreaText: {
     display: 'flex',
     textAlign: 'center',
     fontSize: 20,
-    color: '#fff',
+    color: 'grey',
     marginTop: 20,
   },
 });

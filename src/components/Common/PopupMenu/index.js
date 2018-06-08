@@ -18,9 +18,9 @@ const PopupMenu = ({ items, icon }) => (
   >
     <Icon
       name={icon}
-      color="#fff"
+      color="#00bcd4"
       containerStyle={styles.iconStyle}
-      underlayColor="#00bcd4"
+      underlayColor="#fff"
     />
   </ModalDropdown>
 );

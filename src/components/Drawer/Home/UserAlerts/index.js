@@ -98,32 +98,42 @@ class UserAlerts extends Component {
 
   renderItem = ({ item: alert }) => (
     <TouchableOpacity
-      style={styles.notificationView}
+      style={[styles.notificationView, {
+        backgroundColor: alert.read ? 'transparent' : '#f7f7f7',
+      }]}
       key={alert.id}
       onPress={() => this.goToProfile(alert)}
       activeOpacity={1}
     >
-      <View style={[styles.notification, { justifyContent: 'space-between' }]}>
-        <Text
-          numberOfLines={2}
-          style={[styles.notificationText, {
-            color: alert.read ? 'grey' : '#009baf',
-          }]}
-        >
-          {this.stripHtml(alert.text)}
-        </Text>
+      <View style={[styles.notification, { justifyContent: 'space-between', alignItems: 'center' }]}>
+        <View style={{ flexDirection: 'row' }}>
+          <Icon
+            containerStyle={styles.notificationIcon}
+            iconStyle={styles.icon}
+            type="material-icons"
+            name="person"
+            color="grey"
+            size={14}
+          />
+          <Text
+            numberOfLines={2}
+            style={styles.notificationText}
+          >
+            {this.stripHtml(alert.text)}
+          </Text>
+        </View>
         {
           !this.checkFriend(alert) &&
-          <Icon
-            style={styles.raisedButton}
+          <TouchableOpacity
+            style={styles.personAction}
             onPress={() => this.addFriend(alert)}
-            containerStyle={styles.notificationIcon}
-            iconStyle={[styles.icon, { marginHorizontal: 10 }]}
-            type="material-icons"
-            name="person-add"
-            color="#009baf"
-            size={20}
-          />
+          >
+            <Text
+              style={styles.actionText}
+            >
+              Add
+            </Text>
+          </TouchableOpacity>
         }
       </View>
     </TouchableOpacity>
@@ -133,7 +143,7 @@ class UserAlerts extends Component {
     const { alerts, currentApiCalls } = this.props;
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: '#fff' }]}>
         {alerts.length > 0 &&
           <FlatList
             enableEmptySections
@@ -168,7 +178,7 @@ class UserAlerts extends Component {
               </TouchableOpacity>
             </View> :
             <View style={styles.none}>
-              <Text style={styles.noneText}>{'you\'re all caught up'}</Text>
+              <Text style={styles.noneText}>Friend notifications come here</Text>
             </View>
         }
       </View>

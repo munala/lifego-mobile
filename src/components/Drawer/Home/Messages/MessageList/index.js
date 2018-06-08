@@ -9,7 +9,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon } from 'react-native-elements';
+import ActionButton from 'react-native-action-button';
 
 import BaseClass from './BaseClass';
 import Text from '../../../../Common/SuperText';
@@ -84,27 +85,40 @@ class Conversations extends BaseClass {
 
     return (
       <TouchableWithoutFeedback onPress={this.closeMenu} style={styles.touchArea}>
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: '#fff' }]}>
           {
             this.state.searching &&
             <TextInput
               style={styles.searchInput}
               value={this.state.searchText}
               onChangeText={this.onChange}
-              underlineColorAndroid="#f7f7f7"
-              placeholderTextColor="#f7f7f7"
+              underlineColorAndroid="#eee"
+              placeholderTextColor="#ccc"
               placeholder="Search friends"
             />
           }
           {this.state.searching && this.renderResults()}
-          <TouchableOpacity
-            style={[styles.read, styles.compose]}
-            onPress={this.toggleNew}
-          >
-            <Text style={styles.notificationActionText}>
-              {this.state.searching ? 'Cancel' : 'Compose'}
-            </Text>
-          </TouchableOpacity>
+          {
+            !this.state.searching &&
+            <ActionButton
+              size={40}
+              buttonColor="#00bcd4"
+              fixNativeFeedbackRadius
+              icon={<Icon name="add" color="#fff" />}
+              onPress={this.toggleNew}
+            />
+          }
+          {
+            this.state.searching &&
+            <TouchableOpacity
+              style={[styles.read, styles.compose]}
+              onPress={this.toggleNew}
+            >
+              <Text style={styles.notificationActionText}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          }
           {
             !this.state.searching && conversations.length > 0 &&
             <FlatList
@@ -134,7 +148,7 @@ class Conversations extends BaseClass {
                 </TouchableOpacity>
               </View> :
               <View style={styles.none}>
-                <Text style={styles.noneText}>{'you\'re all caught up'}</Text>
+                <Text style={styles.noneText}>Messages come here</Text>
               </View>)
           }
           {this.state.showMenu && <ContextMenu items={items} />}

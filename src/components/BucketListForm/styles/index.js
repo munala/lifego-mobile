@@ -132,9 +132,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch',
-    backgroundColor: '#00bcd4',
-    paddingHorizontal: 5,
-    paddingBottom: 5,
+    backgroundColor: '#eee',
     overflow: 'scroll',
   },
   imageWrapper: {

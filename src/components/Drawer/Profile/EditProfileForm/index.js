@@ -35,16 +35,14 @@ const EditProfileForm = ({
           <ActivityIndicator color="#fff" size="large" /> :
           <View style={styles.formBody}>
             <TouchableOpacity
-              style={[styles.profileAction, styles.photoButton]}
+              style={styles.profileAction}
               onPress={changePhoto}
             >
-              <Text style={[styles.profileActionText, styles.photoButtonText]}>
+              <Text style={styles.profileActionText}>
                 {avatar ? 'Change' : 'Add'} Photo
               </Text>
             </TouchableOpacity>
             <View style={[styles.profileBody, styles.editForm]}>
-              <Text style={styles.title}>Edit Profile</Text>
-              <View style={styles.hr} />
               <Fields
                 onChange={onChange}
                 displayName={displayName}

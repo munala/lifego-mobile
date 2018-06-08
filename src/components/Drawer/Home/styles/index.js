@@ -5,7 +5,7 @@ const { height } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#eee',
     justifyContent: 'flex-start',
   },
   iPhoneX: {
@@ -455,17 +455,12 @@ export default StyleSheet.create({
     display: 'flex',
   },
   notificationView: {
-    backgroundColor: '#f7f7f7',
-    borderRadius: 5,
     paddingVertical: 10,
-    marginHorizontal: 5,
-    marginVertical: 1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     height: 'auto',
-    elevation: 1,
   },
   none: {
     display: 'flex',
@@ -476,8 +471,8 @@ export default StyleSheet.create({
   },
   noneText: {
     display: 'flex',
-    fontSize: 20,
-    color: '#f7f7f7',
+    fontSize: 16,
+    color: 'grey',
   },
   options: {
     display: 'flex',
@@ -494,7 +489,7 @@ export default StyleSheet.create({
   },
   notificationActionText: {
     display: 'flex',
-    color: '#f7f7f7',
+    color: 'grey',
     fontSize: 14,
   },
   navButtons: {
@@ -528,14 +523,13 @@ export default StyleSheet.create({
     alignItems: 'stretch',
     borderTopWidth: 0,
     borderRadius: 5,
-    marginHorizontal: 10,
     zIndex: 2,
     marginTop: 0,
   },
   resultContainerStyle: {
     display: 'flex',
     marginVertical: 1,
-    borderBottomColor: '#f7f7f7',
+    borderBottomColor: 'transparent',
   },
   resultWrapperStyle: {
     width: '100%',
@@ -620,21 +614,16 @@ export default StyleSheet.create({
   compose: {
     borderRadius: 10,
     marginHorizontal: 5,
-    backgroundColor: 'rgba(235,235,235,0.5)',
+    backgroundColor: '#f7f7f7',
     marginVertical: 5,
   },
   searchInput: {
     display: 'flex',
-    color: '#fff',
+    color: 'grey',
     fontSize: 14,
-    minHeight: 30,
-    marginLeft: 10,
-    marginRight: 10,
-    marginVertical: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    marginHorizontal: 10,
     borderRadius: Platform.OS === 'ios' ? 15 : 0,
-    backgroundColor: Platform.OS === 'ios' ? 'rgba(235,235,235,0.5)' : 'transparent',
+    backgroundColor: 'transparent',
   },
   commentNavigator: {
     display: 'flex',
@@ -777,5 +766,24 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  personAction: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 70,
+    height: 25,
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#00bcd4',
+    backgroundColor: '#fff',
+  },
+  actionText: {
+    display: 'flex',
+    textAlign: 'center',
+    fontSize: 14,
+    color: '#00bcd4',
+    fontWeight: 'bold',
   },
 });

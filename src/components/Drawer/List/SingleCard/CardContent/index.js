@@ -1,7 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Button } from 'react-native-elements';
 import Image from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 import { View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
@@ -78,18 +77,40 @@ const CardContent = ({
             </Text>
           }
         </View>
-        <Button
-          onPress={() => toggleItems(bucketlist)}
-          textStyle={styles.commentButton}
-          buttonStyle={styles.buttonStyle}
-          text={`${bucketlist.items.length} item${bucketlist.items.length !== 1 ? 's' : ''}`}
-        />
-        <Button
-          onPress={() => toggleComments(bucketlist)}
-          textStyle={styles.commentButton}
-          buttonStyle={styles.buttonStyle}
-          text={`${bucketlist.comments.length} comment${bucketlist.comments.length !== 1 ? 's' : ''}`}
-        />
+        <View style={[styles.likesComments, { width: 100, justifyContent: 'center' }]}>
+          <TouchableOpacity
+            style={styles.iconStyle}
+            onPress={() => toggleItems(bucketlist)}
+            hitSlop={{
+              top: 10, left: 10, bottom: 10, right: 10,
+            }}
+          >
+            <Icon name="list" size={20} color="grey" />
+          </TouchableOpacity>
+          {
+            bucketlist.items && bucketlist.items.length > 0 &&
+            <Text style={styles.span}>
+              {bucketlist.items.length}
+            </Text>
+          }
+        </View>
+        <View style={[styles.likesComments, { width: 100, justifyContent: 'flex-end' }]}>
+          <TouchableOpacity
+            style={styles.iconStyle}
+            onPress={() => toggleComments(bucketlist)}
+            hitSlop={{
+              top: 10, left: 10, bottom: 10, right: 10,
+            }}
+          >
+            <Icon name="comment" size={20} color="grey" />
+          </TouchableOpacity>
+          {
+            bucketlist.comments && bucketlist.comments.length > 0 &&
+            <Text style={styles.span}>
+              {bucketlist.comments.length}
+            </Text>
+          }
+        </View>
       </View>
     </View>
   </TouchableWithoutFeedback>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 import { Icon, SearchBar } from 'react-native-elements';
 
 import Text from '../SuperText';
@@ -58,24 +58,24 @@ class Header extends Component {
       <View style={styles.headerStyle}>
         <Icon
           name={leftIcon}
-          color="#fff"
+          color="#00bcd4"
           containerStyle={styles.iconLeftStyle}
           onPress={onPressLeft}
-          underlayColor="#00bcd4"
+          underlayColor="#fff"
         />
         {
           (mode === 'bucketlists') ?
             <SearchBar
               textInputRef={(el) => { this.el = el; }}
               lightTheme
-              round={Platform.OS === 'ios'}
+              round
               containerStyle={styles.search}
               inputStyle={styles.searchInput}
-              placeholderTextColor="#eee"
+              placeholderTextColor="#ccc"
               placeholder="Search"
               onFocus={this.onFocus}
               onChangeText={this.search}
-              icon={{ color: '#eee', name: 'search' }}
+              icon={{ color: 'grey', name: 'search' }}
               {...searchProps}
               onClearText={this.clearSearch}
               value={this.state.searchText}

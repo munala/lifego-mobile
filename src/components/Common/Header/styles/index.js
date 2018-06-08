@@ -5,7 +5,7 @@ const { width, height } = Dimensions.get('window');
 export default StyleSheet.create({
   headerStyle: {
     width,
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -31,14 +31,14 @@ export default StyleSheet.create({
   },
   searchInput: {
     display: 'flex',
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    color: '#fff',
+    backgroundColor: '#f7f7f7',
+    color: 'grey',
     fontSize: 14,
   },
   titleText: {
     display: 'flex',
     flexBasis: '75%',
-    color: '#fff',
+    color: '#00bcd4',
     fontSize: 20,
     paddingHorizontal: 10,
     textAlign: Platform.OS === 'android' ? 'left' : 'center',

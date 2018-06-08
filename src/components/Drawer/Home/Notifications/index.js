@@ -94,7 +94,9 @@ class Notifications extends Component {
 
     return (
       <TouchableOpacity
-        style={styles.notificationView}
+        style={[styles.notificationView, {
+          backgroundColor: notification.read ? 'transparent' : '#f7f7f7',
+        }]}
         key={notification.id}
         onPress={() => this.goToBucketlist(notification)}
         activeOpacity={1}
@@ -106,13 +108,11 @@ class Notifications extends Component {
             type="material-icons"
             name={icons[notification.type]}
             color="#aaa"
-            size={20}
+            size={14}
           />
           <Text
             numberOfLines={2}
-            style={[styles.notificationText, {
-              color: notification.read ? 'grey' : '#009baf',
-            }]}
+            style={styles.notificationText}
           >{this.stripHtml(notification.text)}
           </Text>
         </View>
@@ -124,7 +124,7 @@ class Notifications extends Component {
     const { notifications, currentApiCalls } = this.props;
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: '#fff' }]}>
         {this.props.notifications.length > 0 &&
           <FlatList
             enableEmptySections
@@ -159,7 +159,7 @@ class Notifications extends Component {
               </TouchableOpacity>
             </View> :
             <View style={styles.none}>
-              <Text style={styles.noneText}>{'you\'re all caught up'}</Text>
+              <Text style={styles.noneText}>Notifications come here</Text>
             </View>
         }
       </View>

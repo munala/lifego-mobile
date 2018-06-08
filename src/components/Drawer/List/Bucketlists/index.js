@@ -60,13 +60,11 @@ class AllBucketlists extends BaseClass {
       <Icon
         name="bucket"
         type="entypo"
-        color="#fff"
+        color="grey"
         size={100}
       />
       <Text style={styles.emptyAreaText}>
-        {`No bucketlists to display. \n
-          Click on the '+' icon at the bottom right to add a bucketlist. \n
-          Or pull down to refresh.`}
+        {"No bucketlists to display.\n\nClick on the ' + ' icon at the bottom right to add a bucketlist.\n\nOr pull down to refresh."}
       </Text>
     </View>
   );
