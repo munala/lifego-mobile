@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View,
   ScrollView,
+  BackHandler,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
@@ -33,9 +34,18 @@ class Conversation extends BaseClass {
         .filter(chatMessage => chatMessage.receiverId === this.props.profile.id)
         .forEach(message => this.props.actions.markAsRead(message));
     }
+
     if (this.scrollView) {
       this.scrollView.scrollToEnd({ animated: true });
     }
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.actions.navigate({
+        navigator: 'MessageNavigator',
+        route: 'MessageList',
+      });
+      return true;
+    });
   }
 
   componentDidUpdate = ({

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Platform,
   AsyncStorage,
+  BackHandler,
 } from 'react-native';
 
 import Header from '../../../containers/Header';
@@ -23,6 +24,29 @@ class Settings extends BaseClass {
     const hideExpired = await AsyncStorage.getItem('expired');
     this.setState({ hideNotifications, hideExpired });
     this.props.actions.getProfile();
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      const {
+        emailMode,
+        passwordMode,
+        deleteMode,
+      } = this.state;
+
+      if (emailMode || passwordMode || deleteMode) {
+        this.toggleMode('emailMode', false);
+        this.toggleMode('passwordMode', false);
+        this.toggleMode('deleteMode', false);
+
+        return true;
+      }
+
+      this.props.actions.navigate({
+        route: 'Home',
+        navigator: 'DrawerNav',
+      });
+
+      return true;
+    });
   };
 
   componentDidUpdate = ({ error, profile }) => {

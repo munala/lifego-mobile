@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { View } from 'react-native';
+import {
+  View,
+  BackHandler,
+} from 'react-native';
 import { Icon, SearchBar } from 'react-native-elements';
 
 import Text from '../SuperText';
@@ -11,6 +14,13 @@ class Header extends Component {
   state = {
     searchText: '',
     focused: false,
+  }
+
+  componentDidMount = () => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.clearSearch();
+      return true;
+    });
   }
 
   onFocus = () => {
@@ -25,7 +35,10 @@ class Header extends Component {
   }
 
   clearSearch = () => {
-    this.setState({ focused: false, searchText: '' });
+    this.setState({
+      focused: false,
+      searchText: '',
+    });
     this.el.blur();
     this.props.clearSearch();
     this.props.actions.clearSearch();

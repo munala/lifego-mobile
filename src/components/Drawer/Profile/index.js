@@ -5,6 +5,7 @@ import {
   Animated,
   ActivityIndicator,
   Platform,
+  BackHandler,
 } from 'react-native';
 
 import BaseClass from './BaseClass2';
@@ -30,6 +31,25 @@ class Profile extends BaseClass {
     if (!this.props.profile.id) {
       this.props.actions.getProfile();
     }
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      if (this.state.editMode) {
+        this.cancel();
+        return true;
+      }
+
+      if (this.props.fromRoute) {
+        this.goBack();
+        return true;
+      }
+
+      this.props.actions.navigate({
+        route: 'Home',
+        navigator: 'DrawerNav',
+      });
+
+      return true;
+    });
   };
 
   componentDidUpdate = ({ error, profile }) => {

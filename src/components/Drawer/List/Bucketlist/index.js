@@ -1,5 +1,9 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import {
+  ScrollView,
+  View,
+  BackHandler,
+} from 'react-native';
 
 import BaseClass from '../CommonClass';
 import SingleCard from '../SingleCard';
@@ -16,10 +20,10 @@ class Bucketlist extends BaseClass {
   }
 
   componentDidMount = () => {
-    const { bucketlist } = this.props;
+    const { bucketlist, params } = this.props;
     if (!bucketlist) {
       this.props.actions.navigate({
-        navigator: 'AllBucketlistNavigator',
+        navigator: params.navigator,
         route: 'bucketlists',
       });
     }
@@ -39,6 +43,14 @@ class Bucketlist extends BaseClass {
       label: 'Delete',
       action: this.delete,
     }]);
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.actions.navigate({
+        navigator: params.navigator,
+        route: 'bucketlists',
+      });
+      return true;
+    });
   }
 
   componentDidUpdate = ({

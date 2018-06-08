@@ -5,6 +5,7 @@ import {
   Picker,
   View,
   Alert,
+  BackHandler,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -45,6 +46,10 @@ class BucketListForm extends Component {
 
   componentDidMount =() => {
     this.setState({ listViewDisplayed: false });
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.state.params.goBack();
+      return true;
+    });
   }
 
   onChange = (text, type) => {

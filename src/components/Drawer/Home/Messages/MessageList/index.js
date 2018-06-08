@@ -7,6 +7,7 @@ import {
   RefreshControl,
   TextInput,
   ScrollView,
+  BackHandler,
   TouchableWithoutFeedback,
 } from 'react-native';
 import { List, ListItem, Icon } from 'react-native-elements';
@@ -21,6 +22,16 @@ import styles from '../../styles';
 import propTypes from './propTypes';
 
 class Conversations extends BaseClass {
+  componentDidMount = () => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.actions.navigate({
+        navigator: 'HomeTabNav',
+        route: 'HomeBucketlists',
+      });
+      return true;
+    });
+  }
+
   renderItem = ({ item: conversation }) => { // eslint-disable-line react/prop-types
     const unread = this.getUnreadCount(conversation);
     const pictureUrl = this.setPictureUrl(conversation);

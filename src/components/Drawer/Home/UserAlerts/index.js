@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
+  BackHandler,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 
@@ -12,6 +13,16 @@ import Text from '../../../Common/SuperText';
 import styles from '../styles';
 
 class UserAlerts extends Component {
+  componentDidMount = () => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.actions.navigate({
+        navigator: 'HomeTabNav',
+        route: 'HomeBucketlists',
+      });
+      return true;
+    });
+  }
+
   onRefresh = () => {
     this.props.actions.getAlerts();
   }
