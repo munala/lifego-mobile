@@ -166,7 +166,7 @@ export default StyleSheet.create({
     padding: 5,
     paddingHorizontal: 10,
     borderRadius: 10,
-    maxWidth: '80%',
+    maxWidth: '100%',
     backgroundColor: '#eee',
   },
   item: {

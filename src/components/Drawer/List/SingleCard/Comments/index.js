@@ -82,7 +82,13 @@ class Comments extends BaseClass {
               require('../../../../../assets/images/user.png') // eslint-disable-line global-require
           }
         />
-        <View style={{ flexDirection: 'column' }}>
+        <View style={{
+          flexDirection: 'column',
+          display: 'flex',
+          alignItems: 'flex-start',
+          flex: 1,
+        }}
+        >
           <View style={styles.comment}>
             <TouchableOpacity onPress={() => this.props.goToProfile({ id: comment.senderId })}>
               <Text style={styles.commentUser} numberOfLines={1}>
