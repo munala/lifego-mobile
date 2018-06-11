@@ -13,6 +13,7 @@ export default StyleSheet.create({
     height: Platform.OS === 'ios' ? (height === 812 ? 98 : 64) : 48,
     paddingTop: Platform.OS === 'ios' ? (height === 812 ? 50 : 20) : 0,
     zIndex: 10,
+    elevation: 1,
   },
   iconLeftStyle: {
     display: 'flex',

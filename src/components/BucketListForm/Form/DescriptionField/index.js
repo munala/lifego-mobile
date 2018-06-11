@@ -25,7 +25,7 @@ const DescriptionField = ({
       underlineColorAndroid="#00bcd4"
       placeholderTextColor="#bbb"
       placeholder={`tell us more about your ${context.name}`}
-      maxLength={100}
+      maxLength={300}
     />
   </View>
 );

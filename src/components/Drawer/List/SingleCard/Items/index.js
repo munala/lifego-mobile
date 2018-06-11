@@ -79,7 +79,6 @@ class Items extends BaseClass {
         <View style={styles.stretch}>
           <View style={[styles.commentSection, {
             alignItems: 'stretch',
-            paddingHorizontal: 10,
           }]}
           >
             <View style={styles.buttonRow}>
@@ -95,31 +94,34 @@ class Items extends BaseClass {
                   <Text style={styles.commentNavigator}>Add item</Text>
                 </TouchableOpacity>
               }
-              <View style={styles.navigationButtons}>
-                {
-                  bucketlist.items.length > 0 && page > 0 &&
-                  <TouchableOpacity
-                    style={[styles.value, {
-                      justifyContent: 'flex-start',
-                    }]}
-                    onPress={() => this.navigatePage('previous')}
-                  >
-                    <Text style={styles.commentNavigator}>previous</Text>
-                  </TouchableOpacity>
-                }
-                {
-                  bucketlist.items.length > 0 &&
-                bucketlist.items.length > ((page + 1) * 5) &&
-                <TouchableOpacity
-                  style={[styles.value, {
-                    justifyContent: 'flex-start',
-                  }]}
-                  onPress={() => this.navigatePage('next')}
-                >
-                  <Text style={styles.commentNavigator}> next</Text>
-                </TouchableOpacity>
-                }
-              </View>
+              {
+                bucketlist.items &&
+                <View style={styles.navigationButtons}>
+                  {
+                    bucketlist.items.length > 0 && page > 0 &&
+                    <TouchableOpacity
+                      style={[styles.value, {
+                        justifyContent: 'flex-start',
+                      }]}
+                      onPress={() => this.navigatePage('previous')}
+                    >
+                      <Text style={styles.commentNavigator}>previous</Text>
+                    </TouchableOpacity>
+                  }
+                  {
+                    bucketlist.items.length > 0 &&
+                    bucketlist.items.length > ((page + 1) * 5) &&
+                    <TouchableOpacity
+                      style={[styles.value, {
+                        justifyContent: 'flex-start',
+                      }]}
+                      onPress={() => this.navigatePage('next')}
+                    >
+                      <Text style={styles.commentNavigator}> next</Text>
+                    </TouchableOpacity>
+                  }
+                </View>
+              }
             </View>
             {this.renderItems(bucketlist) }
           </View>

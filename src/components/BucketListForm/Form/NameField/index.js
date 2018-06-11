@@ -25,6 +25,7 @@ const NameField = ({
       underlineColorAndroid="#00bcd4"
       placeholderTextColor="#bbb"
       placeholder={`name of ${context.name}`}
+      maxLength={100}
     />
   </View>
 );
