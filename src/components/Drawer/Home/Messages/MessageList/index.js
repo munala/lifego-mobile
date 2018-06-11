@@ -32,6 +32,9 @@ class Conversations extends BaseClass {
     });
   }
 
+  sortConversations = conversations => [...conversations]
+    .sort((a, b) => new Date(b.messages[0].createdAt) - new Date(a.messages[0].createdAt))
+
   renderItem = ({ item: conversation }) => { // eslint-disable-line react/prop-types
     const unread = this.getUnreadCount(conversation);
     const pictureUrl = this.setPictureUrl(conversation);
@@ -135,7 +138,7 @@ class Conversations extends BaseClass {
             <FlatList
               enableEmptySections
               keyExtractor={({ id }) => id.toString()}
-              data={conversations}
+              data={this.sortConversations(conversations)}
               renderItem={this.renderItem}
               style={styles.listView}
               refreshControl={

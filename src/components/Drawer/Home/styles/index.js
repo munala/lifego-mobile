@@ -436,12 +436,11 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     paddingHorizontal: 10,
   },
   notificationText: {
     display: 'flex',
-    marginHorizontal: 10,
     fontSize: 14,
   },
   icon: {
@@ -457,9 +456,9 @@ export default StyleSheet.create({
   notificationView: {
     paddingVertical: 10,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'stretch',
+    alignItems: 'center',
     height: 'auto',
   },
   none: {
@@ -509,6 +508,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-start',
+    flex: 1,
   },
   wordWrap: {
     display: 'flex',
@@ -786,5 +786,23 @@ export default StyleSheet.create({
     fontSize: 14,
     color: '#00bcd4',
     fontWeight: 'bold',
+  },
+  notificationDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  topRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  userAvatar: {
+    minWidth: 60,
+    maxWidth: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 10,
   },
 });

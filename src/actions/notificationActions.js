@@ -62,7 +62,10 @@ export const markNotificationAsRead = notification => async (dispatch) => {
       screen: 'others',
     }));
   } else {
-    dispatch(markAsReadSuccess(response));
+    dispatch(markAsReadSuccess({
+      ...notification,
+      ...response,
+    }));
   }
 
   return response;

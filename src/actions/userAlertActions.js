@@ -60,7 +60,10 @@ export const markAlertAsRead = alert => async (dispatch) => {
       screen: 'userAlerts',
     }));
   } else {
-    dispatch(markAsReadSuccess(response));
+    dispatch(markAsReadSuccess({
+      ...alert,
+      ...response,
+    }));
   }
 
   return response;

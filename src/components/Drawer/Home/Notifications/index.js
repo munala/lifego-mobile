@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View,
@@ -5,10 +6,11 @@ import { View,
   FlatList,
   RefreshControl,
   BackHandler,
+  Image,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
 
 import Text from '../../../Common/SuperText';
+import { setTime } from '../../../../utils';
 import styles from '../styles';
 
 class Notifications extends Component {
@@ -98,10 +100,8 @@ class Notifications extends Component {
   stripHtml = text => text.replace('<b>', '').replace('</b>', '').replace('<br/>', ' ')
 
   renderItem = ({ item: notification }) => {
-    const icons = {
-      comment: 'comment',
-      like: 'grade',
-    };
+    const { createdAt, time } = setTime(notification);
+    const dateTime = `${createdAt}${time}`;
 
     return (
       <TouchableOpacity
@@ -113,19 +113,39 @@ class Notifications extends Component {
         activeOpacity={1}
       >
         <View style={styles.notification}>
-          <Icon
-            containerStyle={styles.notificationIcon}
-            iconStyle={styles.icon}
-            type="material-icons"
-            name={icons[notification.type]}
-            color="#aaa"
-            size={14}
+          <Image
+            style={[styles.avatar, { marginRight: 10 }]}
+            source={
+              notification.userPictureUrl ?
+                { uri: (notification.userPictureUrl.replace(
+                  (notification.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                  'https://',
+                )) } :
+                require('../../../../assets/images/user.png')
+            }
           />
-          <Text
-            numberOfLines={2}
-            style={styles.notificationText}
-          >{this.stripHtml(notification.text)}
-          </Text>
+          <View style={styles.notificationDetails}>
+            <View style={styles.topRow}>
+              <Text
+                numberOfLines={1}
+                style={[styles.notificationText, {
+                  fontWeight: 'bold',
+                }]}
+              >{notification.user}
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={styles.notificationText}
+              >
+                {notification.type === 'comment' ? ` commented: "${notification.text}".` : ' likes your bucketlist.'}
+              </Text>
+            </View>
+            <Text style={[styles.timeSent, {
+              alignSelf: 'flex-start',
+              color: notification.read ? 'grey' : '#00bcd4',
+            }]}
+            >{dateTime}</Text>
+          </View>
         </View>
       </TouchableOpacity>
     );

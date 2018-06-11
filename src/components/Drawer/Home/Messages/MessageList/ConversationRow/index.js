@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import Text from '../../../../../Common/SuperText';
+import { setTime } from '../../../../../../utils';
 import styles from '../../../styles';
 
 const ConversationRow = ({
@@ -17,47 +18,72 @@ const ConversationRow = ({
   goToConversation,
   openMenu,
   getName,
-}) => (
-  <TouchableOpacity
-    style={styles.notificationView}
-    key={conversation.id}
-    onPress={() => goToConversation(conversation)}
-    onLongPress={() => openMenu(conversation)}
-    delayLongPress={500}
-    activeOpacity={1}
-  >
-    <View style={styles.notification}>
-      <Image
-        style={styles.avatar}
-        source={
-          pictureUrl ?
-            { uri: (pictureUrl.replace(
-              (pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
-              'https://',
-            )) } :
-            require('../../../../../../assets/images/user.png')
-        }
-      />
-      <View style={styles.preview}>
-        <Text
-          style={[styles.notificationText, {
-            color: 'grey',
-            fontWeight: 'bold',
-          }]}
-          numberOfLines={1}
-        >
-          { getName(conversation) }
-        </Text>
-        {
-          conversation.messages.length > 0 &&
-          <Text numberOfLines={1} style={[styles.wordWrap, unread > 0 && { fontWeight: 'bold' }]}>
-            {conversation.messages[0].content}
-          </Text>
-        }
+}) => {
+  let createdAt = '';
+  let time = '';
+  if (conversation.messages.length > 0) {
+    const timeData = setTime(conversation.messages[0]);
+    createdAt = timeData.createdAt;
+    time = timeData.time;
+  }
+  const dateTime = `${createdAt}${time}`;
+
+  return (
+    <TouchableOpacity
+      style={[styles.notificationView, { backgroundColor: unread === 0 ? 'transparent' : '#f7f7f7' }]}
+      key={conversation.id}
+      onPress={() => goToConversation(conversation)}
+      onLongPress={() => openMenu(conversation)}
+      delayLongPress={500}
+      activeOpacity={1}
+    >
+      <View style={styles.notification}>
+        <Image
+          style={styles.avatar}
+          source={
+            pictureUrl ?
+              { uri: (pictureUrl.replace(
+                (pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                'https://',
+              )) } :
+              require('../../../../../../assets/images/user.png')
+          }
+        />
+        <View style={styles.preview}>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            alignSelf: 'stretch',
+          }}
+          >
+            <Text
+              style={[styles.notificationText, {
+                marginLeft: 10,
+                color: 'grey',
+                fontWeight: 'bold',
+              }]}
+              numberOfLines={1}
+            >
+              { getName(conversation) }
+            </Text>
+            <Text style={[styles.timeSent, {
+              alignSelf: 'flex-start',
+              color: unread === 0 ? 'grey' : '#00bcd4',
+            }]}
+            >{dateTime}</Text>
+          </View>
+          {
+            conversation.messages.length > 0 &&
+            <Text numberOfLines={1} style={styles.wordWrap}>
+              {conversation.messages[0].content}
+            </Text>
+          }
+        </View>
       </View>
-    </View>
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
+};
 
 ConversationRow.propTypes = {
   conversation: PropTypes.shape({

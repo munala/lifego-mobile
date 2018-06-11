@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -6,8 +7,8 @@ import {
   FlatList,
   RefreshControl,
   BackHandler,
+  Image,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
 
 import Text from '../../../Common/SuperText';
 import styles from '../styles';
@@ -55,6 +56,11 @@ class UserAlerts extends Component {
 
   addFriend = (alert) => {
     this.props.actions.addFriend({ id: alert.userId });
+    this.markAsRead(alert);
+  }
+
+  removeFriend = (alert) => {
+    this.props.actions.removeFriend({ id: alert.userId });
     this.markAsRead(alert);
   }
 
@@ -107,48 +113,62 @@ class UserAlerts extends Component {
 
   stripHtml = text => text.replace(/<b>/g, '');
 
-  renderItem = ({ item: alert }) => (
-    <TouchableOpacity
-      style={[styles.notificationView, {
-        backgroundColor: alert.read ? 'transparent' : '#f7f7f7',
-      }]}
-      key={alert.id}
-      onPress={() => this.goToProfile(alert)}
-      activeOpacity={1}
-    >
-      <View style={[styles.notification, { justifyContent: 'space-between', alignItems: 'center' }]}>
-        <View style={{ flexDirection: 'row' }}>
-          <Icon
-            containerStyle={styles.notificationIcon}
-            iconStyle={styles.icon}
-            type="material-icons"
-            name="person"
-            color="grey"
-            size={14}
+  renderItem = ({ item: alert }) => {
+    const isFriend = this.checkFriend(alert);
+    const action = isFriend ? this.removeFriend : this.addFriend;
+
+    return (
+      <TouchableOpacity
+        style={[styles.notificationView, {
+          backgroundColor: alert.read ? 'transparent' : '#f7f7f7',
+        }]}
+        key={alert.id}
+        onPress={() => this.goToProfile(alert)}
+        activeOpacity={1}
+      >
+        <View style={styles.notification}>
+          <Image
+            style={[styles.avatar, styles.userAvatar]}
+            source={
+              alert.userPictureUrl ?
+                { uri: (alert.userPictureUrl.replace(
+                  (alert.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                  'https://',
+                )) } :
+                require('../../../../assets/images/user.png')
+            }
           />
-          <Text
-            numberOfLines={2}
-            style={styles.notificationText}
-          >
-            {this.stripHtml(alert.text)}
-          </Text>
-        </View>
-        {
-          !this.checkFriend(alert) &&
-          <TouchableOpacity
-            style={styles.personAction}
-            onPress={() => this.addFriend(alert)}
-          >
-            <Text
-              style={styles.actionText}
+          <View style={styles.notificationDetails}>
+            <View style={styles.topRow}>
+              <Text
+                numberOfLines={1}
+                style={[styles.notificationText, {
+                  fontWeight: 'bold',
+                }]}
+              >{alert.user}
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={styles.notificationText}
+              >
+                {' added you.'}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={[styles.personAction, isFriend && { backgroundColor: '#00bcd4' }]}
+              onPress={() => action(alert)}
             >
-              Add
-            </Text>
-          </TouchableOpacity>
-        }
-      </View>
-    </TouchableOpacity>
-  )
+              <Text
+                style={[styles.actionText, isFriend && { color: '#fff' }]}
+              >
+                {isFriend ? 'Remove' : 'Add'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
 
   render() {
     const { alerts, currentApiCalls } = this.props;
@@ -217,6 +237,7 @@ UserAlerts.propTypes = {
   })).isRequired,
   actions: PropTypes.shape({
     addFriend: PropTypes.func.isRequired,
+    removeFriend: PropTypes.func.isRequired,
     markAlertAsRead: PropTypes.func.isRequired,
     deleteAlert: PropTypes.func.isRequired,
     getAlerts: PropTypes.func.isRequired,
