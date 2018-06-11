@@ -166,8 +166,8 @@ export default StyleSheet.create({
     padding: 5,
     paddingHorizontal: 10,
     borderRadius: 10,
+    maxWidth: '80%',
     backgroundColor: '#eee',
-    maxWidth: '100%',
   },
   item: {
     display: 'flex',
@@ -777,5 +777,23 @@ export default StyleSheet.create({
     fontSize: 20,
     color: 'grey',
     marginTop: 20,
+  },
+  commentAvatar: {
+    display: 'flex',
+    minWidth: 30,
+    maxWidth: 30,
+    height: 30,
+    borderRadius: 15,
+    marginHorizontal: 10,
+    marginVertical: 5,
+    borderWidth: 1,
+    borderColor: '#eee',
+  },
+  hr: {
+    display: 'flex',
+    height: 1,
+    backgroundColor: '#eee',
+    marginTop: 10,
+    marginHorizontal: 10,
   },
 });

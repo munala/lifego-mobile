@@ -1,6 +1,12 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { View, TouchableOpacity, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  TouchableWithoutFeedback,
+} from 'react-native';
 
 import BaseClass from './BaseClass';
 import Text from '../../../../Common/SuperText';
@@ -58,22 +64,41 @@ class Comments extends BaseClass {
         )}
         delayLongPress={500}
         activeOpacity={1}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+        }}
       >
-        <View style={styles.comment}>
-          <TouchableOpacity onPress={() => this.props.goToProfile({ id: comment.senderId })}>
-            <Text style={styles.commentUser} numberOfLines={1}>
-              {comment.user}
+        <Image
+          style={styles.commentAvatar}
+          source={
+            comment.userPictureUrl ?
+              { uri: (comment.userPictureUrl.replace(
+                (comment.userPictureUrl.includes('https://') ? 'https://' : 'http://'),
+                'https://',
+              )) } :
+              require('../../../../../assets/images/user.png') // eslint-disable-line global-require
+          }
+        />
+        <View style={{ flexDirection: 'column' }}>
+          <View style={styles.comment}>
+            <TouchableOpacity onPress={() => this.props.goToProfile({ id: comment.senderId })}>
+              <Text style={styles.commentUser} numberOfLines={1}>
+                {comment.user}
+              </Text>
+            </TouchableOpacity>
+            <Text selectable style={styles.commentContent}>
+              {comment.content}
             </Text>
-          </TouchableOpacity>
-          <Text selectable style={styles.commentContent}>
-            {comment.content}
-          </Text>
-        </View>
-        {this.props.mode &&
+          </View>
+          {this.props.mode &&
           <Text numberOfLines={1} style={[styles.timeSent, styles.commentTime]}>
             {`${setTime(comment).createdAt}${setTime(comment).time}`}
           </Text>
-        }
+          }
+        </View>
       </TouchableOpacity>
     ))
 

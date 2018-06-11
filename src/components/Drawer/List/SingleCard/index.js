@@ -41,6 +41,9 @@ class SingleCard extends BaseClass {
       scrollView: this.props.scrollView,
     };
 
+    const showDivider = (showMode === 'comments' && bucketlist.comments.length > 0) ||
+    (showMode === 'items' && bucketlist.items.length > 0);
+
     const cardContentProps = {
       bucketlist,
       imageDimensions,
@@ -72,6 +75,10 @@ class SingleCard extends BaseClass {
           >
             <CardHeader {...cardHeaderProps} />
             <CardContent {...cardContentProps} />
+            {
+              showDivider &&
+              <View style={styles.hr} />
+            }
             {
               showMode === 'comments' &&
               <Comments
