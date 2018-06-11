@@ -72,6 +72,8 @@ class Profile extends BaseClass {
       fromRoute: from,
     } = this.props;
 
+    const { profile: { id: profileId } } = this.state;
+
     const showUserProfile = !!from && otherProfile.id !== profile.id;
     const avatar = showUserProfile ? otherProfile.pictureUrl : this.state.profile.pictureUrl;
 
@@ -129,7 +131,7 @@ class Profile extends BaseClass {
       avatar,
       showUserProfile,
       profile: showUserProfile ? otherProfile : profile,
-      profileId: profile.id,
+      profileId,
       sendMessage: this.sendMessage,
       toggleType: this.toggleType,
       goToProfile: this.goToProfile,
