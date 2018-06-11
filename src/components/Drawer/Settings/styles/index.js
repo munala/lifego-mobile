@@ -96,7 +96,7 @@ export default StyleSheet.create({
     display: 'flex',
     textAlign: 'left',
     fontSize: 16,
-    color: '#00bcd4',
+    color: 'grey',
     fontWeight: 'bold',
   },
   inputText: {
