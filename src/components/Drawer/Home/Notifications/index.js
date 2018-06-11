@@ -180,13 +180,13 @@ class Notifications extends Component {
                 style={styles.read}
                 onPress={this.markAllAsRead}
               >
-                <Text style={styles.notificationActionText}>mark all as read</Text>
+                <Text style={styles.notificationActionText}>Mark all as read</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.read}
                 onPress={this.clear}
               >
-                <Text style={styles.notificationActionText}>clear</Text>
+                <Text style={styles.notificationActionText}>Clear</Text>
               </TouchableOpacity>
             </View> :
             <View style={styles.none}>

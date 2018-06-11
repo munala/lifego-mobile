@@ -91,6 +91,10 @@ class UserAlerts extends Component {
     this.props.actions.deleteAlert(alert);
   }
 
+  clearAlert = (alert) => {
+    this.props.actions.deleteAlert(alert);
+  }
+
   checkStatus = (alert) => {
     let read = true;
     alert.messages.forEach((message) => {
@@ -113,10 +117,19 @@ class UserAlerts extends Component {
 
   stripHtml = text => text.replace(/<b>/g, '');
 
+  action = async (alert) => {
+    const isFriend = this.checkFriend(alert);
+    if (isFriend) {
+      await this.removeFriend(alert);
+    } else {
+      await this.addFriend(alert);
+    }
+
+    this.clearAlert(alert);
+  };
+
   renderItem = ({ item: alert }) => {
     const isFriend = this.checkFriend(alert);
-    const action = isFriend ? this.removeFriend : this.addFriend;
-
     return (
       <TouchableOpacity
         style={[styles.notificationView, {
@@ -154,16 +167,32 @@ class UserAlerts extends Component {
                 {' added you.'}
               </Text>
             </View>
-            <TouchableOpacity
-              style={[styles.personAction, isFriend && { backgroundColor: '#00bcd4' }]}
-              onPress={() => action(alert)}
-            >
-              <Text
-                style={[styles.actionText, isFriend && { color: '#fff' }]}
+            <View style={styles.topRow}>
+              <TouchableOpacity
+                style={[styles.personAction, isFriend && { backgroundColor: '#00bcd4' }]}
+                onPress={() => this.action(alert)}
               >
-                {isFriend ? 'Remove' : 'Add'}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[styles.actionText, isFriend && { color: '#fff' }]}
+                >
+                  {isFriend ? 'Remove' : 'Add'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.personAction, {
+                  marginLeft: 10,
+                  backgroundColor: 'grey',
+                  borderWidth: 0,
+                }]}
+                onPress={() => this.clearAlert(alert)}
+              >
+                <Text
+                  style={[styles.actionText, { color: '#fff' }]}
+                >
+                  Ignore
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -199,13 +228,13 @@ class UserAlerts extends Component {
                 style={styles.read}
                 onPress={this.markAllAsRead}
               >
-                <Text style={styles.notificationActionText}>mark all as read</Text>
+                <Text style={styles.notificationActionText}>Mark all as read</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.read}
                 onPress={this.clear}
               >
-                <Text style={styles.notificationActionText}>clear</Text>
+                <Text style={styles.notificationActionText}>Ignore all</Text>
               </TouchableOpacity>
             </View> :
             <View style={styles.none}>

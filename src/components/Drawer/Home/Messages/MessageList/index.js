@@ -158,7 +158,7 @@ class Conversations extends BaseClass {
                   style={styles.read}
                   onPress={this.markAllAsRead}
                 >
-                  <Text style={styles.notificationActionText}>mark all as read</Text>
+                  <Text style={styles.notificationActionText}>Mark all as read</Text>
                 </TouchableOpacity>
               </View> :
               <View style={styles.none}>
