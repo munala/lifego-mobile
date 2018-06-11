@@ -129,6 +129,7 @@ class Profile extends BaseClass {
       avatar,
       showUserProfile,
       profile: showUserProfile ? otherProfile : profile,
+      profileId: profile.id,
       sendMessage: this.sendMessage,
       toggleType: this.toggleType,
       goToProfile: this.goToProfile,

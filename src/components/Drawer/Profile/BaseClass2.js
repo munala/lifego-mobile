@@ -39,7 +39,7 @@ class BaseClass2 extends BaseClass {
   isFriend = (person) => {
     const { friends } = this.props.profile;
 
-    return friends.some(friend => friend.id === person.id);
+    return friends.some(friend => friend.id === person.id && person.id);
   }
 
   sendMessage = async (receiver) => {

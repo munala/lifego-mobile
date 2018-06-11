@@ -24,6 +24,7 @@ const ProfileBody = ({
   listHeight,
   scrollY,
   avatar,
+  profileId,
   showUserProfile,
   removeFriend,
   addFriend,
@@ -48,6 +49,7 @@ const ProfileBody = ({
         showUserProfile={showUserProfile}
         removeFriend={removeFriend}
         addFriend={addFriend}
+        profileId={profileId}
         sendMessage={sendMessage}
         openEditProfileMode={openEditProfileMode}
         activeType={activeType}
@@ -66,6 +68,7 @@ const ProfileBody = ({
       scrollY={scrollY}
       goToProfile={goToProfile}
       isFriend={isFriend}
+      profileId={profileId}
     />
   </View>
 );
@@ -99,6 +102,7 @@ ProfileBody.propTypes = {
   sendMessage: PropTypes.func.isRequired,
   toggleType: PropTypes.func.isRequired,
   goToProfile: PropTypes.func.isRequired,
+  profileId: PropTypes.number.isRequired,
 };
 
 ProfileBody.defaultProps = {

@@ -23,11 +23,11 @@ class FriendsAndFollowers extends Component {
 
   renderPeople = (userProfile) => {
     const {
-      profile,
       addFriend,
       removeFriend,
       activeType,
       isFriend,
+      profileId,
     } = this.props;
 
     return userProfile ?
@@ -48,7 +48,7 @@ class FriendsAndFollowers extends Component {
             {person.displayName || 'no name'}
           </Text>
           {
-            profile.id !== person.id &&
+            profileId !== person.id &&
             <TouchableOpacity
               style={[styles.personAction, isFriend(person) && styles.removeAction]}
               onPress={() => (isFriend(person) ? removeFriend(person) : addFriend(person))}
@@ -123,6 +123,7 @@ FriendsAndFollowers.propTypes = {
   listHeight: PropTypes.number.isRequired,
   scrollY: PropTypes.shape({}).isRequired,
   goToProfile: PropTypes.func.isRequired,
+  profileId: PropTypes.number.isRequired,
 };
 
 export default FriendsAndFollowers;
