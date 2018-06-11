@@ -35,7 +35,7 @@ const CardHeader = ({
             {
               uri: (
                 bucketlist.userPictureUrl.replace(
-                  (bucketlist.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                  (bucketlist.userPictureUrl.includes('https://') ? 'https://' : 'http://'),
                   'https://',
                 )
               ),

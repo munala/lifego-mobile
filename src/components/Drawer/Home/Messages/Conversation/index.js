@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   View,
+  Image,
   ScrollView,
   BackHandler,
   TouchableOpacity,
@@ -61,6 +62,13 @@ class Conversation extends BaseClass {
     }
   }
 
+  setPictureUrl = (conversation) => {
+    if (this.props.profile.id !== conversation.receiverId) {
+      return conversation.receiverPictureUrl;
+    }
+    return conversation.senderPictureUrl;
+  }
+
   selectMessage = (selectedMessage) => {
     this.openMenu();
     this.setState({ selectedMessage });
@@ -68,8 +76,16 @@ class Conversation extends BaseClass {
 
   renderMessages = messages => messages.map((chatMessage) => {
     const { createdAt, time } = setTime(chatMessage);
-    const { profile } = this.props;
-    const dateTime = `- ${createdAt}${time} -`;
+    const {
+      profile,
+      conversation,
+      params: { newConversation },
+    } = this.props;
+
+    const thisConversation = conversation || newConversation;
+    const pictureUrl = this.setPictureUrl(thisConversation);
+
+    const dateTime = `${createdAt}${time} ${chatMessage.senderId === profile.id ? ` ✔${chatMessage.read ? '✔' : ''}` : ''}    `;
 
     return (
       <TouchableOpacity
@@ -82,13 +98,37 @@ class Conversation extends BaseClass {
         delayLongPress={500}
         activeOpacity={1}
       >
-        <Text
-          style={[this.setStyle(chatMessage, profile), styles.message]}
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+        }}
         >
-          {chatMessage.content}
-        </Text>
+          {
+            chatMessage.senderId !== profile.id &&
+            <Image
+              style={styles.avatar}
+              source={
+                thisConversation.senderPictureUrl ?
+                  { uri: (pictureUrl.replace(
+                    (pictureUrl.includes('https://') ? 'https://' : 'http://'),
+                    'https://',
+                  )) } :
+                  require('../../../../../assets/images/user.png') // eslint-disable-line global-require
+              }
+            />
+          }
+          <Text
+            style={[this.setStyle(chatMessage, profile), styles.message]}
+          >
+            {chatMessage.content}
+          </Text>
+        </View>
         <Text
-          style={styles.timeSent}
+          style={[styles.timeSent, {
+            alignSelf: chatMessage.senderId === profile.id ? 'flex-end' : 'flex-start',
+            marginBottom: 10,
+          }, chatMessage.senderId !== profile.id && { marginLeft: 60 }]}
         >
           {dateTime}
         </Text>

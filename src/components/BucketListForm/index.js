@@ -36,7 +36,7 @@ class BucketListForm extends Component {
       uri: this.props.navigation.state && this.props.navigation.state.params &&
       this.props.navigation.state.params.content.pictureUrl ?
         this.props.navigation.state.params.content.pictureUrl.replace(
-          (this.props.navigation.state.params.content.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+          (this.props.navigation.state.params.content.pictureUrl.includes('https://') ? 'https://' : 'http://'),
           'https://',
         )
         : null,

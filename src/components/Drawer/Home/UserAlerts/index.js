@@ -145,7 +145,7 @@ class UserAlerts extends Component {
             source={
               alert.userPictureUrl ?
                 { uri: (alert.userPictureUrl.replace(
-                  (alert.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                  (alert.userPictureUrl.includes('https://') ? 'https://' : 'http://'),
                   'https://',
                 )) } :
                 require('../../../../assets/images/user.png')

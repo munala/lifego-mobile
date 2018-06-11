@@ -51,7 +51,7 @@ const CardContent = ({
           source={{
             uri: (
               bucketlist.pictureUrl.replace(
-                (bucketlist.pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                (bucketlist.pictureUrl.includes('https://') ? 'https://' : 'http://'),
                 'https://',
               )
             ),

@@ -572,6 +572,13 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10,
+    elevation: 1,
+  },
+  conversationHeaderLeft: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   name: {
     display: 'flex',
@@ -580,11 +587,10 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   message: {
-    margin: 5,
-    width: '90%',
-    borderRadius: 10,
-    padding: 2,
-    paddingLeft: 5,
+    marginVertical: 5,
+    borderRadius: 12,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     fontSize: 14,
     zIndex: 3,
     overflow: 'hidden',
@@ -592,7 +598,7 @@ export default StyleSheet.create({
   inputStyles: {
     display: 'flex',
     fontSize: 14,
-    width: '90%',
+    flex: 1,
     color: 'grey',
   },
   newMessage: {
@@ -635,7 +641,7 @@ export default StyleSheet.create({
   },
   timeSent: {
     display: 'flex',
-    color: '#ddd',
+    color: '#bbb',
     fontSize: 12,
     alignSelf: 'center',
   },
@@ -804,5 +810,15 @@ export default StyleSheet.create({
     height: 60,
     borderRadius: 30,
     marginRight: 10,
+  },
+  messageAvatar: {
+    minWidth: 40,
+    maxWidth: 40,
+    height: 40,
+    borderRadius: 20,
+    marginHorizontal: 10,
+  },
+  deleteButton: {
+    display: 'flex',
   },
 });

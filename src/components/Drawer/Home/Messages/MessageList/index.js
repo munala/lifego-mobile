@@ -57,7 +57,7 @@ class Conversations extends BaseClass {
         <List containerStyle={styles.results}>
           {this.props.profile.friends
             .filter(friend => friend.displayName && friend.displayName.toLowerCase()
-              .indexOf(this.state.searchText.toLowerCase()) !== -1)
+              .includes(this.state.searchText.toLowerCase()))
             .map(person => (
               <ListItem
                 key={person.id}

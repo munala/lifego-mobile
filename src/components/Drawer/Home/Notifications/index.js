@@ -118,7 +118,7 @@ class Notifications extends Component {
             source={
               notification.userPictureUrl ?
                 { uri: (notification.userPictureUrl.replace(
-                  (notification.userPictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                  (notification.userPictureUrl.includes('https://') ? 'https://' : 'http://'),
                   'https://',
                 )) } :
                 require('../../../../assets/images/user.png')

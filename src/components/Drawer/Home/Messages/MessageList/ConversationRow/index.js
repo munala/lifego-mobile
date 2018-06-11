@@ -43,7 +43,7 @@ const ConversationRow = ({
           source={
             pictureUrl ?
               { uri: (pictureUrl.replace(
-                (pictureUrl.indexOf('https://') !== -1 ? 'https://' : 'http://'),
+                (pictureUrl.includes('https://') ? 'https://' : 'http://'),
                 'https://',
               )) } :
               require('../../../../../../assets/images/user.png')

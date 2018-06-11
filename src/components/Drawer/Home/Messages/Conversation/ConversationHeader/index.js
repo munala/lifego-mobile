@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -28,7 +29,7 @@ const ConversationHeader = ({
       size={30}
     />
     <TouchableOpacity onPress={() => goToProfile({ id: userId })}>
-      <Text style={styles.name} numberOfLines={1}>{name}</Text>
+      <Text style={[styles.name, { marginLeft: 10 }]} numberOfLines={1}>{name}</Text>
     </TouchableOpacity>
     <Icon
       style={styles.deleteButton}
@@ -53,6 +54,7 @@ ConversationHeader.propTypes = {
 ConversationHeader.defaultProps = {
   conversation: null,
   id: null,
+  userPictureUrl: null,
 };
 
 export default ConversationHeader;

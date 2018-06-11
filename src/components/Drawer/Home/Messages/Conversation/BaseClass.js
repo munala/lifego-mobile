@@ -50,7 +50,8 @@ class BaseClass extends Component {
   }
 
   setStyle= ({ senderId }, { id }) => ({
-    marginLeft: (senderId === id) ? '10%' : 0,
+    marginLeft: (senderId === id) ? '10%' : 10,
+    width: (senderId !== id) ? '85%' : '90%',
     color: (senderId === id) ? '#fff' : 'grey',
     backgroundColor: (senderId === id) ? '#00bcd4' : '#f7f7f7',
   })
