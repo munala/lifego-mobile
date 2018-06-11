@@ -41,7 +41,8 @@ const ConversationRow = ({
       <View style={styles.preview}>
         <Text
           style={[styles.notificationText, {
-            color: conversation.read ? 'grey' : '#009baf',
+            color: 'grey',
+            fontWeight: 'bold',
           }]}
           numberOfLines={1}
         >

@@ -577,6 +577,7 @@ export default StyleSheet.create({
     display: 'flex',
     color: 'grey',
     fontSize: 14,
+    fontWeight: 'bold',
   },
   message: {
     margin: 5,

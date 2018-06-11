@@ -84,7 +84,7 @@ class SearchResults extends Component {
       title={person.displayName}
       containerStyle={styles.resultContainerStyle}
       wrapperStyle={styles.resultWrapperStyle}
-      titleStyle={styles.personTitle}
+      titleStyle={styles.title}
       rightIcon={this.renderOptions(person)}
       onPress={() => this.goToProfile(person)}
     />

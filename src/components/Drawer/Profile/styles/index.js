@@ -95,9 +95,9 @@ export default StyleSheet.create({
     width: '100%',
     color: 'grey',
     fontSize: 20,
+    fontWeight: 'bold',
   },
   statCountActive: {
-    fontWeight: 'bold',
     color: '#00bcd4',
   },
   statLabel: {
@@ -106,9 +106,9 @@ export default StyleSheet.create({
     width: '100%',
     color: 'grey',
     fontSize: 14,
+    fontWeight: 'bold',
   },
   statLabelActive: {
-    fontWeight: 'bold',
     color: '#00bcd4',
   },
   profileBody: {

@@ -18,16 +18,14 @@ export default StyleSheet.create({
     width: '100%',
   },
   title: {
-    color: '#00bcd4',
-    fontSize: 14,
-  },
-  personTitle: {
     color: 'grey',
     fontSize: 14,
+    fontWeight: 'bold',
   },
   subtitle: {
     color: 'grey',
     fontSize: 14,
+    fontWeight: 'normal',
   },
   options: {
     display: 'flex',
@@ -42,7 +40,7 @@ export default StyleSheet.create({
   option: {
     display: 'flex',
     padding: 5,
-    borderRadius: 5,
+    borderRadius: 10,
     marginRight: 10,
   },
   optionText: {
@@ -58,7 +56,7 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     width: 70,
     height: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#00bcd4',
     marginRight: 10,
