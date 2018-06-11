@@ -49,7 +49,9 @@ class Notifications extends Component {
 
   markAllAsRead = () => {
     this.props.notifications.forEach((notification) => {
-      this.markAsRead(notification);
+      if (!notification.read) {
+        this.markAsRead(notification);
+      }
     });
   }
 
@@ -60,7 +62,9 @@ class Notifications extends Component {
   }
 
   markAsRead = (notification) => {
-    this.props.actions.markNotificationAsRead(notification);
+    if (!notification.read) {
+      this.props.actions.markNotificationAsRead(notification);
+    }
   }
 
   deleteNotification = (notification) => {

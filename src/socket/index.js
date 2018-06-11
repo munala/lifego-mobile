@@ -141,8 +141,8 @@ export default (store) => {
       });
     }
 
-    if (data.type === 'update') {
-      store.dispatch(messageActions.deleteMessageSuccess({ message: data.message }));
+    if (data.type === 'update' || data.type === 'markAsRead') {
+      store.dispatch(messageActions.editMessageSuccess(data.message));
     }
 
     if (data.type === 'delete') {

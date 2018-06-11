@@ -19,6 +19,19 @@ import styles from '../../styles';
 import propTypes from './propTypes';
 
 class Conversation extends BaseClass {
+  static getDerivedStateFromProps = ({ conversation, actions, profile }, state) => {
+    if (
+      conversation &&
+      conversation.messages.length > 0
+    ) {
+      const message = conversation.messages[0];
+      if (!message.read && profile.id !== message.senderId) {
+        actions.markAsRead(message);
+      }
+    }
+    return state;
+  }
+
   state = {
     message: {
       content: '',
@@ -30,12 +43,6 @@ class Conversation extends BaseClass {
   }
 
   componentDidMount = () => {
-    if (this.props.conversation) {
-      this.props.conversation.messages
-        .filter(chatMessage => chatMessage.receiverId === this.props.profile.id)
-        .forEach(message => this.props.actions.markAsRead(message));
-    }
-
     if (this.scrollView) {
       this.scrollView.scrollToEnd({ animated: true });
     }

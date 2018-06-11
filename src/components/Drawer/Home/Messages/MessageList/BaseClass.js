@@ -44,12 +44,15 @@ class BaseClass extends Component {
 
   markAsRead = (conversation) => {
     conversation.messages.forEach((message) => {
-      this.props.actions.markAsRead(message);
+      if (!message.read) {
+        this.props.actions.markAsRead(message);
+      }
     });
     this.closeMenu();
   }
 
   goToConversation = async (conversation) => {
+    this.markAsRead(conversation);
     this.props.actions.navigate({
       route: 'Conversation',
       navigator: 'MessageNavigator',

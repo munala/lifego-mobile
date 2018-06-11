@@ -50,7 +50,9 @@ class UserAlerts extends Component {
 
   markAllAsRead = () => {
     this.props.alerts.forEach((alert) => {
-      this.markAsRead(alert);
+      if (!alert.read) {
+        this.markAsRead(alert);
+      }
     });
   }
 
@@ -83,7 +85,9 @@ class UserAlerts extends Component {
   }
 
   markAsRead = async (alert) => {
-    this.props.actions.markAlertAsRead(alert);
+    if (!alert.read) {
+      this.props.actions.markAlertAsRead(alert);
+    }
     this.props.actions.getOtherProfile(alert.userId);
   }
 
