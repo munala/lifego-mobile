@@ -161,6 +161,7 @@ class UserAlerts extends Component {
                 numberOfLines={1}
                 style={[styles.notificationText, {
                   fontWeight: 'bold',
+                  color: '#555',
                 }]}
               >{alert.user}
               </Text>

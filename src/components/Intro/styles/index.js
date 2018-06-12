@@ -32,7 +32,7 @@ export default StyleSheet.create({
     paddingBottom: '10%',
   },
   text: {
-    color: 'grey',
+    color: '#666',
     fontSize: 26,
     textAlign: 'center',
     marginHorizontal: 50,
@@ -42,7 +42,7 @@ export default StyleSheet.create({
     marginBottom: 50,
   },
   title: {
-    color: 'grey',
+    color: '#555',
     fontSize: 40,
     fontWeight: 'bold',
     marginBottom: 25,

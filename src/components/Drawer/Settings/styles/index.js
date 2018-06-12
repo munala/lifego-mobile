@@ -30,7 +30,7 @@ export default StyleSheet.create({
   },
   input: {
     display: 'flex',
-    color: 'grey',
+    color: '#666',
     fontSize: 16,
     marginHorizontal: 15,
     marginVertical: 2,
@@ -41,7 +41,7 @@ export default StyleSheet.create({
   },
   switchText: {
     display: 'flex',
-    color: 'grey',
+    color: '#666',
     fontSize: 16,
   },
   switch: {
@@ -96,7 +96,7 @@ export default StyleSheet.create({
     display: 'flex',
     textAlign: 'left',
     fontSize: 16,
-    color: 'grey',
+    color: '#666',
     fontWeight: 'bold',
   },
   inputText: {

@@ -69,7 +69,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     fontSize: 20,
-    color: 'grey',
+    color: '#666',
   },
   newBucketlist: {
     backgroundColor: '#fff',
@@ -80,7 +80,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    color: 'grey',
+    color: '#666',
   },
   grid: {
     display: 'flex',
@@ -123,7 +123,7 @@ export default StyleSheet.create({
     height: 40,
   },
   grey: {
-    color: 'grey',
+    color: '#666',
   },
   bucketlistBody: {
     display: 'flex',
@@ -137,13 +137,13 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
   },
   blue: {
-    color: 'grey',
+    color: '#555',
     fontWeight: 'bold',
   },
   commentButton: {
     display: 'flex',
     fontSize: 14,
-    color: 'grey',
+    color: '#666',
   },
   likeButton: {
     display: 'flex',
@@ -183,13 +183,13 @@ export default StyleSheet.create({
   commentUser: {
     display: 'flex',
     fontSize: 14,
-    color: 'grey',
+    color: '#555',
     fontWeight: 'bold',
   },
   commentContent: {
     fontSize: 14,
     display: 'flex',
-    color: 'grey',
+    color: '#666',
   },
   newComment: {
     width: '100%',
@@ -214,7 +214,7 @@ export default StyleSheet.create({
     fontSize: 14,
     borderWidth: 0,
     backgroundColor: 'transparent',
-    color: 'grey',
+    color: '#666',
   },
   label: {
     display: 'flex',
@@ -245,7 +245,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
-    color: 'grey',
+    color: '#666',
     margin: '0 auto',
     fontSize: 20,
     marginTop: '10%',
@@ -280,7 +280,7 @@ export default StyleSheet.create({
     display: 'flex',
     fontSize: 14,
     marginLeft: 5,
-    color: 'grey',
+    color: '#666',
   },
   text: {
     display: 'flex',
@@ -312,7 +312,7 @@ export default StyleSheet.create({
   },
   leftHeaderContent: {
     display: 'flex',
-    color: 'grey',
+    color: '#555',
     fontSize: 14,
     fontWeight: 'bold',
     width: '100%',
@@ -323,7 +323,7 @@ export default StyleSheet.create({
   },
   rightHeaderContent: {
     display: 'flex',
-    color: 'grey',
+    color: '#666',
     fontSize: 14,
     flex: 1,
     textAlign: 'right',
@@ -383,7 +383,7 @@ export default StyleSheet.create({
   time: {
     fontSize: 12,
     fontWeight: 'normal',
-    color: 'grey',
+    color: '#666',
   },
   locationCategory: {
     display: 'flex',
@@ -506,7 +506,7 @@ export default StyleSheet.create({
     display: 'flex',
     fontSize: 14,
     marginHorizontal: 10,
-    color: 'grey',
+    color: '#666',
   },
   results: {
     display: 'flex',
@@ -532,7 +532,7 @@ export default StyleSheet.create({
     fontSize: 14,
   },
   personTitle: {
-    color: 'grey',
+    color: '#666',
     fontSize: 14,
   },
   renderResults: {
@@ -568,7 +568,7 @@ export default StyleSheet.create({
   },
   name: {
     display: 'flex',
-    color: 'grey',
+    color: '#777',
     fontSize: 14,
     alignSelf: 'stretch',
   },
@@ -586,7 +586,7 @@ export default StyleSheet.create({
     display: 'flex',
     fontSize: 14,
     width: '90%',
-    color: 'grey',
+    color: '#666',
   },
   newMessage: {
     minWidth: '90%',
@@ -627,7 +627,7 @@ export default StyleSheet.create({
   commentNavigator: {
     display: 'flex',
     fontSize: 14,
-    color: 'grey',
+    color: '#666',
     paddingHorizontal: 10,
     marginVertical: 5,
   },
@@ -720,7 +720,7 @@ export default StyleSheet.create({
   cancelText: {
     display: 'flex',
     fontSize: 14,
-    color: 'grey',
+    color: '#666',
   },
   commentMenu: {
     display: 'flex',
@@ -775,7 +775,7 @@ export default StyleSheet.create({
     display: 'flex',
     textAlign: 'center',
     fontSize: 20,
-    color: 'grey',
+    color: '#666',
     marginTop: 20,
   },
   commentAvatar: {

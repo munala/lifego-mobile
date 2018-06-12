@@ -35,13 +35,14 @@ export default StyleSheet.create({
   },
   profileName: {
     display: 'flex',
-    color: 'grey',
+    color: '#555',
     fontSize: 24,
+    fontWeight: 'bold',
     marginVertical: 5,
   },
   profileEmail: {
     display: 'flex',
-    color: 'grey',
+    color: '#666',
     fontSize: 14,
     marginVertical: 5,
   },
@@ -60,7 +61,7 @@ export default StyleSheet.create({
   },
   profileActionText: {
     display: 'flex',
-    color: 'grey',
+    color: '#666',
     fontWeight: 'bold',
   },
   profileStats: {
@@ -93,7 +94,7 @@ export default StyleSheet.create({
     display: 'flex',
     textAlign: 'center',
     width: '100%',
-    color: 'grey',
+    color: '#666',
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -104,7 +105,7 @@ export default StyleSheet.create({
     display: 'flex',
     textAlign: 'center',
     width: '100%',
-    color: 'grey',
+    color: '#666',
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -145,7 +146,7 @@ export default StyleSheet.create({
   },
   personName: {
     display: 'flex',
-    color: 'grey',
+    color: '#666',
     flexGrow: 1,
     fontSize: 14,
     fontWeight: 'bold',
@@ -179,7 +180,7 @@ export default StyleSheet.create({
   noPeople: {
     display: 'flex',
     marginVertical: 20,
-    color: 'grey',
+    color: '#666',
     width: '100%',
     textAlign: 'center',
     fontSize: 14,
@@ -202,7 +203,7 @@ export default StyleSheet.create({
   },
   input: {
     display: 'flex',
-    color: 'grey',
+    color: '#666',
     fontSize: 14,
     marginHorizontal: 0,
     marginVertical: 2,
