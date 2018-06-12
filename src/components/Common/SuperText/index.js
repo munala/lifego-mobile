@@ -4,7 +4,7 @@ import { Text, Platform } from 'react-native';
 
 const SuperText = props => (
   <Text
-    style={[props.style, { fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'Roboto' }]}
+    style={[props.style, { fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif' }]}
     numberOfLines={props.numberOfLines}
     ellipsizeMode="tail"
   >

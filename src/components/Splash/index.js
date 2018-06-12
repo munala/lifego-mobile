@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import jwtDecode from 'jwt-decode';
 
-import Text from '../Common/SuperText';
 import { navigate } from '../../actions/navigationActions';
 import { login } from '../../actions/userActions';
 import styles from './styles';
@@ -19,6 +18,10 @@ import styles from './styles';
 class Splash extends Component {
   state = {
     value: new Animated.Value(0),
+    marginBottom1: new Animated.Value(1),
+    rotate1: new Animated.Value(1),
+    marginBottom2: new Animated.Value(1),
+    rotate2: new Animated.Value(1),
   }
 
   componentDidMount = async () => {
@@ -40,57 +43,120 @@ class Splash extends Component {
         'AuthNavigator',
       });
     }, 2000);
-    this.animate();
+    this.animate('1');
+    setTimeout(() => {
+      this.animate('2');
+    }, 250);
   }
 
-  animate = () => {
-    Animated.sequence([
-      Animated.timing(this.state.value, {
-        toValue: 1,
-        duration: 500,
+  nestedAnimation = number => Animated.sequence([
+    Animated.timing(this.state[`marginBottom${number}`], {
+      toValue: 0,
+      duration: 500,
+    }),
+    Animated.timing(this.state[`marginBottom${number}`], {
+      toValue: 1,
+      duration: 500,
+    }),
+  ]).start();
+
+
+  animate = (number) => {
+    Animated.parallel([
+      Animated.sequence([
+        this.nestedAnimation(number),
+        this.nestedAnimation(number),
+      ]),
+      Animated.sequence([
+        Animated.timing(this.state[`rotate${number}`], {
+          toValue: 0,
+          duration: 1000,
+        }),
+        Animated.timing(this.state[`rotate${number}`], {
+          toValue: 1,
+          duration: 1000,
+        }),
+      ]).start(() => {
+        this.animate(number);
       }),
-      Animated.timing(this.state.value, {
-        toValue: 0,
-        duration: 500,
-      }),
-    ]).start(() => {
-      this.animate();
-    });
+    ]);
   }
 
   render = () => {
-    const height = this.state.value.interpolate({
+    const bottom = this.state.marginBottom1.interpolate({
       inputRange: [0, 1],
-      outputRange: [200, 250],
+      outputRange: [-510, -560],
       extrapolate: 'clamp',
       useNativeDriver: true,
     });
 
-    const borderRadius = this.state.value.interpolate({
+    const bottom2 = this.state.marginBottom2.interpolate({
       inputRange: [0, 1],
-      outputRange: [100, 125],
+      outputRange: [-300, -350],
+      extrapolate: 'clamp',
+      useNativeDriver: true,
+    });
+
+    const rotate = this.state.rotate1.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['5deg', '-5deg'],
+      extrapolate: 'clamp',
+      useNativeDriver: true,
+    });
+
+    const marginLeft = this.state.rotate2.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['-80%', '80%'],
+      extrapolate: 'clamp',
+      useNativeDriver: true,
+    });
+
+    const rotate2 = this.state.rotate1.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['-5deg', '5deg'],
+      extrapolate: 'clamp',
+      useNativeDriver: true,
+    });
+
+    const marginLeft2 = this.state.rotate2.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['-90%', '90%'],
       extrapolate: 'clamp',
       useNativeDriver: true,
     });
 
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>LifeGo</Text>
-        <Animated.View style={[
-          styles.logoContainer,
-          {
-            height,
-            width: height,
-            borderRadius,
-          }]}
-        >
-          <View style={styles.logoWrapper}>
-            <Image
-              style={styles.logo}
-              source={require('../../assets/icons/icon.png')}
-            />
-          </View>
-        </Animated.View>
+        <Image
+          style={styles.image}
+          source={require('../../assets/images/splash_background.jpg')}
+        />
+        <Animated.View style={{
+          height: 220,
+          width: '200%',
+          bottom,
+          marginLeft,
+          transform: [{ rotate }],
+          backgroundColor: 'rgba(255,255,255,0.5)',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        />
+        <Animated.View style={{
+          height: 220,
+          width: '200%',
+          bottom: bottom2,
+          marginLeft: marginLeft2,
+          transform: [{ rotate: rotate2 }],
+          backgroundColor: 'rgba(0,188,212,0.5)',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        />
       </View>
     );
   }
