@@ -52,11 +52,11 @@ class Splash extends Component {
   nestedAnimation = number => Animated.sequence([
     Animated.timing(this.state[`marginBottom${number}`], {
       toValue: 0,
-      duration: 500,
+      duration: 1000,
     }),
     Animated.timing(this.state[`marginBottom${number}`], {
       toValue: 1,
-      duration: 500,
+      duration: 1000,
     }),
   ]).start();
 
@@ -70,11 +70,11 @@ class Splash extends Component {
       Animated.sequence([
         Animated.timing(this.state[`rotate${number}`], {
           toValue: 0,
-          duration: 1000,
+          duration: 2000,
         }),
         Animated.timing(this.state[`rotate${number}`], {
           toValue: 1,
-          duration: 1000,
+          duration: 2000,
         }),
       ]).start(() => {
         this.animate(number);
