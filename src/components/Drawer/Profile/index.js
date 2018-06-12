@@ -78,13 +78,13 @@ class Profile extends BaseClass {
     const avatar = showUserProfile ? otherProfile.pictureUrl : this.state.profile.pictureUrl;
 
     const height = this.state.scrollY.interpolate({
-      inputRange: [0, 5],
+      inputRange: [0, 500],
       outputRange: [editMode ? 75 : 100, 0],
       extrapolate: 'clamp',
       useNativeDriver: true,
     });
     const marginTop = this.state.scrollY.interpolate({
-      inputRange: [0, 50],
+      inputRange: [0, 500],
       outputRange: [0, -160],
       extrapolate: 'clamp',
     });

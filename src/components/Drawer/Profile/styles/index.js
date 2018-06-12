@@ -76,6 +76,7 @@ export default StyleSheet.create({
     backgroundColor: '#f7f7f7',
     marginHorizontal: 10,
     marginTop: 15,
+    marginBottom: 0,
   },
   stat: {
     display: 'flex',
@@ -118,9 +119,6 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     marginHorizontal: 10,
-    marginVertical: 20,
-    borderRadius: 5,
-    paddingVertical: 10,
     zIndex: 10,
   },
   person: {
@@ -197,7 +195,7 @@ export default StyleSheet.create({
   },
   scrollView: {
     overflow: 'scroll',
-    paddingVertical: 10,
+    paddingBottom: 10,
     borderRadius: 5,
     backgroundColor: '#fff',
   },

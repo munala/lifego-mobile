@@ -1,7 +1,6 @@
 import { applyMiddleware } from 'redux';
 import { AsyncStorage } from 'react-native';
 import { persistStore, persistReducer } from 'redux-persist';
-import logger from 'redux-logger';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import Reactotron from 'reactotron-react-native';
@@ -61,7 +60,7 @@ const configureStore = (initialState) => {
   let devMiddleware = [];
 
   if (__DEV__) { // eslint-disable-line no-undef
-    devMiddleware = devMiddleware.concat([reduxImmutableStateInvariant(), logger]);
+    devMiddleware = devMiddleware.concat([reduxImmutableStateInvariant()]);
   }
 
   const store = Reactotron.createStore(

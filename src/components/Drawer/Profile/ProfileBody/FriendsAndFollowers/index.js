@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Platform,
   View,
 } from 'react-native';
 
@@ -94,11 +93,11 @@ class FriendsAndFollowers extends Component {
             }]}
             scrollEventThrottle={16}
             onScroll={
-              Platform.OS === 'ios' ?
-                Animated.event([{
-                  nativeEvent: { contentOffset: { y: scrollY } },
-                }]) :
-                () => {}
+              Animated.event([{
+                nativeEvent: { contentOffset: { y: scrollY } },
+              }],
+              {}, // Added listener
+              { useNativeDriver: true })
             }
           >
             {this.renderPeople(profile)}
