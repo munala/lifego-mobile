@@ -122,6 +122,7 @@ class AllBucketlists extends BaseClass {
           onEndReached={nextUrl ? () => loadMoreBucketlists(screen, offset) : () => {}}
           onEndReachedThreshold={0.01}
           removeClippedSubviews
+          initialNumToRender={0}
           refreshControl={
             <RefreshControl
               refreshing={currentApiCalls > 0}
