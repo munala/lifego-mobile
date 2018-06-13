@@ -39,6 +39,7 @@ class User extends BaseClass {
   };
 
   componentDidMount = async () => {
+    StatusBar.setHidden(false);
     StatusBar.setBarStyle('light-content', true);
     StatusBar.setBackgroundColor('#999', true);
     Linking.addEventListener('url', this.handleOpenURL);

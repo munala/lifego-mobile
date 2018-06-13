@@ -44,7 +44,6 @@ class Splash extends Component {
         navigator:
       'AuthNavigator',
       });
-      StatusBar.setHidden(false);
     }, 2000);
     this.animate('1');
     setTimeout(() => {
@@ -132,7 +131,7 @@ class Splash extends Component {
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={require('../../assets/images/splash_background.jpg')}
+          source={require('../../assets/images/splash.png')}
         />
         <Animated.View style={[styles.rectangle, {
           bottom,

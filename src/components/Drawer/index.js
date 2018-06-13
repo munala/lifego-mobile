@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
+import { StatusBar } from 'react-native';
 import { addNavigationHelpers } from 'react-navigation';
 
 import DrawerNav from '../../navigators/drawer';
@@ -7,6 +8,7 @@ import { addDrawerListener } from '../../store/configureStore';
 
 class Drawer extends Component {
   componentDidMount = () => {
+    StatusBar.setHidden(false);
     Object.keys(this.props.actions)
       .forEach(key => (key !== 'navigate' ? this.props.actions[key](0, 10) : null));
   }
