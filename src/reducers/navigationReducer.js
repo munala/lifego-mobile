@@ -22,6 +22,7 @@ export const drawerNavigatorReducer = (state = initialState.DrawerNav, act) => {
   if (!action.navigator && (action.routeName === 'DrawerOpen' || action.routeName === 'DrawerClose')) {
     action.navigator = 'DrawerNav';
   }
+
   if (action.navigator === 'DrawerNav') {
     const nextState = DrawerNav.router
       .getStateForAction(action, state);
@@ -31,7 +32,12 @@ export const drawerNavigatorReducer = (state = initialState.DrawerNav, act) => {
   return state;
 };
 
-export const homeNavigatorReducer = (state = initialState.HomeTabNav, action) => {
+export const homeNavigatorReducer = (state = initialState.HomeTabNav, act) => {
+  const action = act;
+  if (['HomeBucketlists', 'Messages', 'UserAlerts', 'Notifications'].includes(action.routeName)) {
+    action.navigator = 'HomeTabNav';
+  }
+
   if (action.navigator === 'HomeTabNav') {
     const nextState = HomeTabNav.router
       .getStateForAction(action, state);

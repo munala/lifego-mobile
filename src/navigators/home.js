@@ -27,6 +27,5 @@ export default TabNavigator(
     inittialRouteName: 'HomeBucketlists',
     tabBarComponent: TabIcons,
     tabBarPosition: 'bottom',
-    swipeEnabled: false,
   },
 );
