@@ -113,16 +113,6 @@ class Conversations extends BaseClass {
           }
           {this.state.searching && this.renderResults()}
           {
-            !this.state.searching &&
-            <ActionButton
-              size={40}
-              buttonColor="#00bcd4"
-              fixNativeFeedbackRadius
-              icon={<Icon name="add" color="#fff" />}
-              onPress={this.toggleNew}
-            />
-          }
-          {
             this.state.searching &&
             <TouchableOpacity
               style={[styles.read, styles.compose]}
@@ -167,6 +157,21 @@ class Conversations extends BaseClass {
           }
           {this.state.showMenu && <ContextMenu items={items} />}
           {this.state.showDialog && <Dialog {...dialogProps} />}
+          {
+            !this.state.searching &&
+            <ActionButton
+              size={40}
+              buttonColor="#00bcd4"
+              fixNativeFeedbackRadius
+              icon={
+                <Icon
+                  name="add"
+                  color="#fff"
+                />
+              }
+              onPress={this.toggleNew}
+            />
+          }
         </View>
       </TouchableWithoutFeedback>
     );
