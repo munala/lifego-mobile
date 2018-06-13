@@ -131,31 +131,19 @@ class Splash extends Component {
           style={styles.image}
           source={require('../../assets/images/splash_background.jpg')}
         />
-        <Animated.View style={{
-          height: 220,
-          width: '200%',
+        <Animated.View style={[styles.rectangle, {
           bottom,
           marginLeft,
           transform: [{ rotate }],
           backgroundColor: 'rgba(255,255,255,0.5)',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        }]}
         />
-        <Animated.View style={{
-          height: 220,
-          width: '200%',
+        <Animated.View style={[styles.rectangle, {
           bottom: bottom2,
           marginLeft: marginLeft2,
           transform: [{ rotate: rotate2 }],
           backgroundColor: 'rgba(0,188,212,0.5)',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        }]}
         />
       </View>
     );
