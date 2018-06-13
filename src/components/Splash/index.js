@@ -2,10 +2,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  View,
   AsyncStorage,
   Animated,
   Image,
+  View,
+  StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -25,6 +26,7 @@ class Splash extends Component {
   }
 
   componentDidMount = async () => {
+    StatusBar.setHidden(true);
     let route;
     const token = await AsyncStorage.getItem('token');
     const notFirstTime = await AsyncStorage.getItem('notFirstTime');
@@ -36,12 +38,13 @@ class Splash extends Component {
     } else {
       route = 'home';
     }
-    setTimeout(() => {
-      this.props.actions.navigate({
+    setTimeout(async () => {
+      await this.props.actions.navigate({
         route,
         navigator:
-        'AuthNavigator',
+      'AuthNavigator',
       });
+      StatusBar.setHidden(false);
     }, 2000);
     this.animate('1');
     setTimeout(() => {

@@ -5,6 +5,7 @@ import {
   ScrollView,
   Linking,
   View,
+  StatusBar,
 } from 'react-native';
 
 import TextInputs from './TextInputs';
@@ -38,6 +39,8 @@ class User extends BaseClass {
   };
 
   componentDidMount = async () => {
+    StatusBar.setBarStyle('light-content', true);
+    StatusBar.setBackgroundColor('#999', true);
     Linking.addEventListener('url', this.handleOpenURL);
     const url = await Linking.getInitialURL();
     if (url) {
@@ -46,6 +49,8 @@ class User extends BaseClass {
   }
 
   componentWillUnmount = () => {
+    StatusBar.setBarStyle('dark-content', true);
+    StatusBar.setBackgroundColor('#fff', true);
     Linking.removeEventListener('url', this.handleOpenURL);
   }
 

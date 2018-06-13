@@ -4,8 +4,12 @@ import { persistStore, persistReducer } from 'redux-persist';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import Reactotron from 'reactotron-react-native';
-import { createReactNavigationReduxMiddleware, createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+import {
+  createReactNavigationReduxMiddleware,
+  createReduxBoundAddListener,
+} from 'react-navigation-redux-helpers';
 
+import '../config/envConfig';
 import rootReducer from '../reducers';
 
 const drawerMiddleware = createReactNavigationReduxMiddleware(
