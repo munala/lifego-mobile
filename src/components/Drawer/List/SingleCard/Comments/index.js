@@ -150,6 +150,7 @@ class Comments extends BaseClass {
             <TextInput
               type="text"
               placeholder="type comment"
+              underlineColorAndroid="transparent"
               style={[styles.inputText, { flexBasis: typing ? '70%' : '85%' }]}
               onFocus={this.focus}
               value={typing ? comment.content : ''}

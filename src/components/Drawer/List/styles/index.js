@@ -213,6 +213,7 @@ export default StyleSheet.create({
     marginLeft: 10,
     fontSize: 14,
     borderWidth: 0,
+    borderColor: 'transparent',
     backgroundColor: 'transparent',
     color: '#666',
   },

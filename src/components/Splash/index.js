@@ -85,14 +85,14 @@ class Splash extends Component {
   render = () => {
     const bottom = this.state.marginBottom1.interpolate({
       inputRange: [0, 1],
-      outputRange: [-510, -560],
+      outputRange: [-460, -510],
       extrapolate: 'clamp',
       useNativeDriver: true,
     });
 
     const bottom2 = this.state.marginBottom2.interpolate({
       inputRange: [0, 1],
-      outputRange: [-300, -350],
+      outputRange: [-250, -300],
       extrapolate: 'clamp',
       useNativeDriver: true,
     });
