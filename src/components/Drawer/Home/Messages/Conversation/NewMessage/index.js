@@ -17,9 +17,17 @@ const NewMessage = ({
   <View style={styles.newMessage}>
     <TextInput
       placeholder="type message"
-      underlineColorAndroid="#00bcd4"
-      style={styles.inputStyles}
+      underlineColorAndroid="transparent"
+      style={[styles.inputStyles, {
+        color: '#444',
+        backgroundColor: '#f7f7f7',
+        borderRadius: 10,
+        padding: 5,
+        paddingHorizontal: 10,
+        marginRight: 5,
+      }]}
       value={message.content}
+      placeholderTextColor="#bbb"
       onChangeText={onChange}
       onKeyPress={({ key }) => {
         if (key === 'Enter') {

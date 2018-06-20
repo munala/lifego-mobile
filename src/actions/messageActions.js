@@ -140,7 +140,7 @@ export const getConversations = () => async (dispatch) => {
 
   if (response.error) {
     dispatch(apiCallActions.apiCallError({
-      screen: 'userAlerts',
+      screen: 'messages',
       error: response.error,
     }));
 

@@ -151,7 +151,15 @@ class Comments extends BaseClass {
               type="text"
               placeholder="type comment"
               underlineColorAndroid="transparent"
-              style={[styles.inputText, { flexBasis: typing ? '70%' : '85%' }]}
+              style={[styles.inputText, {
+                flexBasis: typing ? '70%' : '85%',
+                color: '#444',
+                backgroundColor: '#f7f7f7',
+                borderRadius: 10,
+                padding: 5,
+                paddingHorizontal: 10,
+              }]}
+              placeholderTextColor="#bbb"
               onFocus={this.focus}
               value={typing ? comment.content : ''}
               onChangeText={this.onChange}
