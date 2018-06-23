@@ -16,11 +16,12 @@ class BaseClass extends Component {
     displayName['first name'] = firstName.trim();
     displayName['last name'] = lastName.trim();
     displayName[name] = text.trim();
+
     const newDisplayName = `${displayName['first name']} ${displayName['last name']}`;
     this.setState({
       profile: {
         ...profile,
-        displayName: newDisplayName,
+        displayName: this.titleCase(newDisplayName).trim(),
       },
     });
   }
@@ -51,6 +52,23 @@ class BaseClass extends Component {
   }
 
   animationFactor = new Animated.Value(0)
+
+  titleCase = (name) => {
+    let [first, middle, last] = name.split(' ');
+    if (first) {
+      first = `${first.charAt(0).toUpperCase()}${first.substr(1, first.length - 1)}`;
+    }
+
+    if (middle) {
+      middle = `${middle.charAt(0).toUpperCase()}${middle.substr(1, middle.length - 1)}`;
+    }
+
+    if (last) {
+      last = `${last.charAt(0).toUpperCase()}${last.substr(1, last.length - 1)}`;
+    }
+
+    return `${first || ''} ${last || ''} ${middle || ''}`;
+  }
 
   toggleType = (activeType) => {
     this.setState({ activeType });

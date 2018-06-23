@@ -23,6 +23,10 @@ class BaseClass extends Component {
     const user = registerMode ? registerUser : loginUser;
     user[type] = (type === 'password' || type === 'confirm') ? text : text.trim();
 
+    if (type === 'displayName') {
+      user[type] = this.titleCase(text).trim();
+    }
+
     const disabled = Object.keys(user).some(key => (user[key].length === 0));
 
     this.setState({ disabled, loginUser, registerUser });
@@ -37,6 +41,23 @@ class BaseClass extends Component {
 
   setRef = ({ key, value }) => {
     this[key] = value;
+  }
+
+  titleCase = (name) => {
+    let [first, middle, last] = name.split(' ');
+    if (first) {
+      first = `${first.charAt(0).toUpperCase()}${first.substr(1, first.length - 1)}`;
+    }
+
+    if (middle) {
+      middle = `${middle.charAt(0).toUpperCase()}${middle.substr(1, middle.length - 1)}`;
+    }
+
+    if (last) {
+      last = `${last.charAt(0).toUpperCase()}${last.substr(1, last.length - 1)}`;
+    }
+
+    return `${first || ''} ${last || ''} ${middle || ''}`;
   }
 
   toggleResetMode = (resetPassword) => {
