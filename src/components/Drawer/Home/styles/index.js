@@ -442,6 +442,7 @@ export default StyleSheet.create({
   notificationText: {
     display: 'flex',
     fontSize: 14,
+    color: '#777',
   },
   icon: {
     display: 'flex',
