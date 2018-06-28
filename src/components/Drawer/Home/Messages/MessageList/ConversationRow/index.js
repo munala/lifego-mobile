@@ -14,6 +14,7 @@ import styles from '../../../styles';
 const ConversationRow = ({
   conversation,
   pictureUrl,
+  profile,
   unread,
   goToConversation,
   openMenu,
@@ -76,7 +77,7 @@ const ConversationRow = ({
           {
             conversation.messages.length > 0 &&
             <Text numberOfLines={1} style={styles.wordWrap}>
-              {conversation.messages[0].content}
+              {conversation.messages[0].senderId === profile.id ? 'You: ' : ''}{conversation.messages[0].content}
             </Text>
           }
         </View>
@@ -92,6 +93,9 @@ ConversationRow.propTypes = {
       content: PropTypes.string.isRequired,
     }).isRequired).isRequired,
     read: PropTypes.bool,
+  }).isRequired,
+  profile: PropTypes.shape({
+    id: PropTypes.number.isRequired,
   }).isRequired,
   pictureUrl: PropTypes.string.isRequired,
   unread: PropTypes.number.isRequired,
