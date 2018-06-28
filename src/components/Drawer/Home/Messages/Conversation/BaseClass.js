@@ -159,6 +159,7 @@ class BaseClass extends Component {
       this.goBack();
     } else {
       this.props.actions.deleteMessage(this.state.selectedMessage);
+      this.setState({ message: { content: '' } });
     }
   }
 
