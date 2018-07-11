@@ -14,6 +14,7 @@ import LocationField from './LocationField';
 import DueDateField from './DueDateField';
 import DatePickerIOS from './DatePickerIOS';
 import CategoryField from './CategoryField';
+import PrivacyField from './PrivacyField';
 import PhotoField from './PhotoField';
 import styles from '../styles';
 import propTypes from './propTypes';
@@ -86,10 +87,10 @@ const Form = ({
                 showCategoryPicker={showCategoryPicker}
                 categoryPickerMode={categoryPickerMode}
               />
-              <PhotoField
+              <PrivacyField
                 content={content}
-                image={image}
-                changePhoto={changePhoto}
+                context={context}
+                onChange={onChange}
               />
               {context.type === 'Add' &&
               <View
@@ -102,6 +103,11 @@ const Form = ({
                   onValueChange={toggleCalendar}
                 />
               </View>}
+              <PhotoField
+                content={content}
+                image={image}
+                changePhoto={changePhoto}
+              />
             </View>
         }
       </ScrollView>
