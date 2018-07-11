@@ -22,6 +22,19 @@ class BaseClass extends Component {
     this.setState({ settings });
   }
 
+  changePrivacy = (privacy) => {
+    const {
+      id, createdAt, updatedAt, userId, ...rest
+    } = { ...this.props.profile };
+
+    const profile = {
+      ...rest,
+      privacy,
+    };
+
+    this.props.actions.updateProfile(profile, 'settings');
+  }
+
   toggleReminders = () => {
     const {
       id, createdAt, updatedAt, userId, ...profile

@@ -142,7 +142,11 @@ class Notifications extends Component {
                 numberOfLines={1}
                 style={styles.notificationText}
               >
-                {notification.type === 'comment' ? ` commented: "${notification.text}".` : ' likes your bucketlist.'}
+                {` ${
+                  notification.type === 'comment' ?
+                    `commented '${notification.text}'` :
+                    'liked your bucketlist'}.`
+                }
               </Text>
             </View>
             <Text style={[styles.timeSent, {

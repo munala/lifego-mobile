@@ -15,6 +15,7 @@ import Switch from './Switch';
 import ChangeEmailField from './ChangeEmailField';
 import ChangePasswordField from './ChangePasswordField';
 import DeleteAccountField from './DeleteAccountField';
+import PrivacyField from './PrivacyField';
 import propTypes from './propTypes';
 import styles from './styles';
 
@@ -161,6 +162,10 @@ class Settings extends BaseClass {
             label="Email reminders"
             value={profile.reminders === true}
             onValueChange={this.toggleReminders}
+          />
+          <PrivacyField
+            onChange={this.changePrivacy}
+            privacy={profile.privacy}
           />
           <ChangeEmailField
             emailMode={emailMode}

@@ -17,6 +17,8 @@ class Bucketlist extends BaseClass {
   state = {
     items: [],
     selectedBucketlist: {},
+    showMenu: false,
+    showDialog: false,
   }
 
   componentDidMount = () => {

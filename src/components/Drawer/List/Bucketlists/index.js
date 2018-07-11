@@ -31,6 +31,8 @@ class AllBucketlists extends BaseClass {
     searchMode: false,
     open: false,
     tagText: '',
+    showMenu: false,
+    showDialog: false,
     page: 0,
   };
 

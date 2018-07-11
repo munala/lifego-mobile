@@ -47,6 +47,7 @@ class Conversations extends BaseClass {
         goToConversation={this.goToConversation}
         openMenu={this.openMenu}
         getName={this.getName}
+        profile={this.props.profile}
       />
     );
   }

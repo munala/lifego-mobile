@@ -64,7 +64,7 @@ const CardHeader = ({
             {`${bucketlist.location || bucketlist.category || ' '}`}
           </Text>
           {
-            (bucketlist.location || bucketlist.category) &&
+            !!(bucketlist.location || bucketlist.category) &&
             <Icon
               style={styles.locationIcon}
               size={10}
@@ -77,8 +77,8 @@ const CardHeader = ({
             {bucketlist.location ? (bucketlist.category || ' ') : ' '}
           </Text>
           {
-            bucketlist.location &&
-            bucketlist.category &&
+            !!bucketlist.location &&
+            !!bucketlist.category &&
             <Icon
               style={styles.titleIcon}
               size={10}

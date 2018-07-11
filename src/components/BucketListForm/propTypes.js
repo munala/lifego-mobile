@@ -16,6 +16,7 @@ export default {
       description: '',
       name: '',
       pictureUrl: null,
+      privacy: 'friends',
     },
     context: {
       type: 'Add',

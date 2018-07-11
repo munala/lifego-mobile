@@ -71,7 +71,7 @@ const CardContent = ({
             <Icon name="star" size={20} color={setLikeColor(bucketlist, profile)} />
           </TouchableOpacity>
           {
-            bucketlist.likes && bucketlist.likes.length > 0 &&
+            !!bucketlist.likes && bucketlist.likes.length > 0 &&
             <Text style={styles.span}>
               {bucketlist.likes.length}
             </Text>
@@ -88,7 +88,7 @@ const CardContent = ({
             <Icon name="list" size={20} color="grey" />
           </TouchableOpacity>
           {
-            bucketlist.items && bucketlist.items.length > 0 &&
+            !!bucketlist.items && bucketlist.items.length > 0 &&
             <Text style={styles.span}>
               {bucketlist.items.length}
             </Text>
@@ -105,7 +105,7 @@ const CardContent = ({
             <Icon name="comment" size={20} color="grey" />
           </TouchableOpacity>
           {
-            bucketlist.comments && bucketlist.comments.length > 0 &&
+            !!bucketlist.comments && bucketlist.comments.length > 0 &&
             <Text style={styles.span}>
               {bucketlist.comments.length}
             </Text>

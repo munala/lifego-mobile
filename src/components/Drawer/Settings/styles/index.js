@@ -121,4 +121,36 @@ export default StyleSheet.create({
   cancelButtonText: {
     color: Platform.OS === 'ios' ? '#fff' : 'grey',
   },
+  categoryField: {
+    display: 'flex',
+    paddingHorizontal: 5,
+    marginTop: 10,
+    marginHorizontal: 15,
+  },
+  category: {
+    display: 'flex',
+    marginHorizontal: 0,
+    marginBottom: 3,
+    marginTop: 2,
+    padding: 5,
+    paddingHorizontal: 0,
+    borderRadius: 3,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderBottomColor: '#00bcd4',
+  },
+  categoryAndroid: {
+    borderWidth: 0.5 + StyleSheet.hairlineWidth,
+    borderBottomColor: '#00bcd4',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: 'transparent',
+    height: 30,
+  },
+  grey: {
+    display: 'flex',
+    color: '#00bcd4',
+    fontSize: 14,
+    paddingHorizontal: 5,
+    marginTop: 10,
+  },
 });

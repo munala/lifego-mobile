@@ -14,6 +14,7 @@ import styles from '../../../styles';
 const ConversationRow = ({
   conversation,
   pictureUrl,
+  profile,
   unread,
   goToConversation,
   openMenu,
@@ -65,7 +66,7 @@ const ConversationRow = ({
               }]}
               numberOfLines={1}
             >
-              { getName(conversation) }
+              {getName(conversation)}
             </Text>
             <Text style={[styles.timeSent, {
               alignSelf: 'flex-start',
@@ -76,7 +77,7 @@ const ConversationRow = ({
           {
             conversation.messages.length > 0 &&
             <Text numberOfLines={1} style={styles.wordWrap}>
-              {conversation.messages[0].content}
+              {conversation.messages[0].senderId === profile.id ? 'You: ' : ''}{conversation.messages[0].content}
             </Text>
           }
         </View>
@@ -93,11 +94,18 @@ ConversationRow.propTypes = {
     }).isRequired).isRequired,
     read: PropTypes.bool,
   }).isRequired,
-  pictureUrl: PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
+  pictureUrl: PropTypes.string,
   unread: PropTypes.number.isRequired,
   goToConversation: PropTypes.func.isRequired,
   openMenu: PropTypes.func.isRequired,
   getName: PropTypes.func.isRequired,
+};
+
+ConversationRow.defaultProps = {
+  pictureUrl: null,
 };
 
 export default ConversationRow;
