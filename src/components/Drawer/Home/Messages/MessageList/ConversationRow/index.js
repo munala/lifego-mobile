@@ -66,7 +66,7 @@ const ConversationRow = ({
               }]}
               numberOfLines={1}
             >
-              { getName(conversation) }
+              {getName(conversation)}
             </Text>
             <Text style={[styles.timeSent, {
               alignSelf: 'flex-start',
@@ -95,13 +95,17 @@ ConversationRow.propTypes = {
     read: PropTypes.bool,
   }).isRequired,
   profile: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
   }).isRequired,
-  pictureUrl: PropTypes.string.isRequired,
+  pictureUrl: PropTypes.string,
   unread: PropTypes.number.isRequired,
   goToConversation: PropTypes.func.isRequired,
   openMenu: PropTypes.func.isRequired,
   getName: PropTypes.func.isRequired,
+};
+
+ConversationRow.defaultProps = {
+  pictureUrl: null,
 };
 
 export default ConversationRow;

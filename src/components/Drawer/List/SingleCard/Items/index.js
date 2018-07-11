@@ -95,7 +95,7 @@ class Items extends BaseClass {
                 </TouchableOpacity>
               }
               {
-                bucketlist.items &&
+                !!bucketlist.items &&
                 <View style={styles.navigationButtons}>
                   {
                     bucketlist.items.length > 0 && page > 0 &&
