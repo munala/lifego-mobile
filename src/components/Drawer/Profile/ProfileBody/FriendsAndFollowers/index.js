@@ -110,7 +110,7 @@ class FriendsAndFollowers extends Component {
 FriendsAndFollowers.propTypes = {
   profile: PropTypes.shape({
     friends: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired,
     })).isRequired,
   }).isRequired,
   isFriend: PropTypes.func.isRequired,
@@ -122,7 +122,7 @@ FriendsAndFollowers.propTypes = {
   listHeight: PropTypes.number.isRequired,
   scrollY: PropTypes.shape({}).isRequired,
   goToProfile: PropTypes.func.isRequired,
-  profileId: PropTypes.number.isRequired,
+  profileId: PropTypes.string.isRequired,
 };
 
 export default FriendsAndFollowers;

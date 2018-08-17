@@ -20,11 +20,9 @@ import propTypes from './propTypes';
 
 class Conversation extends BaseClass {
   static getDerivedStateFromProps = ({ conversation, actions, profile }, state) => {
-    if (
-      conversation &&
-      conversation.messages.length > 0
-    ) {
+    if (conversation && conversation.messages.length > 0) {
       const message = conversation.messages[0];
+
       if (!message.read && profile.id !== message.senderId) {
         actions.markAsRead(message);
       }

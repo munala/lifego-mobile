@@ -88,14 +88,14 @@ const ConversationRow = ({
 
 ConversationRow.propTypes = {
   conversation: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.string.isRequired,
     }).isRequired).isRequired,
     read: PropTypes.bool,
   }).isRequired,
   profile: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
   }).isRequired,
   pictureUrl: PropTypes.string,
   unread: PropTypes.number.isRequired,

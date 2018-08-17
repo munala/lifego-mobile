@@ -1,42 +1,44 @@
-import { AsyncStorage } from 'react-native';
-import axios from 'axios';
-import handleError from './handelError';
-
-const commentsUrl = 'https://bucketlist-node.herokuapp.com/api/comments/';
-
-const instance = axios.create();
-
-instance.defaults.headers.common['Content-Type'] = 'application/json';
-instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+import { sendGraphQLRequest } from '../utils/api';
+import {
+  commentFields,
+  responseMessageFields,
+} from './fields';
 
 export default {
-  async addComment(bucketlist, comment) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  addComment: async (bucketlist, comment) => {
+    const queryData = {
+      args: { ...comment, bucketlistId: bucketlist.id },
+      mutation: 'createComment',
+      fields: commentFields,
+    };
 
-    return instance.post(
-      `${commentsUrl}${bucketlist.id.toString()}`,
-      { content: comment.content, bucketlistId: bucketlist.id },
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async updateComment(comment) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  updateComment: async (bucketlist, comment) => {
+    const queryData = {
+      args: {
+        id: comment.id,
+        content: comment.content,
+        bucketlistId: bucketlist.id,
+      },
+      mutation: 'updateComment',
+      fields: commentFields,
+    };
 
-    return instance.put(
-      `${commentsUrl}${comment.id.toString()}`,
-      { content: comment.content },
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async deleteComment(comment) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  deleteComment: async (bucketlist, comment) => {
+    const queryData = {
+      args: {
+        id: comment.id,
+        bucketlistId: bucketlist.id,
+      },
+      mutation: 'deleteComment',
+      fields: responseMessageFields,
+    };
 
-    return instance.delete(`${commentsUrl}${comment.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 };

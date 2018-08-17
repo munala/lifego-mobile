@@ -39,7 +39,7 @@ class BaseClass extends Component {
           return userLiked;
         });
         if (liked) {
-          await this.props.actions.unlike(singleLike);
+          await this.props.actions.unlike(bucketlist, singleLike);
         }
         this.setState(() => ({ liking: false }));
       }

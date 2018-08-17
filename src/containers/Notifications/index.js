@@ -13,7 +13,10 @@ const mapStateToProps = ({
   },
 }, ownProps) => ({
   profile,
-  notifications,
+  notifications: notifications.map(({ read, ...notification }) => ({
+    ...notification,
+    read: typeof notification === 'string' ? read === 'true' : read,
+  })),
   currentApiCalls,
   ...ownProps,
 });

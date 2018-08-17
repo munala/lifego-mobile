@@ -2,7 +2,7 @@ import { PropTypes } from 'prop-types';
 
 export default {
   profile: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     username: PropTypes.string,
     displayName: PropTypes.string,
     email: PropTypes.string,
@@ -10,7 +10,7 @@ export default {
     friends: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
   otherProfile: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     username: PropTypes.string,
     displayName: PropTypes.string,
     email: PropTypes.string,

@@ -1,118 +1,126 @@
-import { AsyncStorage } from 'react-native';
-import axios from 'axios';
-import handleError from './handelError';
+import { sendGraphQLRequest } from '../utils/api';
+import {
+  itemFields,
+  listFields,
+  bucketlistFields,
+  responseMessageFields,
+} from './fields';
 
-const bucketlistUrl = 'https://bucketlist-node.herokuapp.com/api/bucketlists/';
-const instance = axios.create();
+const getLists = async ({
+  offset, limit, name, id, mutation,
+}) => {
+  const args = {
+    offset, limit, name,
+  };
 
-instance.defaults.headers.common['Content-Type'] = 'application/json';
-instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+  if (mutation === 'listOther') {
+    args.id = id;
+  }
+
+  const queryData = {
+    args,
+    mutation,
+    fields: listFields,
+  };
+
+  return sendGraphQLRequest(queryData);
+};
 
 const BucketlistService = {
-  async saveBucketlist(bucketlist) {
-    const { id, ...bucketList } = bucketlist;
+  saveBucketlist: async (bucketlist) => {
+    const queryData = {
+      args: bucketlist,
+      mutation: 'createBucketlist',
+      fields: bucketlistFields,
+    };
 
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.post(
-      bucketlistUrl,
-      { ...bucketList },
-    )
-      .then((response) => {
-        if (response.data.message === `${bucketlist.name} already exists`) {
-          return handleError(response.data.message);
-        }
-
-        return response.data;
-      })
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async addItem(bucketlist, item) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  deleteBucketlist: async (bucketlist) => {
+    const queryData = {
+      args: { id: bucketlist.id },
+      mutation: 'deleteBucketlist',
+      fields: responseMessageFields,
+    };
 
-    return instance.post(
-      `${bucketlistUrl + bucketlist.id.toString()}/items/`,
-      { name: item.name },
-    )
-      .then((response) => {
-        if (response.data.message === `${item.name} already exists`) {
-          return handleError(response.data.message);
-        }
-
-        return response.data;
-      })
-      .catch(error => handleError(error));
-  },
-  async deleteBucketlist(bucketlist) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.delete(`${bucketlistUrl + bucketlist.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async getBucketlists(offset, limit, name) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  getBucketlist: async (id) => {
+    const queryData = {
+      args: { id },
+      mutation: 'getBucketlist',
+      fields: bucketlistFields,
+    };
 
-    return instance.get(`${bucketlistUrl}?offset=${offset}&limit=${limit}&q=${name}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async getAllBucketlists(offset, limit, name) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  getBucketlists: async (offset, limit, name) => getLists({
+    offset, limit, name, mutation: 'list',
+  }),
 
-    return instance.get(`${bucketlistUrl}all/?offset=${offset}&limit=${limit}&q=${name}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+  getAllBucketlists: async (offset, limit, name) => getLists({
+    offset, limit, name, mutation: 'listAll',
+  }),
+
+  getOtherBucketlists: async (offset, limit, name, id) => getLists({
+    offset, limit, name, id, mutation: 'listOther',
+  }),
+
+  explore: async (offset, limit, name) => getLists({
+    offset, limit, name, mutation: 'explore',
+  }),
+
+  updateBucketlist: async ({
+    comments, likes, items, updatedAt, createdAt, user, userPictureUrl, userId, ...bucketlist
+  }) => {
+    const queryData = {
+      args: bucketlist,
+      mutation: 'updateBucketlist',
+      fields: bucketlistFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async updateBucketlist(bucketlist) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  addItem: async (bucketlist, item) => {
+    const queryData = {
+      args: { ...item, bucketlistId: bucketlist.id },
+      mutation: 'createItem',
+      fields: itemFields,
+    };
 
-    return instance.put(
-      `${bucketlistUrl + bucketlist.id.toString()}`,
-      {
-        ...bucketlist,
-      },
-    )
-      .then((response) => {
-        if (response.data.message === `${bucketlist.name} is already in use`) {
-          return handleError(response.data.message);
-        }
-
-        return response.data;
-      })
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async updateItem(bucketlist, item) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.put(
-      `${bucketlistUrl + bucketlist.id}/items/${item.id}`,
-      {
+  updateItem: async (bucketlist, item) => {
+    const queryData = {
+      args: {
+        id: item.id,
         name: item.name,
         done: item.done,
+        bucketlistId: bucketlist.id,
       },
-    )
-      .then((response) => {
-        if (response.data.message === `${item.name} is already in use`) {
-          return handleError(response.data.message);
-        }
+      mutation: 'updateItem',
+      fields: itemFields,
+    };
 
-        return response.data;
-      })
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async deleteItem(bucketlist, item) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  deleteItem: async (bucketlist, item) => {
+    const queryData = {
+      args: {
+        id: item.id,
+        bucketlistId: bucketlist.id,
+      },
+      mutation: 'deleteItem',
+      fields: responseMessageFields,
+    };
 
-    return instance.delete(`${bucketlistUrl + bucketlist.id}/items/${item.id}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 };
 

@@ -85,6 +85,9 @@ class BucketListForm extends Component {
           content.pictureUrl = null;
         }
       }
+      if (content.dueDate) {
+        content.dueDate = content.dueDate.toString();
+      }
       await onSave(content, this.state.context.type, this.state.addToCalendar);
       this.setState({ saving: false });
     }

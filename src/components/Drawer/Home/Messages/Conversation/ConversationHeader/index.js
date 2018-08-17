@@ -45,10 +45,10 @@ ConversationHeader.propTypes = {
   goBack: PropTypes.func.isRequired,
   goToProfile: PropTypes.func.isRequired,
   deleteConversation: PropTypes.func.isRequired,
-  userId: PropTypes.number.isRequired,
+  userId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   conversation: PropTypes.shape({}),
-  id: PropTypes.number,
+  id: PropTypes.string,
 };
 
 ConversationHeader.defaultProps = {

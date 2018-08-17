@@ -119,20 +119,20 @@ const CardContent = ({
 CardContent.propTypes = {
   bucketlist: PropTypes.shape({
     name: PropTypes.string,
-    id: PropTypes.number,
+    id: PropTypes.string,
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,
     description: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string,
-      id: PropTypes.number,
+      id: PropTypes.string,
       createdAt: PropTypes.string,
       updatedAt: PropTypes.string,
       done: PropTypes.bool,
     })),
     comments: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.string,
-      id: PropTypes.number,
+      id: PropTypes.string,
       createdAt: PropTypes.string,
       updatedAt: PropTypes.string,
     })),
@@ -146,7 +146,7 @@ CardContent.propTypes = {
   goToBucketlist: PropTypes.func.isRequired,
   openMenu: PropTypes.func.isRequired,
   profile: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     username: PropTypes.string,
     displayName: PropTypes.string,
     email: PropTypes.string,

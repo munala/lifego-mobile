@@ -17,7 +17,7 @@ import * as userAlertActions from '../actions/userAlertActions';
 import * as navigationActions from '../actions/navigationActions';
 
 export default (store) => {
-  const socket = SocketIOClient('https://bucketlist-node.herokuapp.com');
+  const socket = SocketIOClient('http://10.0.2.2:3002');
 
   PushNotification.configure({
     onNotification(notification) {
@@ -179,7 +179,7 @@ export default (store) => {
     });
 
     if (data.type === 'new' && notify && data.notification.sourceUserId !== storeData.profile.id) {
-      store.dispatch(notificationActions.newNotification({ notification: data.notification }));
+      store.dispatch(notificationActions.newNotification(data.notification));
     }
   });
 
@@ -275,10 +275,10 @@ export default (store) => {
             }, data.like));
 
             sendNotification({
-              bigText: `${data.like.userDisplayName} liked your bucketlist`,
+              bigText: `${data.like.user} liked your bucketlist`,
               icon: 'star',
               title: 'New star',
-              message: `${data.like.userDisplayName} liked your bucketlist`,
+              message: `${data.like.user} liked your bucketlist`,
               vibration: 0,
               data: { type: 'like', id: data.like.id, bucketlistId: data.like.bucketlistId },
               actions: '["View"]',

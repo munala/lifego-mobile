@@ -1,77 +1,89 @@
-import { AsyncStorage } from 'react-native';
-import axios from 'axios';
-import handleError from './handelError';
-
-const messageUrl = 'https://bucketlist-node.herokuapp.com/api/messages/';
-
-const instance = axios.create();
-
-instance.defaults.headers.common['Content-Type'] = 'application/json';
-instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+import { sendGraphQLRequest } from '../utils/api';
+import {
+  messageFields,
+  conversationFields,
+  responseMessageFields,
+} from './fields';
 
 export default {
-  async sendMessage(message) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  getConversations: async () => {
+    const queryData = {
+      mutation: 'getConversations',
+      fields: conversationFields,
+    };
 
-    return instance.post(
-      `${messageUrl}`,
-      { ...message },
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async startConversation(conversation) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  sendMessage: async ({ senderId, receiverId, ...message }) => {
+    const args = message;
 
-    return instance.post(
-      `${messageUrl}conversations`,
-      { ...conversation },
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    const queryData = {
+      args,
+      mutation: 'createMessage',
+      fields: messageFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async updateMessage(message) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  startConversation: async (conversation) => {
+    const args = {
+      receiverId: conversation.receiverId,
+    };
 
-    return instance.put(
-      `${messageUrl}${message.id.toString()}`,
-      { content: message.content },
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    const queryData = {
+      args,
+      mutation: 'startConversation',
+      fields: conversationFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async markAsRead(message) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  updateMessage: async (message) => {
+    const args = {
+      id: message.id,
+      read: message.read,
+      content: message.content,
+      conversationId: message.conversationId,
+    };
 
-    return instance.put(`${messageUrl}mark_as_read/${message.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    const queryData = {
+      args,
+      mutation: 'updateMessage',
+      fields: messageFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async deleteMessage(message) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  deleteMessage: async (message) => {
+    const args = {
+      id: message.id,
+      conversationId: message.conversationId,
+    };
 
-    return instance.delete(`${messageUrl}${message.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    const queryData = {
+      args,
+      mutation: 'deleteMessage',
+      fields: responseMessageFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async getConversations() {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  deleteConversation: async (conversation) => {
+    const args = {
+      id: conversation.id,
+    };
 
-    return instance.get(`${messageUrl}conversations`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
+    const queryData = {
+      args,
+      mutation: 'deleteConversation',
+      fields: responseMessageFields,
+    };
 
-  async deleteConversation(conversation) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.delete(`${messageUrl}conversations/${conversation.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 };

@@ -102,10 +102,11 @@ class Profile extends BaseClass {
     )[activeType.toLowerCase()]
       .length;
 
-    const [firstName, lastName] = (this.state.profile.displayName || '').split(' ');
+    const [firstName, middleName, lastName] = this.state.profile.displayName.trim().split(' ');
     const displayName = {};
+
     displayName['first name'] = firstName;
-    displayName['last name'] = lastName;
+    displayName['last name'] = middleName || lastName;
 
     const editProfileProps = {
       uploading,

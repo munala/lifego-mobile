@@ -1,44 +1,40 @@
-import { AsyncStorage } from 'react-native';
-import axios from 'axios';
-import handleError from './handelError';
-
-const userAlertsUrl = 'https://bucketlist-node.herokuapp.com/api/user_notifications/';
-
-const instance = axios.create();
-
-instance.defaults.headers.common['Content-Type'] = 'application/json';
-instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+import { sendGraphQLRequest } from '../utils/api';
+import {
+  userNotificationFields,
+  responseMessageFields,
+} from './fields';
 
 export default {
-  async getAlerts() {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  getAlerts: async () => {
+    const queryData = {
+      mutation: 'getUserNotifications',
+      fields: userNotificationFields,
+    };
 
-    return instance.get(`${userAlertsUrl}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async updateAlert(alert) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  markAsRead: async (notification) => {
+    const args = { id: notification.id };
 
-    return instance.put(`${userAlertsUrl}${alert.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    const queryData = {
+      args,
+      mutation: 'markUserNotificationAsRead',
+      fields: userNotificationFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async markAsRead(alert) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  deleteAlert: async (notification) => {
+    const args = { id: notification.id };
 
-    return instance.put(`${userAlertsUrl}${alert.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
+    const queryData = {
+      args,
+      mutation: 'deleteUserNotification',
+      fields: responseMessageFields,
+    };
 
-  async deleteAlert(alert) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.delete(`${userAlertsUrl}${alert.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 };

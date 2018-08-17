@@ -102,7 +102,7 @@ ProfileBody.propTypes = {
   sendMessage: PropTypes.func.isRequired,
   toggleType: PropTypes.func.isRequired,
   goToProfile: PropTypes.func.isRequired,
-  profileId: PropTypes.number.isRequired,
+  profileId: PropTypes.string.isRequired,
 };
 
 ProfileBody.defaultProps = {

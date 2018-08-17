@@ -1,31 +1,29 @@
-import { AsyncStorage } from 'react-native';
-import axios from 'axios';
-import handleError from './handelError';
-
-const likesUrl = 'https://bucketlist-node.herokuapp.com/api/likes/';
-
-const instance = axios.create();
-
-instance.defaults.headers.common['Content-Type'] = 'application/json';
-instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+import { sendGraphQLRequest } from '../utils/api';
+import {
+  likeFields,
+  responseMessageFields,
+} from './fields';
 
 export default {
-  async like(bucketlist) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  like: async (bucketlist) => {
+    const queryData = {
+      args: { bucketlistId: bucketlist.id },
+      mutation: 'like',
+      fields: likeFields,
+    };
 
-    return instance.post(
-      `${likesUrl}`,
-      { bucketlistId: bucketlist.id },
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
+  unlike: async (bucketlist, like) => {
+    const queryData = {
+      args: {
+        id: like.id,
+        bucketlistId: bucketlist.id,
+      },
+      mutation: 'unlike',
+      fields: responseMessageFields,
+    };
 
-  async unlike(like) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.delete(`${likesUrl}${like.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 };

@@ -26,7 +26,7 @@ export const deleteCommentSuccess = (bucketlist, comment) => ({
   screen: 'others',
 });
 
-export const addComment = (bucketlist, comment) => async (dispatch) => {
+export const addComment = (bucketlist, { id, ...comment }) => async (dispatch) => {
   const response = await commentService.addComment(bucketlist, comment);
 
   dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
@@ -39,7 +39,7 @@ export const addComment = (bucketlist, comment) => async (dispatch) => {
 
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(addCommentSuccess(bucketlist, response));
+    dispatch(addCommentSuccess(bucketlist, response.data.createComment));
 
     dispatch(apiCallActions.resetMessage());
   }
@@ -60,7 +60,7 @@ export const updateComment = (bucketlist, comment) => async (dispatch) => {
       screen: 'others',
     }));
   } else {
-    dispatch(editCommentSuccess(bucketlist, response));
+    dispatch(editCommentSuccess(bucketlist, response.data.updateComment));
 
     dispatch(apiCallActions.resetMessage());
   }
@@ -69,7 +69,7 @@ export const updateComment = (bucketlist, comment) => async (dispatch) => {
 };
 
 export const deleteComment = (bucketlist, comment) => async (dispatch) => {
-  const response = await commentService.deleteComment(comment);
+  const response = await commentService.deleteComment(bucketlist, comment);
 
   dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
 

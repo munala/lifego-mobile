@@ -140,7 +140,7 @@ SearchResults.propTypes = {
     description: PropTypes.string,
   })),
   profile: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     username: PropTypes.string,
     displayName: PropTypes.string,
     email: PropTypes.string,
