@@ -54,7 +54,6 @@ export default {
   conversations: [],
   notifications: [],
   alerts: [],
-  tags: [],
   components: {
     showHeader: true,
   },

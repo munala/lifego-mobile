@@ -128,8 +128,6 @@ class UserAlerts extends Component {
     } else {
       await this.addFriend(alert);
     }
-
-    this.clearAlert(alert);
   };
 
   renderItem = ({ item: alert }) => {
@@ -212,7 +210,7 @@ class UserAlerts extends Component {
         {alerts.length > 0 &&
           <FlatList
             enableEmptySections
-            keyExtractor={({ id }) => id.toString()}
+            keyExtractor={({ id }) => id}
             data={alerts}
             renderItem={this.renderItem}
             style={styles.listView}
@@ -253,8 +251,8 @@ class UserAlerts extends Component {
 
 UserAlerts.propTypes = {
   profile: PropTypes.shape({
-    id: PropTypes.number,
-    userId: PropTypes.number,
+    id: PropTypes.string,
+    userId: PropTypes.string,
     username: PropTypes.string,
     displayName: PropTypes.string,
     email: PropTypes.string,
@@ -263,10 +261,10 @@ UserAlerts.propTypes = {
     searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
   alerts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     type: PropTypes.string,
     text: PropTypes.string,
-    bucketlistId: PropTypes.number,
+    bucketlistId: PropTypes.string,
     read: PropTypes.bool,
   })).isRequired,
   actions: PropTypes.shape({

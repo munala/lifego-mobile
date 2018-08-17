@@ -45,7 +45,7 @@ export const sendMessage = message => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
 
   if (!response.error) {
-    dispatch(sendMessageSuccess(response));
+    dispatch(sendMessageSuccess(response.data.createMessage));
 
     dispatch(apiCallActions.resetMessage());
   } else {
@@ -67,6 +67,10 @@ export const startConversation = conversation => async (dispatch) => {
 
   if (response.error) {
     dispatch(apiCallActions.apiCallError({
+      conversation: {
+        ...response.conversation,
+        messages: [],
+      },
       ...response,
       screen: 'others',
     }));
@@ -75,11 +79,12 @@ export const startConversation = conversation => async (dispatch) => {
 
     return null;
   }
-  dispatch(startConversationSuccess(response));
+
+  dispatch(startConversationSuccess(response.data.startConversation));
 
   dispatch(apiCallActions.resetMessage());
 
-  return response;
+  return response.data.startConversation;
 };
 
 export const updateMessage = message => async (dispatch) => {
@@ -88,7 +93,7 @@ export const updateMessage = message => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall({ screen: 'others' }));
 
   if (!response.error) {
-    dispatch(editMessageSuccess(response));
+    dispatch(editMessageSuccess(response.data.updateMessage));
 
     dispatch(apiCallActions.resetMessage());
   } else {
@@ -104,10 +109,13 @@ export const updateMessage = message => async (dispatch) => {
 };
 
 export const markAsRead = message => async (dispatch) => {
-  const response = await messageService.markAsRead(message);
+  const response = await messageService.updateMessage({
+    ...message,
+    read: true,
+  });
 
   if (!response.error) {
-    dispatch(editMessageSuccess(response));
+    dispatch(editMessageSuccess(response.data.updateMessage));
   }
 
   return response;
@@ -140,14 +148,14 @@ export const getConversations = () => async (dispatch) => {
 
   if (response.error) {
     dispatch(apiCallActions.apiCallError({
-      screen: 'messages',
+      screen: 'userAlerts',
       error: response.error,
     }));
 
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(getConversationsSuccess({
-      ...response,
+      conversations: response.data.getConversations,
       screen: 'messages',
     }));
 
@@ -170,7 +178,7 @@ export const deleteConversation = conversation => async (dispatch) => {
 
     dispatch(apiCallActions.resetError());
   } else {
-    dispatch(deleteConversationSuccess({ ...response, conversation }));
+    dispatch(deleteConversationSuccess({ ...response.data.deleteConversation, conversation }));
 
     dispatch(apiCallActions.resetMessage());
   }

@@ -42,22 +42,6 @@ export const setLikeColor = ({ likes }, { id }) => {
   return liked ? '#00bcd4' : 'grey';
 };
 
-export const getTags = (bucketlist) => {
-  if (bucketlist.tags) {
-    const tags = bucketlist.tags.split(',').map((tag, index) => ({
-      key: index,
-      name: tag,
-      label: tag,
-    }));
-
-    tags.shift();
-
-    return tags;
-  }
-
-  return [];
-};
-
 export const filterExpired = bucketlists => bucketlists.filter((bucketlist) => {
   if (bucketlist.dueDate) {
     const dueDate = new Date(bucketlist.dueDate);
@@ -86,4 +70,58 @@ export const removeEmptyFields = (object) => {
   });
 
   return newObject;
+};
+
+const generateFieldsFromObject = (field) => {
+  const key = Object.keys(field)[0];
+  const value = Object.values(field)[0];
+
+  const fieldVars = `${key} { ${generateFields(value)} }`; // eslint-disable-line no-use-before-define
+
+  return fieldVars;
+};
+
+const generateFields = (fields) => {
+  let fieldVars = '';
+
+  fields.forEach((field) => {
+    if (typeof field === 'object') {
+      fieldVars = `${fieldVars}${generateFieldsFromObject(field)}`;
+    } else {
+      fieldVars = `${fieldVars}${field}`;
+    }
+    if (fields.indexOf(field) < fields.length - 1) {
+      fieldVars = `${fieldVars}, `;
+    }
+  });
+
+  return fieldVars;
+};
+
+export const generateQuery = ({
+  mutation,
+  fields,
+  args,
+}) => {
+  let argsVars = '';
+  let fieldVars = '';
+
+  if (args) {
+    const keys = Object.keys(args);
+    keys.forEach((key) => {
+      const arg = args[key];
+      const isString = typeof arg === 'string';
+      argsVars = `${argsVars}${key}: ${isString ? '"' : ''}${arg}${isString ? '"' : ''}`;
+      if (keys.indexOf(key) < keys.length - 1) {
+        argsVars = `${argsVars}, `;
+      }
+    });
+  }
+
+  fieldVars = generateFields(fields);
+
+  const argString = args ? `(${argsVars})` : '';
+  const query = `mutation { ${mutation} ${argString} { ${fieldVars} } }`;
+
+  return query;
 };

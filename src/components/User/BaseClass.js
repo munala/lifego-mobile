@@ -87,9 +87,9 @@ class BaseClass extends Component {
     }
   }
 
-  loginWithFacebook = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/facebook');
+  loginWithFacebook = () => this.openURL('http://10.0.2.2:3002/auth/facebook');
 
-  loginWithGoogle = () => this.openURL('https://bucketlist-node.herokuapp.com/auth/google')
+  loginWithGoogle = () => this.openURL('http://10.0.2.2:3002/auth/google')
 
   openURL = async (url) => {
     await AsyncStorage.setItem('can_login', 'true');

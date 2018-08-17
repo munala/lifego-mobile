@@ -9,9 +9,12 @@ export const getNotificationsSuccess = ({ notifications, screen }) => ({
   screen,
 });
 
-export const newNotification = ({ notification }) => ({
+export const newNotification = ({ read, ...notification }) => ({
   type: types.NEW_NOTIFICATION,
-  notification,
+  notification: {
+    ...notification,
+    read: typeof notification === 'boolean' ? read : read === 'true',
+  },
   message: '',
 });
 
@@ -41,7 +44,7 @@ export const getNotifications = () => async (dispatch) => {
     dispatch(apiCallActions.resetError());
   } else {
     dispatch(getNotificationsSuccess({
-      ...response,
+      notifications: response.data.getNotifications,
       screen: 'notifications',
     }));
 
@@ -64,7 +67,7 @@ export const markNotificationAsRead = notification => async (dispatch) => {
   } else {
     dispatch(markAsReadSuccess({
       ...notification,
-      ...response,
+      read: true,
     }));
   }
 

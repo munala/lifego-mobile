@@ -111,7 +111,7 @@ class Comments extends BaseClass {
   render = () => {
     const { bucketlist, profile } = this.props;
     const { page, typing, comment, submitting, editMode } = this.state;
-    const lastPage = Math.floor(this.props.bucketlist.comments.length / 8);
+    const lastPage = Math.ceil(this.props.bucketlist.comments.length / 8) - 1;
 
     return (
       <TouchableWithoutFeedback onPress={this.props.closeMenu} style={styles.touchArea}>

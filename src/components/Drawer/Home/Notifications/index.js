@@ -168,7 +168,7 @@ class Notifications extends Component {
         {this.props.notifications.length > 0 &&
           <FlatList
             enableEmptySections
-            keyExtractor={({ id }) => id.toString()}
+            keyExtractor={({ id }) => id}
             data={notifications}
             renderItem={this.renderItem}
             style={styles.listView}
@@ -209,8 +209,8 @@ class Notifications extends Component {
 
 Notifications.propTypes = {
   profile: PropTypes.shape({
-    id: PropTypes.number,
-    userId: PropTypes.number,
+    id: PropTypes.string,
+    userId: PropTypes.string,
     username: PropTypes.string,
     displayName: PropTypes.string,
     email: PropTypes.string,
@@ -219,10 +219,10 @@ Notifications.propTypes = {
     searchUsers: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
   notifications: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     type: PropTypes.string,
     text: PropTypes.string,
-    bucketlistId: PropTypes.number,
+    bucketlistId: PropTypes.string,
     read: PropTypes.bool,
   })).isRequired,
   actions: PropTypes.shape({

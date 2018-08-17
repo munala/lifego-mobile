@@ -44,7 +44,7 @@ class BaseClass extends Component {
 
   markAsRead = (conversation) => {
     conversation.messages.forEach((message) => {
-      if (!message.read) {
+      if (!message.read && message.senderId !== this.props.profile.id) {
         this.props.actions.markAsRead(message);
       }
     });

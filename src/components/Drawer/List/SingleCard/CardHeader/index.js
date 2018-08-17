@@ -51,7 +51,7 @@ const CardHeader = ({
           style={styles.leftUser}
         >
           <Text style={styles.leftHeaderContent} numberOfLines={1}>
-            {`${bucketlist.userDisplayName}\n`}
+            {`${bucketlist.user}\n`}
           </Text>
         </TouchableOpacity>
         <Text style={styles.time} numberOfLines={1}>
@@ -94,20 +94,20 @@ const CardHeader = ({
 CardHeader.propTypes = {
   bucketlist: PropTypes.shape({
     name: PropTypes.string,
-    id: PropTypes.number,
+    id: PropTypes.string,
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,
     description: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string,
-      id: PropTypes.number,
+      id: PropTypes.string,
       createdAt: PropTypes.string,
       updatedAt: PropTypes.string,
       done: PropTypes.bool,
     })),
     comments: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.string,
-      id: PropTypes.number,
+      id: PropTypes.string,
       createdAt: PropTypes.string,
       updatedAt: PropTypes.string,
     })),

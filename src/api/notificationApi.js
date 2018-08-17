@@ -1,44 +1,40 @@
-import { AsyncStorage } from 'react-native';
-import axios from 'axios';
-import handleError from './handelError';
-
-const notificationsUrl = 'https://bucketlist-node.herokuapp.com/api/notifications/';
-
-const instance = axios.create();
-
-instance.defaults.headers.common['Content-Type'] = 'application/json';
-instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+import { sendGraphQLRequest } from '../utils/api';
+import {
+  notificationFields,
+  responseMessageFields,
+} from './fields';
 
 export default {
-  async getNotifications() {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  getNotifications: async () => {
+    const queryData = {
+      mutation: 'getNotifications',
+      fields: notificationFields,
+    };
 
-    return instance.get(`${notificationsUrl}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async updateNotification(notification) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  markAsRead: async (notification) => {
+    const args = { id: notification.id };
 
-    return instance.put(`${notificationsUrl}${notification.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    const queryData = {
+      args,
+      mutation: 'markNotificationAsRead',
+      fields: notificationFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async markAsRead(notification) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  deleteNotification: async (notification) => {
+    const args = { id: notification.id };
 
-    return instance.put(`${notificationsUrl}${notification.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
+    const queryData = {
+      args,
+      mutation: 'deleteNotification',
+      fields: responseMessageFields,
+    };
 
-  async deleteNotification(notification) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.delete(`${notificationsUrl}${notification.id.toString()}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 };

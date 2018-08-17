@@ -33,7 +33,10 @@ class Conversations extends BaseClass {
   }
 
   sortConversations = conversations => [...conversations]
-    .sort((a, b) => new Date(b.messages[0].createdAt) - new Date(a.messages[0].createdAt))
+    .sort((a, b) => (
+      new Date(b.messages[0] ? b.messages[0].createdAt : Date.now())
+      - new Date(a.messages[0] ? a.messages[0].createdAt : Date.now())
+    ));
 
   renderItem = ({ item: conversation }) => { // eslint-disable-line react/prop-types
     const unread = this.getUnreadCount(conversation);
@@ -128,7 +131,7 @@ class Conversations extends BaseClass {
             !this.state.searching && conversations.length > 0 &&
             <FlatList
               enableEmptySections
-              keyExtractor={({ id }) => id.toString()}
+              keyExtractor={({ id }) => id}
               data={this.sortConversations(conversations)}
               renderItem={this.renderItem}
               style={styles.listView}

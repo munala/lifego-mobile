@@ -120,7 +120,7 @@ class AllBucketlists extends BaseClass {
     return (
       <View style={styles.container}>
         <FlatList
-          keyExtractor={({ id }) => id.toString()}
+          keyExtractor={({ id }) => id}
           data={bucketlists.length > 0 ? bucketlists : [{ id: currentApiCalls }]}
           renderItem={bucketlists.length > 0 ? this.renderItem : this.renderEmptyArea}
           style={styles.listView}

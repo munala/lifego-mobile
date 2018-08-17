@@ -1,155 +1,140 @@
-import { AsyncStorage } from 'react-native';
-import axios from 'axios';
-
 import { removeEmptyFields } from '../utils';
+import sendRequest, { sendGraphQLRequest } from '../utils/api';
+import { responseMessageFields, profileFields, userFields } from './fields';
 
-const userUrl = 'https://bucketlist-node.herokuapp.com/api/user/';
-const instance = axios.create();
-
-instance.defaults.headers.common['Content-Type'] = 'application/json';
-instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-
-const handleError = error => ({
-  error: error.response ? error.response.data.message : error.message,
-});
+const userUrl = 'http://10.0.2.2:3002/api/auth/';
 
 export default {
-  loginUser(uSer) {
-    const {
-      confirm, displayName, ...user
-    } = uSer;
+  loginUser: async (uSer) => {
+    const { confirm, displayName, ...user } = uSer;
 
-    return instance.post(
-      `${userUrl}login`,
-      removeEmptyFields({ ...user }),
-    )
-      .then(response => response.data.token)
-      .catch(error => handleError(error));
+    return sendRequest({
+      method: 'post',
+      url: `${userUrl}login`,
+      data: removeEmptyFields(user),
+    });
   },
 
-  socialLogin(user) {
-    return instance.post(
-      `${userUrl}social_login`,
-      removeEmptyFields({ ...user }),
-    )
-      .then(response => response.data.token)
-      .catch(error => handleError(error));
+  socialLogin: async user => sendRequest({
+    method: 'post',
+    url: `${userUrl}social_login`,
+    data: removeEmptyFields(user),
+  }),
+
+  registerUser: async user => sendRequest({
+    method: 'post',
+    url: `${userUrl}register`,
+    data: removeEmptyFields(user),
+  }),
+
+  resetPassword: async email => sendRequest({
+    method: 'post',
+    url: `${userUrl}reset_password`,
+    data: { email },
+  }),
+
+  changePassword: async data => sendRequest({
+    method: 'post',
+    url: `${userUrl}change_password`,
+    data: removeEmptyFields(data),
+  }),
+
+  changeEmail: async data => sendRequest({
+    method: 'post',
+    url: `${userUrl}change_email`,
+    data: removeEmptyFields(data),
+  }),
+
+  changeUsername: async user => sendRequest({
+    method: 'post',
+    url: `${userUrl}change_username`,
+    data: removeEmptyFields(user),
+  }),
+
+  deleteAccount: async ({ email, password }) => {
+    const queryData = {
+      args: {
+        email,
+        password,
+      },
+      mutation: 'deleteAccount',
+      fields: responseMessageFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  registerUser(user) {
-    return instance.post(
-      `${userUrl}register`,
-      removeEmptyFields({ ...user }),
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+  getProfile: async () => {
+    const queryData = {
+      mutation: 'getProfile',
+      fields: profileFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  resetPassword(email) {
-    return instance.post(
-      `${userUrl}reset_password`,
-      { email },
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+  getOtherProfile: async (id) => {
+    const args = { id };
+
+    const queryData = {
+      args,
+      mutation: 'getOtherProfile',
+      fields: profileFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async changePassword({ userId, username, ...user }) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  updateProfile: async ({
+    displayName,
+    pictureUrl,
+    privacy,
+    reminders,
+  }) => {
+    const args = removeEmptyFields({
+      displayName,
+      pictureUrl,
+      privacy,
+      reminders,
+    });
 
-    return instance.post(
-      `${userUrl}change_password`,
-      removeEmptyFields({ ...user }),
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    const queryData = {
+      args,
+      mutation: 'updateProfile',
+      fields: profileFields,
+    };
+
+    return sendGraphQLRequest(queryData);
   },
 
-  async changeEmail(user) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  addFriend: async (friend) => {
+    const queryData = {
+      args: { id: friend.id },
+      mutation: 'addFriend',
+      fields: responseMessageFields,
+    };
 
-    return instance.post(
-      `${userUrl}change_email`,
-      removeEmptyFields({ ...user }),
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async changeUsername(user) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  removeFriend: async (friend) => {
+    const queryData = {
+      args: { id: friend.id },
+      mutation: 'removeFriend',
+      fields: responseMessageFields,
+    };
 
-    return instance.post(
-      `${userUrl}change_username`,
-      removeEmptyFields({ ...user }),
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async getProfile() {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
+  searchUsers: async (name) => {
+    const queryData = {
+      args: { name },
+      mutation: 'searchUsers',
+      fields: userFields,
+    };
 
-    return instance.get(`${userUrl}get_profile`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
+    return sendGraphQLRequest(queryData);
   },
 
-  async getOtherProfile(id) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.get(`${userUrl}get_other_profile/${id}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
-
-  async updateProfile(prof) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    const {
-      friends, searchUsers, followers, ...profile
-    } = prof;
-
-    return instance.post(
-      `${userUrl}update_profile`,
-      removeEmptyFields({ ...profile }),
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
-
-  async searchUsers(name) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.get(`${userUrl}users?name=${name}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
-
-  async addFriend(friend) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.post(`${userUrl}add_friend`, { ...friend })
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
-
-  async removeFriend(friend) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.delete(`${userUrl}remove_friend/${friend.id}`)
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
-
-  async deleteAccount(user) {
-    instance.defaults.headers.common.token = await AsyncStorage.getItem('token');
-
-    return instance.post(
-      `${userUrl}delete_account`,
-      removeEmptyFields({ ...user }),
-    )
-      .then(response => response.data)
-      .catch(error => handleError(error));
-  },
 };

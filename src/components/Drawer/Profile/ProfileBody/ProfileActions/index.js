@@ -100,7 +100,7 @@ ProfileActions.propTypes = {
   opacity: PropTypes.shape({}).isRequired,
   profile: PropTypes.shape({
     friends: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired,
     })).isRequired,
   }).isRequired,
   showUserProfile: PropTypes.bool.isRequired,

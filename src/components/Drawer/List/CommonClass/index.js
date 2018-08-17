@@ -175,6 +175,6 @@ BaseClass.propTypes = {
   params: PropTypes.shape({ navigator: PropTypes.string }).isRequired,
   current: PropTypes.string.isRequired,
   profile: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
   }).isRequired,
 };
