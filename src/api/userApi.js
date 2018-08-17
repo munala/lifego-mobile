@@ -2,7 +2,7 @@ import { removeEmptyFields } from '../utils';
 import sendRequest, { sendGraphQLRequest } from '../utils/api';
 import { responseMessageFields, profileFields, userFields } from './fields';
 
-const userUrl = 'https://lifego-api.herokuapp.com//api/auth/';
+const userUrl = 'https://api.lifegokenya.com/api/auth/';
 
 export default {
   loginUser: async (uSer) => {

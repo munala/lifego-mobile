@@ -7,7 +7,7 @@ const instance = axios.create();
 instance.defaults.headers.common['Content-Type'] = 'application/json';
 instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
-const graphqlUrl = 'https://lifego-api.herokuapp.com//api/graphql';
+const graphqlUrl = 'https://api.lifegokenya.com/api/graphql';
 
 export const handleError = (error) => {
   if (error.response && error.response.data.message) {

@@ -17,7 +17,7 @@ import * as userAlertActions from '../actions/userAlertActions';
 import * as navigationActions from '../actions/navigationActions';
 
 export default (store) => {
-  const socket = SocketIOClient('https://lifego-api.herokuapp.com/');
+  const socket = SocketIOClient('https://api.lifegokenya.com');
 
   PushNotification.configure({
     onNotification(notification) {

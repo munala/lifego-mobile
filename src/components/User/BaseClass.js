@@ -87,9 +87,9 @@ class BaseClass extends Component {
     }
   }
 
-  loginWithFacebook = () => this.openURL('https://lifego-api.herokuapp.com//auth/facebook');
+  loginWithFacebook = () => this.openURL('https://api.lifegokenya.com/auth/facebook');
 
-  loginWithGoogle = () => this.openURL('https://lifego-api.herokuapp.com//auth/google')
+  loginWithGoogle = () => this.openURL('https://api.lifegokenya.com/auth/google')
 
   openURL = async (url) => {
     await AsyncStorage.setItem('can_login', 'true');
