@@ -48,6 +48,7 @@ const configureStore = (initialState) => {
     key: 'app',
     storage: AsyncStorage,
     blacklist: [
+      'data',
       'currentApiCalls',
       'error',
       'message',
