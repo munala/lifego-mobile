@@ -15,12 +15,6 @@ export default {
     });
   },
 
-  socialLogin: async user => sendRequest({
-    method: 'post',
-    url: `${userUrl}social_login`,
-    data: removeEmptyFields(user),
-  }),
-
   registerUser: async user => sendRequest({
     method: 'post',
     url: `${userUrl}register`,
