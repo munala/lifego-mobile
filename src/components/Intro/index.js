@@ -1,11 +1,7 @@
 /* eslint-disable global-require */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Image,
-  AsyncStorage,
-} from 'react-native';
+import { View, Image, AsyncStorage } from 'react-native';
 import AppIntro from 'react-native-app-intro';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -19,7 +15,7 @@ const features = [
   {
     image: true,
     icon: 'home',
-    description: 'Welcome to LifeGo',
+    description: 'Welcome to Azimio',
   },
   {
     title: 'Photos',
@@ -29,12 +25,12 @@ const features = [
   {
     title: 'Comments',
     icon: 'comment',
-    description: 'Comment on other people\'s bucketlists',
+    description: "Comment on other people's bucketlists",
   },
   {
     title: 'Stars',
     icon: 'star',
-    description: 'Star other people\'s bucketlists',
+    description: "Star other people's bucketlists",
   },
   {
     title: 'Locations',
@@ -59,10 +55,7 @@ const navigateToLogin = (nav) => {
 
 const Intro = ({ actions: { navigate: nav } }) => (
   <View style={styles.container}>
-    <Image
-      style={styles.image}
-      source={require('../../assets/images/bucketlist_front.jpg')}
-    />
+    <Image style={styles.image} source={require('../../assets/images/bucketlist_front.jpg')} />
     <AppIntro
       onDoneBtnClick={() => navigateToLogin(nav)}
       onSkipBtnClick={() => navigateToLogin(nav)}
@@ -75,11 +68,9 @@ const Intro = ({ actions: { navigate: nav } }) => (
       {features.map(feature => (
         <View style={styles.slide} key={feature.icon}>
           <View level={-20}>
-            {feature.image ?
-              <Image
-                style={styles.logo}
-                source={require('../../assets/icons/icon.png')}
-              /> :
+            {feature.image ? (
+              <Image style={styles.logo} source={require('../../assets/icons/icon.png')} />
+            ) : (
               <Icon
                 name={feature.icon}
                 type="material-icons"
@@ -88,7 +79,7 @@ const Intro = ({ actions: { navigate: nav } }) => (
                 containerStyle={styles.icon}
                 underlayColor="#00bcd4"
               />
-            }
+            )}
           </View>
           <View level={0}>
             <Text level={20} style={styles.title}>
@@ -96,9 +87,7 @@ const Intro = ({ actions: { navigate: nav } }) => (
             </Text>
           </View>
           <View level={20}>
-            <Text style={feature.image ? styles.title : styles.text}>
-              {feature.description}
-            </Text>
+            <Text style={feature.image ? styles.title : styles.text}>{feature.description}</Text>
           </View>
         </View>
       ))}
@@ -112,6 +101,9 @@ Intro.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, dispatch => ({
-  actions: bindActionCreators({ navigate }, dispatch),
-}))(Intro);
+export default connect(
+  null,
+  dispatch => ({
+    actions: bindActionCreators({ navigate }, dispatch),
+  }),
+)(Intro);
