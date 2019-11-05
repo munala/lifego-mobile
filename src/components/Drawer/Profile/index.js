@@ -99,8 +99,7 @@ class Profile extends BaseClass {
 
     const listHeight = 60 * (
       showUserProfile ? otherProfile : profile
-    )[activeType.toLowerCase()]
-      .length;
+    )[activeType.toLowerCase()].length;
 
     const [firstName, middleName, lastName] = this.state.profile.displayName.trim().split(' ');
     const displayName = {};

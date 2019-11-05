@@ -3,12 +3,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:colorBackground">@android:color/background_light</item>
-        <item name="android:textColor">@color/text_color_primary</item>
-        <item name="android:textColorPrimary">@color/text_color_primary</item>
-        <item name="android:textColorSecondary">@color/text_color_secondary</item>
-        <item name="android:textColorPrimaryInverse">@android:color/background_light</item>
-        <item name="android:actionMenuTextColor">@color/text_color_primary</item>    
     </style>
 
 </resources>

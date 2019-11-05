@@ -1,13 +1,16 @@
 import axios from 'axios';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
+// import DeviceInfo from 'react-native-device-info';
+
 import { generateQuery } from '.';
 
 const instance = axios.create();
 
 instance.defaults.headers.common['Content-Type'] = 'application/json';
 instance.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+// instance.defaults.headers.common['User-Agent'] = `${Platform.OS}/${DeviceInfo.getUniqueID().toString()}`;
 
-const graphqlUrl = 'https://lifego-api.herokuapp.com//api/graphql';
+const graphqlUrl = 'https://api.lifegokenya.com/api/graphql';
 
 export const handleError = (error) => {
   if (error.response && error.response.data.message) {

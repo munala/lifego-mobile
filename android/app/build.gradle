@@ -72,6 +72,23 @@ import com.android.build.OutputFile
  * ]
  */
 
+ def getPassword(String currentUser, String keyChain) {
+    def stdout = new ByteArrayOutputStream()
+    def stderr = new ByteArrayOutputStream()
+    exec {
+        commandLine 'security', '-q', 'find-generic-password', '-a', currentUser, '-s', keyChain, '-w'
+        standardOutput = stdout
+        errorOutput = stderr
+        ignoreExitValue true
+    }
+    //noinspection GroovyAssignabilityCheck
+       stdout.toString().trim()
+ }
+
+project.ext.react = [
+    entryFile: "index.js"
+]
+
 apply from: "../../node_modules/react-native/react.gradle"
 
 /**
@@ -87,16 +104,17 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
+
 def enableProguardInReleaseBuilds = false
+def pass = getPassword("Oliver Munala","android_keystore")
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.lifego"
+        applicationId "com.azimio"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         ndk {
@@ -111,16 +129,23 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+
     signingConfigs {
         release {
-            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            } else {
                 storeFile file(MYAPP_RELEASE_STORE_FILE)
-                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                storePassword pass
                 keyAlias MYAPP_RELEASE_KEY_ALIAS
-                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+                keyPassword pass
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
@@ -144,13 +169,13 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-calendar-events')
-    compile project(':react-native-push-notification')
-    compile project(':react-native-fetch-blob')
     compile project(':react-native-vector-icons')
+    compile project(':react-native-push-notification')
     compile project(':react-native-orientation')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-image-picker')
+    compile project(':react-native-fetch-blob')
+    compile project(':react-native-calendar-events')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
@@ -161,4 +186,17 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.android.gms:play-services-gcm:16.1.0'
+        force 'com.google.android.gms:play-services-basement:16.2.0'
+        force 'com.google.android.gms:play-services-auth:16.0.1'
+        force 'com.google.firebase:firebase-messaging:18.0.0'
+        force 'com.google.firebase:firebase-common:17.0.0'
+        force 'com.google.firebase:firebase-iid:18.0.0'
+        force 'com.google.android.gms:play-services-stats:16.0.1'
+        force 'com.google.android.gms:play-services-base:16.0.1'
+    }
 }

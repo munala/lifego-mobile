@@ -1,13 +1,7 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  AsyncStorage,
-  Animated,
-  Image,
-  View,
-  StatusBar,
-} from 'react-native';
+import { AsyncStorage, Animated, Image, View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import jwtDecode from 'jwt-decode';
@@ -23,7 +17,7 @@ class Splash extends Component {
     rotate1: new Animated.Value(1),
     marginBottom2: new Animated.Value(1),
     rotate2: new Animated.Value(1),
-  }
+  };
 
   componentDidMount = async () => {
     StatusBar.setHidden(true);
@@ -41,34 +35,30 @@ class Splash extends Component {
     setTimeout(async () => {
       await this.props.actions.navigate({
         route,
-        navigator:
-      'AuthNavigator',
+        navigator: 'AuthNavigator',
       });
     }, 2000);
     this.animate('1');
     setTimeout(() => {
       this.animate('2');
     }, 250);
-  }
+  };
 
-  nestedAnimation = number => Animated.sequence([
-    Animated.timing(this.state[`marginBottom${number}`], {
-      toValue: 0,
-      duration: 1000,
-    }),
-    Animated.timing(this.state[`marginBottom${number}`], {
-      toValue: 1,
-      duration: 1000,
-    }),
-  ]).start();
-
+  nestedAnimation = number =>
+    Animated.sequence([
+      Animated.timing(this.state[`marginBottom${number}`], {
+        toValue: 0,
+        duration: 1000,
+      }),
+      Animated.timing(this.state[`marginBottom${number}`], {
+        toValue: 1,
+        duration: 1000,
+      }),
+    ]).start();
 
   animate = (number) => {
     Animated.parallel([
-      Animated.sequence([
-        this.nestedAnimation(number),
-        this.nestedAnimation(number),
-      ]),
+      Animated.sequence([this.nestedAnimation(number), this.nestedAnimation(number)]),
       Animated.sequence([
         Animated.timing(this.state[`rotate${number}`], {
           toValue: 0,
@@ -82,7 +72,7 @@ class Splash extends Component {
         this.animate(number);
       }),
     ]);
-  }
+  };
 
   render = () => {
     const bottom = this.state.marginBottom1.interpolate({
@@ -129,27 +119,32 @@ class Splash extends Component {
 
     return (
       <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={require('../../assets/images/splash.png')}
+        <Image style={styles.image} source={require('../../assets/images/splash.png')} />
+        <Animated.View
+          style={[
+            styles.rectangle,
+            {
+              bottom,
+              marginLeft,
+              transform: [{ rotate }],
+              backgroundColor: 'rgba(255,255,255,0.5)',
+            },
+          ]}
         />
-        <Animated.View style={[styles.rectangle, {
-          bottom,
-          marginLeft,
-          transform: [{ rotate }],
-          backgroundColor: 'rgba(255,255,255,0.5)',
-        }]}
-        />
-        <Animated.View style={[styles.rectangle, {
-          bottom: bottom2,
-          marginLeft: marginLeft2,
-          transform: [{ rotate: rotate2 }],
-          backgroundColor: 'rgba(0,188,212,0.5)',
-        }]}
+        <Animated.View
+          style={[
+            styles.rectangle,
+            {
+              bottom: bottom2,
+              marginLeft: marginLeft2,
+              transform: [{ rotate: rotate2 }],
+              backgroundColor: 'rgba(0,188,212,0.5)',
+            },
+          ]}
         />
       </View>
     );
-  }
+  };
 }
 
 Splash.propTypes = {
@@ -159,6 +154,9 @@ Splash.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, dispatch => ({
-  actions: bindActionCreators({ navigate, login }, dispatch),
-}))(Splash);
+export default connect(
+  null,
+  dispatch => ({
+    actions: bindActionCreators({ navigate, login }, dispatch),
+  }),
+)(Splash);

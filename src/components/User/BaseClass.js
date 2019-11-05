@@ -43,6 +43,19 @@ class BaseClass extends Component {
     this[key] = value;
   }
 
+  setRegisterUser = ({ displayName, email }) => {
+    const { registerUser } = this.state;
+
+    this.setState({
+      registerUser: {
+        ...registerUser,
+        displayName,
+        email,
+      },
+      registerMode: true,
+    });
+  }
+
   titleCase = (name) => {
     let [first, middle, last] = name.split(' ');
     if (first) {
@@ -67,29 +80,21 @@ class BaseClass extends Component {
   handleOpenURL = async ({ url }) => {
     const canLogin = JSON.parse(await AsyncStorage.getItem('can_login'));
     if (canLogin) {
-      const [, userString] = url.match(/user=([^#]+)/);
-      const {
-        email,
-        name: displayName,
-        username: confirm,
-        username: password,
-        avatar: pictureUrl,
-      } = JSON.parse(decodeURI(userString));
-      const user = {
-        email,
-        password,
-        confirm,
-        displayName,
-        pictureUrl,
-        social: true,
-      };
-      this.props.actions.socialLogin(user);
+      if (url.includes('user')) {
+        const [, userString] = url.match(/user=([^#]+)/);
+        const user = JSON.parse(decodeURI(userString));
+        this.setRegisterUser(user);
+      } if (url.includes('token')) {
+        const [, token] = url.match(/token=([^#]+)/);
+        AsyncStorage.setItem('token', token);
+        this.props.actions.socialLogin(token);
+      }
     }
   }
 
-  loginWithFacebook = () => this.openURL('https://lifego-api.herokuapp.com//auth/facebook');
+  loginWithFacebook = () => this.openURL('http://api.lifegokenya.com/auth/facebook');
 
-  loginWithGoogle = () => this.openURL('https://lifego-api.herokuapp.com//auth/google')
+  loginWithGoogle = () => this.openURL('https://api.lifegokenya.com/auth/google')
 
   openURL = async (url) => {
     await AsyncStorage.setItem('can_login', 'true');

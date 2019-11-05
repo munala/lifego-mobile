@@ -106,10 +106,10 @@ export const searchUsersSuccess = ({ users }) => ({
   users,
 });
 
-const loginUser = (user, serviceCall) => async (dispatch) => {
+export const login = user => async (dispatch) => {
   dispatch(apiCallActions.beginApiCall({ screen: 'user' }));
 
-  const response = await serviceCall(user);
+  const response = await userService.loginUser(user);
 
   if (response.error) {
     dispatch(apiCallActions.apiCallError({
@@ -119,11 +119,11 @@ const loginUser = (user, serviceCall) => async (dispatch) => {
 
     dispatch(apiCallActions.resetError());
   } else {
-    await AsyncStorage.setItem('token', response.token);
-    await AsyncStorage.setItem('start', 'false');
+    AsyncStorage.setItem('token', response.token);
+    AsyncStorage.setItem('start', 'false');
 
     await dispatch(loginSuccess({
-      ...response,
+      response,
       screen: 'user',
     }));
 
@@ -138,9 +138,19 @@ const loginUser = (user, serviceCall) => async (dispatch) => {
   return response;
 };
 
-export const login = user => loginUser(user, userService.loginUser);
 
-export const socialLogin = user => loginUser(user, userService.socialLogin);
+export const socialLogin = token => (dispatch) => {
+  dispatch(apiCallActions.beginApiCall({ screen: 'user' }));
+  dispatch(loginSuccess({
+    token,
+    screen: 'user',
+  }));
+  navigate({
+    route: 'home',
+    navigator: 'AuthNavigator',
+  })(dispatch);
+};
+
 
 export const logout = () => async (dispatch) => {
   await AsyncStorage.setItem('can_login', 'false');
