@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  FlatList,
-  View,
-  RefreshControl,
-  AsyncStorage,
-} from 'react-native';
+import { FlatList, View, RefreshControl, AsyncStorage } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import { Icon } from 'react-native-elements';
 
@@ -38,6 +33,7 @@ class AllBucketlists extends BaseClass {
 
   componentDidMount = async () => {
     const newUser = await AsyncStorage.getItem('new_user');
+    this.onRefresh();
     if (newUser) {
       await await AsyncStorage.removeItem('new_user');
       this.showModal('Add');
@@ -48,33 +44,32 @@ class AllBucketlists extends BaseClass {
         { label: 'Edit', action: this.editBucketlist },
         { label: 'Delete', action: this.deleteBucketlist },
       ]);
-      this.setButtons([{
-        label: 'Delete',
-        action: this.delete,
-      }]);
+      this.setButtons([
+        {
+          label: 'Delete',
+          action: this.delete,
+        },
+      ]);
     }
-  }
+  };
 
-  renderEmptyArea = ({
-    item: { id: currentApiCalls },
-  }) => currentApiCalls === 0 && ( // eslint-disable-line react/prop-types
-    <View style={styles.emptyArea}>
-      <Icon
-        name="bucket"
-        type="entypo"
-        color="#00bcd4"
-        size={150}
-      />
-      <Text style={[styles.emptyAreaText, { fontSize: 24, color: '#555', fontWeight: 'bold' }]}>
-        {'No bucketlists.'}
-      </Text>
-      <Text style={styles.emptyAreaText}>
-        {"Tap on the ' + ' icon at the bottom right to add a bucketlist.\n\nOr pull down to refresh."}
-      </Text>
-    </View>
-  );
+  renderEmptyArea = ({ item: { id: currentApiCalls } }) =>
+    currentApiCalls === 0 && ( // eslint-disable-line react/prop-types
+      <View style={styles.emptyArea}>
+        <Icon name="bucket" type="entypo" color="#00bcd4" size={150} />
+        <Text style={[styles.emptyAreaText, { fontSize: 24, color: '#555', fontWeight: 'bold' }]}>
+          {'No bucketlists.'}
+        </Text>
+        <Text style={styles.emptyAreaText}>
+          {
+            "Tap on the ' + ' icon at the bottom right to add a bucketlist.\n\nOr pull down to refresh."
+          }
+        </Text>
+      </View>
+    );
 
-  renderItem = ({ item }) => { // eslint-disable-line react/prop-types
+  renderItem = ({ item }) => {
+    // eslint-disable-line react/prop-types
     const bucketlistProps = {
       bucketlist: item,
       goToBucketlist: this.goToBucketlist(item),
@@ -90,10 +85,8 @@ class AllBucketlists extends BaseClass {
       fromRoute: this.props.fromRoute,
     };
 
-    return (
-      <SingleCard {...bucketlistProps} />
-    );
-  }
+    return <SingleCard {...bucketlistProps} />;
+  };
 
   render() {
     const {
@@ -125,7 +118,7 @@ class AllBucketlists extends BaseClass {
           renderItem={bucketlists.length > 0 ? this.renderItem : this.renderEmptyArea}
           style={styles.listView}
           onEndReached={nextUrl ? () => loadMoreBucketlists(screen, offset) : () => {}}
-          onEndReachedThreshold={0.01}
+          onEndReachedThreshold={0.2}
           removeClippedSubviews
           initialNumToRender={0}
           refreshControl={
@@ -137,7 +130,7 @@ class AllBucketlists extends BaseClass {
             />
           }
         />
-        {loaderCalls > 0 && <Loader /> }
+        {loaderCalls > 0 && <Loader />}
         {this.state.showMenu && <ContextMenu items={items} />}
         {this.state.showDialog && <Dialog {...dialogProps} />}
         <ActionButton
