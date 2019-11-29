@@ -12,7 +12,7 @@ const CustomDrawer = props => (
       <Account />
       <DrawerItems {...props} />
     </View>
-    <Text style={styles.copyright}>© 2018 Oliver Munala</Text>
+    <Text style={styles.copyright}>© 2019 Oliver Munala</Text>
   </View>
 );
 

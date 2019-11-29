@@ -30,7 +30,6 @@ export default StyleSheet.create({
     opacity: 0.5,
     backgroundColor: '#aaa',
     flex: 1,
-    resizeMode: 'cover',
     position: 'absolute',
     width: '100%',
     height: '100%',

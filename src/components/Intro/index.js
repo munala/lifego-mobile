@@ -55,7 +55,11 @@ const navigateToLogin = (nav) => {
 
 const Intro = ({ actions: { navigate: nav } }) => (
   <View style={styles.container}>
-    <Image style={styles.image} source={require('../../assets/images/bucketlist_front.jpg')} />
+    <Image
+      style={styles.image}
+      resizeMode="cover"
+      source={require('../../assets/images/bucketlist_front.jpg')}
+    />
     <AppIntro
       onDoneBtnClick={() => navigateToLogin(nav)}
       onSkipBtnClick={() => navigateToLogin(nav)}

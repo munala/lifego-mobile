@@ -16,7 +16,6 @@ export default StyleSheet.create({
   image: {
     opacity: 0.1,
     flex: 1,
-    resizeMode: 'cover',
     position: 'absolute',
     width: '100%',
     height: '100%',
