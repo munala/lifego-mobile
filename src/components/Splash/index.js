@@ -119,7 +119,11 @@ class Splash extends Component {
 
     return (
       <View style={styles.container}>
-        <Image style={styles.image} source={require('../../assets/images/splash.png')} />
+        <Image
+          style={styles.image}
+          resizeMode="cover"
+          source={require('../../assets/images/splash.png')}
+        />
         <Animated.View
           style={[
             styles.rectangle,

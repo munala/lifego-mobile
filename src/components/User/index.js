@@ -1,12 +1,6 @@
 /* eslint-disable global-require */
 import React from 'react';
-import {
-  Image,
-  ScrollView,
-  Linking,
-  View,
-  StatusBar,
-} from 'react-native';
+import { Image, ScrollView, Linking, View, StatusBar } from 'react-native';
 
 import TextInputs from './TextInputs';
 import Buttons from './Buttons';
@@ -47,22 +41,16 @@ class User extends BaseClass {
     if (url) {
       this.handleOpenURL({ url });
     }
-  }
+  };
 
   componentWillUnmount = () => {
     StatusBar.setBarStyle('dark-content', true);
     StatusBar.setBackgroundColor('#fff', true);
     Linking.removeEventListener('url', this.handleOpenURL);
-  }
+  };
 
   render() {
-    const {
-      registerMode,
-      registerUser,
-      loginUser,
-      disabled,
-      resetPassword,
-    } = this.state;
+    const { registerMode, registerUser, loginUser, disabled, resetPassword } = this.state;
 
     const { currentApiCalls } = this.props;
     const user = registerMode ? registerUser : loginUser;
@@ -75,38 +63,37 @@ class User extends BaseClass {
       >
         <Image
           style={styles.image}
+          resizeMode="cover"
           source={require('../../assets/images/bucketlist_front.jpg')}
         />
         <Image
+          resizeMode="cover"
           style={styles.logo}
           source={require('../../assets/icons/icon.png')}
         />
-        {
-          !resetPassword ?
-            <View>
-              <TextInputs
-                user={user}
-                registerMode={registerMode}
-                setRef={this.setRef}
-                onChange={this.onChange}
-                Email={this.Email}
-                Password={this.Password}
-                Confirm={this.Confirm}
-              />
-              <Buttons
-                registerMode={registerMode}
-                disabled={disabled}
-                currentApiCalls={currentApiCalls}
-                onSubmit={this.onSubmit}
-                onToggle={this.onToggle}
-                toggleResetMode={this.toggleResetMode}
-              />
-            </View> :
-            <ResetPassword
+        {!resetPassword ? (
+          <View>
+            <TextInputs
+              user={user}
+              registerMode={registerMode}
+              setRef={this.setRef}
+              onChange={this.onChange}
+              Email={this.Email}
+              Password={this.Password}
+              Confirm={this.Confirm}
+            />
+            <Buttons
+              registerMode={registerMode}
+              disabled={disabled}
               currentApiCalls={currentApiCalls}
+              onSubmit={this.onSubmit}
+              onToggle={this.onToggle}
               toggleResetMode={this.toggleResetMode}
             />
-        }
+          </View>
+        ) : (
+          <ResetPassword currentApiCalls={currentApiCalls} toggleResetMode={this.toggleResetMode} />
+        )}
         <SocialButtons
           loginWithFacebook={this.loginWithFacebook}
           loginWithGoogle={this.loginWithGoogle}

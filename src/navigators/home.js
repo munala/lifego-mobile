@@ -21,11 +21,10 @@ const tabScreens = {
   },
 };
 
-export default TabNavigator(
-  tabScreens,
-  {
-    inittialRouteName: 'HomeBucketlists',
-    tabBarComponent: TabIcons,
-    tabBarPosition: 'bottom',
-  },
-);
+export default TabNavigator(tabScreens, {
+  inittialRouteName: 'HomeBucketlists',
+  tabBarComponent: TabIcons,
+  tabBarPosition: 'bottom',
+  swipeEnabled: false,
+  animationEnabled: false,
+});

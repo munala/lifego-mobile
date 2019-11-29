@@ -16,7 +16,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   title: {
     position: 'absolute',
@@ -30,7 +29,6 @@ export default StyleSheet.create({
   },
   image: {
     flex: 1,
-    resizeMode: 'cover',
     position: 'absolute',
     width: '100%',
     height: '100%',
